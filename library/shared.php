@@ -289,33 +289,33 @@ function sendMail($to, $subject, $content) {
 	$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
 	$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
 	$mail->Port       = 465;                   // set the SMTP port for the GMAIL server
-
 	$mail->Username   = mUser;  // GMAIL username
 	$mail->Password   = mPass;            // GMAIL password
 	$from = mUser;
 	$mail->AddReplyTo($from, "Administartor");
-
 	$mail->From       = $from;
 	$mail->FromName   = "Administartor";
-
 	$mail->Sender = $from;
-
 	$mail->Subject    = $subject;
-
 	//$mail->AltBody    = "Xin chao"; // optional, comment out and test
 	$mail->WordWrap   = 50; // set word wrap
-
 	$mail->MsgHTML($content);
-
 	$mail->AddAddress($to);
-
 	$mail->IsHTML(true); // send as HTML
-
 	if(!$mail->Send()) {
 		return false;
 	} 
 	return true;
 }
+function genString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+    $string = '';    
+    for ($p = 0; $p < $length; $p++) {
+        $string .= $characters[mt_rand(0, strlen($characters)-1)];
+    }
+    return $string;
+}
+
 gzipOutput() || ob_start("ob_gzhandler");
 
 
