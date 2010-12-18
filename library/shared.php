@@ -314,7 +314,7 @@ function genString($length = 10) {
         $string .= $characters[mt_rand(0, strlen($characters)-1)];
     }
     return $string;
-}
+} 
 
 gzipOutput() || ob_start("ob_gzhandler");
 
