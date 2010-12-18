@@ -1,0 +1,332 @@
+body {
+	margin-bottom: 0px;
+	margin-top: 0px;
+	font-size: 13px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #525252;
+	font-family:Verdana !important;
+	font-size:10pt !important;
+}
+a {
+	color: blue;
+	text-decoration: none;
+}
+a:hover {
+	color:#F68618;
+}
+#copyright {
+	color:#FFFFFF;
+	font-size:10px;
+	font-weight:normal;
+	background-color:#afb3a5;
+	text-align:center;
+	width:267px;
+	height:72px;
+	float:left;
+}
+#footer {
+	color:blue;
+	font-size:13px;
+	font-weight:normal;
+	text-align:center;
+	width:100%;
+	height:45px;
+	float:left;
+}
+#wrapcontent {
+	width:1000px;
+	position: relative;
+}
+#top {
+	width:100%;
+	position:relative;
+	float:left;
+}
+#leftcol {
+	position:relative;
+	float:left;
+	min-width:200px;
+	max-width:200px;
+}
+#rightcol {
+	position:relative;
+	float:right;
+	min-width:250px;
+	max-width:250px;
+}
+#bottom {
+	width:100%;
+	position:relative;
+	float:left;
+}
+#content {
+	position:relative;
+	float:left;
+	text-align:left;
+	min-height:600px;
+	/* padding-left:5px; */
+}
+.input{
+	background-color:white;
+	height:25px;
+	width:95%;
+}
+.input:focus{
+	background-color:#FFFFCC;
+}
+.errorMessage {
+  color: red;
+  font-weight: bold;
+  font-size:9pt;
+}
+.msgInfo {
+	color: green;
+	font-weight: bold;
+	font-size:9pt;
+}
+.tr_title {
+	font-weight: bold;
+	border-bottom: solid 1px #D4D4D4;
+	height: 30px;
+	width:100%;
+	color:red;
+	font-size:17px !important;
+	text-align:center !important;
+}
+.title {
+	background-color:#EEEEEE;
+	border-bottom:1px solid #BBBBBB;
+	border-right:1px solid #BBBBBB;
+	border-top:1px solid #BBBBBB;
+	height:20px;
+	margin-left:1px;
+	text-align:left;
+	width:202px;
+	_width:203px;
+}
+.widget {
+	width:100%;
+	height:auto;
+	padding-bottom:3px;
+	float:left;
+}
+.shadow_top_down {
+	background:url("../../images/bg_image.jpg") repeat-x scroll left top #FFFFFF;
+	color:#808080;
+	font:18px/43px 'segoe ui',lucida,'lucida grande',tahoma,verdana,geneva,arial,helvetica,sans-serif;
+	min-height:43px;
+	padding-left:5px;
+}
+.active , .inactive {
+	background-image:url("../../images/status.gif");
+	width:12px;
+	height:12px
+}
+.active {
+	background-position:57px 0;
+}
+.inactive {
+	background-position:12px 0;
+	cursor:pointer;
+}
+.ui-tabs {
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.ui-widget-header {
+	text-transform:uppercase;
+}
+.first_text {
+	float:left;
+	height:auto !important;
+	min-height:110px;
+	padding:8px 5px 0 8px;
+	text-align:left;
+	width:100%;
+}
+.cat_box1 {
+	float:left;
+	padding-bottom:5px;
+	padding-right:5px;
+}
+div .cat_box1 .left {
+	float:left;
+}
+.vien2 {
+	display:block;
+	margin:0 auto;
+	overflow:hidden;
+	padding-left:2px;
+	padding-right:2px;
+	padding-top:2px;
+	text-align:center;
+	vertical-align:middle;
+	width:116px;
+}
+.boder-img {
+	background-color:#FFFFFF;
+	border:1px solid #A5A5A5;
+}
+.vien2 img {
+	width:116px;
+}
+.cat_box1 img {
+   padding:1px;
+   border:1px solid #A5A5A5;
+   width:116px;
+}
+.first_text a.avata {
+	color:blue;
+	font-size:13px;
+	line-height:15px;
+	text-align:left;
+}
+.first_text a:hover {
+	color: #F68618;
+}
+.cat_intro {
+	font-size:13px;
+	padding-top:14px;
+}
+.ui-widget-content a  img{
+	color:transparent;
+	
+}
+.positive {	  /* Positive message DIV */
+	background-color:#C8FFA4;
+	background-image:url("../../images/icons/positive.png");
+	background-position:4px 2px;
+	background-repeat:no-repeat;
+	border:1px solid #348300;
+	height:20px;
+	position:relative;
+	width:100%;
+	z-index:1;
+}
+
+.negative {	  /* Negative message DIV */
+	background-color:#FFA4AA;
+	background-image:url("../../images/icons/negative.png");
+	background-position:2px 1px;
+	background-repeat:no-repeat;
+	border:1px solid red;
+	height:20px;
+	position:relative;
+	width:100%;
+	z-index:1;
+
+}
+.loading {	  /* Negative message DIV */
+	background-image:url("../../images/icons/loading.png");
+	background-position:2px 1px;
+	background-repeat:no-repeat;
+	border:1px solid #348300;
+	height:20px;
+	position:relative;
+	width:100%;
+	z-index:1;
+
+}
+.tipMsg {
+	color:blue;
+	font-weight:bold;
+	cursor:pointer;
+}
+.bodytext {font-size: 13px;	color: #505050;	line-height: 20px;} 
+
+/* body { background: #ccc;} */
+div.jHtmlArea .ToolBar ul li a.custom_disk_button 
+{
+	background: url("../../images/icons/disk.png") no-repeat;
+	background-position: 0 0;
+}
+
+div.jHtmlArea { border: solid 1px #ccc; }
+
+#dhtmltooltip{
+	border-right: white 1px solid;
+	padding-right: 4px;
+	border-top: white 1px solid;
+	padding-left: 4px;
+	font-size: 10pt;
+	z-index: 101;
+	filter: alpha(opacity=90);
+	-moz-opacity: .90;
+	-khtml-opacity: .90;
+	-moz-border-radius : 4px;
+	opacity: .90;
+	left: -300px;
+	visibility: hidden;
+	padding-bottom: 4px;
+	border-left: white 1px solid;
+	padding-top: 4px;
+	border-bottom: white 1px solid;
+	position: absolute;
+	background-color: black;
+	width: 250px;
+	text-align:left;
+	color:white;
+	min-height:50px;
+}
+#dhtmlpointer{
+	z-index: 101;
+	left: -300px;
+	visibility: hidden;
+	position: absolute;
+}
+.normalRow {
+	background: #F0F5F7;
+	padding: 2px 3px 3px 4px;
+	height:30px;
+}
+.alternateRow {
+	background: #D3DADD;
+	padding: 2px 3px 3px 4px;
+	height:30px;
+}
+.question {
+	color:blue;
+	font-weight:bold;
+	cursor:pointer;
+}
+.filledRatingStar {
+    background-image: url("../../images/icons/rating-star.png");
+}
+.emptyRatingStar {
+    background-image: url("../../images/icons/EmptyStar.png");
+}
+.ratingStar {
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: block;
+    font-size: 0;
+    height: 14px;
+    margin: 0;
+    padding: 0;
+    width: 15px;
+}
+.search {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid;
+    height: 23px;
+    margin-top: 8px;
+    position: relative;
+    width: 178px;
+}
+.search .txtsearch {
+    border: 1px solid #FFFFFF;
+    float: left;
+    font-size: 13px;
+    height: 19px;
+    padding: 1px 0;
+    width: 150px;
+}
+.child_content {
+	padding-bottom: 10px;
+    padding-top: 10px;
+    position: relative;
+}

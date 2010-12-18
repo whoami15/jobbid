@@ -1,0 +1,9 @@
+﻿var CONST_ROWSELECTED_COLOR = 'orange'; //Màu của dòng được chọn trong bảng
+var AJAX_ERROR_NULL_VALUE = "ERROR_NULL_VALUE"; //Loi khi nguoi dung post gia tri null len server
+var AJAX_ERROR_SYSTEM = "ERROR_SYSTEM"; //Loi he thong (hoac loi khi nguoi dung co y gay ra loi)
+var AJAX_DONE = "DONE"; //Hoan thanh xu ly ma ko co loi nao
+var AJAX_ERROR_EXIST = "ERROR_EXIST"; //Da ton tai gia tri can xu ly (vi du nhu them ma phong ban bi trung)
+var AJAX_ERROR_NOTEXIST = "ERROR_NOTEXIST"; //Ko ton tai gia tri can xu ly (vi du cap nhat phong ban co ma ko ton tai trong csdl)
+var AJAX_ERROR_NOTLOGIN = "ERROR_NOTLOGIN"; //Chua login
+var AJAX_ERROR_WRONGFORMAT = "ERROR_WRONGFORMAT"; //Upload file sai dinh dang quy dinh
+var AJAX_ERROR_SECURITY_CODE = "ERROR_SECURITY_CODE"; //Sai security code
