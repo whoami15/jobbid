@@ -39,6 +39,15 @@ class HosothauController extends VanillaController {
 			}
 		}
 	}
+	function checkActive($isAjax=false) {
+		if($_SESSION['user']['account']['active']<1) {
+			if($isAjax == true) {
+				die("ERROR_NOTACTIVE");
+			} else {
+				error("Vui lòng kiểm tra email để xác nhận tài khoản!");
+			}
+		}
+	}
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
@@ -71,6 +80,7 @@ class HosothauController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$this->checkNhathau(true);
+			$this->checkActive(true);
 			if($_FILES['hosothau_filedinhkem']['name']!=NULL) {
 				$size= $_FILES['hosothau_filedinhkem']['size'];
 				if($size==0) {

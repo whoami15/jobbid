@@ -62,12 +62,15 @@
 					}
 				?>
 				</td>
-				<td id="td_active" align="center">
+				<td id="td_active" style="display:none;"><?php echo $account["account"]["active"]?></td>
+				<td id="td_active_display" align="center">
 					<?php 
 					if($account["account"]["active"]==0) {
-						echo "<div class='inactive' onclick='doActive(this)' title='Active Account này'></div>";
+						echo "<div class='inactive' title='Chưa active'></div>";
+					} else if($account["account"]["active"]==-1) {
+						echo "<div class='locked' title='Đã khóa'></div>";
 					} else {
-						echo "<div class='active' onclick='doUnActive(this)' title='Bỏ Active Account này'></div>";
+						echo "<div class='active' title='Đã active'></div>";
 					}
 					?>
 				</td>

@@ -17,7 +17,8 @@ class TestController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
-		$this->test->query("select InsertPage() as newid");
+		//$this->test->query("select InsertPage() as newid");
+		sendMail("2741987@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
 		die("done");
 	
 	}

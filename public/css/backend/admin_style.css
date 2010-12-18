@@ -146,7 +146,7 @@ a:hover{  /* Visit site DIV */
 margin-left:auto;
 margin-right:auto;
 }
-.closed , .active , .inactive {
+.closed , .active , .inactive , .locked {
 	background-image:url("../../images/status.gif");
 	width:12px;
 	height:12px
@@ -161,6 +161,11 @@ margin-right:auto;
 }
 .closed {
     background-position: 0 0;
+}
+
+.locked {
+	cursor:pointer;
+    background-position: 99px 0;
 }
 #layout_wrapcontent {
 	width:600px;

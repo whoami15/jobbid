@@ -76,9 +76,13 @@
 						<td align="left">
 							<input type="text" name="account_email" id="account_email" style="width:90%"  tabindex="7"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
 						</td>	
-						<td align="right"></td>
+						<td align="right">Trạng thái</td>
 						<td align="left">
-							
+							<select id="account_active" name="account_active">
+								<option value="-1">Khóa</option>
+								<option value="0">Chưa Active</option>
+								<option value="1">Đã Active</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -151,7 +155,8 @@
 		byId("account_diachi").value = $.trim($(cells.td_diachi).text());		
 		byId("account_sodienthoai").value = $.trim($(cells.td_sodienthoai).text());		
 		byId("account_email").value = $.trim($(cells.td_email).text());		
-		byId("account_point").value = $.trim($(cells.td_point).text());		
+		byId("account_point").value = $.trim($(cells.td_point).text());	
+		byId("account_active").value = $.trim($(cells.td_active).text());
 		switch($.trim($(cells.td_role).text())) {
 			case "Quản trị hệ thống":
 				byId("account_role").value = 1;
@@ -170,6 +175,18 @@
 		$(cells.td_sodienthoai).text(byId("account_sodienthoai").value);			
 		$(cells.td_email).text(byId("account_email").value);			
 		$(cells.td_point).text(byId("account_point").value);			
+		$(cells.td_active).text(byId("account_active").value);		
+		switch(byId("account_active").value) {
+			case "0":
+				$(cells.td_active_display).html("<div class='inactive' title='Chưa active'></div>");
+				break;
+			case "1":
+				$(cells.td_active_display).html("<div class='active' title='Đã active'></div>");
+				break;
+			default:
+				$(cells.td_active_display).html("<div class='locked' title='Đã khóa'></div>");
+				break;
+		}	
 		switch(byId("account_role").value) {
 			case "1":
 				$(cells.td_role).text("Quản trị hệ thống");
@@ -280,52 +297,7 @@
 			error: function(data){ unblock("#dialogAccount #dialog");alert (data);}	
 		});
 	}
-	function doActive(_this) {
-		var cells = _this.parentNode.parentNode.cells;
-		block("#content");
-		$.ajax({
-			type: "GET",
-			cache: false,
-			url : url("/account/activeAccount/"+$(cells.td_id).text()),
-			success: function(data){
-				unblock("#content");
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/admin/login");
-					return;
-				}
-				if (data == AJAX_DONE) {					
-					message("Active Tài Khoản thành công!",1);
-					$(cells.td_active).html("<div class='active' onclick='doUnActive(this)' title='Bỏ Active Tài Khoản này'></div>");
-				} else {
-					message("Active Tài Khoản không thành công!",0);
-				}															
-			},
-			error: function(data){ alert (data);unblock("#content");}	
-		});
-	}
-	function doUnActive(_this) {
-		var cells = _this.parentNode.parentNode.cells;
-		block("#content");
-		$.ajax({
-			type: "GET",
-			cache: false,
-			url : url("/account/unActiveAccount/"+$(cells.td_id).text()),
-			success: function(data){
-				unblock("#content");
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/admin/login");
-					return;
-				}
-				if (data == AJAX_DONE) {					
-					message("Bỏ Active Tài Khoản thành công!",1);
-					$(cells.td_active).html("<div class='inactive' onclick='doActive(this)' title='Active Tài Khoản này'></div>");
-				} else {
-					message("Bỏ Active Tài Khoản không thành công!",0);
-				}															
-			},
-			error: function(data){ alert (data);unblock("#content");}	
-		});
-	}
+	
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Tài Khoản");
 		$('#account_ngaysinh').datepicker({

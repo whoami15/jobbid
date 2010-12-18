@@ -23,4 +23,5 @@ define('NUM_NEWS','5');
 define('LINK_BAOGIA','/download/file/baogia.pdf');
 define('mUser','2741987@gmail.com');
 define('mPass','74198788');
+define('mFooter','<br/>-------------------------------------------------------------------------------<br><span style="text-decoration: underline;">Liên hệ :</span><br>+ Address : <span style="font-weight: bold;">C109 CC Phan Tây Hồ, Phường 7, Q.Phú Nhuận, TP.HCM.</span><br>+ Phone : <span style="font-weight: bold;">0973862100</span><br>+ Email : <span style="font-weight: bold;">nclong87@gmail.com</span>');
 

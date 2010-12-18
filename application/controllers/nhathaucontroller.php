@@ -99,6 +99,15 @@ class NhathauController extends VanillaController {
 			}
 		}
 	}
+	function checkActive($isAjax=false) {
+		if($_SESSION['user']['account']['active']<1) {
+			if($isAjax == true) {
+				die("ERROR_NOTACTIVE");
+			} else {
+				error("Vui lòng kiểm tra email để xác nhận tài khoản!");
+			}
+		}
+	}
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
@@ -412,6 +421,7 @@ class NhathauController extends VanillaController {
 	
 	function doChecknhathau() {
 		$this->checkLogin(true);
+		$this->checkActive(true);
 		if(isset($_SESSION["nhathau"]))
 			echo "DONE";
 		else

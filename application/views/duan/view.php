@@ -183,6 +183,8 @@
 				}
 				if(data == "DONE") {
 					location.href = url("/hosothau&duan_id="+duan_id);
+				} else if(data=="ERROR_NOTACTIVE") {
+					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);	
 				} else {
 					message('Lỗi! Bạn chưa tạo hồ sơ nhà thầu (click <a href="'+url('/nhathau/add')+'" class="link">vào đây</a> để tạo hồ sơ)',0);	
 				}	

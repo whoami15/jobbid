@@ -66,24 +66,6 @@ class AccountController extends VanillaController {
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
 	}
-	function activeAccount($id=0) {
-		$this->checkAdmin(true);
-		if($id!=0) {
-			$this->account->id = $id;
-			$this->account->active = 1;
-			$this->account->save();
-			echo "DONE";
-		}
-	}
-	function unActiveAccount($id=0) {
-		$this->checkAdmin(true);
-		if($id!=0) {
-			$this->account->id = $id;
-			$this->account->active = 0;
-			$this->account->save();
-			echo "DONE";
-		}
-	}
 	function saveAccount() {
 		$this->checkAdmin(true);
 		$id = $_POST["account_id"];
@@ -96,6 +78,7 @@ class AccountController extends VanillaController {
 		$email = $_POST["account_email"];
 		$point = $_POST["account_point"];
 		$role = $_POST["account_role"];
+		$active = $_POST["account_active"];
 		if(isEmpty($username))
 			die("ERROR_SYSTEM");
 		if($id==null) { //insert
@@ -113,7 +96,7 @@ class AccountController extends VanillaController {
 			$this->account->email = $email;
 			$this->account->point = $point;
 			$this->account->role = $role;
-			$this->account->active = 1;
+			$this->account->active = $active;
 			$this->account->save();						
 		} else { //update
 			if(!$this->existUsername($username))
@@ -129,6 +112,7 @@ class AccountController extends VanillaController {
 			$this->account->email = $email;
 			$this->account->point = $point;
 			$this->account->role = $role;
+			$this->account->active = $active;
 			$this->account->save();		
 		}
 		echo "DONE";
@@ -169,7 +153,7 @@ class AccountController extends VanillaController {
 			redirect(BASE_PATH."/$type/login");
 			die();
 		}
-		$strWhere = "AND username='".mysql_real_escape_string($username)."' AND active=1";
+		$strWhere = "AND username='".mysql_real_escape_string($username)."' AND active>=0";
 		$this->account->where($strWhere);
 		$account = $this->account->search();
 		if(empty($account)) {
@@ -228,7 +212,7 @@ class AccountController extends VanillaController {
 			$this->account->email = $email;
 			$this->account->point = 0;
 			$this->account->role = 2;
-			$this->account->active = 1;
+			$this->account->active = 0;
 			$this->account->save();						
 			echo "DONE";
 		} catch (Exception $e) {
@@ -247,7 +231,7 @@ class AccountController extends VanillaController {
 	function getSuggestionAccount() {
 		$key = $_POST["keyword"];
 		if(isset($key)) {
-			$sql = "select username from `accounts` as `account` where active=1 and username like '$key%' LIMIT 8 OFFSET 0";
+			$sql = "select username from `accounts` as `account` where active>=0 and username like '$key%' LIMIT 8 OFFSET 0";
 			$data = $this->account->custom($sql);
 			foreach($data as $account) {
 				echo '<li onClick="fill(\''.$account["account"]["username"].'\');">'.$account["account"]["username"].'</li>';

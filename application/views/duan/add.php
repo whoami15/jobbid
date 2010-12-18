@@ -239,6 +239,10 @@
 					location.href = url("/account/login");
 					return;
 				}
+				if(data == "ERROR_NOTACTIVE") {
+					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
+					return;
+				}
 				if(data == "ERROR_FILESIZE") {
 					message("File upload phải nhỏ hơn 2Mb!",0);
 					return;

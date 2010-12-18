@@ -23,6 +23,15 @@ class DuanController extends VanillaController {
 			}
 		}
 	}
+	function checkActive($isAjax=false) {
+		if($_SESSION['user']['account']['active']<1) {
+			if($isAjax == true) {
+				die("ERROR_NOTACTIVE");
+			} else {
+				error("Vui lòng kiểm tra email để xác nhận tài khoản!");
+			}
+		}
+	}
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
@@ -234,6 +243,7 @@ class DuanController extends VanillaController {
 	function doAdd() {
 		try {
 			$this->checkLogin(true);
+			$this->checkActive(true);
 			$id = $_SESSION["user"]["account"]["id"];
 			$tenduan = $_POST["duan_tenduan"];
 			$alias = $_POST["duan_alias"];
@@ -594,6 +604,7 @@ class DuanController extends VanillaController {
 	function doEdit() {
 		try {
 			$this->checkLogin(true);
+			$this->checkActive(true);
 			$account_id = $_SESSION["user"]["account"]["id"];
 			$duan_id = mysql_real_escape_string($_POST["duan_id"]);
 			$tenduan = $_POST["duan_tenduan"];
