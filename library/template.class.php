@@ -59,4 +59,10 @@ class Template {
             include (ROOT . DS . 'application' . DS . 'views' . DS . $this->_controller . DS . $this->_action . '.php');
         }
     }
+	function sqlDump() {
+		$html = new HTML;
+        extract($this->variables);
+		//die(ROOT . DS . 'application' . DS . 'views' . DS . 'admin_layout.php');
+        include (ROOT . DS . 'application' . DS . 'views' . DS . 'dumper.en.php');
+	}
 }

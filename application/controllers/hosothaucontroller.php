@@ -57,6 +57,7 @@ class HosothauController extends VanillaController {
 		$this->checkNhathau();
 		$duan_id = $_GET["duan_id"];
 		if(!isEmpty($duan_id)) {
+			$duan_id = mysql_real_escape_string($duan_id);
 			$this->setModel("duan");
 			$this->duan->id = $duan_id;
 			$data = $this->duan->search("id,tenduan,alias");
@@ -186,6 +187,7 @@ class HosothauController extends VanillaController {
 		//$this->checkLogin(true);
 		$duan_id = $_GET["duan_id"];
 		if($duan_id!=null) {
+			$duan_id = mysql_real_escape_string($duan_id);
 			$this->hosothau->showHasOne(array("file","nhathau"));
 			$this->hosothau->where(" and trangthai>=1 and duan_id=$duan_id");
 			$this->hosothau->orderBy('hosothau.id','desc');
@@ -212,6 +214,7 @@ class HosothauController extends VanillaController {
 	function getContent(){
 		$id = $_GET["id"];
 		if($id!=null) {
+			$id = mysql_real_escape_string($id);
 			$this->hosothau->id = $id;
 			$data = $this->hosothau->search("content");
 			print_r($data["hosothau"]["content"]);

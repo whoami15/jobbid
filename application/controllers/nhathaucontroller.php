@@ -136,6 +136,7 @@ class NhathauController extends VanillaController {
 	}
 	function getMotachitietById($id=null) {	
 		if($id != null) {
+			$id = mysql_real_escape_string($id);
 			$this->nhathau->id=$id;
             $data=$this->nhathau->search();
 			print_r($data['nhathau']['motachitiet']);

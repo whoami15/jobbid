@@ -21,4 +21,6 @@ define('YAHOO2', 'nclong87');
 define('YAHOO3', 'nclong87');
 define('NUM_NEWS','5');
 define('LINK_BAOGIA','/download/file/baogia.pdf');
+define('mUser','2741987@gmail.com');
+define('mPass','74198788');
 

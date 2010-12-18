@@ -151,6 +151,7 @@ class DuanController extends VanillaController {
 	}
 	function getThongtinchitietById($id=null) {	
 		if($id != null) {
+			$id = mysql_real_escape_string($id);
 			$this->duan->id=$id;
             $data=$this->duan->search();
 			print_r($data['duan']['thongtinchitiet']);
@@ -354,6 +355,7 @@ class DuanController extends VanillaController {
 	function lstDuanByLinhvuc($ipageindex) {
 		$id = $_GET["id"];
 		if($id!=null) {
+			$id = mysql_real_escape_string($id);
 			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
 			$this->duan->orderBy('duan.id','desc');
 			$this->duan->setPage($ipageindex);
@@ -377,6 +379,7 @@ class DuanController extends VanillaController {
 	}
 	function linhvuc($id=null) {
 		if($id!=null) {
+			$id = mysql_real_escape_string($id);
 			$_SESSION['redirect_url'] = getUrl();
 			$this->setModel("linhvuc");
 			$this->linhvuc->id = $id;
@@ -387,6 +390,7 @@ class DuanController extends VanillaController {
 	}
 	function view($id=null) {
 		if($id != null && $id != 0) {
+			$id = mysql_real_escape_string($id);
 			$_SESSION['redirect_url'] = getUrl();
 			$this->duan->showHasOne(array("linhvuc","tinh","file","nhathau",));
 			$this->duan->id=$id;
@@ -410,6 +414,7 @@ class DuanController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$duan_id = $_GET["duan_id"];
+			$duan_id = mysql_real_escape_string($duan_id);
 			if($duan_id == null)
 				die("ERROR_SYSTEM");
 			$this->setModel("duanmark");
@@ -456,6 +461,7 @@ class DuanController extends VanillaController {
 	}
 	function lstDuanMark($ipageindex) {
 		$this->checkLogin();
+		$ipageindex = mysql_real_escape_string($ipageindex);
 		$account_id = $_SESSION["user"]["account"]["id"];
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->showHasMany(array('duanmark'));
@@ -521,6 +527,7 @@ class DuanController extends VanillaController {
 	}
 	function lstMyProjects($ipageindex) {
 		$this->checkLogin();
+		$ipageindex = mysql_real_escape_string($ipageindex);
 		$account_id = $_SESSION["user"]["account"]["id"];
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->orderBy('duan.id','desc');
@@ -758,13 +765,16 @@ class DuanController extends VanillaController {
 			$ipageindex = 1;
 		$strWhere = " and active = 1";
 		if(isset($cond_keyword) && $cond_keyword!="" ) {
+			$cond_keyword = mysql_real_escape_string($cond_keyword);
 			$cond_keyword = strtolower(remove_accents($cond_keyword));
 			$strWhere.=" and data like '%$cond_keyword%'";
 		}
 		if(isset($cond_linhvuc) && empty($cond_linhvuc)==false ) {
+			$cond_linhvuc = mysql_real_escape_string($cond_linhvuc);
 			$strWhere.=" and linhvuc_id = '$cond_linhvuc'";
 		}
 		if(isset($cond_tinh) && empty($cond_tinh)==false ) {
+			$cond_tinh = mysql_real_escape_string($cond_tinh);
 			$strWhere.=" and tinh_id = $cond_tinh";
 		}
 		$this->duan->showHasOne(array("linhvuc","data"));
