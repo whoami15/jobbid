@@ -21,10 +21,8 @@
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 			<td width="20px">#</td>
-			<td>Username</td>
-			<td>Họ tên</td>
 			<td>Email</td>
-			<td>Point</td>
+			<td>Điện thoại</td>
 			<td>Last Login</td>
 			<td>Quyền</td>
 			<td>Active</td>
@@ -46,9 +44,7 @@
 			?>
 				<td align="center"><?php echo $i?></td>
 				<td id="td_username" align="left"><?php echo $account["account"]["username"]?></td>
-				<td id="td_hoten" align="left"><?php echo $account["account"]["hoten"]?></td>
-				<td id="td_email" align="left"><?php echo $account["account"]["email"]?></td>
-				<td id="td_point" align="left"><?php echo $account["account"]["point"]?></td>
+				<td id="td_sodienthoai" align="left"><?php echo $account["account"]["sodienthoai"]?></td>
 				<td id="td_lastlogin" align="left"><?php  echo $html->format_date($account["account"]["lastlogin"],'d/m/Y H:i:s')?></td>
 				<td id="td_role" align="center">
 				<?php 
@@ -75,9 +71,6 @@
 					?>
 				</td>
 				<td id="td_id" style="display:none;"><?php echo $account["account"]["id"]?></td>
-				<td id="td_ngaysinh" style="display:none;"><?php echo $html->format_date($account["account"]["ngaysinh"],'d/m/Y')?></td>
-				<td id="td_diachi" style="display:none;"><?php echo $account["account"]["diachi"]?></td>
-				<td id="td_sodienthoai" style="display:none;"><?php echo $account["account"]["sodienthoai"]?></td>
 				<td align="center">
 					<input type="button" onclick="select_row(this)" value="Chọn" />
 				</td>

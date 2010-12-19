@@ -65,7 +65,7 @@
   </div>
 </div>
 <div id="arrows"></div>
-<div class="bodytext" id="hello">Xin chào <a href="#"><?php echo $_SESSION["user"]["account"]["username"] ?></a>, <img src="<?php echo BASE_PATH ?>/public/images/icons/user.png" alt="user_icon" height="26" border="0" /><br />
+<div class="bodytext" id="hello">Xin chào <a href="#"><?php echo $_SESSION["account"]["username"] ?></a> <img src="<?php echo BASE_PATH ?>/public/images/icons/user.png" alt="user_icon" height="26" border="0" /><br />
 </div>
 <div id="top_icon">
   <div align="center" class="toplinks">

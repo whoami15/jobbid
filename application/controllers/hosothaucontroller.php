@@ -19,7 +19,7 @@ class HosothauController extends VanillaController {
 	
 	//User functions
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -40,7 +40,7 @@ class HosothauController extends VanillaController {
 		}
 	}
 	function checkActive($isAjax=false) {
-		if($_SESSION['user']['account']['active']<1) {
+		if($_SESSION['account']['active']<1) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
@@ -51,7 +51,7 @@ class HosothauController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -93,7 +93,7 @@ class HosothauController extends VanillaController {
 			$milestone = $_POST["hosothau_milestone"];
 			$content = $_POST["hosothau_content"];
 			$nhathau = $_SESSION["nhathau"];
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$nhathau_id = $nhathau["id"];
 			$validate = new Validate();
 			if($validate->check_null(array($duan_id,$giathau,$thoigian))==false)
@@ -158,7 +158,7 @@ class HosothauController extends VanillaController {
 						$this->file->id = null;
 						$this->file->filename = $filename;
 						$this->file->fileurl = BASE_PATH."/upload/files/".$fname;
-						$this->file->account_id = $_SESSION["user"]["account"]["id"];
+						$this->file->account_id = $_SESSION["account"]["id"];
 						$this->file->account_share = $employerId;
 						$this->file->status = 1;
 						$file_id = $this->file->insert(true);
@@ -304,8 +304,8 @@ class HosothauController extends VanillaController {
 				if(empty($duan))
 					error("Server đang quá tải, vui lòng thử lại!");
 				$this->set("flag",0);
-				if(isset($_SESSION["user"])) {
-					$account_id = $_SESSION["user"]["account"]["id"];
+				if(isset($_SESSION["account"])) {
+					$account_id = $_SESSION["account"]["id"];
 					if($duan["duan"]["account_id"] == $account_id) { //la chu du an
 						$this->set("flag",1);
 						if($duan["duan"]["nhathau_id"]!=$nhathau_id) { // nha thau nay da duoc chon
@@ -332,7 +332,7 @@ class HosothauController extends VanillaController {
 	function chonhoso() {
 		try {
 			$this->checkLogin(true);
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$duan_id = $_GET["duan_id"];
 			$hosothau_id = $_GET["hosothau_id"];
 			if(isset($duan_id) && isset($hosothau_id)) {

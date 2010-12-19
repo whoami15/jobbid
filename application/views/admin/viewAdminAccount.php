@@ -46,36 +46,12 @@
 								<option value="2">Người dùng</option>
 							</select>
 						</td>	
-						<td align="right">Point :</td>
-						<td align="left">
-							<input type="text" name="account_point" id="account_point" style="width:90%"  tabindex="4" value="0"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Họ tên :</td>
-						<td align="left">
-							<input type="text" name="account_hoten" id="account_hoten" style="width:90%"  tabindex="5"/>
-						</td>	
-						<td align="right">Ngày sinh :</td>
-						<td align="left">
-							<input type="text" name="account_ngaysinh" id="account_ngaysinh" style="width:90%"  tabindex="6"/>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Địa chỉ :</td>
-						<td align="left">
-							<input type="text" name="account_diachi" id="account_diachi" style="width:90%"  tabindex="7"/>
-						</td>	
 						<td align="right">Số điện thoại :</td>
 						<td align="left">
 							<input type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:90%"  tabindex="8"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
 						</td>
 					</tr>
 					<tr>
-						<td align="right">Email :</td>
-						<td align="left">
-							<input type="text" name="account_email" id="account_email" style="width:90%"  tabindex="7"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
-						</td>	
 						<td align="right">Trạng thái</td>
 						<td align="left">
 							<select id="account_active" name="account_active">
@@ -83,6 +59,10 @@
 								<option value="0">Chưa Active</option>
 								<option value="1">Đã Active</option>
 							</select>
+						</td>
+						<td align="right"></td>
+						<td align="left">
+							
 						</td>
 					</tr>
 					<tr>
@@ -99,15 +79,6 @@
 	<div id="mask"></div>
 </div>
 <div style="padding-top:10px;font-size:14px" >
-	<div style="text-align:left;padding:10px;width:90%;float:left;">
-		<div id="top_icon" style="padding-top:0;">
-		  <div align="center">
-			<div><a href="#"><img src="<?php echo BASE_PATH ?>/public/images/icons/add_icon.png" alt="big_settings" width="25" height="26" border="0" /></a></div>
-					<span class="toplinks">
-			  <a href="#" onclick="showDialogAccount()"><span class="toplinks">THÊM TÀI KHOẢN</span></a></span><br />
-		  </div>
-		</div>
-	</div>
 	<fieldset>
 		<legend>Danh Sách Tài Khoản</legend>
 		<div id="datagrid">
@@ -115,10 +86,8 @@
 				<thead>
 					<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 						<td width="20px">#</td>
-						<td>Username</td>
-						<td>Họ tên</td>
 						<td>Email</td>
-						<td>Point</td>
+						<td>Điện thoại</td>
 						<td>Last Login</td>
 						<td>Quyền</td>
 						<td>Active</td>
@@ -150,12 +119,7 @@
 	function fillFormValues(cells) { //Lấy giá trị từ row được chọn đưa lên form (click vào nút "Chọn")		
 		byId("account_id").value = $.trim($(cells.td_id).text());
 		byId("account_username").value = $.trim($(cells.td_username).text());		
-		byId("account_hoten").value = $.trim($(cells.td_hoten).text());		
-		byId("account_ngaysinh").value = $.trim($(cells.td_ngaysinh).text());		
-		byId("account_diachi").value = $.trim($(cells.td_diachi).text());		
 		byId("account_sodienthoai").value = $.trim($(cells.td_sodienthoai).text());		
-		byId("account_email").value = $.trim($(cells.td_email).text());		
-		byId("account_point").value = $.trim($(cells.td_point).text());	
 		byId("account_active").value = $.trim($(cells.td_active).text());
 		switch($.trim($(cells.td_role).text())) {
 			case "Quản trị hệ thống":
@@ -169,12 +133,7 @@
 	function setRowValues(cells) { //Set giá trị từ form xuống row edit	
 		$(cells.td_id).text(byId("account_id").value);
 		$(cells.td_username).text(byId("account_username").value);			
-		$(cells.td_hoten).text(byId("account_hoten").value);			
-		$(cells.td_ngaysinh).text(byId("account_ngaysinh").value);			
-		$(cells.td_diachi).text(byId("account_diachi").value);			
 		$(cells.td_sodienthoai).text(byId("account_sodienthoai").value);			
-		$(cells.td_email).text(byId("account_email").value);			
-		$(cells.td_point).text(byId("account_point").value);			
 		$(cells.td_active).text(byId("account_active").value);		
 		switch(byId("account_active").value) {
 			case "0":
@@ -241,7 +200,7 @@
 	var isUpdate = false;
 	function saveAccount() {
 		checkValidate=true;
-		validate(['require'],'account_username',["Vui lòng nhập Username!"]);
+		validate(['require','email'],'account_username',["Vui lòng nhập Email!",'Email không hợp lệ!']);
 		if(byId("account_id").value=="") {
 			validate(['require',5],'account_password',["Vui lòng nhập Password!","Password phải lớn hơn 5 ký tự"]);
 		} else {
@@ -249,9 +208,7 @@
 				validate([5],'account_password',["Password phải lớn hơn 5 ký tự"]);
 			}
 		}
-		validate(['require','number'],'account_point',["Vui lòng nhập Point!","Vui lòng nhập kiểu số!"]);
 		validate(['require'],'account_sodienthoai',["Vui lòng nhập số điện thoại!"]);
-		validate(['require'],'account_email',["Vui lòng nhập email!"]);
 		if(checkValidate == false)
 			return;
 		isUpdate = false;
@@ -300,11 +257,6 @@
 	
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Tài Khoản");
-		$('#account_ngaysinh').datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-			changeYear: true
-		});
 		loadListAccounts(1);
 	});
 </script>

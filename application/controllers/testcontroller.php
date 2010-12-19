@@ -22,7 +22,10 @@ class TestController extends VanillaController {
 		die("done");
 	
 	}
-       
+    function restart() {
+		session_destroy();
+		echo "DONE";
+	}	
 	function afterAction() {
 
 	}

@@ -5,12 +5,12 @@
 </style>
 <div id="account_widget" style="margin-top:5px;">
 <?php 
-	if(isset($_SESSION["user"])) {
+	if(isset($_SESSION["account"])) {
 		?>
-		<p align="center">Xin chào <a class='link' href='#'><?php echo $_SESSION["user"]["account"]["username"] ?></a></p>
+		<p align="center">Xin chào <a class='link' href='#'><?php echo $_SESSION["account"]["username"] ?></a></p>
 		<ul style="padding-left:15px">
 			<?php
-			if($_SESSION["user"]["account"]["role"]==1) {
+			if($_SESSION["account"]["role"]==1) {
 				echo "<li><a id='vao_quan_tri' class='link' href='".BASE_PATH."/admin'>Vào trang quản trị</a></li>";
 			}
 			?>

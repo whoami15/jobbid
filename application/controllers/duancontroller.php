@@ -14,7 +14,7 @@ class DuanController extends VanillaController {
 	}
 	//Admin functions
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -24,7 +24,7 @@ class DuanController extends VanillaController {
 		}
 	}
 	function checkActive($isAjax=false) {
-		if($_SESSION['user']['account']['active']<1) {
+		if($_SESSION['account']['active']<1) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
@@ -35,7 +35,7 @@ class DuanController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -59,7 +59,7 @@ class DuanController extends VanillaController {
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage($ipageindex);
 		$this->duan->setLimit(PAGINATE_LIMIT);
-		$lstDuan = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc");
+		$lstDuan = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc,nhathau_id");
 		$totalPages = $this->duan->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -244,7 +244,7 @@ class DuanController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$this->checkActive(true);
-			$id = $_SESSION["user"]["account"]["id"];
+			$id = $_SESSION["account"]["id"];
 			$tenduan = $_POST["duan_tenduan"];
 			$alias = $_POST["duan_alias"];
 			$linhvuc_id = $_POST["duan_linhvuc_id"];
@@ -428,7 +428,7 @@ class DuanController extends VanillaController {
 			if($duan_id == null)
 				die("ERROR_SYSTEM");
 			$this->setModel("duanmark");
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$data = $this->duanmark->custom("select id from duanmarks as duanmark where account_id=$account_id and duan_id=".mysql_real_escape_string($duan_id));
 			if(!empty($data))
 				die("ERROR_EXIST");
@@ -444,7 +444,7 @@ class DuanController extends VanillaController {
 	function viewmarks() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
-		$account_id = $_SESSION["user"]["account"]["id"];
+		$account_id = $_SESSION["account"]["id"];
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->showHasMany(array('duanmark'));
 		$select = array();
@@ -472,7 +472,7 @@ class DuanController extends VanillaController {
 	function lstDuanMark($ipageindex) {
 		$this->checkLogin();
 		$ipageindex = mysql_real_escape_string($ipageindex);
-		$account_id = $_SESSION["user"]["account"]["id"];
+		$account_id = $_SESSION["account"]["id"];
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->showHasMany(array('duanmark'));
 		$select = array();
@@ -501,7 +501,7 @@ class DuanController extends VanillaController {
 		$duan_id = $_GET["duan_id"];
 		if(isset($duan_id)) {
 			$this->checkLogin(true);
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$this->setModel("duanmark");
 			$this->duanmark->custom("delete from duanmarks where account_id=$account_id and duan_id=".mysql_real_escape_string($duan_id));
 			echo "DONE";
@@ -513,7 +513,7 @@ class DuanController extends VanillaController {
 	function viewMyprojects() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
-		$account_id = $_SESSION["user"]["account"]["id"];
+		$account_id = $_SESSION["account"]["id"];
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage(1);
@@ -538,7 +538,7 @@ class DuanController extends VanillaController {
 	function lstMyProjects($ipageindex) {
 		$this->checkLogin();
 		$ipageindex = mysql_real_escape_string($ipageindex);
-		$account_id = $_SESSION["user"]["account"]["id"];
+		$account_id = $_SESSION["account"]["id"];
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage($ipageindex);
@@ -565,7 +565,7 @@ class DuanController extends VanillaController {
 		$this->checkLogin();
 		$duan_id = $_GET["duan_id"];
 		$duan_id = mysql_real_escape_string($duan_id);
-		$account_id = $_SESSION["user"]["account"]["id"];
+		$account_id = $_SESSION["account"]["id"];
 		if(isset($duan_id)) {
 			$this->duan->showHasOne(array('file'));
 			$this->duan->id = $duan_id;
@@ -605,7 +605,7 @@ class DuanController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$this->checkActive(true);
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$duan_id = mysql_real_escape_string($_POST["duan_id"]);
 			$tenduan = $_POST["duan_tenduan"];
 			$alias = $_POST["duan_alias"];
@@ -723,7 +723,7 @@ class DuanController extends VanillaController {
 			die("ERROR_SYSTEM");
 		try {
 			$this->checkLogin(true);
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$duan_id = mysql_real_escape_string($_GET["duan_id"]);
 			$this->duan->id = $duan_id;
 			$data = $this->duan->search("linhvuc_id");

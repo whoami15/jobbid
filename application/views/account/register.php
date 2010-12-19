@@ -13,51 +13,27 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td width="150px" align="right">Username :</td>
+						<td width="150px" align="right">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
 						<td align="left">
-							<input type="text" name="account_username" id="account_username" style="width:200px"  tabindex="1"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="text" name="account_username" id="account_username" style="width:200px"  tabindex="1"/>
 						</td>	
 					</tr>
 					<tr>
-						<td align="right">Mật khẩu :</td>
+						<td align="right">Mật khẩu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
 						<td align="left">
-							<input type="password" name="account_password" id="account_password" style="width:200px" tabindex="2"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="password" name="account_password" id="account_password" style="width:200px" tabindex="2"/>
 						</td>
 					</tr>
 					<tr>
-						<td align="right">Nhập lại mật khẩu :</td>
+						<td align="right">Nhập lại mật khẩu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
 						<td align="left">
-							<input type="password" id="password_again" style="width:200px" tabindex="3"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="password" id="password_again" style="width:200px" tabindex="3"/>
 						</td>
 					</tr>
 					<tr>
-						<td align="right">Họ tên :</td>
+						<td align="right">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
 						<td align="left">
-							<input type="text" name="account_hoten" id="account_hoten" style="width:300px"  tabindex="4"/>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Địa chỉ :</td>
-						<td align="left">
-							<input type="text" name="account_diachi" id="account_diachi" style="width:300px"  tabindex="6"/>
-						</td>	
-					</tr>
-					<tr>
-						<td align="right">Email :</td>
-						<td align="left">
-							<input type="text" name="account_email" id="account_email" style="width:300px"  tabindex="7"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
-						</td>	
-					</tr>
-					<tr>	
-						<td align="right">Ngày sinh :</td>
-						<td align="left">
-							<input type="text" name="account_ngaysinh" id="account_ngaysinh" style="width:200px"  tabindex="8"/>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Số điện thoại :</td>
-						<td align="left">
-							<input type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:200px"  tabindex="9"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:200px"  tabindex="9"/>
 						</td>
 					</tr>
 					<tr>
@@ -72,9 +48,9 @@
 						</td>
 					</tr>
 					<tr>
-						<td align="right">Mã xác nhận :</td>
+						<td align="right">Mã xác nhận <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
 						<td align="left">
-							<input id="security_code" name="security_code" type="text" style="width:200px"  tabindex="10"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input id="security_code" name="security_code" type="text" style="width:200px"  tabindex="10"/>
 						</td>
 					</tr>
 					<tr>
@@ -105,10 +81,9 @@
 	}	
 	function doRegist() {
 		checkValidate=true;
-		validate(['require'],'account_username',["Vui lòng nhập Username!"]);
+		validate(['require','email'],'account_username',["Vui lòng nhập email!","Địa chỉ email không hợp lệ!"]);
 		validate(['require',5],'account_password',["Vui lòng nhập Password!","Password phải lớn hơn 5 ký tự"]);
 		validate(['require','pwdagain'],'password_again',["Vui lòng nhập lại Password!","Password và password nhập lại chưa trùng khớp!"]);
-		validate(['require','email'],'account_email',["Vui lòng nhập email!","Địa chỉ email không hợp lệ!"]);
 		validate(['require'],'account_sodienthoai',["Vui lòng nhập số điện thoại!"]);
 		validate(['require'],'security_code',["Vui lòng nhập mã bảo vệ!"]);
 		if(checkValidate == false)
@@ -127,14 +102,9 @@
 					//Dang ky thanh cong	
 					location.href = url("/account/registsuccess&username="+byId("account_username").value);
 				} else if (data == AJAX_ERROR_EXIST) {
-					message('Username này đã tồn tại!',0);	
+					message('Email này đã được đăng ký!',0);	
 					byId("account_username").focus();
 					$("#account_username").css('border-color','red');
-					reloadImageCaptcha();
-				} else if (data == "ERROR_EXIST_EMAIL") {
-					message('Email này đã được đăng ký!',0);	
-					byId("account_email").focus();
-					$("#account_email").css('border-color','red');
 					reloadImageCaptcha();
 				} else if (data == AJAX_ERROR_SECURITY_CODE) {
 					message('Sai mã xác nhận!',0);										
@@ -160,11 +130,6 @@
 		menuid = '#register';
 		//$("#content_title").text($("#menu "+menuid).text());
 		$("#menu "+menuid).addClass("current");
-		$('#account_ngaysinh').datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-			changeYear: true
-		});
 		$("input:submit, input:button", "body").button();
 	});
 </script>

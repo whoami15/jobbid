@@ -15,7 +15,7 @@ class AccountController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -25,7 +25,7 @@ class AccountController extends VanillaController {
 		}
 	}
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -71,12 +71,7 @@ class AccountController extends VanillaController {
 		$id = $_POST["account_id"];
 		$username = $_POST["account_username"];
 		$password = $_POST["account_password"];
-		$hoten = $_POST["account_hoten"];
-		$ngaysinh = $_POST["account_ngaysinh"];
-		$diachi = $_POST["account_diachi"];
 		$sodienthoai = $_POST["account_sodienthoai"];
-		$email = $_POST["account_email"];
-		$point = $_POST["account_point"];
 		$role = $_POST["account_role"];
 		$active = $_POST["account_active"];
 		if(isEmpty($username))
@@ -89,12 +84,8 @@ class AccountController extends VanillaController {
 			$this->account->id = null;
 			$this->account->username = $username;
 			$this->account->password = md5($password);
-			$this->account->hoten = $hoten;
-			$this->account->ngaysinh = (empty($ngaysinh)?null:SQLDate($ngaysinh));
-			$this->account->diachi = $diachi;
 			$this->account->sodienthoai = $sodienthoai;
-			$this->account->email = $email;
-			$this->account->point = $point;
+			$this->account->timeonline = 0;
 			$this->account->role = $role;
 			$this->account->active = $active;
 			$this->account->save();						
@@ -105,12 +96,7 @@ class AccountController extends VanillaController {
 			$this->account->username = $username;
 			if(isEmpty($password)==false)
 				$this->account->password = md5($password);
-			$this->account->hoten = $hoten;
-			$this->account->ngaysinh = (empty($ngaysinh)?null:SQLDate($ngaysinh));
-			$this->account->diachi = $diachi;
 			$this->account->sodienthoai = $sodienthoai;
-			$this->account->email = $email;
-			$this->account->point = $point;
 			$this->account->role = $role;
 			$this->account->active = $active;
 			$this->account->save();		
@@ -122,18 +108,6 @@ class AccountController extends VanillaController {
 	function existUsername($username=null) {
 		if($username!=null) {
 			$strWhere = "AND username='".mysql_real_escape_string($username)."'";
-			$this->account->where($strWhere);
-			$account = $this->account->search("id");
-			if(empty($account))
-				return false;
-			else
-				return true;
-		}
-		return false;
-	}
-	function existEmail($email=null) {
-		if($email!=null) {
-			$strWhere = "AND email='".mysql_real_escape_string($email)."'";
 			$this->account->where($strWhere);
 			$account = $this->account->search("id");
 			if(empty($account))
@@ -162,7 +136,7 @@ class AccountController extends VanillaController {
 			if(strcmp(md5($password),$account[0]["account"]["password"])!=0) {
 				redirect(BASE_PATH."/$type/login&username=$username&reason=password");
 			} else { //Login thanh cong
-				$_SESSION["user"] = $account[0];
+				$_SESSION["account"] = $account[0]['account'];
 				$this->account->id = $account[0]["account"]["id"];
 				$this->account->lastlogin = GetDateSQL();
 				$this->account->save();
@@ -182,35 +156,25 @@ class AccountController extends VanillaController {
 			} else {
 				die("ERROR_SECURITY_CODE");
 			}
+			$validate = new Validate();
+			if($validate->check_submit(1,array("account_username","account_password","account_sodienthoai"))==false)
+				die('ERROR_SYSTEM');
 			$username = $_POST["account_username"];
 			$password = $_POST["account_password"];
-			$hoten = $_POST["account_hoten"];
-			$ngaysinh = $_POST["account_ngaysinh"];
-			$diachi = $_POST["account_diachi"];
 			$sodienthoai = $_POST["account_sodienthoai"];
-			$email = $_POST["account_email"];
-			$validate = new Validate();
-			if(!$validate->check_length($username))
+			if($validate->check_null(array($username,$password,$sodienthoai))==false)
+				die('ERROR_SYSTEM');
+			if(!$validate->check_email($username))
 				die("ERROR_SYSTEM");
 			if(!$validate->check_length($password,5))
 				die("ERROR_SYSTEM");
-			if($validate->check_length($ngaysinh) && !$validate->check_date($ngaysinh))
-				die("ERROR_SYSTEM");
-			if(!$validate->check_email($email))
-				die("ERROR_SYSTEM");
 			if($this->existUsername($username))
 				die("ERROR_EXIST");
-			if($this->existEmail($email))
-				die("ERROR_EXIST_EMAIL");
 			$this->account->id = null;
 			$this->account->username = $username;
 			$this->account->password = md5($password);
-			$this->account->hoten = $hoten;
-			$this->account->ngaysinh = (empty($ngaysinh)?null:SQLDate($ngaysinh));
-			$this->account->diachi = $diachi;
 			$this->account->sodienthoai = $sodienthoai;
-			$this->account->email = $email;
-			$this->account->point = 0;
+			$this->account->timeonline = 0;
 			$this->account->role = 2;
 			$this->account->active = 0;
 			$this->account->save();						
@@ -220,8 +184,8 @@ class AccountController extends VanillaController {
 		}
 	}
 	function doLogout($type="admin") {
-		if(isset($_SESSION["user"]))
-			$_SESSION["user"] = null;
+		if(isset($_SESSION["account"]))
+			$_SESSION["account"] = null;
 		if(isset($_SESSION["nhathau"]))
 			$_SESSION["nhathau"] = null;
 		if(isset($_SESSION["redirect_url"]))
@@ -251,41 +215,24 @@ class AccountController extends VanillaController {
 	function doUpdate() {
 		try {
 			$this->checkLogin(true);
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$oldpassword = $_POST["account_oldpassword"];
-			$hoten = $_POST["account_hoten"];
-			$ngaysinh = $_POST["account_ngaysinh"];
-			$diachi = $_POST["account_diachi"];
 			$sodienthoai = $_POST["account_sodienthoai"];
-			$email = $_POST["account_email"];
 			$validate = new Validate();
-			if($validate->check_length($ngaysinh) && !$validate->check_date($ngaysinh))
-				die("ERROR_SYSTEM");
-			if($email!=$_SESSION["user"]["account"]["email"]) {
-				if(!$validate->check_email($email))
-					die("ERROR_SYSTEM");
-				if($this->existEmail($email))
-					die("ERROR_EXIST_EMAIL");
-				$this->account->email = $email;
-			}
 			if($oldpassword != "") {
-				if(md5($oldpassword) != $_SESSION["user"]["account"]["password"])
+				if(md5($oldpassword) != $_SESSION["account"]["password"])
 					die("ERROR_WRONGPASSWORD");
 				$password = $_POST["account_password"];
 				if(!$validate->check_length($password,5))
 					die("ERROR_SYSTEM");
 				$this->account->password = md5($password);
 			}
-			//die($_SESSION["user"]["account"]["email"].":".$email);
 			$this->account->id = $account_id;
-			$this->account->hoten = $hoten;
-			$this->account->ngaysinh = (empty($ngaysinh)?null:SQLDate($ngaysinh));
-			$this->account->diachi = $diachi;
 			$this->account->sodienthoai = $sodienthoai;
 			$this->account->update();
 			$this->account->id = $account_id;
 			$data = $this->account->search();
-			$_SESSION["user"] = $data;
+			$_SESSION["account"] = $data;
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

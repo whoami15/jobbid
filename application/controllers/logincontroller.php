@@ -12,7 +12,7 @@ class LoginController extends VanillaController {
 	function beforeAction () {
 	}
 	function isLoged() {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			return false;
 		}
 		return true;

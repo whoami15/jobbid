@@ -90,7 +90,7 @@ class NhathauController extends VanillaController {
 	}
 	//User functions
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -100,7 +100,7 @@ class NhathauController extends VanillaController {
 		}
 	}
 	function checkActive($isAjax=false) {
-		if($_SESSION['user']['account']['active']<1) {
+		if($_SESSION['account']['active']<1) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
@@ -111,7 +111,7 @@ class NhathauController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -155,15 +155,15 @@ class NhathauController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->nhathau->showHasOne(array("file"));
-		$this->nhathau->where(" and nhathau.account_id = ".$_SESSION["user"]["account"]["id"]);
-		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,gpkd_cmnd,type");
+		$this->nhathau->where(" and nhathau.account_id = ".$_SESSION["account"]["id"]);
+		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,gpkd_cmnd,type,birthyear,diachilienhe");
 		if(empty($data)==false) {
 			$this->set("nhathau",$data[0]);
 			$this->setModel("nhathaulinhvuc");
 			$data = $this->nhathaulinhvuc->custom("select tenlinhvuc from nhathaulinhvucs as nhathaulinhvuc join linhvucs as linhvuc on nhathaulinhvuc.linhvuc_id = linhvuc.id where nhathau_id = ".$data[0]["nhathau"]["id"]);
 			$this->set("lstLinhvucquantam",$data);
 		}
-		$this->set("dataAccount",$_SESSION["user"]["account"]);
+		$this->set("dataAccount",$_SESSION["account"]);
 		$this->_template->render();	
 	}
 	function add() {
@@ -178,21 +178,20 @@ class NhathauController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$validate = new Validate();
-			if($validate->check_submit(1,array("account_email","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
+			if($validate->check_submit(1,array("nhathau_birthyear","nhathau_diachilienhe","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
 				die('ERROR_SYSTEM');
-			$email = $_POST["account_email"];
 			$sodienthoai = $_POST["account_sodienthoai"];
 			$motachitiet = $_POST["nhathau_motachitiet"];
 			$displayname = $_POST["nhathau_displayname"];
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
+			$birthyear = $_POST["nhathau_birthyear"];
+			$diachilienhe = $_POST["nhathau_diachilienhe"];
 			$type = $_POST["nhathau_type"];
 			$nhanemail = isset($_POST["nhathau_nhanemail"])?1:0;
 			$validate = new Validate();
-			if($validate->check_null(array($email,$sodienthoai,$displayname,$gpkd_cmnd))==false)
+			if($validate->check_null(array($sodienthoai,$displayname,$gpkd_cmnd))==false)
 				die('ERROR_SYSTEM');
-			if(!$validate->check_email($email))
-					die("ERROR_SYSTEM");
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$this->nhathau->where(" and account_id= $account_id ");
 			$data = $this->nhathau->search("id");
 			if(!empty($data))
@@ -234,7 +233,7 @@ class NhathauController extends VanillaController {
 						$this->file->id = null;
 						$this->file->filename = $filename;
 						$this->file->fileurl = BASE_PATH."/upload/files/".$fname;
-						$this->file->account_id = $_SESSION["user"]["account"]["id"];
+						$this->file->account_id = $_SESSION["account"]["id"];
 						$this->file->status = 1;
 						$file_id = $this->file->insert(true);
 					}
@@ -245,24 +244,20 @@ class NhathauController extends VanillaController {
 			$this->nhathau->motachitiet = $motachitiet;
 			$this->nhathau->displayname = $displayname;
 			$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
+			$this->nhathau->birthyear = $birthyear;
+			$this->nhathau->diachilienhe = $diachilienhe;
 			$this->nhathau->type = $type;
 			$this->nhathau->file_id = $file_id;
 			$this->nhathau->account_id = $account_id;
 			$this->nhathau->nhanemail = $nhanemail;
 			$this->nhathau->diemdanhgia = 0;
 			$nhathau_id = $this->nhathau->insert(true);
-			if($email != $_SESSION["user"]["account"]["email"] || $sodienthoai != $_SESSION["user"]["account"]["sodienthoai"]) {
+			if($sodienthoai != $_SESSION["account"]["sodienthoai"]) {
 				$this->setModel("account");
-				if($email!=$_SESSION["user"]["account"]["email"]) {
-					if($this->existEmail($email))
-						die("ERROR_EXIST_EMAIL");
-					$this->account->email = $email;
-				}
 				$this->account->id = $account_id;
 				$this->account->sodienthoai = $sodienthoai;
 				$this->account->update();
-				$_SESSION["user"]["account"]["email"] = $email;
-				$_SESSION["user"]["account"]["sodienthoai"] = $sodienthoai;
+				$_SESSION["account"]["sodienthoai"] = $sodienthoai;
 			}
 			if(isset($_POST["nhathau_linhvuc"])) {
 				$lstLinhvuc = $_POST["nhathau_linhvuc"];
@@ -291,7 +286,7 @@ class NhathauController extends VanillaController {
 		//print_r($_SESSION["nhathau"]["nhathau"]["id"]);die();
 		$this->nhathau->showHasOne();
 		$this->nhathau->id = $_SESSION["nhathau"]["id"];
-		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,email,sodienthoai,gpkd_cmnd,type");
+		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,username,sodienthoai,gpkd_cmnd,type,birthyear,diachilienhe");
 		if(!empty($data)) {
 			$this->set("nhathau",$data["nhathau"]);
 			$this->set("account",$data["account"]);
@@ -309,21 +304,20 @@ class NhathauController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$validate = new Validate();
-			if($validate->check_submit(1,array("nhathau_id","account_email","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
+			if($validate->check_submit(1,array("nhathau_id","nhathau_birthyear","nhathau_diachilienhe","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
 				die('ERROR_SYSTEM');
 			$id = $_POST["nhathau_id"];
-			$email = $_POST["account_email"];
 			$sodienthoai = $_POST["account_sodienthoai"];
 			$motachitiet = $_POST["nhathau_motachitiet"];
 			$displayname = $_POST["nhathau_displayname"];
+			$birthyear = $_POST["nhathau_birthyear"];
+			$diachilienhe = $_POST["nhathau_diachilienhe"];
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
 			$type = $_POST["nhathau_type"];
 			$nhanemail = isset($_POST["nhathau_nhanemail"])?1:0;
-			if($validate->check_null(array($id,$email,$sodienthoai,$displayname,$gpkd_cmnd))==false)
+			if($validate->check_null(array($id,$sodienthoai,$displayname,$gpkd_cmnd))==false)
 				die('ERROR_SYSTEM');
-			if(!$validate->check_email($email))
-				die("ERROR_SYSTEM");
-			$account_id = $_SESSION["user"]["account"]["id"];
+			$account_id = $_SESSION["account"]["id"];
 			$this->nhathau->id = $id;
 			$data = $this->nhathau->search("account_id");
 			if(empty($data))
@@ -367,7 +361,7 @@ class NhathauController extends VanillaController {
 						$this->file->id = null;
 						$this->file->filename = $filename;
 						$this->file->fileurl = BASE_PATH."/upload/files/".$fname;
-						$this->file->account_id = $_SESSION["user"]["account"]["id"];
+						$this->file->account_id = $_SESSION["account"]["id"];
 						$this->file->status = 1;
 						$file_id = $this->file->insert(true);
 					}
@@ -381,21 +375,17 @@ class NhathauController extends VanillaController {
 				$this->nhathau->file_id = $file_id;
 			$this->nhathau->nhanemail = $nhanemail;
 			$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
+			$this->nhathau->birthyear = $birthyear;
+			$this->nhathau->diachilienhe = $diachilienhe;
 			$this->nhathau->type = $type;
 			$this->nhathau->update();
 			
-			if($email != $_SESSION["user"]["account"]["email"] || $sodienthoai != $_SESSION["user"]["account"]["sodienthoai"]) {
+			if($sodienthoai != $_SESSION["account"]["sodienthoai"]) {
 				$this->setModel("account");
-				if($email!=$_SESSION["user"]["account"]["email"]) {
-					if($this->existEmail($email))
-						die("ERROR_EXIST_EMAIL");
-					$this->account->email = $email;
-				}
 				$this->account->id = $account_id;
 				$this->account->sodienthoai = $sodienthoai;
 				$this->account->update();
-				$_SESSION["user"]["account"]["email"] = $email;
-				$_SESSION["user"]["account"]["sodienthoai"] = $sodienthoai;
+				$_SESSION["account"]["sodienthoai"] = $sodienthoai;
 			}
 			$this->setModel("nhathaulinhvuc");
 			$this->nhathaulinhvuc->custom("delete from nhathaulinhvucs where nhathau_id='$id'");

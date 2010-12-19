@@ -13,7 +13,7 @@ class ArticleController extends VanillaController {
 
 	}
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -25,7 +25,7 @@ class ArticleController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -136,7 +136,7 @@ class ArticleController extends VanillaController {
 				$this->article->contentdes = $contentdes;
 				$this->article->content = $content;
 				$this->article->datemodified = GetDateSQL();
-				$this->article->usermodified = $_SESSION["user"]["account"]["username"];
+				$this->article->usermodified = $_SESSION["account"]["username"];
 				$this->article->viewcount = 0;
 				$this->article->active = 1;
 			} else { //update
@@ -147,7 +147,7 @@ class ArticleController extends VanillaController {
 				$this->article->contentdes = $contentdes;
 				$this->article->content = $content;
 				$this->article->datemodified = GetDateSQL();
-				$this->article->usermodified = $_SESSION["user"]["account"]["username"];
+				$this->article->usermodified = $_SESSION["account"]["username"];
 			}
 			$html = new HTML;
 			$value = "{'datemodified':'".$html->format_date($this->article->datemodified,'d/m/Y H:i:s')."','usermodified':'".$this->article->usermodified."'}";

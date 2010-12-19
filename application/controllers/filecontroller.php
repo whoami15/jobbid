@@ -11,7 +11,7 @@ class FileController extends VanillaController {
 
 	}
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -23,7 +23,7 @@ class FileController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -47,7 +47,7 @@ class FileController extends VanillaController {
 			$data = $data["file"];
 			if($data["account_share"]!=null) {
 				$this->checkLogin();
-				$account_id = $_SESSION["user"]["account"]["id"];
+				$account_id = $_SESSION["account"]["id"];
 				if($account_id != $data["account_share"] && $account_id != $data["account_id"])
 					error("Bạn không được phép download file này!");
 			}

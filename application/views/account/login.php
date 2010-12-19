@@ -4,7 +4,7 @@
 	if(isset($_GET["reason"])) {
 		$msg = $_GET["reason"];
 		if($msg == "username")
-			$msg = "Username này không tồn tại!";
+			$msg = "Email này chưa được đăng ký!";
 		else if ($msg == "password")
 			$msg = "Sai mật khẩu đăng nhập!";
 		else if ($msg == "admin")
@@ -19,7 +19,7 @@
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Đăng nhập</div>
 	<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;" method="POST" action="<?php echo BASE_PATH ?>/account/doLogin/account" onsubmit="return validaFormAccount()">
 		<fieldset style="width:500px">
-			<legend><span style="font-weight:bold;">Nhập username và password để login</span></legend>
+			<legend><span style="font-weight:bold;">Nhập email và password để login</span></legend>
 			<table class="center" width="99%">
 				<thead>
 					<tr>
@@ -33,7 +33,7 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td width="150px" align="right">Username :</td>
+						<td width="150px" align="right">Email :</td>
 						<td align="left">
 							<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $username ?>"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
 						</td>	
@@ -66,7 +66,7 @@
 	}	
 	function validaFormAccount(){
 		checkValidate=true;
-		validate(['require'],'username',["Vui lòng nhập Username!"]);
+		validate(['require'],'username',["Vui lòng nhập Email!"]);
 		validate(['require',5],'password',["Vui lòng nhập Password!","Password phải lớn hơn 5 ký tự"]);
 		if(checkValidate == false)
 			return false;

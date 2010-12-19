@@ -13,7 +13,7 @@ class PageController extends VanillaController {
 
 	}
 	function checkLogin($isAjax=false) {
-		if(!isset($_SESSION['user'])) {
+		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -25,7 +25,7 @@ class PageController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['user']) || $_SESSION["user"]["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
 			if($isAjax == true) {
 				die("ERROR_NOTLOGIN");
 			} else {
@@ -92,7 +92,7 @@ class PageController extends VanillaController {
 				$this->page->alias = $alias;
 				$this->page->content = $content;
 				$this->page->datemodified = GetDateSQL();
-				$this->page->usermodified = $_SESSION["user"]["account"]["username"];
+				$this->page->usermodified = $_SESSION["account"]["username"];
 				$this->page->menu_id = $menu_id;
 				$this->page->active = 1;
 			} else { //update
@@ -101,7 +101,7 @@ class PageController extends VanillaController {
 				$this->page->alias = $alias;
 				$this->page->content = $content;
 				$this->page->datemodified = GetDateSQL();
-				$this->page->usermodified = $_SESSION["user"]["account"]["username"];
+				$this->page->usermodified = $_SESSION["account"]["username"];
 				$this->page->menu_id = $menu_id;
 			}
 			$html = new HTML;

@@ -1,6 +1,6 @@
 <style>
 	.label{
-		width:195px;
+		width:210px;
 	}
 </style>
 <!--[if !IE]> 
@@ -55,6 +55,18 @@
 							</td>
 						</tr>
 						<tr>
+							<td align="right"><span id="display_birthyear"></span> :</td>
+							<td align="left"> 
+							<select name="nhathau_birthyear" id="nhathau_birthyear">
+							</select>
+							</td>
+						</tr>
+						<tr>
+							<td align="right"><span id="display_diachilienhe"></span> :</td>
+							<td align="left"> <input maxlength="255" type="text" name="nhathau_diachilienhe" id="nhathau_diachilienhe" style="width:90%" tabindex=1 value="<?php echo $nhathau["diachilienhe"] ?>"/>
+							</td>
+						</tr>
+						<tr>
 							<td align="right">Lĩnh vực :</td>
 							<td align="left">
 								<table id="table_chonlinhvuc" width="99%">
@@ -81,7 +93,7 @@
 						</tr>
 						<tr>
 							<td align="right">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-							<td align="left"> <input maxlength="255" type="text" name="account_email" id="account_email" style="width:90%" value="<?php echo $account["email"] ?>"/>
+							<td align="left"> <input type="text" style="width:90%" value="<?php echo $account["username"] ?>" disabled=true/>
 							</td>
 						</tr>
 						<tr>
@@ -92,7 +104,7 @@
 						<tr>
 							<td align="right"><span id="display_file"></span> :</td>
 							<td align="left">
-								<input type="file" name="nhathau_file" />&nbsp;&nbsp;&nbsp;(<a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>" title="<?php echo $file["filename"] ?>"><?php echo $html->trimString($file["filename"],30) ?></a>)
+								<input type="file" name="nhathau_file" />&nbsp;&nbsp;&nbsp;(<a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>" title="<?php echo $file["filename"] ?>"><?php echo $html->trimString($file["filename"],20) ?></a>)
 							</td>	
 						</tr>
 						<tr>
@@ -133,19 +145,27 @@
 			}
 			var display_tenhienthi = '';
 			var display_gpkd_cmnd = '';
+			var display_birthyear = '';
+			var display_diachilienhe = '';
 			var display_file = '';
 			function changeType(value) {
 				if(value == 1) {
 					display_tenhienthi = "Tên hiển thị";
 					display_gpkd_cmnd = "Số CMND";
+					display_birthyear = "Năm sinh";
+					display_diachilienhe = "Địa chỉ liên hệ";
 					display_file = "File mô tả kinh nghiệm";
 				} else {
 					display_tenhienthi = "Tên công ty";
 					display_gpkd_cmnd = "Giấy phép kinh doanh";
+					display_birthyear = "Năm thành lập";
+					display_diachilienhe = "Trụ sở chính";
 					display_file = "File hồ sơ năng lực";
 				}
 				byId("display_tenhienthi").innerHTML = display_tenhienthi;
 				byId("display_gpkd_cmnd").innerHTML = display_gpkd_cmnd;
+				byId("display_birthyear").innerHTML = display_birthyear;
+				byId("display_diachilienhe").innerHTML = display_diachilienhe;
 				byId("display_file").innerHTML = display_file;
 			}
 			function redirectPage() {
@@ -156,7 +176,6 @@
 				checkValidate=true;
 				validate(['require'],'nhathau_displayname',["Vui lòng nhập "+display_tenhienthi+"!"]);
 				validate(['require'],'nhathau_gpkd_cmnd',["Vui lòng nhập "+display_gpkd_cmnd+"!"]);
-				validate(['require','email'],'account_email',["Vui lòng nhập email!","Địa chỉ email không hợp lệ!"]);
 				validate(['require'],'account_sodienthoai',["Vui lòng nhập số điện thoại!"]);
 				if(checkValidate==false) {
 					return false;
@@ -166,7 +185,15 @@
 				return true;
 			}
 			$(document).ready(function() {
+				yearBegin = 1950;
+				yearEnd = 2011;
+				str = '';
+				for(i=yearBegin;i<=yearEnd;i++)
+					str+='<option value='+i+'>'+i+'</option>';
+				//alert(str);
+				$('#nhathau_birthyear').append(str);
 				<?php
+				echo "byId('nhathau_birthyear').value=".($nhathau['birthyear']==null?'2000':$nhathau['birthyear']).";";
 				echo "type = ".$nhathau["type"].";";
 				if($nhathau["nhanemail"]==1) {
 					echo "byId('nhathau_nhanemail').checked=true;";
@@ -212,16 +239,16 @@
 					dataType: "xml",
 					success:    function(data) { 
 						$('#btsubmit').removeAttr('disabled');
-						data = data.activeElement.childNodes[0].data;		
+						data = data.activeElement.childNodes[0].data;
+						if(data == "ERROR_FILESIZE") {
+							message("File Upload có kích thước quá lớn!",0);
+							return;
+						}						
 						if(data == AJAX_DONE) {
 							message("Cập nhật hồ sơ thành công! Đang chuyển trang...",1);
 							setTimeout("redirectPage()",redirect_time);
 						} else if(data == AJAX_ERROR_WRONGFORMAT) {
 							message("Upload file sai định dạng!",0);
-						} else if (data == "ERROR_EXIST_EMAIL") {
-							message('Email này đã được đăng ký!',0);	
-							byId("account_email").focus();
-							$("#account_email").css('border-color','red');
 						} else {
 							message("Cập nhật hồ sơ không thành công!",0);
 						}

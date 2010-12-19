@@ -62,7 +62,7 @@
 					<?php 
 					if($duan["duan"]["active"]==0) {
 						echo "<div class='inactive' onclick='doActive(this)' title='Active'></div>";
-					} else if ($duan["duan"]["active"]==2) {
+					} else if ($duan["duan"]["nhathau_id"] != null) {
 						echo "<div class='closed'  title='Đã chọn nhà thầu'></div>";
 					} else {
 						echo "<div class='active' onclick='doUnActive(this)' title='Unactive'></div>";
