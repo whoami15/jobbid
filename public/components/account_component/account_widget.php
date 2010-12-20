@@ -7,6 +7,11 @@
 <?php 
 	if(isset($_SESSION["account"])) {
 		?>
+		<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
+			<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+			Tài khoản chưa được xác nhận!
+			</p>
+		</div>
 		<p align="center">Xin chào <a class='link' href='#'><?php echo $_SESSION["account"]["username"] ?></a></p>
 		<ul style="padding-left:15px">
 			<?php

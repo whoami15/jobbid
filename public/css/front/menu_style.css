@@ -9,6 +9,7 @@ height:40px;
 text-transform:uppercase;
 background:transparent url("images/blue.jpg") repeat-x top left;
 font-family:Verdana,sans-serif;
+margin: 10px 0 0;
 }
 ul#menu li { 
 display: block; 

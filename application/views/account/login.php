@@ -35,13 +35,13 @@
 					<tr>
 						<td width="150px" align="right">Email :</td>
 						<td align="left">
-							<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $username ?>"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $username ?>"/>
 						</td>	
 					</tr>
 					<tr>
 						<td align="right">Mật khẩu :</td>
 						<td align="left">
-							<input type="password" name="password" id="password" style="width:200px" tabindex="2" /><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="password" name="password" id="password" style="width:200px" tabindex="2" />
 						</td>
 					</tr>
 					<tr>
