@@ -18,7 +18,7 @@ class TestController extends VanillaController {
 	}
 	function index() {
 		//$this->test->query("select InsertPage() as newid");
-		sendMail("2741987@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
+		sendMail("nclong87@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
 		die("done");
 	
 	}

@@ -4,11 +4,11 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>My CMS</title>
-<link href="<?php echo BASE_PATH ?>/public/css/front/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo BASE_PATH ?>/public/css/front/jquery-ui.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo BASE_PATH ?>/public/css/front/style.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="<?php echo BASE_PATH ?>/public/css/front/menu_style.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery_blockUI.js"></script>	
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/constances.js"></script>	
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/config.js"></script>	
@@ -40,7 +40,7 @@
 	color:gray !important;
 }
 .link2:hover {
-	color: blue !important;
+	color: #fff !important;
 }
 .imgbanner {
 	color:transparent !important;

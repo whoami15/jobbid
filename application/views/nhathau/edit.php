@@ -1,17 +1,9 @@
 <style>
-	.label{
-		width:210px;
+	.tdLabel {
+		text-align:right;
+		width:170px;
 	}
 </style>
-<!--[if !IE]> 
-<-->
-<style>
-	.label{
-		width:175px;
-	}
-</style>
-<!--> 
-<![endif]-->
 <div id="content" style="width:100%;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
 	<fieldset style="margin-bottom: 10px; margin-top: 10px; text-align: center;">
@@ -26,105 +18,107 @@
 		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 		<link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
 		<link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
-		<div id="content" style="width:100%;">
+		<div style="width:100%;">
 			<form id="formnhathau" style="padding-top: 10px; padding-bottom: 10px;">
 				<input type="hidden" name="nhathau_id" value="<?php echo $nhathau["id"] ?>"/>
-				<table id="table_taonhathau" class="center" width="100%">
-					<thead>
-						<tr>
-							<td colspan="4" id="msg">
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr height="30px">
-							<td class="label" align="right">Bạn đại diện cho :</td>
-							<td align="left">
-							<input type="radio" name="nhathau_type" id="nhathau_type1" onclick="changeType(1)" value="1">Cá nhân
+				<center>
+				<div class="divTable" style="width:100%">
+					<div class="tr" style="border:none">
+						<div class="td" id="msg"></div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;">Bạn đại diện cho :</div>
+						<div class="td tdInput">
+						<input type="radio" name="nhathau_type" id="nhathau_type1" onclick="changeType(1)" value="1">Cá nhân
 							<input type="radio" name="nhathau_type" id="nhathau_type2" onclick="changeType(2)" value="2">Công ty
-							</td>
-						</tr>
-						<tr>
-							<td align="right"><span id="display_tenhienthi"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-							<td align="left"> <input maxlength="255" type="text" name="nhathau_displayname" id="nhathau_displayname" style="width:90%" tabindex=1 value="<?php echo $nhathau["displayname"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td align="right"><span id="display_gpkd_cmnd"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-							<td align="left"> <input maxlength="255" type="text" name="nhathau_gpkd_cmnd" id="nhathau_gpkd_cmnd" style="width:90%" tabindex=1 value="<?php echo $nhathau["gpkd_cmnd"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td align="right"><span id="display_birthyear"></span> :</td>
-							<td align="left"> 
-							<select name="nhathau_birthyear" id="nhathau_birthyear">
-							</select>
-							</td>
-						</tr>
-						<tr>
-							<td align="right"><span id="display_diachilienhe"></span> :</td>
-							<td align="left"> <input maxlength="255" type="text" name="nhathau_diachilienhe" id="nhathau_diachilienhe" style="width:90%" tabindex=1 value="<?php echo $nhathau["diachilienhe"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td align="right">Lĩnh vực :</td>
-							<td align="left">
-								<table id="table_chonlinhvuc" width="99%">
-									<tbody>
-									<?php
-									//print_r($lstLinhvucquantam);die();
-									$i = 0;
-									while($i<count($lstLinhvuc)) {
-										$linhvuc = $lstLinhvuc[$i];
-										echo "<tr>";
-										echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."' id='".$linhvuc["linhvuc"]["id"]."' />".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
-										$i++;
-										if($i<count($lstLinhvuc)) {
-											$linhvuc = $lstLinhvuc[$i];
-											echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."' id='".$linhvuc["linhvuc"]["id"]."'/>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
-											$i++;
-										}
-										echo "</tr>";
-									}
-									?>
-									</tbody>
-								</table>
-							</td>	
-						</tr>
-						<tr>
-							<td align="right">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-							<td align="left"> <input type="text" style="width:90%" value="<?php echo $account["username"] ?>" disabled=true/>
-							</td>
-						</tr>
-						<tr>
-							<td align="right">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-							<td align="left"> <input maxlength="255" type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:90%" value="<?php echo $account["sodienthoai"] ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td align="right"><span id="display_file"></span> :</td>
-							<td align="left">
-								<input type="file" name="nhathau_file" />&nbsp;&nbsp;&nbsp;(<a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>" title="<?php echo $file["filename"] ?>"><?php echo $html->trimString($file["filename"],20) ?></a>)
-							</td>	
-						</tr>
-						<tr>
-							<td align="left" colspan="2"><br/>Mô tả thêm :<br/>
-								<textarea name="nhathau_motachitiet" id="nhathau_motachitiet" style="border:none;" rows="15" ><?php echo $nhathau["motachitiet"] ?></textarea>
-							</td>
-							
-						</tr>
-						<tr>
-							<td align="center" colspan="2">
-							<input type="checkbox" name="nhathau_nhanemail" id="nhathau_nhanemail" value="1"/> Đăng ký nhận email thông báo khi có dự án mới.
-							</td>
-						</tr>
-						<tr>
-							<td colspan="4" align="center" height="50px">
-								<input value="Lưu" type="submit" id="btsubmit" tabindex="1">
-							</td>
-						</tr>
-					</tbody>
-				</table>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;"><span id="display_tenhienthi"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+						<div class="td tdInput">
+						<input maxlength="255" type="text" name="nhathau_displayname" id="nhathau_displayname" style="width:90%" tabindex=1 value="<?php echo $nhathau["displayname"] ?>"/>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;"><span id="display_gpkd_cmnd"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+						<div class="td tdInput">
+						<input maxlength="255" type="text" name="nhathau_gpkd_cmnd" id="nhathau_gpkd_cmnd" style="width:90%" tabindex=1 value="<?php echo $nhathau["gpkd_cmnd"] ?>"/>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;"><span id="display_birthyear"></span> :</div>
+						<div class="td tdInput">
+						<select name="nhathau_birthyear" id="nhathau_birthyear">
+						</select>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;"><span id="display_diachilienhe"></span> :</div>
+						<div class="td tdInput">
+						<input maxlength="255" type="text" name="nhathau_diachilienhe" id="nhathau_diachilienhe" style="width:90%" tabindex=1 value="<?php echo $nhathau["diachilienhe"] ?>"/>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;">Lĩnh vực :</div>
+						<div class="td tdInput">
+						<table id="table_chonlinhvuc" width="99%">
+							<tbody>
+							<?php
+							//print_r($lstLinhvucquantam);die();
+							$i = 0;
+							while($i<count($lstLinhvuc)) {
+								$linhvuc = $lstLinhvuc[$i];
+								echo "<tr>";
+								echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."' id='".$linhvuc["linhvuc"]["id"]."' />".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+								$i++;
+								if($i<count($lstLinhvuc)) {
+									$linhvuc = $lstLinhvuc[$i];
+									echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."' id='".$linhvuc["linhvuc"]["id"]."'/>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+									$i++;
+								}
+								echo "</tr>";
+							}
+							?>
+							</tbody>
+						</table>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+						<div class="td tdInput">
+						<input type="text" style="width:90%" value="<?php echo $account["username"] ?>" disabled=true/>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+						<div class="td tdInput">
+						<input maxlength="255" type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:90%" value="<?php echo $account["sodienthoai"] ?>"/>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td tdLabel" style="text-align:right;"><span id="display_file"></span> :</div>
+						<div class="td tdInput">
+						<input type="file" name="nhathau_file" />&nbsp;&nbsp;&nbsp;(<a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>" title="<?php echo $file["filename"] ?>"><?php echo $html->trimString($file["filename"],20) ?></a>)
+						</div>
+					</div>
+					<div class="tr" style="border:none;text-align:left">
+						<div class="td">
+						Mô tả thêm :<br/>
+						<textarea name="nhathau_motachitiet" id="nhathau_motachitiet" style="border:none;" rows="15" ><?php echo $nhathau["motachitiet"] ?></textarea>
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td">
+						<input type="checkbox" name="nhathau_nhanemail" id="nhathau_nhanemail" value="1"/> Đăng ký nhận email thông báo khi có dự án mới.
+						</div>
+					</div>
+					<div class="tr" style="border:none">
+						<div class="td">
+						<input value="Lưu" type="submit" id="btsubmit"/>
+						</div>
+					</div>
+				</div>
+				</center>
 			</form>
 		</div>
 		<script>
@@ -204,7 +198,7 @@
 				?>
 				setCheckedValue(document.forms['formnhathau'].elements['nhathau_type'], type);
 				changeType(type);
-				$("#nhathau_motachitiet").css("width","100%");
+				$("#nhathau_motachitiet").css("width","98%");
 				$("#nhathau_motachitiet").htmlarea({
 						toolbar: [
 							["html"], ["bold", "italic", "underline"],

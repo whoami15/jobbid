@@ -19,6 +19,9 @@ class WebmasterController extends VanillaController {
 	function help() {	
 		$this->_template->render();  	  
 	}
+	function active() {	
+		$this->_template->render();  	  
+	}
 	function afterAction() {
 
 	}

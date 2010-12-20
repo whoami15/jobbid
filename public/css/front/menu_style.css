@@ -1,40 +1,37 @@
 ul#menu { 
-width: 100%; 
-height: 43px; 
-background: transparent url("../../images/menu-bg.gif") top left repeat-x; 
-font-weight: bold; 
-list-style-type: none; 
-margin: 0; 
-padding: 0;
-margin-top:10px; 
+margin:0;
+padding:0;
+list-style-type:none;
+width:auto;
+position:relative;
+display:block;
+height:40px;
+text-transform:uppercase;
+background:transparent url("images/blue.jpg") repeat-x top left;
+font-family:Verdana,sans-serif;
 }
 ul#menu li { 
 display: block; 
 float: left; 
-margin: 0 0 0 5px; 
+border-right:1px solid #ffffff; 
 }
 ul#menu li a{ 
-height: 38px; 
-color: #777; 
+height: 40px; 
+color:#ffffff;
 text-decoration: none; 
 display: block; 
 float: left; 
-line-height: 200%; 
-padding: 8px 15px 0; 
+padding:12px 20px 0 20px;
 font-size: 14px !important; 
 cursor:pointer;
 text-transform:uppercase;
-}
-ul#menu li a:hover { 
-color: #333; 
+font-weight:bold;
 }
 ul#menu li a.current{ 
 color: #FFF; 
-background: transparent url("../../images/current-bg.gif") top left repeat-x; 
-padding: 5px 15px 0; 
+background:transparent url("images/black.jpg") repeat-x top left;	
 }
-ul#menu li a.hover{ 
+ul#menu li a:hover{ 
 color: #FFF; 
-background: transparent url("../../images/current-bg.gif") top left repeat-x; 
-padding: 5px 15px 0; 
+background:transparent url("images/black.jpg") repeat-x top left;	
 }

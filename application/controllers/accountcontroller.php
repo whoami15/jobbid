@@ -177,7 +177,12 @@ class AccountController extends VanillaController {
 			$this->account->timeonline = 0;
 			$this->account->role = 2;
 			$this->account->active = 0;
-			$this->account->save();						
+			$account_id = $this->account->insert(true);
+			$this->setModel('activecode');
+			$this->activecode->id = null;
+			$this->activecode->account_id = $account_id;
+			$this->activecode->active_code = genString();
+			$this->activecode->insert();
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

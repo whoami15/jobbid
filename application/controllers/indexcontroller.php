@@ -38,6 +38,7 @@ class IndexController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
+		//error('Test');
 		$this->setModel("duan");
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->orderBy('duan.id','desc');

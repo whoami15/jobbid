@@ -5,19 +5,14 @@
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
 <style>
-	.label {
-		width:100px;
+	.tdLabel {
+		text-align:right;
+		width:97px;
+	}
+	.tdInput {
+		width:550px;
 	}
 </style>
-<!--[if !IE]> 
-<-->
-<style>
-	.label {
-		width:100px;
-	}
-</style>
-<!--> 
-<![endif]-->
 <div id="content" style="width:100%;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
 	<form id="formHosothau" style="padding-top: 10px; padding-bottom: 10px;" >
@@ -25,52 +20,48 @@
 		<fieldset>
 			<legend>
 			<a class='link' href="<?php echo BASE_PATH ?>/duan/view/<?php echo $dataDuan["duan"]["id"]?>/<?php echo $dataDuan["duan"]["alias"]?>">Dự án : <b><?php echo $dataDuan["duan"]["tenduan"] ?></b></a></legend>
-			<table class="center" width="100%">
-				<thead>
-					<tr>
-						<td colspan="4" id="msg">
-						</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr height="25px">
-						<td class="label" align="right">Giá thầu (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</td>
-						<td align="left">
-							<input maxlength=10 type="text" name="hosothau_giathau" style="width:70%" value="" id="hosothau_giathau" tabindex=1/> <span class="question" id="tip_giathau">(?)</span>
-						</td>
-					</tr>
-					<tr height="25px">
-						<td align="right">Thời gian (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</td>
-						<td align="left" >
-							<input maxlength=2 type="text" name="hosothau_thoigian" style="width:40%" value="" id="hosothau_thoigian" tabindex=2/> <span class="question" id="tip_thoigian">(?)</span>
-						</td>
-					</tr>
-					<tr height="25px">
-						<td align="right">MileStone :</td>
-						<td align="left">
-							<input type="text" name="hosothau_milestone" style="width:40%" value="" id="hosothau_milestone" tabindex=3/> (%)
-						</td>
-					</tr>	
-					<tr height="25px">
-						<td align="right">File đính kèm :</td>
-						<td align="left">
-							<input type="file" name="hosothau_filedinhkem" style="width:65%" value="" id="hosothau_filedinhkem" tabindex=4/>(Size < 2Mb)
-						</td>
-					</tr>
-					<tr>
-						<td align="left" colspan="4">
-							<br/>Lời nhắn (vui lòng<span id="tip_loinhan" style="color:red;font-weight:bold;cursor:pointer;" > không điền email, số điện thoại </span>của bạn ở đây) :<br/>
-							<textarea maxlength=5 id="hosothau_content" name="hosothau_content" style="margin-top: 5px; width: 99%;" rows="10" tabindex=5></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" align="center" height="50px">
-							<input id="btsubmit" type="submit" value="Gửi"  tabindex=6>
-							<input onclick="doReset()" value="Reset" type="button" tabindex=7>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<center>
+			<div class="divTable" style="width:100%">
+				<div class="tr" style="border:none">
+					<div class="td" id="msg"></div>
+				</div>
+				<div class="tr" style="border:none">
+					<div class="td tdLabel" style="text-align:right;">Giá thầu (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</div>
+					<div class="td tdInput">
+					<input maxlength=10 type="text" name="hosothau_giathau" style="width:70%" value="" id="hosothau_giathau" tabindex=1/> <span class="question" id="tip_giathau">(?)</span>
+					</div>
+				</div>
+				<div class="tr" style="border:none">
+					<div class="td tdLabel" style="text-align:right;">Thời gian (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</div>
+					<div class="td tdInput">
+					<input maxlength=2 type="text" name="hosothau_thoigian" style="width:40%" value="" id="hosothau_thoigian" tabindex=2/> <span class="question" id="tip_thoigian">(?)</span>
+					</div>
+				</div>
+				<div class="tr" style="border:none">
+					<div class="td tdLabel" style="text-align:right;">MileStone :</div>
+					<div class="td tdInput">
+					<input type="text" name="hosothau_milestone" style="width:40%" value="" id="hosothau_milestone" tabindex=3/> (%)
+					</div>
+				</div>
+				<div class="tr" style="border:none">
+					<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
+					<div class="td tdInput">
+					<input type="file" name="hosothau_filedinhkem" style="width:65%" value="" id="hosothau_filedinhkem" tabindex=4/>(Size < 2Mb)
+					</div>
+				</div>
+				<div class="tr" style="border:none;text-align:left">
+					<div class="td">
+					Lời nhắn (vui lòng<span id="tip_loinhan" style="color:red;font-weight:bold;cursor:pointer;" > không điền email, số điện thoại </span>của bạn ở đây) :<br/>
+					<textarea maxlength=5 id="hosothau_content" name="hosothau_content" style="margin-top: 5px; width: 99%;" rows="10" tabindex=5></textarea>
+					</div>
+				</div>
+				<div class="tr" style="border:none">
+					<div class="td">
+					<input id="btsubmit" type="submit" value="Gửi hồ sơ thầu"  tabindex=6>
+					</div>
+				</div>
+			</div>
+			</center>
 		</fieldset>
 	</form>
 </div>
@@ -84,12 +75,6 @@
 			byId("msg").innerHTML = str;
 		}
 	}	
-	function doReset() {
-		$("#formHosothau")[0].reset(); //Reset form cua jquery, giu lai gia tri mac dinh cua cac field	
-		$("#formHosothau :input").css('border-color','');
-		byId("msg").innerHTML="";
-		$('#btsubmit').removeAttr('disabled');
-	}
 	function validateFormHosothau(formData, jqForm, options) {
 		//alert(byId("hosothau_duan_id").value);return false;
 		location.href = "#top";

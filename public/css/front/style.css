@@ -203,9 +203,12 @@ div .cat_box1 .left {
 	background-repeat:no-repeat;
 	border:1px solid #348300;
 	height:20px;
+	line-height: 20px;
 	position:relative;
 	width:100%;
 	z-index:1;
+	text-align: left;
+	-moz-border-radius:4px;
 }
 
 .negative {	  /* Negative message DIV */
@@ -215,9 +218,12 @@ div .cat_box1 .left {
 	background-repeat:no-repeat;
 	border:1px solid red;
 	height:20px;
+	line-height: 20px;
 	position:relative;
 	width:100%;
 	z-index:1;
+	text-align: left;
+	-moz-border-radius:4px;
 
 }
 .loading {	  /* Negative message DIV */
@@ -226,9 +232,12 @@ div .cat_box1 .left {
 	background-repeat:no-repeat;
 	border:1px solid #348300;
 	height:20px;
+	line-height: 20px;
 	position:relative;
 	width:100%;
 	z-index:1;
+	text-align: left;
+	-moz-border-radius:4px;
 
 }
 .tipMsg {
@@ -329,4 +338,36 @@ div.jHtmlArea { border: solid 1px #ccc; }
 	padding-bottom: 10px;
     padding-top: 10px;
     position: relative;
+}
+/*Table DIV */
+.divTable
+{
+	width: 100%;
+	display:block;
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-right:10px;
+	padding-left:10px; 
+}
+.tr
+{
+	border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    display: block;
+    float: left;
+    line-height: 30px;
+    width: 99%;
+}
+.td
+{
+	float: left;
+	display:block;
+	padding-left: 5px;
+	padding-right: 5px;
+	width: 99%;
+}
+.tdInput {
+	text-align:left;
+	width:500px;
 }
