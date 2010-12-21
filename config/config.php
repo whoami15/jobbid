@@ -13,6 +13,8 @@ define('DB_HOST', 'localhost');
 define('BASE_PATH','http://localhost/mycms');
 define('SITE_NAME','My CMS');
 define('PINGBOX','wid=hlrqrgS1QG6c0M2LmECPawfh');
+define('MAX_FILEDOWNLOADS',30);
+define('MAX_SENDACTIVECODE',3);
 
 define('PAGINATE_LIMIT', '12');
 define('INT_PAGE_SUPPORT', '4');

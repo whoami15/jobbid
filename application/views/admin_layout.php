@@ -23,7 +23,7 @@
 		<!--> 
 		<![endif]-->
 		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-ui-1.8.5.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-ui.js"></script>
 		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery_blockUI.js"></script>		
 		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/constances.js"></script>	
 		<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/dropmenu.js" ></script>

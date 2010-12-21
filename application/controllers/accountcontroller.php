@@ -178,11 +178,23 @@ class AccountController extends VanillaController {
 			$this->account->role = 2;
 			$this->account->active = 0;
 			$account_id = $this->account->insert(true);
+			$active_code = genString();
 			$this->setModel('activecode');
 			$this->activecode->id = null;
 			$this->activecode->account_id = $account_id;
-			$this->activecode->active_code = genString();
+			$this->activecode->active_code = $active_code;
 			$this->activecode->insert();
+			//Doan nay send mail truc tiep chu ko dua vao Cron Job, doan code sau chi demo Cronjob
+			$this->setModel('cronjob');
+			$this->cronjob->id = null;
+			$this->cronjob->tasktype = 1;
+			$this->cronjob->object = $username;
+			$this->cronjob->subject = "Chào mừng bạn đến với bidjob.vn";
+			$linkactive = BASE_PATH."/webmaster/doActive&account_id=$account_id&active_code=$active_code";
+			$content = '<p>Chào bạn,<br>Chào mừng bạn đến với&nbsp; <a href="'.BASE_PATH.'">jobbid.vn!</a><br>
+Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá dự án, công việc trực tuyến JobBid.vn.<br>Xin bạn hãy click vào đường link sau đây để kích hoạt tài khoản của bạn trên hệ thống: <a href="'.$linkactive.'">'.$linkactive.'</a><br>Trong trường hợp link kích hoạt trên không hoạt động, xin vui lòng nhập mã xác nhận <b>'.$active_code.'</b> vào link sau <a href="'.BASE_PATH.'/webmaster/active/'.$account_id.'">'.BASE_PATH.'/webmaster/active</a>.<br>Sau khi tài khoản của bạn được kích hoạt thành công, bạn có thể sử dụng thông tin dưới đây để truy cập vào tài khoản cá nhân trên <a href="'.BASE_PATH.'/account/login">jobbid.vn!</a>:<br><strong>TÊN ĐĂNG NHẬP: '.$username.'<br>MẬT KHẨU:****** </strong>(Vì lý do bảo mật chúng tôi không hiển thị mật khẩu trong email này)<br>	Thân,<br>Ban quản trị <a href="'.BASE_PATH.'">jobbid.vn!</a></p>';
+			$this->cronjob->content = $content;
+			$this->cronjob->insert();
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

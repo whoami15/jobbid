@@ -6,12 +6,9 @@
 <div id="account_widget" style="margin-top:5px;">
 <?php 
 	if(isset($_SESSION["account"])) {
+		if($_SESSION["account"]['active']==0)
+			echo '<a title="Vào trang xác nhận tài khoản" href="'.BASE_PATH.'/webmaster/active/'.$_SESSION["account"]['id'].'"><div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"><p><span style="float: left;margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>Bạn chưa xác nhận tài khoản!</p></div></a>';
 		?>
-		<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
-			<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
-			Tài khoản chưa được xác nhận!
-			</p>
-		</div>
 		<p align="center">Xin chào <a class='link' href='#'><?php echo $_SESSION["account"]["username"] ?></a></p>
 		<ul style="padding-left:15px">
 			<?php

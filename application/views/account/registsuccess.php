@@ -7,7 +7,8 @@
 				<fieldset>
 				<legend><span style="font-weight:bold">Thông báo từ website</span></legend>
 				<div class='positive' style='margin-top:5px'><span class='bodytext' style='padding-left:30px;'>Bạn đã đăng ký thành viên thành công!</span></div><br/>
-				Bạn có thể sử dụng nick <a class="link" href="<?php echo BASE_PATH ?>/account/login&username=<?php echo $_GET["username"] ?>"><?php echo $_GET["username"] ?></a> để đăng nhập vào tài khoản cá nhân của mình.
+				Chúng tôi vừa gửi cho bạn 1 email xác nhận, vui lòng kiểm tra email <b><?php echo $_GET["username"] ?></b> để xác nhận việc đăng ký của bạn.<br/>
+				Sau khi xác nhận, bạn có thể sử dụng nick <a class="link" href="<?php echo BASE_PATH ?>/account/login&username=<?php echo $_GET["username"] ?>"><?php echo $_GET["username"] ?></a> để đăng nhập vào tài khoản cá nhân của mình.
 				</fieldset>
 				</td>
 			</tr>

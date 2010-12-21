@@ -45,6 +45,11 @@
 						</td>
 					</tr>
 					<tr>
+						<td colspan="4" align="center">
+							<a class="link" href="javascript:location.href=url('/webmaster/resetpass')">Quên mật khẩu đăng nhập?</a>
+						</td>
+					</tr>
+					<tr>
 						<td colspan="4" align="center" height="50px">
 							<input value="Đăng Nhập" type="submit" tabindex="3">
 						</td>

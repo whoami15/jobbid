@@ -40,6 +40,12 @@ class FileController extends VanillaController {
 	}
 	function download($id) {
 		if(!empty($id)) {
+			if(!isset($_SESSION['filedownloads']))
+				$_SESSION['filedownloads'] = 0;
+			if($_SESSION['filedownloads']>=MAX_FILEDOWNLOADS) {
+				$cache_expire = session_cache_expire();
+				error("Bạn đã download quá nhiều file. Vui lòng đợi $cache_expire phút để download file tiếp theo!");
+			}
 			$this->file->id = $id;
 			$data = $this->file->search();
 			if(empty($data)) 
@@ -51,6 +57,7 @@ class FileController extends VanillaController {
 				if($account_id != $data["account_share"] && $account_id != $data["account_id"])
 					error("Bạn không được phép download file này!");
 			}
+			$_SESSION['filedownloads'] = $_SESSION['filedownloads'] + 1;
 			redirect($data["fileurl"]);
 		}
 	}

@@ -252,6 +252,11 @@ function error($msg=" ") {
 	redirect(BASE_PATH.'/webmaster/error');
 	die();
 }
+function success($msg=" ") {
+	$_SESSION["msg"] = $msg;
+	redirect(BASE_PATH.'/webmaster/success');
+	die();
+}
 /** Convert sign to unsign **/
 function remove_accents( $str )
 {
