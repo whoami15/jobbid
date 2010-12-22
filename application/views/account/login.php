@@ -16,47 +16,45 @@
 		$username = $_GET["username"];
 ?>
 <div id="content" style="width:100%;">
+	<form id="formAccount" style="padding-top: 0px; padding-bottom: 10px;" method="POST" action="<?php echo BASE_PATH ?>/account/doLogin/account" onsubmit="return validaFormAccount()">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Đăng nhập</div>
-	<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;" method="POST" action="<?php echo BASE_PATH ?>/account/doLogin/account" onsubmit="return validaFormAccount()">
-		<fieldset style="width:500px">
-			<legend><span style="font-weight:bold;">Nhập email và password để login</span></legend>
-			<table class="center" width="99%">
-				<thead>
-					<tr>
-						<td colspan="4" id="msg">
-						<?php
-						if(!empty($msg))
-							echo "<div class='negative'><span class='bodytext' style='padding-left:30px;'>$msg</span></div>";
-						?>
-						</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td width="150px" align="right">Email :</td>
-						<td align="left">
-							<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $username ?>"/>
-						</td>	
-					</tr>
-					<tr>
-						<td align="right">Mật khẩu :</td>
-						<td align="left">
-							<input type="password" name="password" id="password" style="width:200px" tabindex="2" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="4" align="center">
-							<a class="link" href="javascript:location.href=url('/webmaster/resetpass')">Quên mật khẩu đăng nhập?</a>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="4" align="center" height="50px">
-							<input value="Đăng Nhập" type="submit" tabindex="3">
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
+	<table class="center" width="99%">
+		<thead>
+			<tr>
+				<td colspan="4" id="msg">
+				<?php
+				if(!empty($msg))
+					echo "<div class='negative'><span class='bodytext' style='padding-left:30px;'>$msg</span></div>";
+				?>
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td width="250px" align="right">Email :</td>
+				<td align="left">
+					<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $username ?>"/>
+				</td>	
+			</tr>
+			<tr>
+				<td align="right">Mật khẩu :</td>
+				<td align="left">
+					<input type="password" name="password" id="password" style="width:200px" tabindex="2" />
+				</td>
+			</tr>
+			<tr>
+				<td align="right"></td>
+				<td align="left">
+					<a class="link" href="javascript:location.href=url('/webmaster/resetpass')">Quên mật khẩu đăng nhập?</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center" height="50px">
+					<input value="Đăng Nhập" type="submit" tabindex="3">
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	</form>
 </div>
 <script>

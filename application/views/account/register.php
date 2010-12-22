@@ -1,67 +1,64 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <div id="content" style="width:100%;">
+	<form id="formAccount" style="padding-top: 0px; padding-bottom: 10px;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Đăng ký</div>
-	<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;">
-		<fieldset>
-			<legend><span style="font-weight:bold;">Phiếu khai báo thông tin cá nhân</span></legend>
-			<table class="center" width="500px">
-				<thead>
-					<tr>
-						<td colspan="4" id="msg">
-						</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td width="150px" align="right">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-						<td align="left">
-							<input type="text" name="account_username" id="account_username" style="width:200px"  tabindex="1"/>
-						</td>	
-					</tr>
-					<tr>
-						<td align="right">Mật khẩu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-						<td align="left">
-							<input type="password" name="account_password" id="account_password" style="width:200px" tabindex="2"/>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Nhập lại mật khẩu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-						<td align="left">
-							<input type="password" id="password_again" style="width:200px" tabindex="3"/>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-						<td align="left">
-							<input type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:200px"  tabindex="9"/>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td align="left">
-							<div id="image_security" style="width:100px;height:40px;padding-left:30px;float:left">
-							<img alt="imgcaptcha" id="imgcaptcha" src="<?php echo BASE_PATH ?>/util/captcha&width=100&height=40&characters=5"/>
-							</div>
-							<div style="float:left">
-							<img title="Load mã bảo vệ khác" onclick="reloadImageCaptcha()" style="cursor:pointer" alt="reload_capcha" src="<?php echo BASE_PATH ?>/public/images/icons/refresh_icon.png"/>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">Mã xác nhận <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
-						<td align="left">
-							<input id="security_code" name="security_code" type="text" style="width:200px"  tabindex="10"/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="4" align="center" height="50px">
-							<input onclick="doRegist()" value="Đăng Ký" type="button" tabindex="11">
-							<input onclick="doReset()" value="Reset" type="button"tabindex="12">
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
+	<table class="center" width="500px">
+		<thead>
+			<tr>
+				<td colspan="4" id="msg">
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td width="150px" align="right">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
+				<td align="left">
+					<input type="text" name="account_username" id="account_username" style="width:200px"  tabindex="1"/>
+				</td>	
+			</tr>
+			<tr>
+				<td align="right">Mật khẩu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
+				<td align="left">
+					<input type="password" name="account_password" id="account_password" style="width:200px" tabindex="2"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Nhập lại mật khẩu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
+				<td align="left">
+					<input type="password" id="password_again" style="width:200px" tabindex="3"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
+				<td align="left">
+					<input type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:200px"  tabindex="9"/>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="left">
+					<div id="image_security" style="width:100px;height:40px;padding-left:30px;float:left">
+					<img alt="imgcaptcha" id="imgcaptcha" src="<?php echo BASE_PATH ?>/util/captcha&width=100&height=40&characters=5"/>
+					</div>
+					<div style="float:left">
+					<img title="Load mã bảo vệ khác" onclick="reloadImageCaptcha()" style="cursor:pointer" alt="reload_capcha" src="<?php echo BASE_PATH ?>/public/images/icons/refresh_icon.png"/>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Mã xác nhận <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
+				<td align="left">
+					<input id="security_code" name="security_code" type="text" style="width:200px"  tabindex="10"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center" height="50px">
+					<input onclick="doRegist()" value="Đăng Ký" type="button" tabindex="11">
+					<input onclick="doReset()" value="Reset" type="button"tabindex="12">
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	</form>
 </div>
 <script>
@@ -130,5 +127,6 @@
 		//$("#content_title").text($("#menu "+menuid).text());
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
+		boundTip("account_username","Chúng tôi sẽ gửi cho bạn 1 mail xác nhận đăng ký.");
 	});
 </script>
