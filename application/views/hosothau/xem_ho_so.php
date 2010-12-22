@@ -1,169 +1,123 @@
 <div id="content" style="width:100%">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title"></div>
-	<input type="hidden" id="duan_id" value="<?php echo $duan["id"] ?>"/>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin nhà thầu</div>
+	<form>
+	<input type="hidden" id="duan_id" name="duan_id" value="<?php echo $duan["id"] ?>"/>
 	<input type="hidden" id="hosothau_id" value="<?php echo $hosothau_id ?>"/>
-	<fieldset style="margin-top:10px">
-		<legend>Thông tin nhà thầu</legend>
-		<table class="center" width="100%">
-			<thead>
-				<tr>
-					<td colspan="4" id="msg">
-					</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr height="30px">
-					<td align="center" colspan="2">
-					<h2><?php echo $nhathau["displayname"] ?></h2> 
-					</td>
-				</tr>
-				<tr height="30px">
-					<td align="left" >
-					<span style="float:left;padding-right:10px"> <b>BidJob đánh giá :</b></span>
+	</form>
+	<table class="center" width="100%">
+		<thead>
+			<tr>
+				<td colspan="4" id="msg">
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr height="30px">
+				<td align="center" colspan="2">
+				<h2><?php echo $nhathau["displayname"] ?></h2> 
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<span style="float:left;padding-right:10px"> <b>JobBid đánh giá :</b></span>
+				<?php
+				for($j=0;$j<$nhathau["diemdanhgia"];$j++) {
+					echo '<span style="float:left" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span>';
+				}
+				if($nhathau["diemdanhgia"]>3) {
+					echo "&nbsp;&nbsp;(Rất tốt)";
+				} else if($nhathau["diemdanhgia"]>1) {
+					echo "&nbsp;&nbsp;(Tốt)";
+				} else if($nhathau["diemdanhgia"]>0){
+					echo "&nbsp;&nbsp;(Khá)";
+				} else {
+					echo "(Chưa đánh giá)";
+				}
+				?>
+				
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<b><span id="display_gpkd_cmnd"></span> :</b> <?php echo $nhathau["gpkd_cmnd"] ?>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<b><span id="display_birthyear"></span> :</b> <?php echo $nhathau["birthyear"] ?>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<b><span id="display_diachilienhe"></span> :</b> <?php echo $nhathau["diachilienhe"] ?>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<b>Lĩnh vực :</b>
+				</td>
+			</tr>
+			<tr align="left" >
+				<td align="left" style="padding-left:50px">
+				<?php 
+				if(isset($lstLinhvucquantam)) {
+					echo "<ul style='padding-left:15px'>";
+					foreach($lstLinhvucquantam as $linhvuc) {
+						echo "<li>".$linhvuc['linhvuc']['tenlinhvuc']."</li>";
+					}
+					echo "</ul>";
+				}
+				?>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<b><span id="display_file"></span> :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>"><?php echo $file["filename"] ?></a>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
+				<b>Mô tả thêm :</b>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="padding-left:50px">
+				<?php echo $nhathau["motachitiet"] ?>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left"><b>Email :</b><span style="color:red"> <?php echo $account["username"]?></span>
+				</td>	
+			</tr>
+			<tr height="30px">
+				<td align="left"><b>Số điện thoại :</b><span style="color:red"> <?php echo $account["sodienthoai"]?></span>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="center" height="50px">
 					<?php
-					for($j=0;$j<$nhathau["diemdanhgia"];$j++) {
-						echo '<span style="float:left" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span>';
-					}
-					if($nhathau["diemdanhgia"]>3) {
-						echo "&nbsp;&nbsp;(Rất tốt)";
-					} else if($nhathau["diemdanhgia"]>1) {
-						echo "&nbsp;&nbsp;(Tốt)";
-					} else if($nhathau["diemdanhgia"]>0){
-						echo "&nbsp;&nbsp;(Khá)";
-					} else {
-						echo "(Chưa đánh giá)";
-					}
+					if($flag > 1) {
+						?>
+						<input id="btChonnhathau" onclick="doChonnhathau()" value="Chọn Nhà Thầu Này" type="button" tabindex="11">
+						<?php
+					} 
 					?>
-					
-					</td>
-				</tr>
-				<tr height="30px">
-					<td align="left" >
-					<b><span id="display_gpkd_cmnd"></span> :</b> <?php echo $nhathau["gpkd_cmnd"] ?>
-					</td>
-				</tr>
-				<tr height="30px">
-					<td align="left" >
-					<b>Lĩnh vực :</b>
-					</td>
-				</tr>
-				<tr align="left" >
-					<td align="left" style="padding-left:50px">
-					<?php 
-					if(isset($lstLinhvucquantam)) {
-						echo "<ul style='padding-left:15px'>";
-						foreach($lstLinhvucquantam as $linhvuc) {
-							echo "<li>".$linhvuc['linhvuc']['tenlinhvuc']."</li>";
-						}
-						echo "</ul>";
-					}
-					?>
-					</td>
-				</tr>
-				<tr height="30px">
-					<td align="left" >
-					<b><span id="display_file"></span> :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>"><?php echo $file["filename"] ?></a>
-					</td>
-				</tr>
-				<tr height="30px">
-					<td align="left" >
-					<b>Mô tả thêm :</b>
-					</td>
-				</tr>
-				<tr height="30px">
-					<td align="left" style="padding-left:50px">
-					<?php echo $nhathau["motachitiet"] ?>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
-	<fieldset style="margin-bottom: 10px; margin-top: 10px;">
-		<legend>Các dự án đã hoàn thành trên BidJob</legend>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Các dự án đã hoàn thành trên BidJob</div>
 		<div style="min-height:30px;width:100%">
 		<ul id="">
 		Chưa có dự án nào.
 		</ul>
 		</div>
-	</fieldset>
-	<fieldset style="margin-bottom: 10px; margin-top: 10px;">
-		<legend>Các dự án vừa trúng thầu</legend>
+	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Các dự án vừa trúng thầu</div>
 		<div id="div_lstDuans" style="min-height:50px;width:100%">
 		<ul id="ul_lstDuans">
 		
 		</ul>
 		</div>
-	</fieldset>
-	<fieldset style="margin-bottom: 10px; margin-top: 10px;">
-		<legend>Thông tin cá nhân</legend>
-		<?php
-		if(isset($_SESSION["user"])) {
-			if($flag>0) {
-			?>
-			<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;">
-			<table class="center" width="500px">
-				<tbody>
-					<tr height="30px">
-						<td width="150px" align="right"><b>Username :</b></td>
-						<td align="left">
-							<a href="#" class="link"><?php echo $account["username"]?></a>
-						</td>
-					</tr>
-					<tr height="30px">
-						<td align="right"><b>Họ tên :</b></td>
-						<td align="left">
-							<?php echo $account["hoten"]?>
-						</td>
-					</tr>
-					<tr height="30px">	
-						<td align="right"><b>Ngày sinh :</b></td>
-						<td align="left">
-							<?php echo $html->format_date($account["ngaysinh"],'d/m/Y')?>
-						</td>
-					</tr>
-					<tr height="30px">
-						<td align="right"><b>Địa chỉ :</b></td>
-						<td align="left">
-							<?php echo $account["diachi"]?>
-						</td>	
-					</tr>
-					<tr height="30px">
-						<td align="right"><b>Email :</b></td>
-						<td align="left">
-							<?php echo $account["email"]?>
-						</td>	
-					</tr>
-					<tr height="30px">
-						<td align="right"><b>Số điện thoại :</b></td>
-						<td align="left">
-							<?php echo $account["sodienthoai"]?>
-						</td>
-					</tr>
-					<tr height="30px">
-						<td colspan="4" align="center" height="50px">
-							<?php
-							if($flag > 1) {
-								?>
-								<input id="btChonnhathau" onclick="doChonnhathau()" value="Chọn Nhà Thầu Này" type="button" tabindex="11">
-								<?php
-							} 
-							?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			</form>
-			<?php
-			} else {
-				echo '<div style="text-align:center">Bạn chỉ được xem thông tin cá nhân nhà thầu này khi người này tham gia đấu thầu dự án của bạn.</div>';
-			}
-		} else {
-			?>
-			<div style="text-align:center">Vui lòng <a class="link" href="<?php echo BASE_PATH ?>/account/login">đăng nhập</a> để xem thông tin cá nhân của nhà thầu này</div>
-			<?php
-		}
-		?>
-	</fieldset>
 </div>
 <script>
 	function message(msg,type) {
@@ -176,16 +130,26 @@
 		}
 	}
 	var display_gpkd_cmnd = '';
+	var display_birthyear = '';
+	var display_diachilienhe = '';
 	var display_file = '';
 	function changeType(value) {
+		if(value==null)
+			return;
 		if(value == 1) {
 			display_gpkd_cmnd = "Số CMND";
+			display_birthyear = "Năm sinh";
+			display_diachilienhe = "Địa chỉ liên hệ";
 			display_file = "File mô tả kinh nghiệm";
 		} else {
 			display_gpkd_cmnd = "Giấy phép kinh doanh";
+			display_birthyear = "Năm thành lập";
+			display_diachilienhe = "Trụ sở chính";
 			display_file = "File hồ sơ năng lực";
 		}
 		byId("display_gpkd_cmnd").innerHTML = display_gpkd_cmnd;
+		byId("display_birthyear").innerHTML = display_birthyear;
+		byId("display_diachilienhe").innerHTML = display_diachilienhe;
 		byId("display_file").innerHTML = display_file;
 	}
 	function redirectPage() {
@@ -204,6 +168,7 @@
 			cache: false,
 			url : url("/hosothau/chonhoso&duan_id="+duan_id+"&hosothau_id="+hosothau_id),
 			success: function(data){
+				//alert(data);return;
 				$('#btChonnhathau').removeAttr('disabled');	
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/account/login");
@@ -226,8 +191,6 @@
 	}
 	$(document).ready(function() {
 		changeType(<?php echo $nhathau["type"] ?>);
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Xem Hồ Sơ Nhà Thầu");
 		$("input:submit, input:button", "body").button();
 		block("#div_lstDuans");
 		$.ajax({

@@ -1,4 +1,4 @@
-<ul id="menu">
+<ul id="menu" style="padding-bottom:5px">
 <?php
 foreach($menuList as $menu) {
 	echo "<li><a id='".$menu["menu"]["id"]."' class='menulink' href='".$menu["menu"]["url"]."'>".$menu["menu"]["name"]."</a></li>";

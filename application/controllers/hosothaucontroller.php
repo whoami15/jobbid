@@ -296,7 +296,7 @@ class HosothauController extends VanillaController {
 			$this->setModel("nhathau");
 			$this->nhathau->showHasOne();
 			$this->nhathau->id = $nhathau_id;
-			$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,username,hoten,diachi,email,ngaysinh,sodienthoai,type,gpkd_cmnd");
+			$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,gpkd_cmnd,type,birthyear,diachilienhe,username,sodienthoai");
 			if(empty($data)==false) {
 				$this->setModel("duan");
 				$this->duan->id = $duan_id;
@@ -310,11 +310,17 @@ class HosothauController extends VanillaController {
 						$this->set("flag",1);
 						if($duan["duan"]["nhathau_id"]!=$nhathau_id) { // nha thau nay da duoc chon
 							$data["account"]["sodienthoai"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
-							$data["account"]["email"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
+							$data["account"]["username"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
 							//print_r($duan["duan"]["account_id"]);die();
 							$this->set("flag",2);
 						} 
+					} else {
+						$data["account"]["sodienthoai"] = "(Không hiển thị)";
+						$data["account"]["username"] = "(Không hiển thị)";
 					}
+				} else {
+					$data["account"]["sodienthoai"] = '(Vui lòng <a class="link" href="'.BASE_PATH.'/account/login">đăng nhập</a> để xem)';
+					$data["account"]["username"] = '(Vui lòng <a class="link" href="'.BASE_PATH.'/account/login">đăng nhập</a> để xem)';
 				}
 				
 				$this->set("nhathau",$data["nhathau"]);

@@ -15,8 +15,8 @@
 	if(isset($_GET["username"]))
 		$username = $_GET["username"];
 ?>
-<div id="content2" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Đăng nhập</div>
+<div id="content" style="width:100%;">
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Đăng nhập</div>
 	<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;" method="POST" action="<?php echo BASE_PATH ?>/account/doLogin/account" onsubmit="return validaFormAccount()">
 		<fieldset style="width:500px">
 			<legend><span style="font-weight:bold;">Nhập email và password để login</span></legend>
@@ -82,7 +82,6 @@
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#login';
 		//$("#content_title").text($("#menu "+menuid).text());
-		$("#content_title").css("width",width_content-19);
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
 	});

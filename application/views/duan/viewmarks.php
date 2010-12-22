@@ -1,5 +1,5 @@
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Danh sách dự án quan tâm</div>
 	<div id="datagrid" style="padding-top:10px;padding-bottom:10px;">
 		<table width="100%">
 			<thead>
@@ -138,8 +138,6 @@
 	$(document).ready(function() {
 		// pass options to ajaxForm 
 		$("#ds_du_an_quan_tam").css('color','#F68618');
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").html("Danh sách dự án quan tâm");
 		$("input:submit, input:button", "body").button();
 		$("#tfoot_paging").html($("#thead_paging").html());
 	});

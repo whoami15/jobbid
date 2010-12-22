@@ -1,4 +1,4 @@
-<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tin tức</div>
 <table width="100%">
 	<thead id="thead_paging">
 		<tr>
@@ -47,8 +47,6 @@
 	$(document).ready(function() {
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#news';
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text($("#menu "+menuid).text());
 		$("#menu "+menuid).addClass("current");
 	});
 </script>

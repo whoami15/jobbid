@@ -1,5 +1,5 @@
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Thông báo</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông báo</div>
 	<table width="99%" style="padding-top:10px;padding-bottom:10px">
 		<tbody>
 			<tr>
@@ -17,6 +17,5 @@
 </div>
 <script>
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
 	});
 </script>

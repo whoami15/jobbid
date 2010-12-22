@@ -1,5 +1,5 @@
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title"></div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Trợ giúp</div>
 	<fieldset style="margin-bottom: 10px; margin-top: 10px; text-align: left;">
 		<legend><span style="font-weight:bold;">Quy trình post dự án dành cho chủ dự án</span></legend>
 		Để bắt đầu thì tất cả những người up dự án thực hiện các công việc sau :<br/><br/>
@@ -27,7 +27,5 @@
 	$(document).ready(function() {
 		menuid = '#tro-giup';
 		$("#menu "+menuid).addClass("current");
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").html("Trợ giúp");
 	});
 </script>

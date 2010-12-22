@@ -1,5 +1,5 @@
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Các dự án mới nhất</div>
 	<div id="datagrid" style="padding-top:10px;padding-bottom:10px;">
 		<table width="100%">
 			<thead>
@@ -40,8 +40,6 @@
 <script>
 	$(document).ready(function() {
 		menuid = '#home';
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Các dự án mới nhất");
 		$("#menu "+menuid).addClass("current");
 	});
 </script>

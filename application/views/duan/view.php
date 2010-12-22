@@ -6,7 +6,7 @@
 }
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title"></div>
 	<fieldset style="margin-bottom: 10px; margin-top: 10px; text-align: center;">
 		<legend><span style="font-weight:bold;"><?php echo $dataDuan["duan"]["tenduan"] ?></span></legend>
 		<table class="center" width="100%">
@@ -63,7 +63,11 @@
 					<td align="left" colspan="2" style="padding-left:50px">
 						<div id="div_lstSkills" style="min-height:50px;width:100%">
 						<ul id="ul_lstSkills">
-						
+						<?php
+						foreach($lstSkill as $skill) {
+							echo '<li>'.$skill['skill']['skillname'].'</li>';
+						}
+						?>
 						</ul>
 						</div>
 					</td>
@@ -92,7 +96,7 @@
 				<tr height="30px">
 					<td align="center" colspan="2">
 					<?php
-					if(isset($_SESSION["user"]) && $dataDuan["duan"]["account_id"]==$_SESSION["user"]["account"]["id"]) {
+					if(isset($_SESSION["account"]) && $dataDuan["duan"]["account_id"]==$_SESSION["account"]["id"]) {
 						?>
 						<input type="button" value="Sửa dự án này" onclick="editMyProject(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php
@@ -137,32 +141,6 @@
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
 			byId("msg").innerHTML = str;
 		}
-	}
-	function getSkillsByDuan(duan_id) {
-		if(duan_id=="")
-			return;
-		block("#div_lstSkills");
-		$.ajax({
-			type: "GET",
-			cache: false,
-			url : url("/skill/getSkillsByDuan&duan_id="+duan_id),
-			success: function(data){
-				unblock("#div_lstSkills");
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/account/login");
-					return;
-				}
-				if(data == AJAX_ERROR_SYSTEM) {
-					return;
-				}
-				byId("ul_lstSkills").innerHTML = "";
-				var jsonObj = eval( "(" + data + ")" );
-				for(i=0;jsonObj[i]!=null;i++) {
-					$("#ul_lstSkills").append("<li>"+jsonObj[i].skillname+"</li>");
-				}
-			},
-			error: function(data){ unblock("#div_lstSkills");;alert (data);}	
-		});
 	}
 	function selectpage(page) {
 		loadListHosothau(page);
@@ -276,13 +254,11 @@
 		
 	}
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").html("<a class='link2' href='"+url('/duan/search')+"'>Tìm dự án</a> &#8250 <a class='link2' href='"+url('/duan/linhvuc/<?php echo $dataDuan["duan"]["linhvuc_id"]?>')+"'><?php echo $dataDuan["linhvuc"]["tenlinhvuc"]?></a> &#8250 Thông tin dự án");
+		$("#content_title").html("<a class='link2' href='"+url('/duan/search')+"'>Tìm dự án</a> &#8250 <a class='link2' href='"+url('/linhvuc&linhvuc_id=<?php echo $dataDuan["duan"]["linhvuc_id"]?>')+"'><?php echo $dataDuan["linhvuc"]["tenlinhvuc"]?></a> &#8250 Thông tin dự án");
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tim-du-an';
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
-		getSkillsByDuan(<?php echo $dataDuan["duan"]["id"]?>);
 		loadListHosothau(1);
 	});
 </script>

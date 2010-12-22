@@ -3,14 +3,14 @@
 	padding-bottom:5px;
 }
 </style>
-<div id="account_widget" style="margin-top:5px;">
+<div id="account_widget" style="margin:5px;">
 <?php 
 	if(isset($_SESSION["account"])) {
 		if($_SESSION["account"]['active']==0)
 			echo '<a title="Vào trang xác nhận tài khoản" href="'.BASE_PATH.'/webmaster/active/'.$_SESSION["account"]['id'].'"><div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"><p><span style="float: left;margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>Bạn chưa xác nhận tài khoản!</p></div></a>';
 		?>
-		<p align="center">Xin chào <a class='link' href='#'><?php echo $_SESSION["account"]["username"] ?></a></p>
-		<ul style="padding-left:15px">
+		<p align="center">Xin chào <a class='link' href='<?php echo BASE_PATH ?>/nhathau/view'><?php echo $_SESSION["account"]["username"] ?></a></p>
+		<ul style="padding-left:15px;margin: 0px;">
 			<?php
 			if($_SESSION["account"]["role"]==1) {
 				echo "<li><a id='vao_quan_tri' class='link' href='".BASE_PATH."/admin'>Vào trang quản trị</a></li>";
@@ -25,7 +25,7 @@
 		<?php
 	} else {
 	?>
-	<ul style="padding-left:15px">
+	<ul style="padding-left:15px;margin: 0px;">
 		<li>Bạn chưa <a class="link" href="<?php echo BASE_PATH ?>/account/login">Đăng nhập.</a></li>
 		<li><a class="link" href="<?php echo BASE_PATH ?>/account/register">Đăng ký</a> tài khoản miễn phí!</li>
 	</ul>

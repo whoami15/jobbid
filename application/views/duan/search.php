@@ -13,7 +13,7 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tìm nhanh dự án</div>
 	<div class="child_content">
 		<table class="center" width="60%">
 			<tbody>
@@ -64,11 +64,11 @@
 		</table>
 		<div id="datagrid"></div>
 	</div>
-	<div style="text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;" class="ui-widget-header ui-helper-clearfix ui-corner-all" id="content_title2">Tìm dự án theo lĩnh vực</div>	
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px" id="content_title2">Tìm dự án theo lĩnh vực</div>	
 	<div class="child_content">
 		<?php
 		foreach($lstLinhvuc as $e) {
-			echo "<div class='divfloat1'><a href='".BASE_PATH."/duan/linhvuc/".$e["linhvuc"]["id"]."' class='link'>".$e["linhvuc"]["tenlinhvuc"]."</a> (".$e["linhvuc"]["soduan"].")</div>";
+			echo "<div class='divfloat1'><a href='".BASE_PATH."/linhvuc&linhvuc_id=".$e["linhvuc"]["id"]."' class='link'>".$e["linhvuc"]["tenlinhvuc"]."</a> (".$e["linhvuc"]["soduan"].")</div>";
 		}
 		?>
 	</div>
@@ -177,12 +177,8 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
-		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tim-du-an';
 		$("#menu "+menuid).addClass("current");
-		$("#content_title").css("width",width_content-19);
-		$("#content_title2").css("width",width_content-19);
-		$("#content_title").text("Tìm nhanh dự án");
 		$("input:submit, input:button", "body").button();
 		<?php
 		if(isset($_POST["keyword"]))

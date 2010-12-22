@@ -14,7 +14,7 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Gửi hồ sơ thầu</div>
 	<form id="formHosothau" style="padding-top: 10px; padding-bottom: 10px;" >
 		<input type="hidden" name="hosothau_duan_id" id="hosothau_duan_id" value="<?php echo $dataDuan["duan"]["id"]?>" />
 		<fieldset>
@@ -172,8 +172,6 @@
 		}; 
 		// pass options to ajaxForm 
 		$('#formHosothau').ajaxForm(options);
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Gửi hồ sơ thầu");
 		$("input:submit, input:button", "body").button();
 		boundTip("hosothau_milestone","Ví dụ : Nếu bạn đặt milestone là 50%, khi bạn hoàn thành được 50% dự án đó, chủ dự án sẽ chi trả 50% số tiền cho bạn");
 		boundTip("tip_thoigian","Nhập số ngày bạn sẽ hoàn thành dự án.");

@@ -17,7 +17,7 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Sửa dự án</div>
 	<form id="formDuan" style="padding-top: 10px; padding-bottom: 10px;" >
 		<input type="hidden" name="duan_id" id="duan_id" value="<?php echo $dataDuan["id"]?>" />
 		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
@@ -321,8 +321,6 @@
 		}
 		// pass options to ajaxForm 
 		$('#formDuan').ajaxForm(options);
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Sửa dự án");
 		$("input:submit, input:button", "body").button();
 		$('#duan_ngayketthuc').datepicker({
 			dateFormat: "dd/mm/yy",

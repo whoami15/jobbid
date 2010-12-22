@@ -118,28 +118,7 @@ class SkillController extends VanillaController {
 		$jsonResult = $jsonResult."}";
 		print($jsonResult);
 	}
-	function getSkillsByDuan() {
-		//$this->checkLogin(true);
-		$duan_id = $_GET["duan_id"];
-		if($duan_id==null)
-			die("ERROR_SYSTEM");
-		$this->setModel("duanskill");
-		$this->duanskill->showHasOne();
-		$this->duanskill->where(" and duan_id=$duan_id ");
-		$data = $this->duanskill->search("skill.id,skillname");
-		$jsonResult = "{";
-		$i=0;
-		$len = count($data);
-		while($i<$len) {
-			$skill = $data[$i];
-			$jsonResult = $jsonResult."$i:{'id':".$skill["skill"]["id"].",'skillname':'".$skill["skill"]["skillname"]."'}";
-			if($i < $len-1)
-				$jsonResult = $jsonResult.",";
-			$i++;
-		}
-		$jsonResult = $jsonResult."}";
-		print($jsonResult);
-	}
+	
 	function afterAction() {
 
 	}

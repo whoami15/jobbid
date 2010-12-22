@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Đăng ký</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Đăng ký</div>
 	<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;">
 		<fieldset>
 			<legend><span style="font-weight:bold;">Phiếu khai báo thông tin cá nhân</span></legend>
@@ -125,7 +125,6 @@
 		byId("msg").innerHTML="";
 	}
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#register';
 		//$("#content_title").text($("#menu "+menuid).text());

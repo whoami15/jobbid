@@ -6,12 +6,12 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Kích hoạt tài khoản</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Kích hoạt tài khoản</div>
 	<div style="width:100%">
 	<center>
 	<input type="hidden" name="account_id" id="account_id" value="<?php echo $account_id ?>"/>
 	<div class="divTable" style="width:100%">
-		<div class="tr" style="border:none">
+		<div class="tr" style="border:none;padding-top:5px">
 			<div class="td" id="msg"></div>
 		</div>
 		<div class="tr" style="border:none">
@@ -22,7 +22,7 @@
 		</div>
 		<div class="tr" style="border:none;text-align:left">
 			<div class="td">
-			<a class="link" href="javascript:doSendActiveCode();">Bạn không nhận được mail kích hoạt?</a>
+			<a class="link" href="javascript:doSendActiveCode();">Gửi lại mail kích hoạt?</a>
 			</div>
 		</div>
 	</div>
@@ -103,7 +103,6 @@
 		});
 	}
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
 		$("input:submit, input:button", "body").button();
 	});
 </script>

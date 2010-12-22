@@ -64,8 +64,8 @@ class WidgetController extends VanillaController {
 		$this->set('banner',$data);
 		$data = $cache->get("menu");
 		$this->set('menu',$data);
-		$data = $cache->get("leftcol");
-		$this->set('leftcol',$data);
+		//$data = $cache->get("leftcol");
+		//$this->set('leftcol',$data);
 		$data = $cache->get("rightcol");
 		$this->set('rightcol',$data);
 		$data = $cache->get("footer");
@@ -84,36 +84,30 @@ class WidgetController extends VanillaController {
 		$this->checkAdmin(true);
 		global $cache;
 		$this->setModel("widget");
-		$strWhere = "AND position='banner' ";
-		$strWhere .= "AND active=1 ";
-		$this->widget->where($strWhere);
+		$this->widget->where(" AND position='banner' AND active=1");
 		$this->widget->orderBy('`order`','ASC');
 		$data = $this->widget->search();
-		$cache->set("banner",$data[0]);
-		$strWhere = "AND position='menu' ";
-		$strWhere .= "AND active=1 ";
-		$this->widget->where($strWhere);
+		if(!empty($data))
+			$cache->set("banner",$data[0]);
+		$this->widget->where(" AND position='menu' AND active=1");
 		$this->widget->orderBy('`order`','ASC');
 		$data = $this->widget->search();
-		$cache->set("menu",$data[0]);
-		$strWhere = "AND position='footer' ";
-		$strWhere .= "AND active=1 ";
-		$this->widget->where($strWhere);
+		if(!empty($data))
+			$cache->set("menu",$data[0]);
+		$this->widget->where(" AND position='footer' AND active=1");
 		$this->widget->orderBy('`order`','ASC');
 		$data = $this->widget->search();
-		$cache->set("footer",$data[0]);
-		$strWhere = "AND position='leftcol' ";
-		$strWhere .= "AND active=1 ";
-		$this->widget->where($strWhere);
+		if(!empty($data))
+			$cache->set("footer",$data[0]);
+		// $this->widget->where(" AND position='leftcol' AND active=1");
+		// $this->widget->orderBy('`order`','ASC');
+		// $data = $this->widget->search();
+		// $cache->set("leftcol",$data);
+		$this->widget->where(" AND position='rightcol' AND active=1");
 		$this->widget->orderBy('`order`','ASC');
 		$data = $this->widget->search();
-		$cache->set("leftcol",$data);
-		$strWhere = "AND position='rightcol' ";
-		$strWhere .= "AND active=1 ";
-		$this->widget->where($strWhere);
-		$this->widget->orderBy('`order`','ASC');
-		$data = $this->widget->search();
-		$cache->set("rightcol",$data);
+		if(!empty($data))
+			$cache->set("rightcol",$data);
 		if($isAjax)
 			echo "DONE";
 	}

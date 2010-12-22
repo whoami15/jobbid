@@ -10,113 +10,111 @@
 		text-align:right;
 		width:170px;
 	}
+	.tdInput {
+		width:400px;
+	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
-	<form id="formnhathau" style="padding-top: 10px; padding-bottom: 10px;">
-		<fieldset>
-			<legend><span style="font-weight:bold;">Phiếu khai báo hồ sơ nhà thầu</span></legend>
-			<div style="width:100%;">
-			<center>
-			<div class="divTable" style="width:99%">
-				<div class="tr" style="border:none">
-					<div class="td" id="msg"></div>
+	<form id="formnhathau" style="padding-top: 0px; padding-bottom: 10px;">
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo hồ sơ cá nhân</div>
+		<center>
+		<div class="divTable" style="width:99%;padding-top:5px;">
+			<div class="tr" style="border:none">
+				<div class="td" id="msg"></div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Bạn đại diện cho :</div>
+				<div class="td tdInput">
+				<input type="radio" name="nhathau_type" id="nhathau_type1" onclick="changeType(1)" value="1">Cá nhân
+				<input type="radio" name="nhathau_type" id="nhathau_type2" onclick="changeType(2)" value="2">Công ty
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;">Bạn đại diện cho :</div>
-					<div class="td tdInput">
-					<input type="radio" name="nhathau_type" id="nhathau_type1" onclick="changeType(1)" value="1">Cá nhân
-					<input type="radio" name="nhathau_type" id="nhathau_type2" onclick="changeType(2)" value="2">Công ty
-					</div>
-					</div>
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;"><span id="display_tenhienthi"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-					<div class="td tdInput">
-					<input maxlength="255" type="text" name="nhathau_displayname" id="nhathau_displayname" style="width:90%" tabindex=1 value=""/>
-					</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;"><span id="display_tenhienthi"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input maxlength="255" type="text" name="nhathau_displayname" id="nhathau_displayname" style="width:90%" tabindex=1 value=""/>
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;"><span id="display_gpkd_cmnd"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-					<div class="td tdInput">
-					<input maxlength="255" type="text" name="nhathau_gpkd_cmnd" id="nhathau_gpkd_cmnd" style="width:90%" tabindex=1 value=""/>
-					</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;"><span id="display_gpkd_cmnd"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input maxlength="255" type="text" name="nhathau_gpkd_cmnd" id="nhathau_gpkd_cmnd" style="width:90%" tabindex=1 value=""/>
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;"><span id="display_birthyear"></span> :</div>
-					<div class="td tdInput">
-					<select name="nhathau_birthyear" id="nhathau_birthyear">
-					</select>
-					</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;"><span id="display_birthyear"></span> :</div>
+				<div class="td tdInput">
+				<select name="nhathau_birthyear" id="nhathau_birthyear">
+				</select>
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;"><span id="display_diachilienhe"></span> :</div>
-					<div class="td tdInput">
-					<input maxlength="255" type="text" name="nhathau_diachilienhe" id="nhathau_diachilienhe" style="width:90%" tabindex=1 />
-					</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;"><span id="display_diachilienhe"></span> :</div>
+				<div class="td tdInput">
+				<input maxlength="255" type="text" name="nhathau_diachilienhe" id="nhathau_diachilienhe" style="width:90%" tabindex=1 />
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;">Lĩnh vực :</div>
-					<div class="td tdInput">
-					<table id="table_chonlinhvuc" width="99%">
-						<tbody>
-						<?php
-						$i = 0;
-						while($i<count($lstLinhvuc)) {
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Lĩnh vực :</div>
+				<div class="td tdInput">
+				<table id="table_chonlinhvuc" width="99%">
+					<tbody>
+					<?php
+					$i = 0;
+					while($i<count($lstLinhvuc)) {
+						$linhvuc = $lstLinhvuc[$i];
+						echo "<tr>";
+						echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+						$i++;
+						if($i<count($lstLinhvuc)) {
 							$linhvuc = $lstLinhvuc[$i];
-							echo "<tr>";
 							echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
 							$i++;
-							if($i<count($lstLinhvuc)) {
-								$linhvuc = $lstLinhvuc[$i];
-								echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
-								$i++;
-							}
-							echo "</tr>";
 						}
-						?>
-						</tbody>
-					</table>
-					</div>
+						echo "</tr>";
+					}
+					?>
+					</tbody>
+				</table>
 				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-					<div class="td tdInput">
-					<input type="text" style="width:90%" value="<?php echo $_SESSION["account"]["username"] ?>" disabled=true/>
-					</div>
-				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-					<div class="td tdInput">
-					<input maxlength="255" type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:90%" value="<?php echo $_SESSION["account"]["sodienthoai"] ?>"/>
-					</div>
-				</div>
-				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;"><span id="display_file"></span> :</div>
-					<div class="td tdInput">
-					<input type="file" name="nhathau_file" /> (Size < 2Mb)
-					</div>
-				</div>
-				<div class="tr" style="border:none;text-align:left">
-					<div class="td">
-					Mô tả thêm :<br/>
-					<textarea name="nhathau_motachitiet" id="nhathau_motachitiet" style="border:none;" rows="15"></textarea>
-					</div>
-				</div>
-				<div class="tr" style="border:none">
-					<div class="td">
-					<input type="checkbox" name="nhathau_nhanemail" id="nhathau_nhanemail" value="1"/> Đăng ký nhận email thông báo khi có dự án mới.
-					</div>
-				</div>
-				<div class="tr" style="border:none">
-					<div class="td">
-					<input value="Lưu" type="submit" id="btsubmit" tabindex="1">
-					<input onclick="doReset()" value="Reset" type="button"tabindex="2">
-					</div>
-				</div>
-			</center>
 			</div>
-		</fieldset>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input type="text" style="width:90%" value="<?php echo $_SESSION["account"]["username"] ?>" disabled=true/>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input maxlength="255" type="text" name="account_sodienthoai" id="account_sodienthoai" style="width:90%" value="<?php echo $_SESSION["account"]["sodienthoai"] ?>"/>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;"><span id="display_file"></span> :</div>
+				<div class="td tdInput">
+				<input type="file" name="nhathau_file" /> (Size < 2Mb)
+				</div>
+			</div>
+			<div class="tr" style="border:none;text-align:left">
+				<div class="td">
+				Mô tả thêm :<br/>
+				<textarea name="nhathau_motachitiet" id="nhathau_motachitiet" style="border:none;" rows="15"></textarea>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td">
+				<input type="checkbox" name="nhathau_nhanemail" id="nhathau_nhanemail" value="1"/> Đăng ký nhận email thông báo khi có dự án mới.
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td">
+				<input value="Lưu" type="submit" id="btsubmit" tabindex="1">
+				<input onclick="doReset()" value="Reset" type="button"tabindex="2">
+				</div>
+			</div>
+		</center>
 	</form>
 </div>
 <script>
@@ -247,8 +245,6 @@
 		}; 
 		// pass options to ajaxForm 
 		$('#formnhathau').ajaxForm(options);
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Tạo hồ sơ cá nhân");
 		$("#quan_ly_ho_so_ca_nhan").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		boundTip("tip_loinhan","Số điện thoại và email của bạn (khi đăng ký tài khoản) sẽ được chủ dự án sử dụng để liên lạc với bạn <span style='color:red'>nếu bạn được trúng thầu</span>, vui lòng không điền số điện thoại và email của bạn trong phần thông tin mô tả bên dưới!",500);

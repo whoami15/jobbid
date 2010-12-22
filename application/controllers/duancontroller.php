@@ -362,42 +362,6 @@ class DuanController extends VanillaController {
 		$this->set("lstTinh",$data);
 		$this->_template->render();
 	}
-	function lstDuanByLinhvuc($ipageindex) {
-		$id = $_GET["id"];
-		if($id!=null) {
-			$id = mysql_real_escape_string($id);
-			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
-			$this->duan->orderBy('duan.id','desc');
-			$this->duan->setPage($ipageindex);
-			$this->duan->setLimit(PAGINATE_LIMIT);
-			$lstDuan = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,duan.account_id,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft");
-			$totalPages = $this->duan->totalPages();
-			$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
-			if ($ipagesbefore < 1)
-				$ipagesbefore = 1;
-			$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
-			if ($ipagesnext > $totalPages)
-				$ipagesnext = $totalPages;
-			//print_r($lstDuan);die();
-			$this->set("lstDuan",$lstDuan);
-			$this->set('pagesindex',$ipageindex);
-			$this->set('pagesbefore',$ipagesbefore);
-			$this->set('pagesnext',$ipagesnext);
-			$this->set('pageend',$totalPages);
-			$this->_template->renderPage();
-		}
-	}
-	function linhvuc($id=null) {
-		if($id!=null) {
-			$id = mysql_real_escape_string($id);
-			$_SESSION['redirect_url'] = getUrl();
-			$this->setModel("linhvuc");
-			$this->linhvuc->id = $id;
-			$data = $this->linhvuc->search();
-			$this->set("dataLinhvuc",$data);
-			$this->_template->render();
-		}
-	}
 	function view($id=null) {
 		if($id != null && $id != 0) {
 			$id = mysql_real_escape_string($id);
@@ -416,6 +380,11 @@ class DuanController extends VanillaController {
 				} else 
 					$this->set("status","Đang mở");
 				$this->set("dataDuan",$data);
+				$this->setModel("duanskill");
+				$this->duanskill->showHasOne(array('skill'));
+				$this->duanskill->where(" and duan_id=$id ");
+				$data = $this->duanskill->search("skillname");
+				$this->set("lstSkill",$data);
 				$this->_template->render();
 			}
 		}

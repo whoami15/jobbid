@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Cập nhật thông tin cá nhân</div>
 	<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;">
 		<fieldset>
 			<legend><span style="font-weight:bold;">Username : <?php echo $dataAccount["username"]?></span></legend>
@@ -131,8 +131,6 @@
 		byId("msg").innerHTML="";
 	}
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Cập nhật thông tin cá nhân");
 		$('#account_ngaysinh').datepicker({
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,

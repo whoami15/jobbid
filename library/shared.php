@@ -320,8 +320,8 @@ function genString($length = 10) {
     }
     return $string;
 } 
-
-gzipOutput() || ob_start("ob_gzhandler");
+if ( !strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') )
+	gzipOutput() || ob_start("ob_gzhandler");
 
 
 $cache =& new Cache();

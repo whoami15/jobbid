@@ -49,14 +49,13 @@ a:hover {
 #leftcol {
 	position:relative;
 	float:left;
-	min-width:200px;
-	max-width:200px;
+	width:70%;
 }
 #rightcol {
 	position:relative;
 	float:right;
-	min-width:250px;
-	max-width:250px;
+	width:29.5%;
+	_width:29%;
 }
 #bottom {
 	width:100%;
@@ -68,6 +67,8 @@ a:hover {
 	float:left;
 	text-align:left;
 	min-height:600px;
+	_height:auto !important;
+	_height:600px;
 	/* padding-left:5px; */
 }
 .input{
@@ -343,11 +344,7 @@ div.jHtmlArea { border: solid 1px #ccc; }
 .divTable
 {
 	width: 100%;
-	display:block;
-	padding-top:10px;
-	padding-bottom:10px;
-	padding-right:10px;
-	padding-left:10px; 
+	display:block; 
 }
 .tr
 {

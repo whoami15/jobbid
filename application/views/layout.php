@@ -11,7 +11,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery_blockUI.js"></script>	
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/constances.js"></script>	
-<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/config.js"></script>	
 <style>
 .ui-widget-header {
 	font-size:14px;
@@ -118,23 +117,16 @@ table.center {margin-left:auto; margin-right:auto;}
 			}
 		);
 	}
+	//Config
 	var width_content;
+	var editor_width = 499;
+	var redirect_time = 2000; // 2giay
 	$(document).ready(function(){
 		
-		wleftcol = ($("#leftcol").height()==0)?0:$("#leftcol").width();
-		wrightcol = ($("#rightcol").height()==0)?0:$("#rightcol").width();
-		var tmp = 0;
-		if(wleftcol!=0) {
-			tmp+=5;
-			$("#content").css("padding-left","5px");
-		}
-		if(wrightcol!=0) {
-			tmp+=5;
-			$("#content").css("padding-right","5px");
-		}
-		width_content = $("#wrapcontent").width()-wleftcol-wrightcol-tmp;
-		$("#content").css('width', width_content);
-		
+		//wleftcol = ($("#leftcol").height()==0)?0:$("#leftcol").width();
+		//wrightcol = 250;
+		//alert(wrightcol);
+		//alert($("#wrapcontent").width());
 	});
 </script>
 </head>
@@ -145,76 +137,52 @@ table.center {margin-left:auto; margin-right:auto;}
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tooltip.js"></script>
 <div id="wrapcontent" name="top">
 	<div style="position:relative;float:left;width:100%">
-		<div style="width:1000px;height:150px">
+		<div style="width:100%;height:150px">
 			<?php 
 			if(isset($banner)) {
-				echo $banner["widget"]["content"];
+				echo $banner['widget']['content'];
 			}
 			?>
 		</div>
 		<div id="top">
 			<?php 
 			if(isset($menu)) {
-				echo "<div class='widget'>";
-				include (ROOT . DS . 'public' . DS . $menu["widget"]["content"]);
-				echo "</div>";
+				echo '<div class="widget">';
+				include (ROOT . DS . 'public' . DS . $menu['widget']['content']);
+				echo '</div>';
 			}
 			?>
 		</div>
-		<div id="leftcol">
-			<?php
-			foreach($leftcol as $widget) {
-				echo "<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style='text-align:left'>";
-				if($widget["widget"]["showtitle"]==1)
-					echo "<div class='ui-widget-header ui-helper-clearfix ui-corner-all' style='padding-left:10px'>".$widget["widget"]["name"]."</div>";				
-				if($widget["widget"]["iscomponent"]==1) {
-					include (ROOT . DS . 'public' . DS . $widget["widget"]["content"]);
-				} else {
-					echo $widget["widget"]["content"];
-				}		
-				echo "</div>";
-			}
-			?>	
-		</div>
-		<div id="content">
-			<div class='ui-tabs ui-widget ui-widget-content ui-corner-all'>
-			<div style="padding-left:5px;padding-right:5px;">
+		<div id="leftcol" >
+			<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="padding:0">
 			<?php
 			include (ROOT . DS . 'application' . DS . 'views' . DS . $this->_controller . DS . $this->_action . '.php');
 			?>
-			</div>
 			</div>
 		</div>
 		<div id="rightcol">
 			<?php
 			foreach($rightcol as $widget) {
-				echo "<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style='text-align:left'>";
-				if($widget["widget"]["showtitle"]==1)
-					echo "<div class='ui-widget-header ui-helper-clearfix ui-corner-all' style='padding-left:10px'>".$widget["widget"]["name"]."</div>";				
-				if($widget["widget"]["iscomponent"]==1) {
-					include (ROOT . DS . 'public' . DS . $widget["widget"]["content"]);
+				echo '<div class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="text-align:left;padding:0">';
+				if($widget['widget']['showtitle']==1)
+					echo '<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left:5px">'.$widget['widget']['name'].'</div>';				
+				if($widget['widget']['iscomponent']==1) {
+					include (ROOT . DS . 'public' . DS . $widget['widget']['content']);
 				} else {
-					echo $widget["widget"]["content"];
+					echo $widget['widget']['content'];
 				}		
-				echo "</div>";
+				echo '</div>';
 			}
 			?>	
-		</div>		
-	</div>
-	<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="width: 1000px; height: auto; position: relative; float: left;">
-			<?php 
-			if(isset($footer)) {
-				echo $footer["widget"]["content"];
-			}
-			?>
-	</div>
-	<div id="test">
-		
+		</div>	
+		<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="width: 100%;margin:0;padding:0; height: auto; position: relative; float: left;">
+				<?php 
+				if(isset($footer)) {
+					echo $footer['widget']['content'];
+				}
+				?>
+		</div>
 	</div>
 </div>
 </body>
 </html>
-<script>
-
-</script>
-<input type="hidden" id="iduser" value="<?php echo $html->safevalue($_SESSION["user"]["account"]["id"]) ?>"/>

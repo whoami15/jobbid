@@ -1,5 +1,5 @@
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">THÔNG BÁO</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">THÔNG BÁO</div>
 	<fieldset style="margin-bottom: 10px; margin-top: 10px; text-align: center;">
 		<legend><span style="font-weight:bold;">Lỗi hệ thống</span></legend>
 		<div id="msg" style="text-align:left">
@@ -9,6 +9,5 @@
 </div>
 <script>
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
 	});
 </script>

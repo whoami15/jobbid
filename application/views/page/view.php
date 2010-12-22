@@ -9,6 +9,5 @@
 	$(document).ready(function() {
 		menuid = '#<?php echo $page["page"]["menu_id"] ?>';
 		$("#menu "+menuid).addClass("current");
-		$("#content_title").text($("#menu "+menuid).text());
 	});
 </script>

@@ -18,12 +18,12 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Content</div>
-	<form id="formDuan" style="padding-top: 10px; padding-bottom: 10px;" >
+	<form id="formDuan" style="padding-top: 0px; padding-bottom: 10px;" >
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án</div>
 		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>
 		<div class="divTable" style="width:100%">
-			<div class="tr" style="border:none">
+			<div class="tr" style="border:none;padding-top:5px">
 				<div class="td" id="msg"></div>
 			</div>
 			<div class="tr" style="border:none">
@@ -180,7 +180,7 @@
 		});
 	}
 	function redirectPage() {
-		location.href = url('/duan/linhvuc/'+byId("duan_linhvuc_id").value);
+		location.href = url('/linhvuc&'+byId("duan_linhvuc_id").value);
 	}
 	$(document).ready(function() {
 		for(i=0;arrCostType[i]!=null;i++) {
@@ -254,8 +254,6 @@
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tao-du-an';
 		$("#menu "+menuid).addClass("current");
-		$("#content_title").css("width",width_content-19);
-		$("#content_title").text("Tạo dự án");
 		$("input:submit, input:button", "body").button();
 		$('#duan_ngayketthuc').datepicker({
 			dateFormat: "dd/mm/yy",

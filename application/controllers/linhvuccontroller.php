@@ -106,16 +106,59 @@ class LinhvucController extends VanillaController {
 	}
 	//Functions User
 	function index() {
-		$_SESSION['redirect_url'] = getUrl();
+		$id = $_GET['linhvuc_id'];
+		if($id!=null) {
+			$id = mysql_real_escape_string($id);
+			$_SESSION['redirect_url'] = getUrl();
+			$this->linhvuc->id = $id;
+			$data = $this->linhvuc->search();
+			$this->set("dataLinhvuc",$data);
+			$this->setModel("duan");
+			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duan->orderBy('duan.id','desc');
+			$this->duan->setPage(1);
+			$this->duan->setLimit(PAGINATE_LIMIT);
+			$lstDuan = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,duan.account_id,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft");
+			$totalPages = $this->duan->totalPages();
+			$ipagesbefore = 1 - INT_PAGE_SUPPORT;
+			if ($ipagesbefore < 1)
+				$ipagesbefore = 1;
+			$ipagesnext = 1 + INT_PAGE_SUPPORT;
+			if ($ipagesnext > $totalPages)
+				$ipagesnext = $totalPages;
+			//print_r($lstDuan);die();
+			$this->set("lstDuan",$lstDuan);
+			$this->set('pagesindex',1);
+			$this->set('pagesbefore',$ipagesbefore);
+			$this->set('pagesnext',$ipagesnext);
+			$this->set('pageend',$totalPages);
+			$this->_template->render();
+		}
+	}
+	function lstDuanByLinhvuc($ipageindex) {
 		$id = $_GET["id"];
 		if($id!=null) {
-			$this->linhvuc->showHasMany();
-			$this->linhvuc->where(" and linhvuc.id='$id' ");
-			$select = array();
-			array_push($select,"*");
-			array_push($select,"tenduan");
-			$data = $this->linhvuc->search($select);
-			print_r($data);die();
+			$this->setModel("duan");
+			$id = mysql_real_escape_string($id);
+			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duan->orderBy('duan.id','desc');
+			$this->duan->setPage($ipageindex);
+			$this->duan->setLimit(PAGINATE_LIMIT);
+			$lstDuan = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,duan.account_id,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft");
+			$totalPages = $this->duan->totalPages();
+			$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
+			if ($ipagesbefore < 1)
+				$ipagesbefore = 1;
+			$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
+			if ($ipagesnext > $totalPages)
+				$ipagesnext = $totalPages;
+			//print_r($lstDuan);die();
+			$this->set("lstDuan",$lstDuan);
+			$this->set('pagesindex',$ipageindex);
+			$this->set('pagesbefore',$ipagesbefore);
+			$this->set('pagesnext',$ipagesnext);
+			$this->set('pageend',$totalPages);
+			$this->_template->renderPage();
 		}
 	}
 	function afterAction() {

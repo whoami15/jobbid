@@ -6,7 +6,7 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 100%;' id="content_title">Reset Mật Khẩu</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Reset Mật Khẩu</div>
 	<div style="width:100%">
 	<center>
 	<div class="divTable" style="width:100%">
@@ -94,7 +94,6 @@
 		});
 	}
 	$(document).ready(function() {
-		$("#content_title").css("width",width_content-19);
 		$("input:submit, input:button", "body").button();
 	});
 </script>

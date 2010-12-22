@@ -1,8 +1,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <div id="content" style="width:100%">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-all" style='text-align: left; padding-left: 10px; margin-left: -5px; width: 99%' id="content_title"></div>
-	<fieldset style="margin-top:10px">
-		<legend>Thông tin hồ sơ nhà thầu</legend>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin hồ sơ nhà thầu</div>
 		<?php
 		if(empty($nhathau)==false) {
 		?>
@@ -79,9 +77,7 @@
 		<?php
 		}
 		?>
-	</fieldset>
-	<fieldset style="margin-top:10px">
-		<legend>Thông tin cá nhân</legend>
+	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Thông tin cá nhân</div>
 		<form id="formAccount" style="padding-top: 10px; padding-bottom: 10px;">
 		<table class="center" width="500px">
 			<thead>
@@ -130,13 +126,11 @@
 				<tr>
 					<td colspan="4" align="center" height="50px">
 						<input id="btUpdate" onclick="doUpdate()" value="Cập Nhật" type="button" tabindex="11">
-						<input onclick="doReset()" value="Reset" type="button"tabindex="12">
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		</form>
-	</fieldset>
 </div>
 <script>
 	function message(msg,type) {
@@ -147,12 +141,6 @@
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
 			byId("msg").innerHTML = str;
 		}
-	}
-	function doReset() {
-		$("#formAccount")[0].reset(); //Reset form cua jquery, giu lai gia tri mac dinh cua cac field	
-		$("#formAccount :input").css('border-color','');
-		byId("msg").innerHTML="";
-		$('#btUpdate').removeAttr('disabled');
 	}
 	var display_tenhienthi = '';
 	var display_gpkd_cmnd = '';
@@ -244,8 +232,6 @@
 		if(isset($nhathau))
 			echo "changeType(".$nhathau["nhathau"]["type"].");";
 		?>
-		$("#content_title").text("Quản lý hồ sơ cá nhân");
-		$("#content_title").css("width",width_content-19);
 		$("#quan_ly_ho_so_ca_nhan").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		$("#tr_oldpass").hide();
