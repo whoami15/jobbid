@@ -665,12 +665,6 @@ class DuanController extends VanillaController {
 			if($data["duan"]["ngayketthuc"] > $currentDate)
 				$this->duan->nhathau_id = "";
 			$this->duan->update();
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
-			$data = $this->duan->search("count(*) as soduan");
-			$this->setModel("linhvuc");
-			$this->linhvuc->id = $linhvuc_id;
-			$this->linhvuc->soduan = $data[0][""]["soduan"];
-			$this->linhvuc->update();
 			$this->setModel("duanskill");
 			$this->duanskill->custom("delete from duanskills where duan_id = $duan_id");
 			if(isset($_POST["duan_skills"])) {

@@ -184,17 +184,16 @@ class AccountController extends VanillaController {
 			$this->activecode->account_id = $account_id;
 			$this->activecode->active_code = $active_code;
 			$this->activecode->insert();
-			//Doan nay send mail truc tiep chu ko dua vao Cron Job, doan code sau chi demo Cronjob
-			$this->setModel('cronjob');
-			$this->cronjob->id = null;
-			$this->cronjob->tasktype = 1;
-			$this->cronjob->object = $username;
-			$this->cronjob->subject = "Chào mừng bạn đến với bidjob.vn";
+			//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
+			$this->setModel('sendmail');
+			$this->sendmail->id = null;
+			$this->sendmail->to = $username;
+			$this->sendmail->subject = "Chào mừng bạn đến với bidjob.vn";
 			$linkactive = BASE_PATH."/webmaster/doActive&account_id=$account_id&active_code=$active_code";
 			$content = '<p>Chào bạn,<br>Chào mừng bạn đến với&nbsp; <a href="'.BASE_PATH.'">jobbid.vn!</a><br>
 Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá dự án, công việc trực tuyến JobBid.vn.<br>Xin bạn hãy click vào đường link sau đây để kích hoạt tài khoản của bạn trên hệ thống: <a href="'.$linkactive.'">'.$linkactive.'</a><br>Trong trường hợp link kích hoạt trên không hoạt động, xin vui lòng nhập mã xác nhận <b>'.$active_code.'</b> vào link sau <a href="'.BASE_PATH.'/webmaster/active/'.$account_id.'">'.BASE_PATH.'/webmaster/active</a>.<br>Sau khi tài khoản của bạn được kích hoạt thành công, bạn có thể sử dụng thông tin dưới đây để truy cập vào tài khoản cá nhân trên <a href="'.BASE_PATH.'/account/login">jobbid.vn!</a>:<br><strong>TÊN ĐĂNG NHẬP: '.$username.'<br>MẬT KHẨU:****** </strong>(Vì lý do bảo mật chúng tôi không hiển thị mật khẩu trong email này)<br>	Thân,<br>Ban quản trị <a href="'.BASE_PATH.'">jobbid.vn!</a></p>';
-			$this->cronjob->content = $content;
-			$this->cronjob->insert();
+			$this->sendmail->content = $content;
+			$this->sendmail->insert();
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -251,6 +250,70 @@ Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá
 			$data = $this->account->search();
 			$_SESSION["account"] = $data;
 			echo "DONE";
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function resetpassword() {
+		try {
+			if(!isset($_GET['username']))
+				die ('ERROR_SYSTEM');
+			if(!isset($_SESSION['sendresetpass']))
+				$_SESSION['sendresetpass'] = 0;
+			if($_SESSION['sendresetpass']>=MAX_SENDRESETPASS)
+				die('ERROR_MANYTIMES');
+			$username = $_GET['username'];
+			if($username==null)
+				die('ERROR_SYSTEM');
+			$username = mysql_real_escape_string($username);
+			$this->account->where(" and active>=0 and username='$username'");
+			$data = $this->account->search('id');
+			if(empty($data))
+				die('ERROR_NOTEXIST');
+			$account_id = $data[0]['account']['id'];
+			$this->setModel('resetpassword');
+			$this->resetpassword->where(" and account_id=$account_id");
+			$data = $this->resetpassword->search('id,times');
+			$verify = genString();
+			if(!empty($data)) { //da gui reset password truoc day
+				$times = $data[0]['resetpassword']['times'] + 1;
+				if($times > MAX_TIMESRESETPASS)
+					die('ERROR_LOCKED');
+				$this->resetpassword->id = $data[0]['resetpassword']['id'];
+				$this->resetpassword->times = $times;
+				$this->resetpassword->verify = $verify;
+				$this->resetpassword->update();
+			} else {  //gui reset password lan dau tien
+				$this->resetpassword->id = null;
+				$this->resetpassword->account_id = $account_id;
+				$this->resetpassword->times = 1;
+				$this->resetpassword->verify = $verify;
+				$this->resetpassword->insert();
+			}
+			//Send mail url : /webmaster/changepass/resetpassword_id/resetpassword_verify
+			$_SESSION['sendresetpass'] = $_SESSION['sendresetpass'] + 1;
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function doChangePass() {
+		try {
+			if(!isset($_POST['account_password']))
+				die ('ERROR_SYSTEM');
+			if(!isset($_SESSION['resetpassword']))
+				die ('ERROR_SYSTEM');
+			$newpass = $_POST['account_password'];
+			if($newpass==null)
+				die('ERROR_SYSTEM');
+			$this->account->id = $_SESSION['resetpassword']['account_id'];
+			$this->account->password = md5($newpass);
+			$this->account->update();
+			$this->setModel('resetpassword');
+			$this->resetpassword->id = $_SESSION['resetpassword']['id'];
+			$this->resetpassword->delete();
+			$_SESSION['resetpassword'] = null;
+			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}

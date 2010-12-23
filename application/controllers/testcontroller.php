@@ -20,9 +20,33 @@ class TestController extends VanillaController {
 		//$this->test->query("select InsertPage() as newid");
 		//sendMail("nclong87@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
 		//die("done");
-		$cache_expire = session_cache_expire();
-		echo "The cached session pages expire after $cache_expire minutes"; 
+		//$cache_expire = session_cache_expire();
+		//echo "The cached session pages expire after $cache_expire minutes"; 
+		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
+		$conn=new DataProvider();
+		$data = $conn->getListSendmail();
 		
+		$arr = array();
+		foreach($data as $e) {
+			try {
+				sendMail("nclong87@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
+				array_push($arr,$e->id);
+			} catch (Exception $e) {
+			}
+		}
+		$conn->hadSend($arr);
+		$conn->close(); */
+		//include (ROOT.DS.'library'.DS.'sendmail.php');
+		//$mail = new sendmail();
+		//$mail->send();
+		//echo strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6');
+		$_SESSION['sendresetpass'] = null;
+		echo 'DONE';
+		
+	}
+	function rmvsession($session) {
+		$_SESSION[$session] = null;
+		echo 'DONE';
 	}
 	function stop() {
 		$_SESSION['flag'] = true;

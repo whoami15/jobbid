@@ -19,6 +19,17 @@
 			</tr>
 			<tr height="30px">
 				<td align="left" >
+				<b>Đại diện cho :</b> 
+				<?php 
+				if($nhathau["type"]==1)
+					echo 'Cá nhân';
+				else
+					echo 'Công ty';
+				?>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" >
 				<span style="float:left;padding-right:10px"> <b>JobBid đánh giá :</b></span>
 				<?php
 				for($j=0;$j<$nhathau["diemdanhgia"];$j++) {

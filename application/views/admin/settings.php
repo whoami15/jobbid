@@ -15,7 +15,7 @@
 <div id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Upload File Types</a></li>
-		<li><a href="#tabs-2">Test</a></li>
+		<li><a href="#tabs-2">Mail Template</a></li>
 	</ul>
 	<div id="tabs-1">
 		<form id="formSettings">
@@ -49,7 +49,24 @@
 		</form>
 	</div>
 	<div id="tabs-2">
-		<p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+		<fieldset>
+		<legend>Danh Sách Mail Template</legend>
+		<div id="datagrid">
+			<table width="99%">
+				<thead>
+					<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
+						<td width="20px">#</td>
+						<td>Loại Mail</td>
+						<td>Điện thoại</td>
+						<td>Last Login</td>
+						<td>Quyền</td>
+						<td>Active</td>
+						<td width="40px">Xử lý</td>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</fieldset>
 	</div>
 </div>
 <script type="text/javascript">

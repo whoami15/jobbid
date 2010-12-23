@@ -112,6 +112,19 @@ class WebmasterController extends VanillaController {
 			echo 'ERROR_SYSTEM';
 		}
 	}
+	function changepass($rs_id,$rs_verify) {
+		if($rs_id == null || $rs_verify == null)
+			error('Lỗi! Liên kết không hợp lệ!');
+		$this->setModel('resetpassword');
+		$rs_verify = mysql_real_escape_string($rs_verify);
+		$this->resetpassword->id = $rs_id;
+		$this->resetpassword->where(" and verify='$rs_verify'");
+		$data = $this->resetpassword->search('id,account_id');
+		if(empty($data))
+			error('Lỗi! Sai mã xác nhận hoặc mã xác nhận này đã được sử dụng!');
+		$_SESSION['resetpassword'] = $data['resetpassword'];
+		$this->_template->render();  
+	}
 	function afterAction() {
 
 	}

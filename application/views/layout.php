@@ -175,7 +175,7 @@ table.center {margin-left:auto; margin-right:auto;}
 			}
 			?>	
 		</div>	
-		<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="width: 100%;margin:0;padding:0; height: auto; position: relative; float: left;">
+		<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="width: 100%;margin:0;padding:0; height: auto; position: relative; float: left;margin-bottom:5px">
 				<?php 
 				if(isset($footer)) {
 					echo $footer['widget']['content'];

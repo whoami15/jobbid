@@ -6,22 +6,22 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Reset Mật Khẩu</div>
-	<div style="width:100%">
+	<form id="formResetpass">
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Khôi phục Mật Khẩu</div>
 	<center>
-	<div class="divTable" style="width:100%">
+	<div class="divTable" style="width:100%;padding-top:10px;">
 		<div class="tr" style="border:none">
 			<div class="td" id="msg"></div>
 		</div>
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Tài khoản (email) :</div>
 			<div class="td tdInput">
-			<input type="text" name="active_code" id="active_code" style="width:50%" value="" tabindex=1/>&nbsp;&nbsp;<input id="btsubmit" type="button" value="Nhận Mật Khẩu Mới" onclick="doActive()">
+			<input type="text" name="username" id="username" style="width:50%" value="" tabindex=1/>&nbsp;&nbsp;<input id="btsubmit" type="button" value="Nhận Mật Khẩu Mới" onclick="doResetPass()">
 			</div>
 		</div>
 	</div>
 	</center>
-	</div>
+	</form>
 </div>
 <script>
 	function message(msg,type) {
@@ -33,61 +33,39 @@
 			byId("msg").innerHTML = str;
 		}
 	}
-	function doSendActiveCode() {
-		block("#content");
-		$.ajax({
-			type: "GET",
-			cache: false,
-			url : url("/webmaster/doSendActiveCode"),
-			success: function(data){
-				unblock("#content");	
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/account/login");
-					return;
-				}
-				if(data == 'ERROR_MANYTIMES') {
-					message('Lỗi! Yêu cầu gửi lại mã xác nhận quá nhiều!',0);
-					return;
-				}
-				if(data == AJAX_DONE) {
-					//Dang ky thanh cong	
-					message('Gửi lại mã xác nhận thành công! Vui lòng kiểm tra mail để lấy mã xác nhận.',1);
-				} else {
-					message('Hệ thống đang quá tải, vui lòng thử lại!',0);
-				}
-			},
-			error: function(data){ unblock("#content");alert (data);}	
-		});
-	}
-	function doActive() {
-		var account_id = byId('account_id').value;
-		if(account_id == '') {
-			alert('Lỗi');
-			return;
-		}
+	function doResetPass() {
+		location.href = "#top";
 		checkValidate=true;
-		validate(['require'],'active_code',["Vui lòng nhập mã xác nhận!"]);
-		if(checkValidate == false)
-			return;
-		var active_code = byId('active_code').value;
+		validate(['require','email'],'username',["Vui lòng nhập email của bạn!","Email không hợp lệ!"]);
+		if(checkValidate==false) {
+			return false;
+		}
 		$('#btsubmit').attr('disabled','disabled');
 		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
+		var dataString = $("#formResetpass").serialize();
 		$.ajax({
 			type: "GET",
 			cache: false,
-			url : url("/webmaster/doActive&account_id="+account_id+"&active_code="+active_code),
+			url : url("/account/resetpassword&"+dataString),
 			success: function(data){
-				$('#btsubmit').removeAttr('disabled');
-				if(data == "ERROR_WRONG") {
-					message('Mã xác nhận không chính xác!',0);
+				$('#btsubmit').removeAttr('disabled');	
+				if(data == 'ERROR_MANYTIMES') {
+					message('Lỗi! Bạn đã yêu cầu khôi phục mật khẩu quá nhiều!',0);
+					return;
+				}
+				if(data == 'ERROR_NOTEXIST') {
+					message('Lỗi! Email này chưa được đăng ký hoặc đã bị khóa!',0);
+					return;
+				}
+				if(data == 'ERROR_LOCKED') {
+					message('Lỗi! Chức năng khôi phục mật khẩu cho email này đã bị khóa, vui lòng liên hệ admin để mở lại!',0);
 					return;
 				}
 				if(data == AJAX_DONE) {
 					//Dang ky thanh cong	
-					message('Xác nhận tài khoản thành công, đang chuyển đến trang vừa xem...',1);
-					setTimeout("redirectPage()",redirect_time);
+					message('Khôi phục mật khẩu thành công! Vui lòng kiểm tra mail để xác nhận.',1);
 				} else {
-					message('Xác nhận tài khoản không thành công!',0);
+					message('Hệ thống đang quá tải, vui lòng thử lại!',0);
 				}
 			},
 			error: function(data){ $('#btsubmit').removeAttr('disabled');alert (data);}	

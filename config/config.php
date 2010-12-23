@@ -15,8 +15,10 @@ define('SITE_NAME','My CMS');
 define('PINGBOX','wid=hlrqrgS1QG6c0M2LmECPawfh');
 define('MAX_FILEDOWNLOADS',30);
 define('MAX_SENDACTIVECODE',3);
+define('MAX_SENDRESETPASS',3);
+define('MAX_TIMESRESETPASS',3);
 
-define('PAGINATE_LIMIT', 2);
+define('PAGINATE_LIMIT', 12);
 define('INT_PAGE_SUPPORT', '4');
 define('YAHOO1', 'nclong87');
 define('YAHOO2', 'nclong87');

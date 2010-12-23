@@ -285,33 +285,6 @@ function remove_space($str) {
 	return $sResult;
 }
 //die("ee");
-function sendMail($to, $subject, $content) {
-	require_once ROOT . DS . 'library' . DS .'class.phpmailer.php';
-	$mail             = new PHPMailer();
-	//$mail->SetLanguage('en', $dirname.'/phpmailer/language/');
-	$mail->IsSMTP();
-	$mail->SMTPAuth   = true;                  // enable SMTP authentication
-	$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
-	$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
-	$mail->Port       = 465;                   // set the SMTP port for the GMAIL server
-	$mail->Username   = mUser;  // GMAIL username
-	$mail->Password   = mPass;            // GMAIL password
-	$from = mUser;
-	$mail->AddReplyTo($from, "Admin JobBid");
-	$mail->From       = $from;
-	$mail->FromName   = "Admin JobBid";
-	$mail->Sender = $from;
-	$mail->Subject    = $subject;
-	//$mail->AltBody    = "Xin chao"; // optional, comment out and test
-	$mail->WordWrap   = 50; // set word wrap
-	$mail->MsgHTML($content.'<br/>'.mFooter);
-	$mail->AddAddress($to);
-	$mail->IsHTML(true); // send as HTML
-	if(!$mail->Send()) {
-		return false;
-	} 
-	return true;
-}
 function genString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
     $string = '';    
@@ -320,9 +293,10 @@ function genString($length = 10) {
     }
     return $string;
 } 
-if ( !strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') )
+if ( strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') == 0 ) {
+	//echo 'aaa';
 	gzipOutput() || ob_start("ob_gzhandler");
-
+}
 
 $cache =& new Cache();
 
