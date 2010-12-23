@@ -90,7 +90,7 @@ table.center {margin-left:auto; margin-right:auto;}
 	}
 	function block(id) {
 		$(id).block({ 
-			message: '<span style="color:white">Đang tải dữ liệu...</span>', 
+			message: '<span style="color:white">Đang xử lý...</span>', 
 			css: { 
 				border: 'none', 
 				padding: '15px', 

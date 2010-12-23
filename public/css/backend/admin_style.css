@@ -44,9 +44,6 @@ body {  /* Body and background image DIV */
 .bodytext_fieldstitle {	font-family: Arial, Helvetica, sans-serif;	font-size: 12px;	color: #FFF;	line-height: 21px;	padding: 5px 10px;}  /* bodytext in fields */
 a:link  {	text-decoration: none;	font-weight: 700;	color: #2b7c98;}  /* normal link */
 a:visited, a:active {	text-decoration: none;	font-weight: 700;	color: #2b7c98;}  /* normal link */
-.class2 a:link {	color: #FFF;	font-family: Arial,Helvetica,sans-serif;	font-size: 12px;	font-weight: 700;	text-decoration: none; }  /* second link, different colors  */
-.class2 a:visited, a:active {color:#FFF;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;text-decoration:none;}  /* second link, different colors  */
-.class2 a:hover {color:#5DD5FF;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;text-decoration:underline;}  /* second hover link, different colors  */
 .navigation a:link {	font-size: 13px;	color: #FFF;	font-weight: 700;	padding-left: 10px;	line-height: 26px;}  /* navigation link, different colors  */
 .navigation a:visited {	font-size: 13px;	color: #FFF;	font-weight: 700;	padding-left: 10px;	line-height: 26px;}  /* navigation link, different colors  */
 .navigation a:hover {	font-size: 13px;	color: #34cbff;	font-weight: 700;	padding-left: 10px;	line-height: 26px;}  /* navigation hover link, different colors  */

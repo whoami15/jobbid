@@ -1,9 +1,10 @@
 <?php
 class sendmail {
 	function send($to, $subject, $content) {
-		echo 'sendmail!!';
-		/* require_once ROOT . DS . 'library' . DS .'class.phpmailer.php';
+		//echo 'sendmail!!';
+		require_once ROOT . DS . 'library' . DS .'class.phpmailer.php';
 		$mail             = new PHPMailer();
+		$mail->CharSet = "UTF-8";
 		//$mail->SetLanguage('en', $dirname.'/phpmailer/language/');
 		$mail->IsSMTP();
 		$mail->SMTPAuth   = true;                  // enable SMTP authentication
@@ -13,20 +14,20 @@ class sendmail {
 		$mail->Username   = mUser;  // GMAIL username
 		$mail->Password   = mPass;            // GMAIL password
 		$from = mUser;
-		$mail->AddReplyTo($from, "Admin JobBid");
+		$mail->AddReplyTo($from, "www.jobbid.vn");
 		$mail->From       = $from;
-		$mail->FromName   = "Admin JobBid";
+		$mail->FromName   = "www.jobbid.vn";
 		$mail->Sender = $from;
 		$mail->Subject    = $subject;
 		//$mail->AltBody    = "Xin chao"; // optional, comment out and test
 		$mail->WordWrap   = 50; // set word wrap
-		$mail->MsgHTML($content.'<br/>'.mFooter);
+		$mail->MsgHTML($content);
 		$mail->AddAddress($to);
 		$mail->IsHTML(true); // send as HTML
 		if(!$mail->Send()) {
 			return false;
 		} 
-		return true; */
+		return true;
 	}
 }
 	

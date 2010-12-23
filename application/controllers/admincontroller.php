@@ -212,6 +212,27 @@ class AdminController extends VanillaController {
         }
         echo "<span id='result'>DONE</span>";
     }
+	function getMailTemplate() {
+		$this->checkAdmin(true);
+		$mailtype = $_GET['mail_type'];
+		if(isset($mailtype)) {
+			global $cache;
+			$content = $cache->get($mailtype);
+			if($content!=null)
+				echo $content;
+		}
+	}
+	function saveMailTemplate() {
+		$this->checkAdmin(true);
+		$mailtype = $_POST['mail_type'];
+		$content = $_POST['mail_content'];
+		if(isset($mailtype) && isset($content)) {
+			global $cache;
+			$cache->set($mailtype,$content);
+			echo 'DONE';
+		} else
+			echo 'ERROR_SYSTEM';
+	}
 	function afterAction() {
 
 	}

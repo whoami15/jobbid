@@ -185,7 +185,16 @@ class AccountController extends VanillaController {
 			$this->activecode->active_code = $active_code;
 			$this->activecode->insert();
 			//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
-			$this->setModel('sendmail');
+			$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
+			global $cache;
+			$content = $cache->get('mail_verify');
+			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
+			$replace = array($linkactive, $active_code, $username);
+			$content = str_replace($search, $replace, $content);
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send($username,"Chào mừng bạn đến với bidjob.vn",$content);
+			/* $this->setModel('sendmail');
 			$this->sendmail->id = null;
 			$this->sendmail->to = $username;
 			$this->sendmail->subject = "Chào mừng bạn đến với bidjob.vn";
@@ -193,7 +202,7 @@ class AccountController extends VanillaController {
 			$content = '<p>Chào bạn,<br>Chào mừng bạn đến với&nbsp; <a href="'.BASE_PATH.'">jobbid.vn!</a><br>
 Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá dự án, công việc trực tuyến JobBid.vn.<br>Xin bạn hãy click vào đường link sau đây để kích hoạt tài khoản của bạn trên hệ thống: <a href="'.$linkactive.'">'.$linkactive.'</a><br>Trong trường hợp link kích hoạt trên không hoạt động, xin vui lòng nhập mã xác nhận <b>'.$active_code.'</b> vào link sau <a href="'.BASE_PATH.'/webmaster/active/'.$account_id.'">'.BASE_PATH.'/webmaster/active</a>.<br>Sau khi tài khoản của bạn được kích hoạt thành công, bạn có thể sử dụng thông tin dưới đây để truy cập vào tài khoản cá nhân trên <a href="'.BASE_PATH.'/account/login">jobbid.vn!</a>:<br><strong>TÊN ĐĂNG NHẬP: '.$username.'<br>MẬT KHẨU:****** </strong>(Vì lý do bảo mật chúng tôi không hiển thị mật khẩu trong email này)<br>	Thân,<br>Ban quản trị <a href="'.BASE_PATH.'">jobbid.vn!</a></p>';
 			$this->sendmail->content = $content;
-			$this->sendmail->insert();
+			$this->sendmail->insert(); */
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
