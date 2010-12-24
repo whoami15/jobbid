@@ -107,7 +107,7 @@
 			<tr height="30px">
 				<td align="center" height="50px">
 					<?php
-					if($flag > 1) {
+					if($flag == true) {
 						?>
 						<input id="btChonnhathau" onclick="doChonnhathau()" value="Chọn Nhà Thầu Này" type="button" tabindex="11">
 						<?php
@@ -117,7 +117,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Các dự án đã hoàn thành trên BidJob</div>
+	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Các dự án đã hoàn thành trên JobBid</div>
 		<div style="min-height:30px;width:100%">
 		<ul id="">
 		Chưa có dự án nào.

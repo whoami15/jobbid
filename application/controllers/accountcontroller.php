@@ -141,7 +141,7 @@ class AccountController extends VanillaController {
 				$this->account->lastlogin = GetDateSQL();
 				$this->account->save();
 				$this->setModel("nhathau");
-				$this->nhathau->where(" and account_id=".$account[0]["account"]["id"]);
+				$this->nhathau->where("and status>=0 and account_id=".$account[0]["account"]["id"]);
 				$nhathau = $this->nhathau->search("id,displayname,account_id,diemdanhgia");
 				if(!empty($nhathau))
 					$_SESSION["nhathau"] = $nhathau[0]["nhathau"];

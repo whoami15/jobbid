@@ -232,6 +232,7 @@ class DuanController extends VanillaController {
 	function add() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
+		$this->checkActive();
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);

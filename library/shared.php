@@ -301,7 +301,6 @@ if ( strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') == 0 ) {
 $cache =& new Cache();
 
 $inflect =& new Inflection();
-
 setReporting();
 removeMagicQuotes();
 unregisterGlobals();

@@ -60,10 +60,60 @@ class HosothauController extends VanillaController {
 			}
 		}
 	}
+	function listHosothau($ipageindex) {
+		//die("ERROR_NOTLOGIN");
+		$this->checkAdmin();
+		$this->hosothau->showHasOne(array("duan"));
+		$this->hosothau->orderBy('hosothau.id','desc');
+		$this->hosothau->setPage($ipageindex);
+		$this->hosothau->setLimit(PAGINATE_LIMIT);
+		$lstHosothau = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,content,ngaygui,tenduan,duan.id,hosothau.trangthai');
+		$totalPages = $this->hosothau->totalPages();
+		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstNhathau);die();
+		$this->set("lstHosothau",$lstHosothau);
+		$this->set('pagesindex',$ipageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->_template->renderPage();
+	}
+	
+	function saveHosothau() {
+		try {
+			$this->checkAdmin(true);
+			$id = $_POST["hosothau_id"];
+			$giathau = $_POST["hosothau_giathau"];
+			$thoigian = $_POST["hosothau_thoigian"];
+			$milestone = $_POST["hosothau_milestone"];
+			$content = $_POST["hosothau_content"];
+			$trangthai = $_POST["hosothau_trangthai"];
+			if($id==null) { //insert
+				die("ERROR_SYSTEM");						
+			} 
+			$this->hosothau->id = $id;
+			$this->hosothau->giathau = $giathau;
+			$this->hosothau->thoigian = $thoigian;
+			$this->hosothau->milestone = $milestone;
+			$this->hosothau->content = $content;
+			$this->hosothau->trangthai = $trangthai;
+			$this->hosothau->update();
+			echo "DONE";
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	
 	function index() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->checkNhathau();
+		$this->checkActive();
 		$duan_id = $_GET["duan_id"];
 		if(!isEmpty($duan_id)) {
 			$duan_id = mysql_real_escape_string($duan_id);
@@ -72,6 +122,8 @@ class HosothauController extends VanillaController {
 			$data = $this->duan->search("id,tenduan,alias");
 			if(!empty($data)) {
 				$this->set("dataDuan",$data);
+				$this->set("username",$_SESSION['account']['username']);
+				$this->set("sodienthoai",$_SESSION['account']['sodienthoai']);
 				$this->_template->render();
 			}
 		}
@@ -81,12 +133,6 @@ class HosothauController extends VanillaController {
 			$this->checkLogin(true);
 			$this->checkNhathau(true);
 			$this->checkActive(true);
-			if($_FILES['hosothau_filedinhkem']['name']!=NULL) {
-				$size= $_FILES['hosothau_filedinhkem']['size'];
-				if($size==0) {
-					echo 'ERROR_FILESIZE';
-				}
-			}
 			$duan_id = $_POST["hosothau_duan_id"];
 			$giathau = $_POST["hosothau_giathau"];
 			$thoigian = $_POST["hosothau_thoigian"];
@@ -95,6 +141,8 @@ class HosothauController extends VanillaController {
 			$nhathau = $_SESSION["nhathau"];
 			$account_id = $_SESSION["account"]["id"];
 			$nhathau_id = $nhathau["id"];
+			if(isset($content[1000]))
+				die('ERROR_MAXLENGTH');
 			$validate = new Validate();
 			if($validate->check_null(array($duan_id,$giathau,$thoigian))==false)
 				die('ERROR_SYSTEM');
@@ -116,56 +164,8 @@ class HosothauController extends VanillaController {
 				die("ERROR_SELFBID");
 			if($data["duan"]["lastbid_nhathau"] == $nhathau_id)
 				die("ERROR_DUPLICATE");
-			/* $this->setModel("hosothau");
-			$this->hosothau->where(" and duan_id=$duan_id and nhathau_id=$nhathau_id");
-			$data = $this->hosothau->search("id");
-			if(empty($data)==false)
-				die("ERROR_DUPLICATE"); */
-			$file_id = 0;
-			//Get upload attach file_id
-			global $cache;
-			$ma=time();
-			if($_FILES['hosothau_filedinhkem']['name']!=NULL) {
-				$str=$_FILES['hosothau_filedinhkem']['tmp_name'];
-				$size= $_FILES['hosothau_filedinhkem']['size'];
-				if($size==0) {
-					echo 'ERROR_FILESIZE';
-				}
-				else {
-					$dir = ROOT . DS . 'public'. DS . 'upload' . DS . 'files' . DS;
-					$filename = preg_replace("/[&' +-]/","_",$_FILES['hosothau_filedinhkem']['name']);				
-					move_uploaded_file($_FILES['hosothau_filedinhkem']['tmp_name'],$dir . $filename);
-					//die($filename);
-					$sFileType="";
-					$i = strlen($filename)-1;
-					while($i>=0) {
-						if($filename[$i]=='.')
-							break;
-						$sFileType=$filename[$i].$sFileType;
-						$i--;
-					}
-					$str=$dir . $filename;
-					$fname=$ma.'_'.$filename;
-					$arrType = $cache->get("fileTypes");
-					if(!in_array(strtolower($sFileType),$arrType)) {
-						unlink($str);
-						die("ERROR_WRONGFORMAT");
-					}
-					else {
-						$str2= $dir . $fname;
-						rename($str,$str2);
-						$this->setModel("file");
-						$this->file->id = null;
-						$this->file->filename = $filename;
-						$this->file->fileurl = BASE_PATH."/upload/files/".$fname;
-						$this->file->account_id = $_SESSION["account"]["id"];
-						$this->file->account_share = $employerId;
-						$this->file->status = 1;
-						$file_id = $this->file->insert(true);
-					}
-				}
-			}
-			//End
+			
+			//Insert ho so thau
 			$this->setModel("hosothau");
 			$this->hosothau->id = null;
 			$this->hosothau->account_id = $account_id;
@@ -175,12 +175,10 @@ class HosothauController extends VanillaController {
 			$this->hosothau->content = $content;
 			$this->hosothau->duan_id = $duan_id;
 			$this->hosothau->nhathau_id = $nhathau_id;
-			$this->hosothau->file_id= $file_id;
 			$this->hosothau->ngaygui = GetDateSQL();
 			$this->hosothau->trangthai = 1;
 			$this->hosothau->insert();
 			$data = $this->hosothau->custom("select count(*) as bidcount,sum(giathau) as total from hosothaus as hosothau where duan_id=$duan_id");
-			//print_r($data);die();
 			//Update bidcount cua du an
 			$this->setModel("duan");
 			$this->duan->id = $duan_id;
@@ -188,6 +186,8 @@ class HosothauController extends VanillaController {
 			$this->duan->averagecost = round($data[0][""]["total"] / $data[0][""]["bidcount"]);
 			$this->duan->lastbid_nhathau = $nhathau_id;
 			$this->duan->update();
+			//Send mail cho chu du an
+			
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -198,12 +198,12 @@ class HosothauController extends VanillaController {
 		$duan_id = $_GET["duan_id"];
 		if($duan_id!=null) {
 			$duan_id = mysql_real_escape_string($duan_id);
-			$this->hosothau->showHasOne(array("file","nhathau"));
-			$this->hosothau->where(" and trangthai>=1 and duan_id=$duan_id");
+			$this->hosothau->showHasOne(array("nhathau"));
+			$this->hosothau->where("and nhathau.status>=0 and trangthai>=1 and duan_id=$duan_id");
 			$this->hosothau->orderBy('hosothau.id','desc');
 			$this->hosothau->setPage($ipageindex);
 			$this->hosothau->setLimit(PAGINATE_LIMIT);
-			$lstHosthau = $this->hosothau->search("hosothau.id,giathau,milestone,UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(ngaygui) as timeofbid,thoigian,filename,file.id,nhathau.id,displayname,trangthai,diemdanhgia");
+			$lstHosthau = $this->hosothau->search("hosothau.id,giathau,milestone,UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(ngaygui) as timeofbid,thoigian,nhathau.id,displayname,trangthai,diemdanhgia,content");
 			$totalPages = $this->hosothau->totalPages();
 			$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 			if ($ipagesbefore < 1)
@@ -219,15 +219,6 @@ class HosothauController extends VanillaController {
 			$this->set('pageend',$totalPages);
 			$this->set('duan_id',$duan_id);
 			$this->_template->renderPage();
-		}
-	}
-	function getContent(){
-		$id = $_GET["id"];
-		if($id!=null) {
-			$id = mysql_real_escape_string($id);
-			$this->hosothau->id = $id;
-			$data = $this->hosothau->search("content");
-			print_r($data["hosothau"]["content"]);
 		}
 	}
 	function ds_ho_so_thau() {
@@ -296,25 +287,25 @@ class HosothauController extends VanillaController {
 			$this->setModel("nhathau");
 			$this->nhathau->showHasOne();
 			$this->nhathau->id = $nhathau_id;
-			$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,gpkd_cmnd,type,birthyear,diachilienhe,username,sodienthoai");
+			$this->nhathau->where(' and nhathau.status>=0');
+			$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,nhathau.account_id,file.id,filename,gpkd_cmnd,type,birthyear,diachilienhe,username,sodienthoai");
 			if(empty($data)==false) {
 				$this->setModel("duan");
 				$this->duan->id = $duan_id;
 				$duan = $this->duan->search("id,account_id,nhathau_id");
 				if(empty($duan))
 					error("Server đang quá tải, vui lòng thử lại!");
-				$this->set("flag",0);
+				$this->set("flag",false);
 				if(isset($_SESSION["account"])) {
 					$account_id = $_SESSION["account"]["id"];
 					if($duan["duan"]["account_id"] == $account_id) { //la chu du an
-						$this->set("flag",1);
-						if($duan["duan"]["nhathau_id"]!=$nhathau_id) { // nha thau nay da duoc chon
+						if($duan["duan"]["nhathau_id"]!=$nhathau_id) { // nha thau nay ko duoc chon
 							$data["account"]["sodienthoai"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
 							$data["account"]["username"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
 							//print_r($duan["duan"]["account_id"]);die();
-							$this->set("flag",2);
+							$this->set("flag",true);
 						} 
-					} else {
+					} else if($data["nhathau"]["account_id"] != $account_id){
 						$data["account"]["sodienthoai"] = "(Không hiển thị)";
 						$data["account"]["username"] = "(Không hiển thị)";
 					}
@@ -338,6 +329,7 @@ class HosothauController extends VanillaController {
 	function chonhoso() {
 		try {
 			$this->checkLogin(true);
+			$this->checkActive(true);
 			$account_id = $_SESSION["account"]["id"];
 			$duan_id = $_GET["duan_id"];
 			$hosothau_id = $_GET["hosothau_id"];

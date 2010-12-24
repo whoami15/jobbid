@@ -152,19 +152,38 @@
 		$.ajax({
 			type : "GET",
 			cache: false,
-			url: url("/nhathau/doChecknhathau"),
+			url: url("/nhathau/doChecknhathau&duan_id="+duan_id),
 			success : function(data){	
 				$('#btGuihoso').removeAttr('disabled');
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/account/login");
 					return;
 				}
+				if(data == "ERROR_NOTACTIVE") {
+					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
+					return;
+				}
+				if(data == "ERROR_EXPIRED") {
+					message("Dự án này đã hết thời gian đấu thầu!",0);
+					return;
+				}
+				if(data == "ERROR_SELFBID") {
+					message("Bạn không thể đấu thầu dự án của bạn!",0);
+					return;
+				}
+				if(data == "ERROR_DUPLICATE") {
+					message("Bạn không thể đặt thầu 2 lần liên tiếp trong dự án này!",0);
+					return;
+				}
+				if(data == "ERROR_MAKEPROFILE") {
+					message("Lỗi, bạn chưa tạo hồ sơ nhà thầu! Đang chuyển đến trang tạo hồ sơ...",0);
+					setTimeout("redirectMakeProfile()",redirect_time);
+					return;
+				}
 				if(data == "DONE") {
 					location.href = url("/hosothau&duan_id="+duan_id);
-				} else if(data=="ERROR_NOTACTIVE") {
-					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);	
 				} else {
-					message('Lỗi! Bạn chưa tạo hồ sơ nhà thầu (click <a href="'+url('/nhathau/add')+'" class="link">vào đây</a> để tạo hồ sơ)',0);	
+					message('Hệ thống đang bận, vui lòng thử lại sau!',0);	
 				}	
 				
 			},
@@ -231,26 +250,12 @@
 		location.href = url('/duan/edit&duan_id='+duan_id);
 	}
 	function showinfo(_this) {
-		
 		var cells = _this.parentNode.parentNode.cells;
 		milestone = $(cells.td_milestone).text();
 		thoigian = $(cells.td_thoigian).text();
 		timeofbid = $(cells.td_timeofbid).text();
-		var str = '&nbsp;<b>MileStone :</b> '+milestone+'<br/>&nbsp;<b>Thời gian :</b> '+thoigian+'<br/>&nbsp;<b>Đã gửi :</b> '+timeofbid+'<br/>&nbsp;<b>Lời nhắn :</b><br/><div id="tipmsg">Loading...</div>';
+		var str = '&nbsp;<b>MileStone :</b> '+milestone+'<br/>&nbsp;<b>Thời gian :</b> '+thoigian+'<br/>&nbsp;<b>Đã gửi :</b> '+timeofbid+'<br/>';
 		showtip(str,600);
-		id = $(cells.td_id).text();
-		$.ajax({
-			type : "GET",
-			cache: true,
-			url: url("/hosothau/getContent&id="+id),
-			success : function(data){	
-				//alert(data);
-				byId("tipmsg").innerHTML = data;
-			},
-			error: function(data){ 
-				alert (data);
-			}			
-		});
 		
 	}
 	$(document).ready(function() {

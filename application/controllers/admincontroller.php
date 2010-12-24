@@ -88,6 +88,10 @@ class AdminController extends VanillaController {
 		$this->set("lstLinhvuc",$data);
 		$this->_template->renderAdminPage(); 
 	}
+	function viewQuanlyHosothau() {
+		$this->checkAdmin(false);
+		$this->_template->renderAdminPage(); 
+	}
 	function settings() {
 		$this->checkAdmin(false);
 		global $cache;

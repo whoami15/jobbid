@@ -36,12 +36,10 @@ class TestController extends VanillaController {
 		}
 		$conn->hadSend($arr);
 		$conn->close(); */
-		//include (ROOT.DS.'library'.DS.'sendmail.php');
-		//$mail = new sendmail();
-		//$mail->send();
-		//echo strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6');
-		$_SESSION['sendresetpass'] = null;
-		echo 'DONE';
+		include (ROOT.DS.'library'.DS.'sendmail.php');
+		$mail = new sendmail();
+		$mail->send(' ',' ',' ');
+		echo '<br>DONE';
 		
 	}
 	function rmvsession($session) {

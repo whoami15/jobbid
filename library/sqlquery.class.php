@@ -377,7 +377,7 @@ class SQLQuery {
 		$values = '';
 		foreach ($this->_describe as $field) {
 			$fields .= '`'.$field.'`,';
-			if(isset($this->$field))
+			if(!empty($this->$field))
 				$values .= '\''.mysql_real_escape_string($this->$field).'\',';
 			else 
 				$values .= 'null,';
@@ -387,7 +387,7 @@ class SQLQuery {
 		$query = 'INSERT INTO '.$this->_table.' ('.$fields.') VALUES ('.$values.')';
 		if($debug==true)
 			die($query);
-		mysql_query($query, $this->_dbHandle);
+		mysql_query($query, $this->_dbHandle) or die("Error :".mysql_error());
 		if($returnId == true) {
 			$rs=mysql_query("select @@identity ID", $this->_dbHandle);
 			$a_row=mysql_fetch_row($rs);

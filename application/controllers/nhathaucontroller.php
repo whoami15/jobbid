@@ -59,6 +59,7 @@ class NhathauController extends VanillaController {
 			$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
 			$this->nhathau->diemdanhgia = $diemdanhgia;
 			$this->nhathau->displayname = $displayname;
+			$this->nhathau->status = 1;
 			$this->nhathau->update();
 			echo "DONE";
 		} catch (Exception $e) {
@@ -131,22 +132,11 @@ class NhathauController extends VanillaController {
 			}
 		}
 	}
-	function existEmail($email=null) {
-		if($email!=null) {
-			$strWhere = "AND email='".mysql_real_escape_string($email)."'";
-			$this->account->where($strWhere);
-			$account = $this->account->search("id");
-			if(empty($account))
-				return false;
-			else
-				return true;
-		}
-		return false;
-	}
 	function getMotachitietById($id=null) {	
 		if($id != null) {
 			$id = mysql_real_escape_string($id);
 			$this->nhathau->id=$id;
+			$this->nhathau->where(' and status>=0');
             $data=$this->nhathau->search();
 			print_r($data['nhathau']['motachitiet']);
 		}
@@ -155,7 +145,7 @@ class NhathauController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->nhathau->showHasOne(array("file"));
-		$this->nhathau->where(" and nhathau.account_id = ".$_SESSION["account"]["id"]);
+		$this->nhathau->where(" and nhathau.status>=0 and nhathau.account_id = ".$_SESSION["account"]["id"]);
 		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,gpkd_cmnd,type,birthyear,diachilienhe");
 		if(empty($data)==false) {
 			$this->set("nhathau",$data[0]);
@@ -251,6 +241,7 @@ class NhathauController extends VanillaController {
 			$this->nhathau->account_id = $account_id;
 			$this->nhathau->nhanemail = $nhanemail;
 			$this->nhathau->diemdanhgia = 0;
+			$this->nhathau->status = 1;
 			$nhathau_id = $this->nhathau->insert(true);
 			if($sodienthoai != $_SESSION["account"]["sodienthoai"]) {
 				$this->setModel("account");
@@ -286,6 +277,7 @@ class NhathauController extends VanillaController {
 		//print_r($_SESSION["nhathau"]["nhathau"]["id"]);die();
 		$this->nhathau->showHasOne();
 		$this->nhathau->id = $_SESSION["nhathau"]["id"];
+		$this->nhathau->where(' and status>=0');
 		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,username,sodienthoai,gpkd_cmnd,type,birthyear,diachilienhe");
 		if(!empty($data)) {
 			$this->set("nhathau",$data["nhathau"]);
@@ -411,11 +403,28 @@ class NhathauController extends VanillaController {
 	
 	function doChecknhathau() {
 		$this->checkLogin(true);
+		$this->checkNhathau(true);
 		$this->checkActive(true);
-		if(isset($_SESSION["nhathau"]))
-			echo "DONE";
-		else
-			echo "ERROR_SYSTEM";
+		$duan_id = $_GET['duan_id'];
+		if($duan_id == null)
+			die('ERROR_SYSTEM');
+		$account_id = $_SESSION['account']['id'];
+		$nhathau_id = $_SESSION['nhathau']['id'];
+		$duan_id = mysql_real_escape_string($duan_id);
+		$this->setModel("duan");
+		$this->duan->id = $duan_id;
+		$this->duan->where(" and active=1 and nhathau_id is null");
+		$data = $this->duan->search("id,account_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau");
+		if(empty($data))
+			die("ERROR_SYSTEM");
+		if($data[""]["lefttime"] <= 0)
+			die("ERROR_EXPIRED");
+		$employerId = $data["duan"]["account_id"];
+		if($employerId == $account_id)
+			die("ERROR_SELFBID");
+		if($data["duan"]["lastbid_nhathau"] == $nhathau_id)
+			die("ERROR_DUPLICATE");
+		echo 'DONE';
 	}
 	function afterAction() {
 

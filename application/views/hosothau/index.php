@@ -1,21 +1,20 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea-0.7.0.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
-<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery.form.js"></script>
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
 <style>
 	.tdLabel {
 		text-align:right;
-		width:97px;
+		width:100px;
 	}
 	.tdInput {
-		width:550px;
+		width:500px;
 	}
 </style>
 <div id="content" style="width:100%;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Gửi hồ sơ thầu</div>
-	<form id="formHosothau" style="padding-top: 10px; padding-bottom: 10px;" >
+	<form id="formHosothau" style="padding-top: 10px; padding-bottom: 10px;" onsubmit="doSubmit(); return false;">
 		<input type="hidden" name="hosothau_duan_id" id="hosothau_duan_id" value="<?php echo $dataDuan["duan"]["id"]?>" />
 		<fieldset>
 			<legend>
@@ -44,15 +43,21 @@
 					</div>
 				</div>
 				<div class="tr" style="border:none">
-					<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
+					<div class="td tdLabel" style="text-align:right;">Email :</div>
 					<div class="td tdInput">
-					<input type="file" name="hosothau_filedinhkem" style="width:65%" value="" id="hosothau_filedinhkem" tabindex=4/>(Size < 2Mb)
+					<input type="text" style="width:70%" value="<?php echo $username ?>" disabled=true/>
+					</div>
+				</div>
+				<div class="tr" style="border:none">
+					<div class="td tdLabel" style="text-align:right;">Số điện thoại :</div>
+					<div class="td tdInput">
+					<input type="text" style="width:70%" value="<?php echo $sodienthoai ?>" disabled=true/>
 					</div>
 				</div>
 				<div class="tr" style="border:none;text-align:left">
 					<div class="td">
-					Lời nhắn (vui lòng<span id="tip_loinhan" style="color:red;font-weight:bold;cursor:pointer;" > không điền email, số điện thoại </span>của bạn ở đây) :<br/>
-					<textarea maxlength=5 id="hosothau_content" name="hosothau_content" style="margin-top: 5px; width: 99%;" rows="10" tabindex=5></textarea>
+					Lời nhắn :( nhỏ hơn 1000 từ )<br/>
+					<textarea  id="hosothau_content" name="hosothau_content" style="margin-top: 5px; width: 99%;" rows="5" tabindex=5></textarea>
 					</div>
 				</div>
 				<div class="tr" style="border:none">
@@ -75,7 +80,7 @@
 			byId("msg").innerHTML = str;
 		}
 	}	
-	function validateFormHosothau(formData, jqForm, options) {
+	function doSubmit() {
 		//alert(byId("hosothau_duan_id").value);return false;
 		location.href = "#top";
 		checkValidate=true;
@@ -85,58 +90,41 @@
 		validate(['require','number'],'hosothau_thoigian',["Vui lòng nhập thời gian!","Vui lòng nhập kiểu số!"]);
 		validate(['number'],'hosothau_milestone',["Vui lòng nhập kiểu số!"]);
 		if(checkValidate==false) {
-			return false;
+			return;
 		}
 		if(byId("hosothau_giathau").value == "0") {
 			message("Giá thầu phải lớn hơn 0!",0);
 			$("#hosothau_giathau").css('border-color','red');
 			byId("hosothau_giathau").focus();
-			return false;
+			return;
 		}
 		if(byId("hosothau_thoigian").value == "0") {
 			message("Thời gian phải lớn hơn 0!",0);
 			$("#hosothau_thoigian").css('border-color','red');
 			byId("hosothau_thoigian").focus();
-			return false;
+			return;
 		}
 		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
 		$('#btsubmit').attr('disabled','disabled');
-		return true;
-	}
-	function redirectPage() {
-		location.href = url('/duan/view/<?php echo $dataDuan["duan"]["id"]."/".$dataDuan["duan"]["alias"] ?>');
-	}
-	function redirectMakeProfile() {
-		location.href = url('/nhathau/view');
-	}
-	$(document).ready(function() {
-		$("#hosothau_content").css("width","99%");
-		
-		$("#choosecolor").click(function() {
-			jHtmlAreaColorPickerMenu(this, {
-				colorChosen: function(color) {
-					$(document.body).css('background-color', color);
-				}
-			});
-		});
-		var options = { 
-			beforeSubmit: validateFormHosothau,
-			url:        url("/hosothau/doPost"), 
-			type:      "post",
-			dataType: "xml",
-			success:    function(data) { 
+		dataString = $("#formHosothau").serialize();
+		$.ajax({
+			type : "POST",
+			cache: false,
+			url : url("/hosothau/doPost&"),
+			data: dataString,
+			success : function(data){	
+				//alert(data);
 				$('#btsubmit').removeAttr('disabled');
-				data = data.activeElement.childNodes[0].data;
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/account/login");
 					return;
 				}
-				if(data == "ERROR_NOTACTIVE") {
-					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
+				if(data == "ERROR_MAXLENGTH") {
+					message('Lỗi! Lời nhắn phải ít hơn 1000 ký tự!',0);
 					return;
 				}
-				if(data == "ERROR_FILESIZE") {
-					message("File upload phải nhỏ hơn 2Mb!",0);
+				if(data == "ERROR_NOTACTIVE") {
+					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
 					return;
 				}
 				if(data == "ERROR_EXPIRED") {
@@ -164,14 +152,22 @@
 				} else {
 					message("Có lỗi xảy ra, vui lòng thử lại!",0);
 				}
+				
 			},
-			error : function(data) {
+			error: function(data){ 
 				$('#btsubmit').removeAttr('disabled');
-				alert(data);
-			}
-		}; 
-		// pass options to ajaxForm 
-		$('#formHosothau').ajaxForm(options);
+				alert (data);
+			}			
+		});
+		return;
+	}
+	function redirectPage() {
+		location.href = url('/duan/view/<?php echo $dataDuan["duan"]["id"]."/".$dataDuan["duan"]["alias"] ?>');
+	}
+	function redirectMakeProfile() {
+		location.href = url('/nhathau/view');
+	}
+	$(document).ready(function() {
 		$("input:submit, input:button", "body").button();
 		boundTip("hosothau_milestone","Ví dụ : Nếu bạn đặt milestone là 50%, khi bạn hoàn thành được 50% dự án đó, chủ dự án sẽ chi trả 50% số tiền cho bạn");
 		boundTip("tip_thoigian","Nhập số ngày bạn sẽ hoàn thành dự án.");

@@ -65,7 +65,7 @@
 				echo "<tr class='normalRow' height='30px'>";
 			?>
 				<td colspan="3" align="left">
-					File đính kèm : <a class="link" title="<?php echo $hosothau["file"]["filename"] ?>" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$hosothau["file"]["id"] ?>"><?php echo $html->trimString($hosothau["file"]["filename"],27) ?></a>
+					<span style="padding-left:5px"><?php echo $hosothau["hosothau"]["content"] ?></span>
 				</td>
 				</tr>
 			<?php

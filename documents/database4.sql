@@ -1,6 +1,6 @@
 /*
 SQLyog Enterprise - MySQL GUI v6.13
-MySQL - 5.0.51b-community-nt : Database - cms
+MySQL - 5.1.33-community : Database - cms
 *********************************************************************
 */
 
@@ -8,6 +8,9 @@ MySQL - 5.0.51b-community-nt : Database - cms
 
 /*!40101 SET SQL_MODE=''*/;
 
+create database if not exists `cms`;
+
+USE `cms`;
 
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
@@ -17,33 +20,33 @@ MySQL - 5.0.51b-community-nt : Database - cms
 DROP TABLE IF EXISTS `accounts`;
 
 CREATE TABLE `accounts` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `username` varchar(255) default NULL,
-  `password` varchar(255) default NULL,
-  `sodienthoai` varchar(20) default NULL,
-  `lastlogin` datetime default NULL,
-  `timeonline` bigint(20) default NULL,
-  `role` int(11) default NULL,
-  `active` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `sodienthoai` varchar(20) DEFAULT NULL,
+  `lastlogin` datetime DEFAULT NULL,
+  `timeonline` bigint(20) DEFAULT NULL,
+  `role` int(11) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 /*Data for the table `accounts` */
 
-insert  into `accounts`(`id`,`username`,`password`,`sodienthoai`,`lastlogin`,`timeonline`,`role`,`active`) values (1,'admin@jobbid.com','e10adc3949ba59abbe56e057f20f883e','123456789','2010-12-23 20:23:25',NULL,1,1),(2,'nclong@jobbid.com','e10adc3949ba59abbe56e057f20f883e',NULL,'2010-11-18 22:32:58',NULL,1,1),(10,'nclong87@jobbid.com','c33367701511b4f6020ec61ded352059','123456','2010-12-22 16:41:31',NULL,2,1),(11,'nclong88@jobbid.com','e10adc3949ba59abbe56e057f20f883e','12343','2010-11-23 16:19:03',NULL,2,1),(15,'levana@yahoo.com','e10adc3949ba59abbe56e057f20f883e','0834321285','2010-12-20 17:15:29',NULL,2,1),(16,'mytrang@gmail.com','e10adc3949ba59abbe56e057f20f883e','0979932151','2010-12-20 15:44:07',NULL,2,1),(17,'tranvanc@yahoo.com','e10adc3949ba59abbe56e057f20f883e','988213312','2010-12-13 21:23:20',NULL,2,1),(18,'tuanngoc@yahoo.com','03e4c83055481daef02e63b77047c826','098733121','2010-12-23 16:21:52',NULL,2,0),(19,'tuanngoc2@gmail.com','e10adc3949ba59abbe56e057f20f883e','78831300','2010-12-19 00:18:20',NULL,2,-1),(20,'tuanhung@gmail.com','e10adc3949ba59abbe56e057f20f883e','0987621211','2010-12-07 23:22:25',NULL,2,-1),(21,'test@yahoo.com','e10adc3949ba59abbe56e057f20f883e','45312121','2010-12-22 15:20:53',0,2,0),(22,'test3@yahoo.com','e10adc3949ba59abbe56e057f20f883e','4553313','2010-12-22 15:08:56',0,2,0),(23,'test4@gmail.com','e10adc3949ba59abbe56e057f20f883e','5465323','2010-12-21 15:26:06',0,2,1),(24,'test5@gm.com','e10adc3949ba59abbe56e057f20f883e','3313131','2010-12-21 16:41:20',0,2,0),(25,'111@1.com','e10adc3949ba59abbe56e057f20f883e','43121','2010-12-21 16:42:13',0,2,0),(28,'nclong87@gmail.com','e10adc3949ba59abbe56e057f20f883e','4313131y','2010-12-23 23:19:09',0,2,1),(29,'mytrang6789@gmail.com','e66d6a2ba5d3232fce509b20ccd83772','2456666','2010-12-23 23:22:50',0,2,1);
+insert  into `accounts`(`id`,`username`,`password`,`sodienthoai`,`lastlogin`,`timeonline`,`role`,`active`) values (1,'admin@jobbid.com','e10adc3949ba59abbe56e057f20f883e','123456789','2010-12-24 16:01:21',NULL,1,1),(2,'nclong@jobbid.com','e10adc3949ba59abbe56e057f20f883e',NULL,'2010-11-18 22:32:58',NULL,1,1),(10,'nclong87@jobbid.com','c33367701511b4f6020ec61ded352059','123456','2010-12-24 14:25:12',NULL,2,1),(11,'nclong88@jobbid.com','e10adc3949ba59abbe56e057f20f883e','12343','2010-11-23 16:19:03',NULL,2,1),(15,'levana@yahoo.com','e10adc3949ba59abbe56e057f20f883e','0834321285','2010-12-20 17:15:29',NULL,2,1),(16,'mytrang@gmail.com','e10adc3949ba59abbe56e057f20f883e','0979932151','2010-12-20 15:44:07',NULL,2,1),(17,'tranvanc@yahoo.com','e10adc3949ba59abbe56e057f20f883e','988213312','2010-12-13 21:23:20',NULL,2,1),(18,'tuanngoc@yahoo.com','03e4c83055481daef02e63b77047c826','098733121','2010-12-24 15:45:34',NULL,2,0),(19,'tuanngoc2@gmail.com','e10adc3949ba59abbe56e057f20f883e','78831300','2010-12-19 00:18:20',NULL,2,-1),(20,'tuanhung@gmail.com','e10adc3949ba59abbe56e057f20f883e','0987621211','2010-12-07 23:22:25',NULL,2,-1),(21,'test@yahoo.com','e10adc3949ba59abbe56e057f20f883e','45312121','2010-12-22 15:20:53',0,2,0),(22,'test3@yahoo.com','e10adc3949ba59abbe56e057f20f883e','4553313','2010-12-22 15:08:56',0,2,0),(23,'test4@gmail.com','e10adc3949ba59abbe56e057f20f883e','5465323','2010-12-21 15:26:06',0,2,1),(24,'test5@gm.com','e10adc3949ba59abbe56e057f20f883e','3313131','2010-12-24 14:24:46',0,2,0),(25,'111@1.com','e10adc3949ba59abbe56e057f20f883e','43121','2010-12-21 16:42:13',0,2,0);
 
 /*Table structure for table `activecodes` */
 
 DROP TABLE IF EXISTS `activecodes`;
 
 CREATE TABLE `activecodes` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `account_id` bigint(20) default NULL,
-  `active_code` varchar(20) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FK_activecodes` (`account_id`),
-  CONSTRAINT `FK_activecodes` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) DEFAULT NULL,
+  `active_code` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_activecodes_accounts` (`account_id`),
+  CONSTRAINT `FK_activecodes_accounts` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 /*Data for the table `activecodes` */
 
@@ -54,9 +57,9 @@ insert  into `activecodes`(`id`,`account_id`,`active_code`) values (1,21,'97fv6p
 DROP TABLE IF EXISTS `datas`;
 
 CREATE TABLE `datas` (
-  `id` bigint(20) NOT NULL auto_increment,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `data` text,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   FULLTEXT KEY `data` (`data`)
 ) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
@@ -69,10 +72,10 @@ insert  into `datas`(`id`,`data`) values (0,'a'),(13,'Chế bản điện tử C
 DROP TABLE IF EXISTS `duanmarks`;
 
 CREATE TABLE `duanmarks` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `account_id` bigint(20) default NULL,
-  `duan_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) DEFAULT NULL,
+  `duan_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_duanmarks_accounts` (`account_id`),
   KEY `FK_duanmarks_duans` (`duan_id`),
   CONSTRAINT `FK_duanmarks_accounts` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -88,29 +91,29 @@ insert  into `duanmarks`(`id`,`account_id`,`duan_id`) values (3,1,12),(5,16,18),
 DROP TABLE IF EXISTS `duans`;
 
 CREATE TABLE `duans` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `tenduan` varchar(255) character set utf8 default NULL,
-  `alias` varchar(255) character set utf8 default NULL,
-  `linhvuc_id` varchar(100) character set utf8 default NULL,
-  `tinh_id` bigint(20) default NULL,
-  `ngayketthuc` datetime default NULL,
-  `costmin` bigint(20) default NULL,
-  `costmax` bigint(20) default NULL,
-  `thongtinchitiet` text character set utf8,
-  `file_id` bigint(20) default NULL,
-  `ngaypost` datetime default NULL,
-  `account_id` bigint(20) default NULL,
-  `timeupdate` datetime default NULL,
-  `prior` int(11) default NULL,
-  `views` int(11) default NULL,
-  `bidcount` int(11) default NULL,
-  `averagecost` bigint(20) default NULL,
-  `lastbid_nhathau` bigint(20) default NULL,
-  `hosothau_id` bigint(20) default NULL,
-  `nhathau_id` bigint(20) default NULL,
-  `data_id` bigint(20) default NULL,
-  `active` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `tenduan` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `alias` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `linhvuc_id` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `tinh_id` bigint(20) DEFAULT NULL,
+  `ngayketthuc` datetime DEFAULT NULL,
+  `costmin` bigint(20) DEFAULT NULL,
+  `costmax` bigint(20) DEFAULT NULL,
+  `thongtinchitiet` text CHARACTER SET utf8,
+  `file_id` bigint(20) DEFAULT NULL,
+  `ngaypost` datetime DEFAULT NULL,
+  `account_id` bigint(20) DEFAULT NULL,
+  `timeupdate` datetime DEFAULT NULL,
+  `prior` int(11) DEFAULT NULL,
+  `views` int(11) DEFAULT NULL,
+  `bidcount` int(11) DEFAULT NULL,
+  `averagecost` bigint(20) DEFAULT NULL,
+  `lastbid_nhathau` bigint(20) DEFAULT NULL,
+  `hosothau_id` bigint(20) DEFAULT NULL,
+  `nhathau_id` bigint(20) DEFAULT NULL,
+  `data_id` bigint(20) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_duans_accounts` (`account_id`),
   KEY `FK_duans_files` (`file_id`),
   CONSTRAINT `FK_duans_accounts` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -119,17 +122,17 @@ CREATE TABLE `duans` (
 
 /*Data for the table `duans` */
 
-insert  into `duans`(`id`,`tenduan`,`alias`,`linhvuc_id`,`tinh_id`,`ngayketthuc`,`costmin`,`costmax`,`thongtinchitiet`,`file_id`,`ngaypost`,`account_id`,`timeupdate`,`prior`,`views`,`bidcount`,`averagecost`,`lastbid_nhathau`,`hosothau_id`,`nhathau_id`,`data_id`,`active`) values (1,'dự án long ca','du-an-long-ca','design',1,'2010-11-21 00:00:00',1500000,3000000,'<p>ddad</p>',19,'2010-11-16 00:01:39',1,'2010-12-15 00:29:19',4,0,0,0,NULL,NULL,NULL,25,1),(2,'Thiết kế website mua bán','thiet-ke-website-mua-ban','cntt',1,'2010-12-14 00:00:00',5000000,10000000,'<p>Kinh nghiệm 3 năm thiết kế web</p>',63,'2010-11-16 21:01:29',1,'2010-12-15 23:15:33',3,87,0,0,NULL,NULL,NULL,27,1),(5,'Dự án website','du-an-website','cntt',1,'2010-12-13 00:00:00',3000000,5000000,'<p>test ok lii</p>',65,'2010-11-26 23:17:51',1,'2010-12-15 00:28:56',4,29,0,0,NULL,NULL,NULL,23,1),(6,'Dự án cơ khí A','du-an-co-khi-a','co_khi',1,'2010-12-16 00:00:00',3000000,5000000,'<p><span><span style=\"color: #0033cc; font-family: Arial; font-size: x-small;\"><strong>Đ&acirc;y l&agrave; c&aacute;c  dự &aacute;n đ&atilde; được Hội đồng Ch&iacute;nh phủ thẩm tra ph&ecirc; duyệt đầu tư bằng nguồn  vốn vay ưu đ&atilde;i đặc biệt. Tuy nhi&ecirc;n, cho đến nay dự &aacute;n nầy hầu hết vẫn  đang &aacute;n binh bất động.</strong></span></span></p>\n<p><span><span style=\"font-family: Arial; font-size: x-small;\">Sau khi lựa chọn, Ban dự &aacute;n cơ kh&iacute;  trọng điểm đ&atilde; quyết định đưa 24 dự &aacute;n v&agrave;o danh mục những Dự &aacute;n cơ kh&iacute;  trọng điểm. Theo đ&oacute;, những dự &aacute;n n&agrave;y được hưởng ưu đ&atilde;i đặc biệt của Nh&agrave;  nước theo Quyết định 186/TTgcủa Thủ tướng Ch&iacute;nh phủ v&agrave; được vay th&ocirc;ng  qua nguồn vốn từ Quỹ Hỗ trợ Ph&aacute;t triển (HTPT) với l&atilde;i suất 3%/năm trong  v&ograve;ng 12 năm (hai năm đầu kh&ocirc;ng phải trả l&atilde;i, trả nợ gốc bắt đầu từ năm  thứ 5). C&oacute; thể n&oacute;i, sau gần 1 năm thực hiện một số dự &aacute;n đầu ti&ecirc;n được  ph&ecirc; duyệt, 5 dự &aacute;n được ho&agrave;n thiện để xin cơ chế ưu đ&atilde;i. Tuy nhi&ecirc;n, cho  đến nay tất cả c&aacute;c dự &aacute;n n&agrave;y đều bị &aacute;ch tắc c&oacute; nguy cơ ph&aacute; sản do bị  vướng từ Nghị định 106/2004/CPng&agrave;y 1/4/2004 cuả Ch&iacute;nh phủ về t&iacute;n dụng  đầu tư ph&aacute;t triển của nh&agrave; nước.</span></span></p>',0,'2010-11-27 20:26:45',1,'2010-12-15 00:28:48',0,17,0,0,NULL,NULL,NULL,22,1),(7,'Dự án cơ khí B','du-an-co-khi-b','co_khi',2,'2010-12-23 00:00:00',1500000,3000000,'<p><big><big><span><span style=\"color: #0033cc; font-family: Arial; font-size: x-small;\"><strong>Đ&acirc;y l&agrave; c&aacute;c  dự &aacute;n đ&atilde; được Hội đồng Ch&iacute;nh phủ thẩm tra ph&ecirc; duyệt đầu tư bằng nguồn  vốn vay ưu đ&atilde;i đặc biệt. Tuy nhi&ecirc;n, cho đến nay dự &aacute;n nầy hầu hết vẫn  đang &aacute;n binh bất động.</strong></span></span></big></big></p>\n<p><big><big><span><span style=\"font-family: Arial; font-size: x-small;\">Sau khi lựa chọn, Ban dự &aacute;n cơ kh&iacute;  trọng điểm đ&atilde; quyết định đưa 24 dự &aacute;n v&agrave;o danh mục những Dự &aacute;n cơ kh&iacute;  trọng điểm. Theo đ&oacute;, những dự &aacute;n n&agrave;y được hưởng ưu đ&atilde;i đặc biệt của Nh&agrave;  nước theo Quyết định 186/TTgcủa Thủ tướng Ch&iacute;nh phủ v&agrave; được vay th&ocirc;ng  qua nguồn vốn từ Quỹ Hỗ trợ Ph&aacute;t triển (HTPT) với l&atilde;i suất 3%/năm trong  v&ograve;ng 12 năm (hai năm đầu kh&ocirc;ng phải trả l&atilde;i, trả nợ gốc bắt đầu từ năm  thứ 5). C&oacute; thể n&oacute;i, sau gần 1 năm thực hiện một số dự &aacute;n đầu ti&ecirc;n được  ph&ecirc; duyệt, 5 dự &aacute;n được ho&agrave;n thiện để xin cơ chế ưu đ&atilde;i. Tuy nhi&ecirc;n, cho  đến nay tất cả c&aacute;c dự &aacute;n n&agrave;y đều bị &aacute;ch tắc c&oacute; nguy cơ ph&aacute; sản do bị  vướng từ Nghị định 106/2004/CPng&agrave;y 1/4/2004 cuả Ch&iacute;nh phủ về t&iacute;n dụng  đầu tư ph&aacute;t triển của nh&agrave; nước.</span></span></big></big></p>',20,'2010-11-27 20:42:34',1,'2010-12-17 22:17:45',0,59,1,3500000,9,15,9,21,1),(8,'Dự án kiến trúc A','du-an-kien-truc-a','kien_truc',1,'2010-12-21 00:00:00',5000000,10000000,'<p><strong><span style=\"color: #003300;\">X&acirc;y nh&agrave; l&agrave; một chuyện lớn của đời người,  c&oacute; nhiều việc phải l&agrave;m để c&oacute; một c&ocirc;ng tr&igrave;nh nh&agrave; ở như &yacute;, l&agrave;m sao để bản  thiết kế kiến tr&uacute;c v&agrave; ng&ocirc;i nh&agrave; của bạn đạt đầy đủ c&aacute;c t&iacute;nh chất: tiện  dụng, thẩm mỹ, kinh tế v&agrave; bền vững. Với gợi &yacute; của AHDesign gi&uacute;p c&aacute;c bạn  bớt đi c&aacute;c kh&oacute; khăn ban đầu.</span></strong></p>',21,'2010-11-27 20:44:42',1,'2010-12-15 00:28:30',0,20,1,6000000,9,NULL,NULL,20,1),(9,'Dự án kiến trúc B','du-an-kien-truc-b','kien_truc',3,'2010-12-17 00:00:00',3000000,5000000,'<p><strong><span style=\"color: #003300;\">X&acirc;y nh&agrave; l&agrave; một chuyện lớn của đời người,  c&oacute; nhiều việc phải l&agrave;m để c&oacute; một c&ocirc;ng tr&igrave;nh nh&agrave; ở như &yacute;, l&agrave;m sao để bản  thiết kế kiến tr&uacute;c v&agrave; ng&ocirc;i nh&agrave; của bạn đạt đầy đủ c&aacute;c t&iacute;nh chất: tiện  dụng, thẩm mỹ, kinh tế v&agrave; bền vững. Với gợi &yacute; của AHDesign gi&uacute;p c&aacute;c bạn  bớt đi c&aacute;c kh&oacute; khăn ban đầu.</span></strong></p>',22,'2010-11-27 20:45:30',1,'2010-12-15 00:28:15',0,35,0,0,NULL,NULL,NULL,19,1),(10,'Thiết kế banner A','thiet-ke-banner-a','design',1,'2010-12-22 00:00:00',3000000,5000000,'<span id=\"result_box\" class=\"\" lang=\"vi\"><span title=\"Click for alternate translations\" class=\"hps\">Chúng tôi</span> <span title=\"Click for alternate translations\" class=\"hps\">đang tìm kiếm</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">nhà thiết kế</span> <span title=\"Click for alternate translations\" class=\"hps\">tài năng</span> <span title=\"Click for alternate translations\" class=\"hps\">cho</span> <span title=\"Click for alternate translations\" class=\"hps\">thiết kế lại</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">trang web</span> <span title=\"Click for alternate translations\" class=\"hps atn\">(</span><span title=\"Click for alternate translations\">không phải</span> <span title=\"Click for alternate translations\" class=\"hps\">tổng số</span> <span title=\"Click for alternate translations\" class=\"hps\">từ</span> <span title=\"Click for alternate translations\" class=\"hps\">đầu</span> <span title=\"Click for alternate translations\" class=\"hps\">chỉ</span> <span title=\"Click for alternate translations\" class=\"hps\">để</span> <span title=\"Click for alternate translations\" class=\"hps\">thay đổi</span> <span title=\"Click for alternate translations\" class=\"hps\">nó</span><span title=\"Click for alternate translations\">)</span><span title=\"Click for alternate translations\">,</span> <span title=\"Click for alternate translations\" class=\"hps\">chúng ta cần</span> <span title=\"Click for alternate translations\" class=\"hps\">các</span> <span title=\"Click for alternate translations\" class=\"hps\">trang</span> <span title=\"Click for alternate translations\" class=\"hps\">trước</span> <span title=\"Click for alternate translations\" class=\"hps\">và</span> <span title=\"Click for alternate translations\" class=\"hps\">thiết kế lại</span> <span title=\"Click for alternate translations\" class=\"hps\">trang</span> <span title=\"Click for alternate translations\" class=\"hps\">bên trong</span><span title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Chúng ta</span> <span title=\"Click for alternate translations\" class=\"hps\">cần</span> <span title=\"Click for alternate translations\" class=\"hps\">kết quả</span> <span title=\"Click for alternate translations\" class=\"hps\">theo định dạng</span> <span title=\"Click for alternate translations\" class=\"hps\">psd</span> <span title=\"Click for alternate translations\" class=\"hps\">trong</span> <span title=\"Click for alternate translations\" class=\"hps\">lớp</span><span title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Có</span> <span title=\"Click for alternate translations\" class=\"hps\">3</span> <span title=\"Click for alternate translations\" class=\"hps\">dự án</span> <span title=\"Click for alternate translations\" class=\"hps\">khác nhau</span> <span title=\"Click for alternate translations\" class=\"hps\">để</span> <span title=\"Click for alternate translations\" class=\"hps\">làm gì</span> <span title=\"Click for alternate translations\" class=\"hps\">sau khi</span> <span title=\"Click for alternate translations\" class=\"hps\">lần đầu tiên</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span></span>',23,'2010-11-27 20:46:55',1,'2010-12-17 23:52:30',0,58,0,0,NULL,NULL,NULL,18,1),(11,'Thiết kế banner B','thiet-ke-banner-b','design',3,'2010-12-20 00:00:00',1500000,3000000,'<p>đẹp, bắt mắt</p>',24,'2010-11-27 20:47:08',1,'2010-12-17 23:32:57',0,32,0,0,NULL,NULL,NULL,28,1),(12,'Thiết kế banner Flash','thiet-ke-banner-flash','design',1,'2010-12-18 00:00:00',100000,500000,'<p>helo</p>',0,'2010-11-27 22:59:57',10,'2010-12-15 00:27:50',4,90,3,116333,9,NULL,NULL,16,1),(13,'Xây nhà dân dụng','xay-nha-dan-dung','kien_truc',1,'2010-12-19 00:00:00',5000000,10000000,'<span id=\"result_box\" class=\"\" lang=\"vi\"><span title=\"Click for alternate translations\" class=\"hps\">Xin chào</span> <span title=\"Click for alternate translations\" class=\"hps\">tất cả mọi người</span><span class=\"\" title=\"Click for alternate translations\">,</span><br><br> <span title=\"Click for alternate translations\" class=\"hps\">Tôi</span> <span title=\"Click for alternate translations\" class=\"hps\">đang</span> <span title=\"Click for alternate translations\" class=\"hps\">tìm kiếm</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">đối tác</span> <span title=\"Click for alternate translations\" class=\"hps\">hay</span> <span title=\"Click for alternate translations\" class=\"hps\">đối tác</span> <span title=\"Click for alternate translations\" class=\"hps\">của</span> <span title=\"Click for alternate translations\" class=\"hps\">tài năng</span><span class=\"\" title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Silhouetting</span> <span title=\"Click for alternate translations\" class=\"hps\">kiểm soát</span> <span title=\"Click for alternate translations\" class=\"hps\">trong</span> <span title=\"Click for alternate translations\" class=\"hps\">photoshop</span> <span title=\"Click for alternate translations\" class=\"hps atn\">(</span><span class=\"\" title=\"Click for alternate translations\">với</span> <span title=\"Click for alternate translations\" class=\"hps\">clip</span> <span title=\"Click for alternate translations\" class=\"hps\">con đường</span><span class=\"\" title=\"Click for alternate translations\">, mặt nạ</span><span class=\"\" title=\"Click for alternate translations\">,</span> <span title=\"Click for alternate translations\" class=\"hps\">lớp</span> <span title=\"Click for alternate translations\" class=\"hps\">...).</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Nếu</span> <span title=\"Click for alternate translations\" class=\"hps\">bạn</span> <span title=\"Click for alternate translations\" class=\"hps\">là</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">vị vua</span> <span title=\"Click for alternate translations\" class=\"hps\">của</span> <span title=\"Click for alternate translations\" class=\"hps\">thats</span> <span title=\"Click for alternate translations\" class=\"hps\">chỉnh sửa</span> <span title=\"Click for alternate translations\" class=\"hps\">và</span> <span title=\"Click for alternate translations\" class=\"hps\">hiệu chỉnh màu sắc</span> <span title=\"Click for alternate translations\" class=\"hps\">tốt hơn</span><span class=\"\" title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Bạn phải</span> <span title=\"Click for alternate translations\" class=\"hps\">tương đối</span> <span title=\"Click for alternate translations\" class=\"hps\">có sẵn</span><span class=\"\" title=\"Click for alternate translations\">,</span> <span title=\"Click for alternate translations\" class=\"hps\">như công việc</span> <span title=\"Click for alternate translations\" class=\"hps\">trong tương lai</span> <span title=\"Click for alternate translations\" class=\"hps\">không</span> <span title=\"Click for alternate translations\" class=\"hps\">thể</span> <span title=\"Click for alternate translations\" class=\"hps\">dự báo</span> <span title=\"Click for alternate translations\" class=\"hps\">trước</span> <span title=\"Click for alternate translations\" class=\"hps\">và</span> <span title=\"Click for alternate translations\" class=\"hps\">phải được thực hiện</span> <span title=\"Click for alternate translations\" class=\"hps\">nhanh chóng</span><span class=\"\" title=\"Click for alternate translations\">.</span><br><br> <span title=\"Click for alternate translations\" class=\"hps\">Tôi</span> <span title=\"Click for alternate translations\" class=\"hps\">thực sự</span> <span title=\"Click for alternate translations\" class=\"hps\">exigeant</span><span class=\"\" title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Xin vui lòng</span> <span title=\"Click for alternate translations\" class=\"hps\">thêm</span> <span title=\"Click for alternate translations\" class=\"hps\">các ví dụ</span> <span title=\"Click for alternate translations\" class=\"hps\">về</span> <span title=\"Click for alternate translations\" class=\"hps\">năng lực</span> <span title=\"Click for alternate translations\" class=\"hps\">của bạn</span><span class=\"\" title=\"Click for alternate translations\">!</span></span>',25,'2010-11-28 18:03:02',1,'2010-12-17 22:19:30',0,59,0,0,NULL,NULL,NULL,15,1),(14,'Thiết kế mạch điện cho công ty A','thiet-ke-mach-dien-cho-cong-ty-a','dien_tu',3,'2010-12-18 00:00:00',500000,1500000,'<p>Thiết kế mạch điện cho c&ocirc;ng ty A</p>',26,'2010-11-28 22:30:41',10,'2010-12-15 00:27:28',0,37,2,1000000,9,NULL,NULL,14,1),(15,'Chế bản điện tử','che-ban-dien-tu','dien_tu',4,'2010-12-18 00:00:00',3000000,5000000,'<p>Chế bản điện tử</p>',27,'2010-11-28 22:31:59',10,'2010-12-15 00:27:21',0,90,2,3750000,9,NULL,NULL,13,1),(16,'Dự án test web2','du-an-test-web2','khac',2,'2010-12-28 00:00:00',1500000,3000000,'<p>Dự &aacute;n test website<br />Cần <span style=\"color: #ff0000; font-weight: bold;\">500</span> người<br />Chi tiết vui l&ograve;ng li&ecirc;n hệ số : <span style=\"color: #ff0000; font-weight: bold;\">0973862100</span><br />Thanks!</p>',59,'2010-11-28 23:55:04',15,'2010-12-15 00:27:14',0,105,2,2000000,11,NULL,NULL,12,1),(17,'Xây dựng nhà ở','xay-dung-nha-o','kien_truc',1,'2010-12-16 00:00:00',3000000,5000000,'<p>x&acirc;y dựng nh&agrave; ở</p>',42,'2010-12-01 21:32:14',10,'2010-12-15 00:27:07',0,82,0,0,NULL,NULL,NULL,11,1),(18,'Đồ họa máy tính','do-hoa-may-tinh','design',1,'2010-12-28 00:00:00',3000000,5000000,'<p>Dạy th&ecirc;m <strong><span style=\"color: #990000;\">đồ họa m&aacute;y t&iacute;nh</span></strong>, gi&aacute; <span style=\"color: #33ff33;\"><strong>hấp dẫn</strong></span></p>',46,'2010-12-02 00:14:50',16,'2010-12-23 13:37:05',0,106,0,0,NULL,NULL,NULL,30,1),(19,'Dự án xây dựng đường bộ','du-an-xay-dung-duong-bo','co_khi',1,'2010-12-16 00:00:00',3000000,5000000,'<p>ok, x&acirc;y dựng tuyến đường XYZ</p>',66,'2010-12-05 08:02:34',15,'2010-12-15 00:25:57',0,4,0,0,NULL,NULL,NULL,9,0),(21,'Phần mềm kế toán','phan-mem-ke-toan','cntt',1,'2010-12-24 00:00:00',5000000,10000000,'<p>X&acirc;y dưng phần mềm kế to&aacute;n cho c&ocirc;ng ty ABC</p>',70,'2010-12-11 20:24:00',10,'2010-12-22 16:50:35',0,450,1,500000,8,19,8,8,1),(22,'Dự án Vietnam Idol','du-an-vietnam-idol','cntt',1,'2010-12-23 00:00:00',100000,500000,'Trước giờ công bố kết quả, 3 cô gái trẻ đã được trở về nhà, về trường cũ\r\n và được mọi người đón tiếp rất nồng hậu. \"Đàn chị\" Uyên Linh trở về \r\ntrường PTTH Lê Hồng Phong, TPHCM đã được các đàn em chào đón như cô đã \r\nlà thần tượng âm nhạc. Lều Phương Anh, Mai Hương bay ra Hà Nội&nbsp;gặp lại \r\ngia đình, thầy cô, bạn bè...',0,'2010-12-15 00:39:21',1,'2010-12-17 23:38:34',0,45,4,550000,12,18,12,26,1);
+insert  into `duans`(`id`,`tenduan`,`alias`,`linhvuc_id`,`tinh_id`,`ngayketthuc`,`costmin`,`costmax`,`thongtinchitiet`,`file_id`,`ngaypost`,`account_id`,`timeupdate`,`prior`,`views`,`bidcount`,`averagecost`,`lastbid_nhathau`,`hosothau_id`,`nhathau_id`,`data_id`,`active`) values (1,'dự án long ca','du-an-long-ca','design',1,'2010-11-21 00:00:00',1500000,3000000,'<p>ddad</p>',19,'2010-11-16 00:01:39',1,'2010-12-15 00:29:19',4,0,0,0,NULL,NULL,NULL,25,1),(2,'Thiết kế website mua bán','thiet-ke-website-mua-ban','cntt',1,'2010-12-14 00:00:00',5000000,10000000,'<p>Kinh nghiệm 3 năm thiết kế web</p>',63,'2010-11-16 21:01:29',1,'2010-12-15 23:15:33',3,87,0,0,NULL,NULL,NULL,27,1),(5,'Dự án website','du-an-website','cntt',1,'2010-12-13 00:00:00',3000000,5000000,'<p>test ok lii</p>',65,'2010-11-26 23:17:51',1,'2010-12-15 00:28:56',4,29,0,0,NULL,NULL,NULL,23,1),(6,'Dự án cơ khí A','du-an-co-khi-a','co_khi',1,'2010-12-16 00:00:00',3000000,5000000,'<p><span><span style=\"color: #0033cc; font-family: Arial; font-size: x-small;\"><strong>Đ&acirc;y l&agrave; c&aacute;c  dự &aacute;n đ&atilde; được Hội đồng Ch&iacute;nh phủ thẩm tra ph&ecirc; duyệt đầu tư bằng nguồn  vốn vay ưu đ&atilde;i đặc biệt. Tuy nhi&ecirc;n, cho đến nay dự &aacute;n nầy hầu hết vẫn  đang &aacute;n binh bất động.</strong></span></span></p>\n<p><span><span style=\"font-family: Arial; font-size: x-small;\">Sau khi lựa chọn, Ban dự &aacute;n cơ kh&iacute;  trọng điểm đ&atilde; quyết định đưa 24 dự &aacute;n v&agrave;o danh mục những Dự &aacute;n cơ kh&iacute;  trọng điểm. Theo đ&oacute;, những dự &aacute;n n&agrave;y được hưởng ưu đ&atilde;i đặc biệt của Nh&agrave;  nước theo Quyết định 186/TTgcủa Thủ tướng Ch&iacute;nh phủ v&agrave; được vay th&ocirc;ng  qua nguồn vốn từ Quỹ Hỗ trợ Ph&aacute;t triển (HTPT) với l&atilde;i suất 3%/năm trong  v&ograve;ng 12 năm (hai năm đầu kh&ocirc;ng phải trả l&atilde;i, trả nợ gốc bắt đầu từ năm  thứ 5). C&oacute; thể n&oacute;i, sau gần 1 năm thực hiện một số dự &aacute;n đầu ti&ecirc;n được  ph&ecirc; duyệt, 5 dự &aacute;n được ho&agrave;n thiện để xin cơ chế ưu đ&atilde;i. Tuy nhi&ecirc;n, cho  đến nay tất cả c&aacute;c dự &aacute;n n&agrave;y đều bị &aacute;ch tắc c&oacute; nguy cơ ph&aacute; sản do bị  vướng từ Nghị định 106/2004/CPng&agrave;y 1/4/2004 cuả Ch&iacute;nh phủ về t&iacute;n dụng  đầu tư ph&aacute;t triển của nh&agrave; nước.</span></span></p>',0,'2010-11-27 20:26:45',1,'2010-12-15 00:28:48',0,17,0,0,NULL,NULL,NULL,22,1),(7,'Dự án cơ khí B','du-an-co-khi-b','co_khi',2,'2010-12-23 00:00:00',1500000,3000000,'<p><big><big><span><span style=\"color: #0033cc; font-family: Arial; font-size: x-small;\"><strong>Đ&acirc;y l&agrave; c&aacute;c  dự &aacute;n đ&atilde; được Hội đồng Ch&iacute;nh phủ thẩm tra ph&ecirc; duyệt đầu tư bằng nguồn  vốn vay ưu đ&atilde;i đặc biệt. Tuy nhi&ecirc;n, cho đến nay dự &aacute;n nầy hầu hết vẫn  đang &aacute;n binh bất động.</strong></span></span></big></big></p>\n<p><big><big><span><span style=\"font-family: Arial; font-size: x-small;\">Sau khi lựa chọn, Ban dự &aacute;n cơ kh&iacute;  trọng điểm đ&atilde; quyết định đưa 24 dự &aacute;n v&agrave;o danh mục những Dự &aacute;n cơ kh&iacute;  trọng điểm. Theo đ&oacute;, những dự &aacute;n n&agrave;y được hưởng ưu đ&atilde;i đặc biệt của Nh&agrave;  nước theo Quyết định 186/TTgcủa Thủ tướng Ch&iacute;nh phủ v&agrave; được vay th&ocirc;ng  qua nguồn vốn từ Quỹ Hỗ trợ Ph&aacute;t triển (HTPT) với l&atilde;i suất 3%/năm trong  v&ograve;ng 12 năm (hai năm đầu kh&ocirc;ng phải trả l&atilde;i, trả nợ gốc bắt đầu từ năm  thứ 5). C&oacute; thể n&oacute;i, sau gần 1 năm thực hiện một số dự &aacute;n đầu ti&ecirc;n được  ph&ecirc; duyệt, 5 dự &aacute;n được ho&agrave;n thiện để xin cơ chế ưu đ&atilde;i. Tuy nhi&ecirc;n, cho  đến nay tất cả c&aacute;c dự &aacute;n n&agrave;y đều bị &aacute;ch tắc c&oacute; nguy cơ ph&aacute; sản do bị  vướng từ Nghị định 106/2004/CPng&agrave;y 1/4/2004 cuả Ch&iacute;nh phủ về t&iacute;n dụng  đầu tư ph&aacute;t triển của nh&agrave; nước.</span></span></big></big></p>',20,'2010-11-27 20:42:34',1,'2010-12-17 22:17:45',0,61,1,3500000,9,15,9,21,1),(8,'Dự án kiến trúc A','du-an-kien-truc-a','kien_truc',1,'2010-12-21 00:00:00',5000000,10000000,'<p><strong><span style=\"color: #003300;\">X&acirc;y nh&agrave; l&agrave; một chuyện lớn của đời người,  c&oacute; nhiều việc phải l&agrave;m để c&oacute; một c&ocirc;ng tr&igrave;nh nh&agrave; ở như &yacute;, l&agrave;m sao để bản  thiết kế kiến tr&uacute;c v&agrave; ng&ocirc;i nh&agrave; của bạn đạt đầy đủ c&aacute;c t&iacute;nh chất: tiện  dụng, thẩm mỹ, kinh tế v&agrave; bền vững. Với gợi &yacute; của AHDesign gi&uacute;p c&aacute;c bạn  bớt đi c&aacute;c kh&oacute; khăn ban đầu.</span></strong></p>',21,'2010-11-27 20:44:42',1,'2010-12-15 00:28:30',0,20,1,6000000,9,NULL,NULL,20,1),(9,'Dự án kiến trúc B','du-an-kien-truc-b','kien_truc',3,'2010-12-17 00:00:00',3000000,5000000,'<p><strong><span style=\"color: #003300;\">X&acirc;y nh&agrave; l&agrave; một chuyện lớn của đời người,  c&oacute; nhiều việc phải l&agrave;m để c&oacute; một c&ocirc;ng tr&igrave;nh nh&agrave; ở như &yacute;, l&agrave;m sao để bản  thiết kế kiến tr&uacute;c v&agrave; ng&ocirc;i nh&agrave; của bạn đạt đầy đủ c&aacute;c t&iacute;nh chất: tiện  dụng, thẩm mỹ, kinh tế v&agrave; bền vững. Với gợi &yacute; của AHDesign gi&uacute;p c&aacute;c bạn  bớt đi c&aacute;c kh&oacute; khăn ban đầu.</span></strong></p>',22,'2010-11-27 20:45:30',1,'2010-12-15 00:28:15',0,35,0,0,NULL,NULL,NULL,19,1),(10,'Thiết kế banner A','thiet-ke-banner-a','design',1,'2010-12-22 00:00:00',3000000,5000000,'<span id=\"result_box\" class=\"\" lang=\"vi\"><span title=\"Click for alternate translations\" class=\"hps\">Chúng tôi</span> <span title=\"Click for alternate translations\" class=\"hps\">đang tìm kiếm</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">nhà thiết kế</span> <span title=\"Click for alternate translations\" class=\"hps\">tài năng</span> <span title=\"Click for alternate translations\" class=\"hps\">cho</span> <span title=\"Click for alternate translations\" class=\"hps\">thiết kế lại</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">trang web</span> <span title=\"Click for alternate translations\" class=\"hps atn\">(</span><span title=\"Click for alternate translations\">không phải</span> <span title=\"Click for alternate translations\" class=\"hps\">tổng số</span> <span title=\"Click for alternate translations\" class=\"hps\">từ</span> <span title=\"Click for alternate translations\" class=\"hps\">đầu</span> <span title=\"Click for alternate translations\" class=\"hps\">chỉ</span> <span title=\"Click for alternate translations\" class=\"hps\">để</span> <span title=\"Click for alternate translations\" class=\"hps\">thay đổi</span> <span title=\"Click for alternate translations\" class=\"hps\">nó</span><span title=\"Click for alternate translations\">)</span><span title=\"Click for alternate translations\">,</span> <span title=\"Click for alternate translations\" class=\"hps\">chúng ta cần</span> <span title=\"Click for alternate translations\" class=\"hps\">các</span> <span title=\"Click for alternate translations\" class=\"hps\">trang</span> <span title=\"Click for alternate translations\" class=\"hps\">trước</span> <span title=\"Click for alternate translations\" class=\"hps\">và</span> <span title=\"Click for alternate translations\" class=\"hps\">thiết kế lại</span> <span title=\"Click for alternate translations\" class=\"hps\">trang</span> <span title=\"Click for alternate translations\" class=\"hps\">bên trong</span><span title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Chúng ta</span> <span title=\"Click for alternate translations\" class=\"hps\">cần</span> <span title=\"Click for alternate translations\" class=\"hps\">kết quả</span> <span title=\"Click for alternate translations\" class=\"hps\">theo định dạng</span> <span title=\"Click for alternate translations\" class=\"hps\">psd</span> <span title=\"Click for alternate translations\" class=\"hps\">trong</span> <span title=\"Click for alternate translations\" class=\"hps\">lớp</span><span title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Có</span> <span title=\"Click for alternate translations\" class=\"hps\">3</span> <span title=\"Click for alternate translations\" class=\"hps\">dự án</span> <span title=\"Click for alternate translations\" class=\"hps\">khác nhau</span> <span title=\"Click for alternate translations\" class=\"hps\">để</span> <span title=\"Click for alternate translations\" class=\"hps\">làm gì</span> <span title=\"Click for alternate translations\" class=\"hps\">sau khi</span> <span title=\"Click for alternate translations\" class=\"hps\">lần đầu tiên</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span></span>',23,'2010-11-27 20:46:55',1,'2010-12-17 23:52:30',0,58,0,0,NULL,NULL,NULL,18,1),(11,'Thiết kế banner B','thiet-ke-banner-b','design',3,'2010-12-20 00:00:00',1500000,3000000,'<p>đẹp, bắt mắt</p>',24,'2010-11-27 20:47:08',1,'2010-12-17 23:32:57',0,32,0,0,NULL,NULL,NULL,28,1),(12,'Thiết kế banner Flash','thiet-ke-banner-flash','design',1,'2010-12-18 00:00:00',100000,500000,'<p>helo</p>',0,'2010-11-27 22:59:57',10,'2010-12-15 00:27:50',4,93,3,116333,9,NULL,NULL,16,1),(13,'Xây nhà dân dụng','xay-nha-dan-dung','kien_truc',1,'2010-12-19 00:00:00',5000000,10000000,'<span id=\"result_box\" class=\"\" lang=\"vi\"><span title=\"Click for alternate translations\" class=\"hps\">Xin chào</span> <span title=\"Click for alternate translations\" class=\"hps\">tất cả mọi người</span><span class=\"\" title=\"Click for alternate translations\">,</span><br><br> <span title=\"Click for alternate translations\" class=\"hps\">Tôi</span> <span title=\"Click for alternate translations\" class=\"hps\">đang</span> <span title=\"Click for alternate translations\" class=\"hps\">tìm kiếm</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">đối tác</span> <span title=\"Click for alternate translations\" class=\"hps\">hay</span> <span title=\"Click for alternate translations\" class=\"hps\">đối tác</span> <span title=\"Click for alternate translations\" class=\"hps\">của</span> <span title=\"Click for alternate translations\" class=\"hps\">tài năng</span><span class=\"\" title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Silhouetting</span> <span title=\"Click for alternate translations\" class=\"hps\">kiểm soát</span> <span title=\"Click for alternate translations\" class=\"hps\">trong</span> <span title=\"Click for alternate translations\" class=\"hps\">photoshop</span> <span title=\"Click for alternate translations\" class=\"hps atn\">(</span><span class=\"\" title=\"Click for alternate translations\">với</span> <span title=\"Click for alternate translations\" class=\"hps\">clip</span> <span title=\"Click for alternate translations\" class=\"hps\">con đường</span><span class=\"\" title=\"Click for alternate translations\">, mặt nạ</span><span class=\"\" title=\"Click for alternate translations\">,</span> <span title=\"Click for alternate translations\" class=\"hps\">lớp</span> <span title=\"Click for alternate translations\" class=\"hps\">...).</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Nếu</span> <span title=\"Click for alternate translations\" class=\"hps\">bạn</span> <span title=\"Click for alternate translations\" class=\"hps\">là</span> <span title=\"Click for alternate translations\" class=\"hps\">một</span> <span title=\"Click for alternate translations\" class=\"hps\">vị vua</span> <span title=\"Click for alternate translations\" class=\"hps\">của</span> <span title=\"Click for alternate translations\" class=\"hps\">thats</span> <span title=\"Click for alternate translations\" class=\"hps\">chỉnh sửa</span> <span title=\"Click for alternate translations\" class=\"hps\">và</span> <span title=\"Click for alternate translations\" class=\"hps\">hiệu chỉnh màu sắc</span> <span title=\"Click for alternate translations\" class=\"hps\">tốt hơn</span><span class=\"\" title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Bạn phải</span> <span title=\"Click for alternate translations\" class=\"hps\">tương đối</span> <span title=\"Click for alternate translations\" class=\"hps\">có sẵn</span><span class=\"\" title=\"Click for alternate translations\">,</span> <span title=\"Click for alternate translations\" class=\"hps\">như công việc</span> <span title=\"Click for alternate translations\" class=\"hps\">trong tương lai</span> <span title=\"Click for alternate translations\" class=\"hps\">không</span> <span title=\"Click for alternate translations\" class=\"hps\">thể</span> <span title=\"Click for alternate translations\" class=\"hps\">dự báo</span> <span title=\"Click for alternate translations\" class=\"hps\">trước</span> <span title=\"Click for alternate translations\" class=\"hps\">và</span> <span title=\"Click for alternate translations\" class=\"hps\">phải được thực hiện</span> <span title=\"Click for alternate translations\" class=\"hps\">nhanh chóng</span><span class=\"\" title=\"Click for alternate translations\">.</span><br><br> <span title=\"Click for alternate translations\" class=\"hps\">Tôi</span> <span title=\"Click for alternate translations\" class=\"hps\">thực sự</span> <span title=\"Click for alternate translations\" class=\"hps\">exigeant</span><span class=\"\" title=\"Click for alternate translations\">.</span><br> <span title=\"Click for alternate translations\" class=\"hps\">Xin vui lòng</span> <span title=\"Click for alternate translations\" class=\"hps\">thêm</span> <span title=\"Click for alternate translations\" class=\"hps\">các ví dụ</span> <span title=\"Click for alternate translations\" class=\"hps\">về</span> <span title=\"Click for alternate translations\" class=\"hps\">năng lực</span> <span title=\"Click for alternate translations\" class=\"hps\">của bạn</span><span class=\"\" title=\"Click for alternate translations\">!</span></span>',25,'2010-11-28 18:03:02',1,'2010-12-17 22:19:30',0,59,0,0,NULL,NULL,NULL,15,1),(14,'Thiết kế mạch điện cho công ty A','thiet-ke-mach-dien-cho-cong-ty-a','dien_tu',3,'2010-12-18 00:00:00',500000,1500000,'<p>Thiết kế mạch điện cho c&ocirc;ng ty A</p>',26,'2010-11-28 22:30:41',10,'2010-12-15 00:27:28',0,37,2,1000000,9,NULL,NULL,14,1),(15,'Chế bản điện tử','che-ban-dien-tu','dien_tu',4,'2010-12-18 00:00:00',3000000,5000000,'<p>Chế bản điện tử</p>',27,'2010-11-28 22:31:59',10,'2010-12-15 00:27:21',0,90,2,3750000,9,NULL,NULL,13,1),(16,'Dự án test web2','du-an-test-web2','khac',2,'2010-12-28 00:00:00',1500000,3000000,'<p>Dự &aacute;n test website<br />Cần <span style=\"color: #ff0000; font-weight: bold;\">500</span> người<br />Chi tiết vui l&ograve;ng li&ecirc;n hệ số : <span style=\"color: #ff0000; font-weight: bold;\">0973862100</span><br />Thanks!</p>',59,'2010-11-28 23:55:04',15,'2010-12-15 00:27:14',0,118,1,2000000,15,NULL,NULL,12,1),(17,'Xây dựng nhà ở','xay-dung-nha-o','kien_truc',1,'2010-12-16 00:00:00',3000000,5000000,'<p>x&acirc;y dựng nh&agrave; ở</p>',42,'2010-12-01 21:32:14',10,'2010-12-15 00:27:07',0,82,0,0,NULL,NULL,NULL,11,1),(18,'Đồ họa máy tính','do-hoa-may-tinh','design',1,'2010-12-28 00:00:00',3000000,5000000,'<p>Dạy th&ecirc;m <strong><span style=\"color: #990000;\">đồ họa m&aacute;y t&iacute;nh</span></strong>, gi&aacute; <span style=\"color: #33ff33;\"><strong>hấp dẫn</strong></span></p>',46,'2010-12-02 00:14:50',16,'2010-12-23 13:37:05',0,118,1,500,15,NULL,NULL,30,1),(19,'Dự án xây dựng đường bộ','du-an-xay-dung-duong-bo','co_khi',1,'2010-12-16 00:00:00',3000000,5000000,'<p>ok, x&acirc;y dựng tuyến đường XYZ</p>',66,'2010-12-05 08:02:34',15,'2010-12-15 00:25:57',0,4,0,0,NULL,NULL,NULL,9,0),(21,'Phần mềm kế toán','phan-mem-ke-toan','cntt',1,'2010-12-24 00:00:00',5000000,10000000,'<p>X&acirc;y dưng phần mềm kế to&aacute;n cho c&ocirc;ng ty ABC</p>',70,'2010-12-11 20:24:00',10,'2010-12-22 16:50:35',0,451,1,500000,8,19,8,8,1),(22,'Dự án Vietnam Idol','du-an-vietnam-idol','cntt',1,'2010-12-23 00:00:00',100000,500000,'Trước giờ công bố kết quả, 3 cô gái trẻ đã được trở về nhà, về trường cũ\r\n và được mọi người đón tiếp rất nồng hậu. \"Đàn chị\" Uyên Linh trở về \r\ntrường PTTH Lê Hồng Phong, TPHCM đã được các đàn em chào đón như cô đã \r\nlà thần tượng âm nhạc. Lều Phương Anh, Mai Hương bay ra Hà Nội&nbsp;gặp lại \r\ngia đình, thầy cô, bạn bè...',0,'2010-12-15 00:39:21',1,'2010-12-17 23:38:34',0,53,4,550000,12,18,12,26,1);
 
 /*Table structure for table `duanskills` */
 
 DROP TABLE IF EXISTS `duanskills`;
 
 CREATE TABLE `duanskills` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `duan_id` bigint(20) default NULL,
-  `skill_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `duan_id` bigint(20) DEFAULT NULL,
+  `skill_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_duanskills_skills` (`skill_id`),
   KEY `FK_duanskills_duan` (`duan_id`),
   CONSTRAINT `FK_duanskills_duan` FOREIGN KEY (`duan_id`) REFERENCES `duans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -145,13 +148,13 @@ insert  into `duanskills`(`id`,`duan_id`,`skill_id`) values (21,9,13),(26,12,9),
 DROP TABLE IF EXISTS `files`;
 
 CREATE TABLE `files` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `filename` varchar(255) character set utf8 default NULL,
-  `fileurl` varchar(255) default NULL,
-  `account_id` bigint(20) default NULL,
-  `account_share` bigint(20) default NULL,
-  `status` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `fileurl` varchar(255) DEFAULT NULL,
+  `account_id` bigint(20) DEFAULT NULL,
+  `account_share` bigint(20) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
 
 /*Data for the table `files` */
@@ -163,38 +166,35 @@ insert  into `files`(`id`,`filename`,`fileurl`,`account_id`,`account_share`,`sta
 DROP TABLE IF EXISTS `hosothaus`;
 
 CREATE TABLE `hosothaus` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `giathau` bigint(20) default NULL,
-  `milestone` int(11) default NULL,
-  `thoigian` int(11) default NULL,
-  `content` text character set utf8,
-  `ngaygui` datetime default NULL,
-  `file_id` bigint(20) default NULL,
-  `nhathau_id` bigint(20) default NULL,
-  `duan_id` bigint(20) default NULL,
-  `trangthai` int(11) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `giathau` bigint(20) DEFAULT NULL,
+  `milestone` int(11) DEFAULT NULL,
+  `thoigian` int(11) DEFAULT NULL,
+  `content` text CHARACTER SET utf8,
+  `ngaygui` datetime DEFAULT NULL,
+  `nhathau_id` bigint(20) DEFAULT NULL,
+  `duan_id` bigint(20) DEFAULT NULL,
+  `trangthai` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_bids_duans` (`duan_id`),
   KEY `FK_hosothaus_nhathaus` (`nhathau_id`),
-  KEY `FK_hosothaus_files` (`file_id`),
   CONSTRAINT `FK_bids_duans` FOREIGN KEY (`duan_id`) REFERENCES `duans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_hosothaus_files` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_hosothaus_nhathaus` FOREIGN KEY (`nhathau_id`) REFERENCES `nhathaus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 /*Data for the table `hosothaus` */
 
-insert  into `hosothaus`(`id`,`giathau`,`milestone`,`thoigian`,`content`,`ngaygui`,`file_id`,`nhathau_id`,`duan_id`,`trangthai`) values (3,2000000,50,5,'vui long xem ho so cua toi','2010-12-17 21:29:35',0,12,16,1),(4,4000000,60,8,'Let\'s start ! can be done more detail in pm ','2010-12-17 21:30:37',0,12,15,1),(5,1000000,50,1,'Kindly check your Pm Thanks. ','2010-12-17 21:31:13',0,12,14,1),(6,100000,0,1,'Hi! I am really interested in taking up the project. Please view my PM for details. Thanks','2010-12-17 21:31:48',0,12,12,1),(16,600000,50,3,'Hi, Im a 10 + tuổi có kinh nghiệm chuyên gia photoshop hình ảnh kỹ thuật số. Tôi muốn làm việc trên các dự án tương lai của bạn. Xem Ban QLDA. cảm ơn, byron','2010-12-17 23:12:58',73,18,22,1),(18,550000,40,2,'hãy kiểm tra thankks Ban QLDA','2010-12-17 23:22:04',75,12,22,2),(19,500000,50,3,'da','2010-12-22 16:30:57',0,8,21,2);
+insert  into `hosothaus`(`id`,`giathau`,`milestone`,`thoigian`,`content`,`ngaygui`,`nhathau_id`,`duan_id`,`trangthai`) values (3,2000000,50,5,'vui long xem ho so cua toi','2010-12-17 21:29:35',12,16,1),(4,4000000,60,8,'Let\'s start ! can be done more detail in pm ','2010-12-17 21:30:37',12,15,1),(5,1000000,50,1,'Kindly check your Pm Thanks. ','2010-12-17 21:31:13',12,14,1),(6,100000,50,1,'Hi! Tôi thực sự quan tâm tham gia lập dự án. Xin vui lòng xem PM của tôi để biết chi tiết. Cảm ơn','2010-12-17 21:31:48',12,12,1),(16,600000,50,3,'Hi, Im a 10 + tuổi có kinh nghiệm chuyên gia photoshop hình ảnh kỹ thuật số. Tôi muốn làm việc trên các dự án tương lai của bạn. Xem Ban QLDA. cảm ơn, byron','2010-12-17 23:12:58',18,22,1),(18,550000,40,2,'hãy kiểm tra thankks Ban QLDA','2010-12-17 23:22:04',12,22,2),(19,500000,50,3,'da','2010-12-22 16:30:57',8,21,2),(21,500,NULL,1,'chuyên gia trong wordpress / php / công trình html, chỉnh bổ sung và lập trình có thể được thực hiện theo yêu cầu của bạn có thể làm perfeclty công việc của bạn, đã thực hiện nhiều dự án tương tự, có thể cung cấp u với w3c xác nhận, css dựa trên bố trí, qua trình duyệt hỗ trợ, tablelesss, gọn gàng và mã css sạch, mã được tối ưu hóa seo, plz thấy chiều để đánh giá công việc của tôi','2010-12-24 15:22:41',15,18,1);
 
 /*Table structure for table `images` */
 
 DROP TABLE IF EXISTS `images`;
 
 CREATE TABLE `images` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `filename` varchar(50) default NULL,
-  `fileurl` varchar(500) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(50) DEFAULT NULL,
+  `fileurl` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 /*Data for the table `images` */
@@ -206,10 +206,10 @@ insert  into `images`(`id`,`filename`,`fileurl`) values (1,'1287474677_e2nz.png'
 DROP TABLE IF EXISTS `linhvucs`;
 
 CREATE TABLE `linhvucs` (
-  `id` varchar(100) character set ascii NOT NULL,
-  `tenlinhvuc` varchar(100) default NULL,
-  `soduan` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` varchar(100) CHARACTER SET ascii NOT NULL,
+  `tenlinhvuc` varchar(100) DEFAULT NULL,
+  `soduan` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `linhvucs` */
@@ -222,11 +222,11 @@ DROP TABLE IF EXISTS `menus`;
 
 CREATE TABLE `menus` (
   `id` varchar(50) NOT NULL,
-  `name` varchar(50) default NULL,
-  `url` varchar(500) default NULL,
-  `order` int(11) default NULL,
-  `active` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
+  `name` varchar(50) DEFAULT NULL,
+  `url` varchar(500) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `menus` */
@@ -238,12 +238,12 @@ insert  into `menus`(`id`,`name`,`url`,`order`,`active`) values ('home','Trang C
 DROP TABLE IF EXISTS `messages`;
 
 CREATE TABLE `messages` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `thongdiep` text character set utf8,
-  `time` datetime default NULL,
-  `account_id` bigint(20) default NULL,
-  `duan_id` bigint(20) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `thongdiep` text CHARACTER SET utf8,
+  `time` datetime DEFAULT NULL,
+  `account_id` bigint(20) DEFAULT NULL,
+  `duan_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `messages` */
@@ -253,10 +253,10 @@ CREATE TABLE `messages` (
 DROP TABLE IF EXISTS `nhathaulinhvucs`;
 
 CREATE TABLE `nhathaulinhvucs` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `nhathau_id` bigint(20) default NULL,
-  `linhvuc_id` varchar(100) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `nhathau_id` bigint(20) DEFAULT NULL,
+  `linhvuc_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_nhathaulinhvucs_nhathaus` (`nhathau_id`),
   CONSTRAINT `FK_nhathaulinhvucs_nhathaus` FOREIGN KEY (`nhathau_id`) REFERENCES `nhathaus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=latin1;
@@ -270,19 +270,20 @@ insert  into `nhathaulinhvucs`(`id`,`nhathau_id`,`linhvuc_id`) values (91,NULL,'
 DROP TABLE IF EXISTS `nhathaus`;
 
 CREATE TABLE `nhathaus` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `displayname` varchar(255) character set utf8 default NULL,
-  `motachitiet` text character set utf8,
-  `gpkd_cmnd` varchar(100) character set utf8 default NULL,
-  `birthyear` int(11) default NULL,
-  `diachilienhe` varchar(255) character set utf8 default NULL,
-  `file_id` bigint(20) default NULL,
-  `account_id` bigint(20) default NULL,
-  `diemdanhgia` int(11) default NULL,
-  `nhanemail` tinyint(1) default NULL,
-  `income` bigint(20) default NULL,
-  `type` int(11) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `displayname` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `motachitiet` text CHARACTER SET utf8,
+  `gpkd_cmnd` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `birthyear` int(11) DEFAULT NULL,
+  `diachilienhe` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `file_id` bigint(20) DEFAULT NULL,
+  `account_id` bigint(20) DEFAULT NULL,
+  `diemdanhgia` int(11) DEFAULT NULL,
+  `nhanemail` tinyint(1) DEFAULT NULL,
+  `income` bigint(20) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_hosonhathaus_files` (`file_id`),
   KEY `FK_nhathaus_accounts` (`account_id`),
   CONSTRAINT `FK_hosonhathaus_files` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -291,22 +292,22 @@ CREATE TABLE `nhathaus` (
 
 /*Data for the table `nhathaus` */
 
-insert  into `nhathaus`(`id`,`displayname`,`motachitiet`,`gpkd_cmnd`,`birthyear`,`diachilienhe`,`file_id`,`account_id`,`diemdanhgia`,`nhanemail`,`income`,`type`) values (8,'Công ty TNHH ABC','<p class=\"pHead\" style=\"font-weight: bold; color: #003300;\">SGTT.VN - Ng&agrave;y 2.12, tin từ C&ocirc;ng an th&agrave;nh phố Hải Ph&ograve;ng  cho biết người điều khiển xe đ&atilde; c&aacute;n chết một thanh ni&ecirc;n tại chỗ v&agrave; l&agrave;m  một người kh&aacute;c bị thương nặng đ&ecirc;m 27.11 l&agrave; trung t&aacute; Nguyễn Thị Lan Anh,  ph&oacute; trưởng ph&ograve;ng PA 65 C&ocirc;ng an Hải Ph&ograve;ng.</p>\n<p class=\"pBody\">Trung t&aacute; Nguyễn Thị Lan Anh (sinh năm 1972), ph&oacute; trưởng  ph&ograve;ng PA 65, C&ocirc;ng an Hải Ph&ograve;ng l&agrave; người điều khiển chiếc xe Kia Morning  biển số 16N - 2992 g&acirc;y tai nạn l&agrave;m anh Nguyễn T&acirc;n Cương (sinh năm 1983)  thiệt mạng v&agrave; anh Đỗ Văn Hiệp (sinh năm 1985 c&ugrave;ng tr&uacute; tại phường Ngọc  Hải, quận Đồ Sơn) bị thương trong đ&ecirc;m 27.11 tại Đồ Sơn.</p>','KOD 2212',NULL,NULL,52,1,4,1,NULL,2),(12,'Công ty TNHH Tuấn Ngọc Production','<P>Trẻ trung và thời trang, đó là phong cách đẳng cấp của <STRONG><FONT color=#33cc00>Tuấn Ngọc Production</FONT></STRONG></P>','KD 2010',2005,'233 Điện Biên Phủ',61,18,5,1,NULL,2),(14,'Tuấn Hưng','Tôi là Tuấn Hưng',NULL,NULL,NULL,68,20,0,1,NULL,1),(15,'Chí Long 2','<P>Nhan thiet ke web chuyen nghiep gia re</P>','225320320',1986,NULL,71,10,3,1,NULL,1),(18,'Công ty TNHH Tuấn Ngọc 2','Hồ sơ năng lực nhà thầu: Giấy phép đại lý độc quyền của nhà sản xuất, giấy đăng kí kinh doanh, kèm theo tài liệu chứng minh tư cách hợp lệ, kinh nghiệm và năng lực của nhà thầu. Giới thiệu các hợp đồng tương tự đã và đang thực hiện trong 3 năm gần đây: 2008, 2009 và 2010','KD4 2005',NULL,NULL,72,19,0,1,NULL,2),(21,'Lê Văn A','<P>Góp phần trong thực hiện nghiên cứu nói trên về phía Việt Nam, nguyên thứ trưởng bộ Tài nguyên - môi trường Đặng Hùng Võ cho biết, với 600 ý kiến của cán bộ cấp huyện, tỉnh, đại diện doanh nghiệp, người dân… của năm tỉnh, có thể thấy rằng, tham nhũng phổ biến nhất trong đất đai liên quan đến những người trung gian, hay còn gọi là “cò” đất.</P>\r\n<P>Loại tham nhũng này làm trì trệ thủ tục cấp giấy chứng nhận lần đầu, cũng như đăng ký các giao dịch về bất động sản. Người dân thường phải sử dụng dịch vụ “cò”, để làm nhanh thủ tục.<BR></P>','223443214',1966,'456 Hoang Hoa Tham',76,15,0,NULL,NULL,1),(22,'long','ddw','1234432',1989,'543 npt',0,22,0,1,NULL,1);
+insert  into `nhathaus`(`id`,`displayname`,`motachitiet`,`gpkd_cmnd`,`birthyear`,`diachilienhe`,`file_id`,`account_id`,`diemdanhgia`,`nhanemail`,`income`,`type`,`status`) values (8,'Công ty TNHH ABC','<p class=\"pHead\" style=\"font-weight: bold; color: #003300;\">SGTT.VN - Ng&agrave;y 2.12, tin từ C&ocirc;ng an th&agrave;nh phố Hải Ph&ograve;ng  cho biết người điều khiển xe đ&atilde; c&aacute;n chết một thanh ni&ecirc;n tại chỗ v&agrave; l&agrave;m  một người kh&aacute;c bị thương nặng đ&ecirc;m 27.11 l&agrave; trung t&aacute; Nguyễn Thị Lan Anh,  ph&oacute; trưởng ph&ograve;ng PA 65 C&ocirc;ng an Hải Ph&ograve;ng.</p>\n<p class=\"pBody\">Trung t&aacute; Nguyễn Thị Lan Anh (sinh năm 1972), ph&oacute; trưởng  ph&ograve;ng PA 65, C&ocirc;ng an Hải Ph&ograve;ng l&agrave; người điều khiển chiếc xe Kia Morning  biển số 16N - 2992 g&acirc;y tai nạn l&agrave;m anh Nguyễn T&acirc;n Cương (sinh năm 1983)  thiệt mạng v&agrave; anh Đỗ Văn Hiệp (sinh năm 1985 c&ugrave;ng tr&uacute; tại phường Ngọc  Hải, quận Đồ Sơn) bị thương trong đ&ecirc;m 27.11 tại Đồ Sơn.</p>','KOD 2212',NULL,NULL,52,1,4,1,NULL,2,1),(12,'Công ty TNHH Tuấn Ngọc Production','<P>Trẻ trung và thời trang, đó là phong cách đẳng cấp của <STRONG><FONT color=#33cc00>Tuấn Ngọc Production</FONT></STRONG></P>','KD 2010',2005,'233 Điện Biên Phủ',61,18,5,1,NULL,2,1),(14,'Tuấn Hưng','Tôi là Tuấn Hưng',NULL,NULL,NULL,68,20,0,1,NULL,1,1),(15,'Chí Long 2','<P>Nhan thiet ke web chuyen nghiep gia re</P>','225320320',1986,NULL,71,10,3,1,NULL,1,1),(18,'Công ty TNHH Tuấn Ngọc 2','Hồ sơ năng lực nhà thầu: Giấy phép đại lý độc quyền của nhà sản xuất, giấy đăng kí kinh doanh, kèm theo tài liệu chứng minh tư cách hợp lệ, kinh nghiệm và năng lực của nhà thầu. Giới thiệu các hợp đồng tương tự đã và đang thực hiện trong 3 năm gần đây: 2008, 2009 và 2010','KD4 2005',NULL,NULL,72,19,0,1,NULL,2,1),(21,'Lê Văn A','<P>Góp phần trong thực hiện nghiên cứu nói trên về phía Việt Nam, nguyên thứ trưởng bộ Tài nguyên - môi trường Đặng Hùng Võ cho biết, với 600 ý kiến của cán bộ cấp huyện, tỉnh, đại diện doanh nghiệp, người dân… của năm tỉnh, có thể thấy rằng, tham nhũng phổ biến nhất trong đất đai liên quan đến những người trung gian, hay còn gọi là “cò” đất.</P>\r\n<P>Loại tham nhũng này làm trì trệ thủ tục cấp giấy chứng nhận lần đầu, cũng như đăng ký các giao dịch về bất động sản. Người dân thường phải sử dụng dịch vụ “cò”, để làm nhanh thủ tục.<BR></P>','223443214',1966,'456 Hoang Hoa Tham',76,15,0,NULL,NULL,1,1),(22,'long','ddw','1234432',1989,'543 npt',0,22,0,1,NULL,1,1);
 
 /*Table structure for table `pages` */
 
 DROP TABLE IF EXISTS `pages`;
 
 CREATE TABLE `pages` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `alias` varchar(255) default NULL,
-  `title` varchar(255) default NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `content` text,
-  `datemodified` datetime default NULL,
-  `usermodified` varchar(100) default NULL,
-  `menu_id` varchar(50) default '0',
-  `active` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
+  `datemodified` datetime DEFAULT NULL,
+  `usermodified` varchar(100) DEFAULT NULL,
+  `menu_id` varchar(50) DEFAULT '0',
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 /*Data for the table `pages` */
@@ -318,14 +319,14 @@ insert  into `pages`(`id`,`alias`,`title`,`content`,`datemodified`,`usermodified
 DROP TABLE IF EXISTS `resetpasswords`;
 
 CREATE TABLE `resetpasswords` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `account_id` bigint(20) default NULL,
-  `times` int(11) default NULL,
-  `verify` varchar(20) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) DEFAULT NULL,
+  `times` int(11) DEFAULT NULL,
+  `verify` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK_resetpasswords_accounts` (`account_id`),
   CONSTRAINT `FK_resetpasswords_accounts` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `resetpasswords` */
 
@@ -334,11 +335,11 @@ CREATE TABLE `resetpasswords` (
 DROP TABLE IF EXISTS `sendmails`;
 
 CREATE TABLE `sendmails` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `to` varchar(100) default NULL,
-  `subject` varchar(255) default NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `to` varchar(100) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
   `content` text,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `sendmails` */
@@ -350,10 +351,10 @@ insert  into `sendmails`(`id`,`to`,`subject`,`content`) values (2,'test4@gmail.c
 DROP TABLE IF EXISTS `skills`;
 
 CREATE TABLE `skills` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `skillname` varchar(100) character set utf8 default NULL,
-  `linhvuc_id` varchar(100) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `skillname` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `linhvuc_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `skills` */
@@ -378,29 +379,45 @@ insert  into `tests`(`test`) values ('MySQL 5.0\r\nTable default charset UTF8\r\
 DROP TABLE IF EXISTS `tinhs`;
 
 CREATE TABLE `tinhs` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `tentinh` varchar(100) character set utf8 default NULL,
-  PRIMARY KEY  (`id`)
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `tentinh` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tinhs` */
 
 insert  into `tinhs`(`id`,`tentinh`) values (1,'TP Hồ Chí Minh'),(2,'Hà Nội'),(3,'Đà Nẵng'),(4,'Khánh Hòa');
 
+/*Table structure for table `violations` */
+
+DROP TABLE IF EXISTS `violations`;
+
+CREATE TABLE `violations` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `url` varchar(255) DEFAULT NULL,
+  `account_id` bigint(20) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_violations_accounts` (`account_id`),
+  CONSTRAINT `FK_violations_accounts` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `violations` */
+
 /*Table structure for table `widgets` */
 
 DROP TABLE IF EXISTS `widgets`;
 
 CREATE TABLE `widgets` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `name` varchar(50) default NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
   `content` text,
-  `position` varchar(50) default NULL,
-  `order` int(11) default NULL,
-  `iscomponent` tinyint(1) default NULL,
-  `showtitle` tinyint(1) default '1',
-  `active` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
+  `position` varchar(50) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `iscomponent` tinyint(1) DEFAULT NULL,
+  `showtitle` tinyint(1) DEFAULT '1',
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 /*Data for the table `widgets` */
