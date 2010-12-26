@@ -63,11 +63,12 @@ class HosothauController extends VanillaController {
 	function listHosothau($ipageindex) {
 		//die("ERROR_NOTLOGIN");
 		$this->checkAdmin();
-		$this->hosothau->showHasOne(array("duan"));
+		$this->hosothau->showHasOne(array("duan",'nhathau'));
+		$this->hosothau->hasJoin(array("nhathau"),array('account'));
 		$this->hosothau->orderBy('hosothau.id','desc');
 		$this->hosothau->setPage($ipageindex);
 		$this->hosothau->setLimit(PAGINATE_LIMIT);
-		$lstHosothau = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,content,ngaygui,tenduan,duan.id,hosothau.trangthai');
+		$lstHosothau = $this->hosothau->search('hosothau.id,username,giathau,milestone,thoigian,content,ngaygui,tenduan,duan.id,hosothau.trangthai,nhathau.id');
 		$totalPages = $this->hosothau->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -93,6 +94,8 @@ class HosothauController extends VanillaController {
 			$milestone = $_POST["hosothau_milestone"];
 			$content = $_POST["hosothau_content"];
 			$trangthai = $_POST["hosothau_trangthai"];
+			$duan_id = $_POST["duan_id"];
+			$nhathau_id = $_POST["nhathau_id"];
 			if($id==null) { //insert
 				die("ERROR_SYSTEM");						
 			} 
@@ -103,6 +106,40 @@ class HosothauController extends VanillaController {
 			$this->hosothau->content = $content;
 			$this->hosothau->trangthai = $trangthai;
 			$this->hosothau->update();
+			//Update bidcount va averagecost cho du an
+			$data = $this->hosothau->custom("select count(*) as bidcount,sum(giathau) as total from hosothaus as hosothau where trangthai>=0 and duan_id=$duan_id");
+			$this->setModel("duan");
+			$this->duan->id = $duan_id;
+			$duan = $this->duan->search('lastbid_nhathau,hosothau_id,nhathau_id');
+			if(empty($duan))
+				die("ERROR_SYSTEM");
+			$this->duan->id = $duan_id;
+			$this->duan->bidcount = $data[0][""]["bidcount"];
+			if($data[0][""]["bidcount"]==0) {
+				$this->duan->averagecost = 0;
+			} else {
+				$this->duan->averagecost = round($data[0][""]["total"] / $data[0][""]["bidcount"]);
+			}
+			
+			if($trangthai==-1) {
+				if($nhathau_id == $duan['duan']['lastbid_nhathau'])
+					$this->duan->lastbid_nhathau = '';
+				if($id == $duan['duan']['hosothau_id']) {
+					$this->duan->hosothau_id = '';
+					if($nhathau_id == $duan['duan']['nhathau_id'])
+						$this->duan->nhathau_id = '';
+				}
+			} else if($trangthai == 1) {
+				if($id == $duan['duan']['hosothau_id']) {
+					$this->duan->hosothau_id = '';
+					if($nhathau_id == $duan['duan']['nhathau_id'])
+						$this->duan->nhathau_id = '';
+				}
+			} else {
+				$this->duan->hosothau_id = $id;
+				$this->duan->nhathau_id = $nhathau_id;
+			}
+			$this->duan->update();
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -178,7 +215,7 @@ class HosothauController extends VanillaController {
 			$this->hosothau->ngaygui = GetDateSQL();
 			$this->hosothau->trangthai = 1;
 			$this->hosothau->insert();
-			$data = $this->hosothau->custom("select count(*) as bidcount,sum(giathau) as total from hosothaus as hosothau where duan_id=$duan_id");
+			$data = $this->hosothau->custom("select count(*) as bidcount,sum(giathau) as total from hosothaus as hosothau where trangthai>=0 and duan_id=$duan_id");
 			//Update bidcount cua du an
 			$this->setModel("duan");
 			$this->duan->id = $duan_id;

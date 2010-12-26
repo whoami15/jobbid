@@ -37,8 +37,6 @@ class SkillController extends VanillaController {
 	function setModel($model) {
 		 $this->$model =& new $model;
 	} 
-	function index() {
-	}
 	function listSkills($ipageindex) {
 		//die("ERROR_NOTLOGIN");
 		$this->checkAdmin(true);
@@ -97,6 +95,73 @@ class SkillController extends VanillaController {
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
+		}
+	}
+	
+	//Functions User
+	function index() {
+		$id = $_GET['skill_id'];
+		if($id!=null) {
+			$this->setModel('duanskill');
+			$this->duanskill->showHasOne();
+			$id = mysql_real_escape_string($id);
+			$_SESSION['redirect_url'] = getUrl();
+			$this->duanskill->where(" and skill_id=$id and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duanskill->orderBy('duan.id','desc');
+			$this->duanskill->setPage(1);
+			$this->duanskill->setLimit(PAGINATE_LIMIT);
+			$lstDuan = $this->duanskill->search('duan.id,tenduan,alias,duan.account_id,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,skillname');
+			$totalPages = $this->duanskill->totalPages();
+			$ipagesbefore = 1 - INT_PAGE_SUPPORT;
+			if ($ipagesbefore < 1)
+				$ipagesbefore = 1;
+			$ipagesnext = 1 + INT_PAGE_SUPPORT;
+			if ($ipagesnext > $totalPages)
+				$ipagesnext = $totalPages;
+			//print_r($lstDuan);die();
+			$this->set("lstDuan",$lstDuan);
+			if(isset($lstDuan[0]))
+				$this->set("skillname",$lstDuan[0]['skill']['skillname']);
+			else {
+				$this->setModel('skill');
+				$this->skill->id = $id;
+				$data = $this->skill->search('skillname');
+				$this->set("skillname",$data['skill']['skillname']);
+			}
+			$this->set('skill_id',$id);
+			$this->set('pagesindex',1);
+			$this->set('pagesbefore',$ipagesbefore);
+			$this->set('pagesnext',$ipagesnext);
+			$this->set('pageend',$totalPages);
+			$this->_template->render();
+		}
+	}
+	function lstDuanBySkill($ipageindex) {
+		$id = $_GET['skill_id'];
+		if($id!=null) {
+			$this->setModel('duanskill');
+			$this->duanskill->showHasOne();
+			$id = mysql_real_escape_string($id);
+			$_SESSION['redirect_url'] = getUrl();
+			$this->duanskill->where(" and skill_id=$id and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duanskill->orderBy('duan.id','desc');
+			$this->duanskill->setPage($ipageindex);
+			$this->duanskill->setLimit(PAGINATE_LIMIT);
+			$lstDuan = $this->duanskill->search('duan.id,tenduan,alias,duan.account_id,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,skillname');
+			$totalPages = $this->duanskill->totalPages();
+			$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
+			if ($ipagesbefore < 1)
+				$ipagesbefore = 1;
+			$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
+			if ($ipagesnext > $totalPages)
+				$ipagesnext = $totalPages;
+			//print_r($lstDuan);die();
+			$this->set("lstDuan",$lstDuan);
+			$this->set('pagesindex',$ipageindex);
+			$this->set('pagesbefore',$ipagesbefore);
+			$this->set('pagesnext',$ipagesnext);
+			$this->set('pageend',$totalPages);
+			$this->_template->renderPage();
 		}
 	}
 	function getSkillsByLinhvuc() {

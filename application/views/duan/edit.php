@@ -9,11 +9,11 @@
 <style>
 	.multiselect {  
 		height:200px;
-		width:230px; 
+		width:300px;  
 	} 
 	.tdLabel {
 		text-align:right;
-		width:200px;
+		width:170px;
 	}
 </style>
 <div id="content" style="width:100%;">

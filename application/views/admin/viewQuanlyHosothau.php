@@ -16,6 +16,8 @@
 		</div>
 		<form id="formHosothau">
 		<input type="hidden" name="hosothau_id" id="hosothau_id" value=""/>
+		<input type="hidden" name="duan_id" id="duan_id" value=""/>
+		<input type="hidden" name="nhathau_id" id="nhathau_id" value=""/>
 		<fieldset>
 			<legend><span style="font-weight:bold;">Thông Tin Hồ Sơ Thầu</span></legend>
 			<table class="center" width="100%">
@@ -44,7 +46,7 @@
 						<td align="right">Trạng thái :</td>
 						<td align="left">
 							<select name="hosothau_trangthai" id="hosothau_trangthai">
-								<option value="1">Đang đấu thầu</option>
+								<option value="1">Mở</option>
 								<option value="2">Đã trúng thầu</option>
 								<option value="-1">Khóa</option>
 							</select>
@@ -78,9 +80,11 @@
 					<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 						<td width="20px">#</td>
 						<td>Dự án</td>
+						<td>Username</td>
 						<td>Giá thầu</td>
 						<td>Thời gian</td>
 						<td>Ngày gửi</td>
+						<td>Trạng thái</td>
 					</tr>
 				</thead>
 			</table>
@@ -112,6 +116,8 @@
 		byId("hosothau_thoigian").value = $.trim($(cells.td_thoigian).text());
 		byId("hosothau_trangthai").value = $.trim($(cells.td_trangthai).text());
 		byId("hosothau_milestone").value = $.trim($(cells.td_milestone).text());
+		byId("duan_id").value = $.trim($(cells.td_duan_id).text());
+		byId("nhathau_id").value = $.trim($(cells.td_nhathau_id).text());
 		byId("hosothau_content").value = $.trim($(cells.td_content).text());
 	}
 	function setRowValues(cells) {
@@ -119,8 +125,18 @@
 		$(cells.td_giathau).text(byId("hosothau_giathau").value);
 		$(cells.td_giathau_display).text(byId("hosothau_giathau").value+' VNĐ');
 		$(cells.td_thoigian).text(byId("hosothau_thoigian").value);
+		trangthai = byId("hosothau_trangthai").value;
+		$(cells.td_trangthai).text(trangthai);
+		if(trangthai=='-1') 
+			$(cells.td_trangthai_display).text("Khóa");
+		else if(trangthai=='2') 
+			$(cells.td_trangthai_display).text("Đã trúng thầu");
+		else
+			$(cells.td_trangthai_display).text("Mở");
 		$(cells.td_trangthai).text(byId("hosothau_trangthai").value);
 		$(cells.td_milestone).text(byId("hosothau_milestone").value);
+		$(cells.td_duan_id).text(byId("duan_id").value);
+		$(cells.td_nhathau_id).text(byId("nhathau_id").value);
 		$(cells.td_content).text(byId("hosothau_content").value);
 	}
 	function select_row(_this) {

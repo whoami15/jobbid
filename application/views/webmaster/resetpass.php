@@ -63,7 +63,7 @@
 				}
 				if(data == AJAX_DONE) {
 					//Dang ky thanh cong	
-					message('Khôi phục mật khẩu thành công! Vui lòng kiểm tra mail để xác nhận.',1);
+					message('Vui lòng kiểm tra mail của bạn để xác nhận. (có thể nằm trong spam)',1);
 				} else {
 					message('Hệ thống đang quá tải, vui lòng thử lại!',0);
 				}

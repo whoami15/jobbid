@@ -4,7 +4,7 @@ class sendmail {
 		//echo 'sendmail!!';
 		require_once ROOT . DS . 'library' . DS .'class.phpmailer.php';
 		$mail             = new PHPMailer();
-		$mail->CharSet = "UTF-8";
+		//$mail->CharSet = "UTF-8";
 		//$mail->SetLanguage('en', $dirname.'/phpmailer/language/');
 		$mail->IsSMTP();
 		$mail->SMTPAuth   = true;                  // enable SMTP authentication
@@ -20,7 +20,7 @@ class sendmail {
 		$mail->Sender = $from;
 		$mail->Subject    = $subject;
 		//$mail->AltBody    = "Xin chao"; // optional, comment out and test
-		$mail->WordWrap   = 50; // set word wrap
+		//$mail->WordWrap   = 50; // set word wrap
 		$mail->MsgHTML($content);
 		$mail->AddAddress($to);
 		$mail->IsHTML(true); // send as HTML

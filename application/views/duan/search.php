@@ -9,7 +9,8 @@
 		float:left;
 		padding:5px 5px 5px 15px;
 		position:relative;
-		width:45%;
+		width:46%;
+		text-align: left;
 	}
 </style>
 <div id="content" style="width:100%;">
@@ -64,14 +65,34 @@
 		</table>
 		<div id="datagrid"></div>
 	</div>
-	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px" id="content_title2">Tìm dự án theo lĩnh vực</div>	
-	<div class="child_content">
-		<?php
-		foreach($lstLinhvuc as $e) {
-			echo "<div class='divfloat1'><a href='".BASE_PATH."/linhvuc&linhvuc_id=".$e["linhvuc"]["id"]."' class='link'>".$e["linhvuc"]["tenlinhvuc"]."</a> (".$e["linhvuc"]["soduan"].")</div>";
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px" id="content_title2">Tìm dự án theo kỹ năng</div>
+	<?php
+	$prevLinhvuc = '';
+	$i = 0;
+	$flagLoop = true;
+	while($flagLoop) {
+		if(!isset($lstData2[$i]))
+			break;
+		$data = $lstData2[$i]; 
+		echo '<div class="divfloat1" >';
+		echo '<strong>'.$data['linhvuc']['tenlinhvuc'].'</strong><br/>';
+		$prevLinhvuc = '';
+		while(true) {
+			if(!isset($lstData2[$i])){
+				$flagLoop = false;
+				break;
+			}
+			$data = $lstData2[$i];
+			if($prevLinhvuc == null)
+				$prevLinhvuc = $data['linhvuc']['id'];
+			else if($prevLinhvuc!=$data['linhvuc']['id'])
+				break;
+			echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.BASE_PATH.'/skill&skill_id='.$data['skill']['id'].'" class="link">'.$data['skill']['skillname'].'</a> ('.$data['']['soduan'].')<br/>';
+			$i++;
 		}
-		?>
-	</div>
+		echo '</div>';
+	}
+	?>
 </div>
 <script>
 	//Search area

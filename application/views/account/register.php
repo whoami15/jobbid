@@ -127,6 +127,7 @@
 		//$("#content_title").text($("#menu "+menuid).text());
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
-		boundTip("account_username","Chúng tôi sẽ gửi cho bạn 1 mail xác nhận đăng ký.");
+		boundTip("account_username","Vui lòng nhập chính xác email của bạn, chúng tôi sẽ gửi cho bạn 1 mail xác nhận đăng ký tới email này.");
+		boundTip("account_sodienthoai","Chủ dự án hoặc nhà thầu sẽ liên hệ với bạn bằng số điện thoại này khi trúng thầu.");
 	});
 </script>

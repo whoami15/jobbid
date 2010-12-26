@@ -22,9 +22,11 @@
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 			<td width="20px">#</td>
 			<td>Dự án</td>
+			<td>Username</td>
 			<td>Giá thầu</td>
 			<td>Thời gian</td>
 			<td>Ngày gửi</td>
+			<td>Trạng thái</td>
 		</tr>
 	</thead>
 	<tfoot>
@@ -42,6 +44,7 @@
 			?>
 				<td align="center"><?php echo $i?></td>
 				<td ><?php echo $hosothau["duan"]["tenduan"]?></td>
+				<td ><?php echo $hosothau["account"]["username"]?></td>
 				<td id="td_id" style="display:none"><?php echo $hosothau["hosothau"]["id"]?></td>
 				<td id="td_content" style="display:none"><?php echo $hosothau["hosothau"]["content"]?></td>
 				<td id="td_giathau_display" align="center"><?php  echo $html->FormatMoney($hosothau["hosothau"]["giathau"])?> VNĐ</td>
@@ -49,7 +52,19 @@
 				<td id="td_thoigian" align="center"><?php echo $hosothau["hosothau"]["thoigian"]?></td>
 				<td align="center"><?php echo $html->format_date($hosothau["hosothau"]["ngaygui"],'d/m/Y H:m:s') ?></td>
 				<td id="td_milestone" style="display:none"><?php echo $hosothau["hosothau"]["milestone"]?></td>
+				<td id="td_duan_id" style="display:none"><?php echo $hosothau["duan"]["id"]?></td>
+				<td id="td_nhathau_id" style="display:none"><?php echo $hosothau["nhathau"]["id"]?></td>
 				<td id="td_trangthai" style="display:none"><?php echo $hosothau["hosothau"]["trangthai"]?></td>
+				<td id="td_trangthai_display" align="center">
+				<?php 
+				if($hosothau["hosothau"]["trangthai"]==-1) 
+					echo 'Khóa';
+				else if($hosothau["hosothau"]["trangthai"]==2) 
+					echo 'Đã trúng thầu';
+				else
+					echo 'Mở';
+				?>
+				</td>
 			</tr>
 			<?php
 		}

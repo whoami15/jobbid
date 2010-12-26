@@ -99,6 +99,7 @@ class WebmasterController extends VanillaController {
 				die('ERROR_MANYTIMES');
 			$this->checkLogin(true);
 			$account_id = $_SESSION['account']['id'];
+			$username = $_SESSION['account']['username'];
 			$this->setModel('activecode');
 			$this->activecode->where(" and account_id=$account_id");
 			$data = $this->activecode->search('active_code');
@@ -106,23 +107,31 @@ class WebmasterController extends VanillaController {
 				die('ERROR_SYSTEM');
 			$active_code = $data[0]['activecode']['active_code'];
 			//Send mail
+			$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
+			global $cache;
+			$content = $cache->get('mail_verify');
+			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
+			$replace = array($linkactive, $active_code, $username);
+			$content = str_replace($search, $replace, $content);
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
 			$_SESSION['sendactivecode'] = $_SESSION['sendactivecode'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}
 	}
-	function changepass($rs_id,$rs_verify) {
-		if($rs_id == null || $rs_verify == null)
+	function changepass($account_id,$rs_verify) {
+		if($account_id == null || $rs_verify == null)
 			error('Lỗi! Liên kết không hợp lệ!');
 		$this->setModel('resetpassword');
 		$rs_verify = mysql_real_escape_string($rs_verify);
-		$this->resetpassword->id = $rs_id;
-		$this->resetpassword->where(" and verify='$rs_verify'");
+		$this->resetpassword->where(" and account_id=$account_id and verify='$rs_verify'");
 		$data = $this->resetpassword->search('id,account_id');
 		if(empty($data))
 			error('Lỗi! Sai mã xác nhận hoặc mã xác nhận này đã được sử dụng!');
-		$_SESSION['resetpassword'] = $data['resetpassword'];
+		$_SESSION['resetpassword'] = $data[0]['resetpassword'];
 		$this->_template->render();  
 	}
 	function afterAction() {

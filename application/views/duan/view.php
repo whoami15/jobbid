@@ -101,7 +101,7 @@
 						<input type="button" value="Sửa dự án này" onclick="editMyProject(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php
 					} else {
-						if($dataDuan[""]["timeleft"]>0) {
+						if($dataDuan[""]["timeleft"]>0 && $dataDuan["duan"]["hosothau_id"] ==null) {
 						?>
 						<input id="btGuihoso" type="button" value="Gửi hồ sơ thầu" onclick="guihosothau(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php
@@ -255,7 +255,7 @@
 		thoigian = $(cells.td_thoigian).text();
 		timeofbid = $(cells.td_timeofbid).text();
 		var str = '&nbsp;<b>MileStone :</b> '+milestone+'<br/>&nbsp;<b>Thời gian :</b> '+thoigian+'<br/>&nbsp;<b>Đã gửi :</b> '+timeofbid+'<br/>';
-		showtip(str,600);
+		showtip(str,300);
 		
 	}
 	$(document).ready(function() {

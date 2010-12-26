@@ -186,6 +186,7 @@ class AccountController extends VanillaController {
 			$this->activecode->insert();
 			//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
 			$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
+			$linkactive = "<a href='$linkactive'>$linkactive</a>";
 			global $cache;
 			$content = $cache->get('mail_verify');
 			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
@@ -193,7 +194,7 @@ class AccountController extends VanillaController {
 			$content = str_replace($search, $replace, $content);
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,"Chào mừng bạn đến với bidjob.vn",$content);
+			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
 			/* $this->setModel('sendmail');
 			$this->sendmail->id = null;
 			$this->sendmail->to = $username;
@@ -300,6 +301,16 @@ Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá
 				$this->resetpassword->insert();
 			}
 			//Send mail url : /webmaster/changepass/resetpassword_id/resetpassword_verify
+			$linkresetpass = BASE_PATH."/webmaster/changepass/$account_id/$verify";
+			$linkresetpass = "<a href='$linkresetpass'>$linkresetpass</a>";
+			global $cache;
+			$content = $cache->get('mail_resetpass');
+			$search  = array('#RESETPASSLINK#');
+			$replace = array($linkresetpass);
+			$content = str_replace($search, $replace, $content);
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send($username,'Mail xác nhận khôi phục mật khẩu đăng nhập tại jobbid.vn',$content);
 			$_SESSION['sendresetpass'] = $_SESSION['sendresetpass'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {

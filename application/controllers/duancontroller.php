@@ -23,12 +23,12 @@ class DuanController extends VanillaController {
 			}
 		}
 	}
-	function checkActive($isAjax=false) {
+	function checkActive($isAjax=false,$msg='Vui lòng kiểm tra email để xác nhận tài khoản!') {
 		if($_SESSION['account']['active']<1) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
-				error("Vui lòng kiểm tra email để xác nhận tài khoản!");
+				error($msg);
 			}
 		}
 	}
@@ -232,7 +232,7 @@ class DuanController extends VanillaController {
 	function add() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
-		$this->checkActive();
+		$this->checkActive(false,'Bạn cần xác nhận tài khoản để có thể tạo dự án cho bạn.');
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
@@ -254,7 +254,6 @@ class DuanController extends VanillaController {
 			$costmin = $_POST["duan_costmin"];
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
-			//die($thongtinchitiet);
 			$validate = new Validate();
 			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet))==false)
 				die('ERROR_SYSTEM');
@@ -348,6 +347,7 @@ class DuanController extends VanillaController {
 					$this->duanskill->insert();
 				}
 			}
+			
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -361,6 +361,13 @@ class DuanController extends VanillaController {
 		$this->setModel("tinh");
 		$data = $this->tinh->search();
 		$this->set("lstTinh",$data);
+		$this->setModel("duanskill");
+		$this->duanskill->showHasOne();
+		$this->duanskill->hasJoin(array('skill'),array('linhvuc'));
+		$this->duanskill->groupBy('tenlinhvuc,skillname');
+		$this->duanskill->where(' and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now()');
+		$data = $this->duanskill->search('linhvuc.id,tenlinhvuc,skill.id,skillname,count(*) as soduan');
+		$this->set("lstData2",$data);
 		$this->_template->render();
 	}
 	function view($id=null) {
@@ -415,16 +422,15 @@ class DuanController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$account_id = $_SESSION["account"]["id"];
-		$this->duan->showHasOne(array('linhvuc'));
-		$this->duan->showHasMany(array('duanmark'));
-		$select = array();
-		array_push($select,"duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id");
-		$this->duan->orderBy('duanmark.id','desc');
-		$this->duan->setPage(1);
-		$this->duan->setLimit(PAGINATE_LIMIT);
-		$this->duan->where(" and duanmark.account_id = $account_id");
-		$data = $this->duan->search($select);
-		$totalPages = $this->duan->totalPages();
+		$this->setModel('duanmark');
+		$this->duanmark->showHasOne(array('duan'));
+		$this->duanmark->hasJoin(array('duan'),array('linhvuc'));
+		$this->duanmark->orderBy('duanmark.id','desc');
+		$this->duanmark->setPage(1);
+		$this->duanmark->setLimit(PAGINATE_LIMIT);
+		$this->duanmark->where(" and duanmark.account_id = $account_id");
+		$data = $this->duanmark->search('duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id');
+		$totalPages = $this->duanmark->totalPages();
 		$ipagesbefore = 1 - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
 			$ipagesbefore = 1;
@@ -443,16 +449,15 @@ class DuanController extends VanillaController {
 		$this->checkLogin();
 		$ipageindex = mysql_real_escape_string($ipageindex);
 		$account_id = $_SESSION["account"]["id"];
-		$this->duan->showHasOne(array('linhvuc'));
-		$this->duan->showHasMany(array('duanmark'));
-		$select = array();
-		array_push($select,"duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id");
-		$this->duan->orderBy('duanmark.id','desc');
-		$this->duan->setPage($ipageindex);
-		$this->duan->setLimit(PAGINATE_LIMIT);
-		$this->duan->where(" and duanmark.account_id = $account_id");
-		$data = $this->duan->search($select);
-		$totalPages = $this->duan->totalPages();
+		$this->setModel('duanmark');
+		$this->duanmark->showHasOne(array('duan'));
+		$this->duanmark->hasJoin(array('duan'),array('linhvuc'));
+		$this->duanmark->orderBy('duanmark.id','desc');
+		$this->duanmark->setPage($ipageindex);
+		$this->duanmark->setLimit(PAGINATE_LIMIT);
+		$this->duanmark->where(" and duanmark.account_id = $account_id");
+		$data = $this->duanmark->search('duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id');
+		$totalPages = $this->duanmark->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
 			$ipagesbefore = 1;

@@ -1,3 +1,13 @@
+<style>
+	.divfloat1 {
+		float:left;
+		padding:5px 5px 5px 15px;
+		position:relative;
+		width:46%;
+		text-align: left;
+	}
+	
+</style>
 <div id="content" style="width:100%;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Các dự án mới nhất</div>
 	<div id="datagrid" style="padding-top:10px;padding-bottom:10px;">
@@ -15,7 +25,7 @@
 			<tbody>
 				<?php
 				$i=0;
-				foreach($lstDuan as $duan) {
+				foreach($lstData1 as $duan) {
 					$i++;
 					if($i%2==0)
 						echo "<tr class='alternateRow' height='30px'>";
@@ -36,6 +46,12 @@
 			</tbody>
 		</table>
 	</div>
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px" id="content_title2">Tìm dự án theo lĩnh vực</div>	
+	<?php
+	foreach($lstLinhvuc as $e) {
+		echo "<div class='divfloat1'><a href='".BASE_PATH."/linhvuc&linhvuc_id=".$e["linhvuc"]["id"]."' class='link'>".$e["linhvuc"]["tenlinhvuc"]."</a> (".$e["linhvuc"]["soduan"].")</div>";
+	}
+	?>
 </div>
 <script>
 	$(document).ready(function() {

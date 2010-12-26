@@ -22,24 +22,23 @@ class TestController extends VanillaController {
 		//die("done");
 		//$cache_expire = session_cache_expire();
 		//echo "The cached session pages expire after $cache_expire minutes"; 
-		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
+		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		include (ROOT.DS.'library'.DS.'sendmail.php');
 		$conn=new DataProvider();
+		$mail=new sendmail();
+		$conn->lstNewProject();
 		$data = $conn->getListSendmail();
-		
 		$arr = array();
 		foreach($data as $e) {
 			try {
-				sendMail("nclong87@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
+				$mail->send($e->to, $e->subject, $e->content);
+				sleep(3);
 				array_push($arr,$e->id);
 			} catch (Exception $e) {
 			}
 		}
 		$conn->hadSend($arr);
-		$conn->close(); */
-		include (ROOT.DS.'library'.DS.'sendmail.php');
-		$mail = new sendmail();
-		$mail->send(' ',' ',' ');
-		echo '<br>DONE';
+		$conn->close();
 		
 	}
 	function rmvsession($session) {

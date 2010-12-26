@@ -46,7 +46,10 @@ class IndexController extends VanillaController {
 		$this->duan->setLimit(PAGINATE_LIMIT);
 		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
 		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active");
-		$this->set("lstDuan",$data);
+		$this->set("lstData1",$data);
+		$this->setModel("linhvuc");
+		$data = $this->linhvuc->search();
+		$this->set("lstLinhvuc",$data);
 		$this->_template->render();
 	}
         

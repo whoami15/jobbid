@@ -36,7 +36,7 @@
 	color: #F68618;
 }
 .link2 {
-	color:gray !important;
+	color: #A3A3A3 !important;
 }
 .link2:hover {
 	color: #fff !important;

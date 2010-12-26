@@ -100,12 +100,12 @@ class NhathauController extends VanillaController {
 			}
 		}
 	}
-	function checkActive($isAjax=false) {
+	function checkActive($isAjax=false,$msg = 'Vui lòng kiểm tra email để xác nhận tài khoản!') {
 		if($_SESSION['account']['active']<1) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
-				error("Vui lòng kiểm tra email để xác nhận tài khoản!");
+				error($msg);
 			}
 		}
 	}
@@ -136,7 +136,7 @@ class NhathauController extends VanillaController {
 		if($id != null) {
 			$id = mysql_real_escape_string($id);
 			$this->nhathau->id=$id;
-			$this->nhathau->where(' and status>=0');
+			$this->nhathau->where(' and nhathau.`status`>=0');
             $data=$this->nhathau->search();
 			print_r($data['nhathau']['motachitiet']);
 		}
@@ -145,7 +145,7 @@ class NhathauController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->nhathau->showHasOne(array("file"));
-		$this->nhathau->where(" and nhathau.status>=0 and nhathau.account_id = ".$_SESSION["account"]["id"]);
+		$this->nhathau->where(" and nhathau.`status`>=0 and nhathau.account_id = ".$_SESSION["account"]["id"]);
 		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,gpkd_cmnd,type,birthyear,diachilienhe");
 		if(empty($data)==false) {
 			$this->set("nhathau",$data[0]);
@@ -159,6 +159,7 @@ class NhathauController extends VanillaController {
 	function add() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
+		$this->checkActive(false,'Bạn cần xác nhận tài khoản mới có thể tạo hồ sơ thầu!');
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
@@ -277,8 +278,8 @@ class NhathauController extends VanillaController {
 		//print_r($_SESSION["nhathau"]["nhathau"]["id"]);die();
 		$this->nhathau->showHasOne();
 		$this->nhathau->id = $_SESSION["nhathau"]["id"];
-		$this->nhathau->where(' and status>=0');
-		$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,username,sodienthoai,gpkd_cmnd,type,birthyear,diachilienhe");
+		$this->nhathau->where(' and nhathau.`status`>=0');
+		$data = $this->nhathau->search('nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,filename,file.id,nhathau.account_id,username,sodienthoai,gpkd_cmnd,type,birthyear,diachilienhe');
 		if(!empty($data)) {
 			$this->set("nhathau",$data["nhathau"]);
 			$this->set("account",$data["account"]);

@@ -11,12 +11,12 @@ class SQLQuery {
 	protected $_order;
 	protected $_extraConditions;
 	protected $_hO;
-	protected $_hM;
-	protected $_hMABTM;
+	protected $_hJoin;
 	protected $_page;
 	protected $_limit;
 	protected $_hOModels = array();
-	protected $_hMModels = array();
+	protected $_hParentModels = array();
+	protected $_hChildModels = array();
 
     /** Connects to database **/
     function connect($address, $account, $pwd, $name) {
@@ -58,17 +58,14 @@ class SQLQuery {
 				array_push($this->_hOModels,$model);
 		}
 	}
-
-	function showHasMany($arrModels=null) {
-		$this->_hM = 1;
-		if($arrModels!=null) {
-			foreach($arrModels as $model)
-				array_push($this->_hMModels,$model);
+	function hasJoin($arrChilds = null,$arrParents=null) {
+		$this->_hJoin = 1;
+		if( $arrParents!=null && count($arrParents)==count($arrChilds) ) {
+			foreach($arrParents as $model)
+				array_push($this->_hParentModels,$model);
+			foreach($arrChilds as $model)
+				array_push($this->_hChildModels,$model);
 		}
-	}
-
-	function showHMABTM() {
-		$this->_hMABTM = 1;
 	}
 
 	function setLimit($limit) {
@@ -100,13 +97,15 @@ class SQLQuery {
 				$from .= 'ON `'.$this->_model.'`.`'.$singularAlias.'_id` = `'.$model.'`.`id`  ';
 			}
 		}
-		if ($this->_hM == 1 && isset($this->hasMany)) {
-			if($this->_hMModels == null)
-				$this->_hMModels = $this->hasOne;
-			foreach ($this->_hMModels as $model) {
-				$table = strtolower($inflect->pluralize($model));
-				$from .= 'LEFT JOIN `'.$table.'` as `'.$model.'` ';
-				$from .= 'ON `'.$this->_model.'`.`'.'id` = `'.$model.'`.`'.$this->_model.'_id`  ';
+		if ($this->_hJoin == 1) {
+			$i = 0;
+			while($i<count($this->_hParentModels)) {
+				$pModels = $this->_hParentModels[$i];
+				$cModels = $this->_hChildModels[$i];
+				$pTable = strtolower($inflect->pluralize($pModels));
+				$from .= 'LEFT JOIN `'.$pTable.'` as `'.$pModels.'` ';
+				$from .= 'ON `'.$pModels.'`.`'.'id` = `'.$cModels.'`.`'.$pModels.'_id`  ';
+				$i++;
 			}
 		}
 		if ($this->id) {
@@ -126,11 +125,7 @@ class SQLQuery {
 			$offset = ($this->_page-1)*$this->_limit;
 			$conditions .= ' LIMIT '.$this->_limit.' OFFSET '.$offset;
 		}
-		if($this->_hM == 1) {
-			$str = $select[0];
-			$this->_query = "SELECT $str FROM ".$from.' WHERE '.$conditions;
-		} else 
-			$this->_query = "SELECT $select FROM ".$from.' WHERE '.$conditions;
+		$this->_query = "SELECT $select FROM ".$from.' WHERE '.$conditions;
 		if($debug)
 			die($this->_query);
 		$this->_result = mysql_query($this->_query, $this->_dbHandle) ;
@@ -147,85 +142,6 @@ class SQLQuery {
 			while ($row = mysql_fetch_row($this->_result)) {
 				for ($i = 0;$i < $numOfFields; ++$i) {
 					$tempResults[$table[$i]][$field[$i]] = $row[$i];
-				}
-				if ($this->_hM == 1 && isset($this->hasMany)) {
-					$i=1;
-					foreach ($this->hasMany as $aliasChild => $modelChild) {
-						$queryChild = '';
-						$conditionsChild = '';
-						$fromChild = '';
-						$tableChild = strtolower($inflect->pluralize($modelChild));
-						$pluralAliasChild = strtolower($inflect->pluralize($aliasChild));
-						$singularAliasChild = strtolower($aliasChild);
-						$fromChild .= '`'.$tableChild.'` as `'.$aliasChild.'`';
-						$conditionsChild .= '`'.$aliasChild.'`.`'.strtolower($this->_model).'_id` = \''.$tempResults[$this->_model]['id'].'\'';
-						if(isset($select[$i]))
-							$queryChild =  'SELECT '.$select[$i].' FROM '.$fromChild.' WHERE '.$conditionsChild;
-						else
-							$queryChild =  'SELECT * FROM '.$fromChild.' WHERE '.$conditionsChild;	
-						#echo '<!--'.$queryChild.'-->';
-						$resultChild = mysql_query($queryChild, $this->_dbHandle);
-						$tableChild = array();
-						$fieldChild = array();
-						$tempResultsChild = array();
-						$resultsChild = array();
-						if (mysql_num_rows($resultChild) > 0 ) {
-							$numOfFieldsChild = mysql_num_fields($resultChild);
-							for ($j = 0; $j < $numOfFieldsChild; ++$j) {
-								array_push($tableChild,mysql_field_table($resultChild, $j));
-								array_push($fieldChild,mysql_field_name($resultChild, $j));
-							}
-							while ($rowChild = mysql_fetch_row($resultChild)) {
-								for ($j = 0;$j < $numOfFieldsChild; ++$j) {
-									$tempResultsChild[$tableChild[$j]][$fieldChild[$j]] = $rowChild[$j];
-								}
-								array_push($resultsChild,$tempResultsChild);
-							}
-						}
-						$tempResults[$aliasChild] = $resultsChild;
-						mysql_free_result($resultChild);
-						$i++;
-					}
-				}
-				if ($this->_hMABTM == 1 && isset($this->hasManyAndBelongsToMany)) {
-					foreach ($this->hasManyAndBelongsToMany as $aliasChild => $tableChild) {
-						$queryChild = '';
-						$conditionsChild = '';
-						$fromChild = '';
-						$tableChild = strtolower($inflect->pluralize($tableChild));
-						$pluralAliasChild = strtolower($inflect->pluralize($aliasChild));
-						$singularAliasChild = strtolower($aliasChild);
-						$sortTables = array($this->_table,$pluralAliasChild);
-						sort($sortTables);
-						$joinTable = implode('_',$sortTables);
-						$fromChild .= '`'.$tableChild.'` as `'.$aliasChild.'`,';
-						$fromChild .= '`'.$joinTable.'`,';
-						$conditionsChild .= ' AND `'.$joinTable.'`.`'.$singularAliasChild.'_id` = `'.$aliasChild.'`.`id` ';
-						$conditionsChild .= '`'.$joinTable.'`.`'.strtolower($this->_model).'_id` = \''.$tempResults[$this->_model]['id'].'\'';
-						$fromChild = substr($fromChild,0,-1);
-						$queryChild =  'SELECT * FROM '.$fromChild.' WHERE '.$conditionsChild;	
-						#echo '<!--'.$queryChild.'-->';
-						$resultChild = mysql_query($queryChild, $this->_dbHandle);
-						$tableChild = array();
-						$fieldChild = array();
-						$tempResultsChild = array();
-						$resultsChild = array();
-						if (mysql_num_rows($resultChild) > 0) {
-							$numOfFieldsChild = mysql_num_fields($resultChild);
-							for ($j = 0; $j < $numOfFieldsChild; ++$j) {
-								array_push($tableChild,mysql_field_table($resultChild, $j));
-								array_push($fieldChild,mysql_field_name($resultChild, $j));
-							}
-							while ($rowChild = mysql_fetch_row($resultChild)) {
-								for ($j = 0;$j < $numOfFieldsChild; ++$j) {
-									$tempResultsChild[$tableChild[$j]][$fieldChild[$j]] = $rowChild[$j];
-								}
-								array_push($resultsChild,$tempResultsChild);
-							}
-						}
-						$tempResults[$aliasChild] = $resultsChild;
-						mysql_free_result($resultChild);
-					}
 				}
 				array_push($result,$tempResults);
 			}
@@ -377,7 +293,7 @@ class SQLQuery {
 		$values = '';
 		foreach ($this->_describe as $field) {
 			$fields .= '`'.$field.'`,';
-			if(!empty($this->$field))
+			if(isset($this->$field))
 				$values .= '\''.mysql_real_escape_string($this->$field).'\',';
 			else 
 				$values .= 'null,';
@@ -428,8 +344,7 @@ class SQLQuery {
 		$this->_orderby = null;
 		$this->_extraConditions = null;
 		$this->_hO = null;
-		$this->_hM = null;
-		$this->_hMABTM = null;
+		$this->_hJoin = null;
 		$this->_page = null;
 		$this->_order = null;
 	}
