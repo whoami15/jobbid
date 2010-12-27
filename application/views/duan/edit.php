@@ -177,6 +177,10 @@
 		if(checkValidate==false) {
 			return false;
 		}
+		if($("#select2 option").length><?php echo MAX_SKILL ?>) {
+			message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
+			return false;
+		}
 		byId("duan_alias").value = remove_space(remove_accents(byId("duan_tenduan").value));
 		$("#select2").each(function(){  
 			$("#select2 option").attr("selected","selected");
@@ -225,6 +229,10 @@
 				$('#btChangeStatusProject').removeAttr('disabled');
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/account/login");
+					return;
+				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
 					return;
 				}
 				if(data == AJAX_DONE) {
@@ -288,8 +296,16 @@
 					location.href = url("/account/login");
 					return;
 				}
+				if(data == "ERROR_MAXSKILL") {
+					message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
+					return;
+				}
 				if(data == "ERROR_NOTACTIVE") {
 					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
+					return;
+				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
 					return;
 				}
 				if(data == "ERROR_FILESIZE") {

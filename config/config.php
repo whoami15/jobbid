@@ -17,6 +17,7 @@ define('MAX_FILEDOWNLOADS',30);
 define('MAX_SENDACTIVECODE',3);
 define('MAX_SENDRESETPASS',3);
 define('MAX_TIMESRESETPASS',3);
+define('MAX_SKILL',10);
 
 define('PAGINATE_LIMIT', 12);
 define('INT_PAGE_SUPPORT', 4);

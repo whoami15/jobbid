@@ -4,7 +4,7 @@
 	if(isset($_GET["reason"])) {
 		$msg = $_GET["reason"];
 		if($msg == "username")
-			$msg = "Email này chưa được đăng ký!";
+			$msg = "Email này chưa được đăng ký hoặc đã bị khóa!";
 		else if ($msg == "password")
 			$msg = "Sai mật khẩu đăng nhập!";
 		else if ($msg == "admin")

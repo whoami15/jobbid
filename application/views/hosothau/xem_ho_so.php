@@ -185,8 +185,12 @@
 					location.href = url("/account/login");
 					return;
 				}
-				if(data == "ERROR_FORBIDDEN") {
-					message('Bạn không phải là chủ dự án này!',0);
+				if(data == "ERROR_NOTACTIVE") {
+					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
+					return;
+				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
 					return;
 				}
 				if(data == AJAX_DONE) {
@@ -194,7 +198,7 @@
 					message('Chọn nhà thầu thành công! Đang chuyển trang...',1);
 					setTimeout("redirectPage()",redirect_time);
 				} else {
-					message('Thao tác bị lỗi, vui lòng thử lại!',0);
+					message('Hệ thống đang bận, vui lòng thử lại sau!',0);
 				}
 			},
 			error: function(data){ $('#btChonnhathau').removeAttr('disabled');alert (data);}	

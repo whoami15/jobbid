@@ -163,6 +163,15 @@
 					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
 					return;
 				}
+				if(data == "ERROR_MAKEPROFILE") {
+					message("Lỗi, bạn chưa tạo hồ sơ nhà thầu! Đang chuyển đến trang tạo hồ sơ...",0);
+					setTimeout("redirectMakeProfile()",redirect_time);
+					return;
+				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
+					return;
+				}	
 				if(data == "ERROR_EXPIRED") {
 					message("Dự án này đã hết thời gian đấu thầu!",0);
 					return;
@@ -173,11 +182,6 @@
 				}
 				if(data == "ERROR_DUPLICATE") {
 					message("Bạn không thể đặt thầu 2 lần liên tiếp trong dự án này!",0);
-					return;
-				}
-				if(data == "ERROR_MAKEPROFILE") {
-					message("Lỗi, bạn chưa tạo hồ sơ nhà thầu! Đang chuyển đến trang tạo hồ sơ...",0);
-					setTimeout("redirectMakeProfile()",redirect_time);
 					return;
 				}
 				if(data == "DONE") {

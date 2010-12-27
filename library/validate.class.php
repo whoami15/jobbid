@@ -23,7 +23,7 @@ class Validate {
 	function check_length($val=null,$len=0) {
 		if($val == null)
 			return false;
-		if(strlen($val)>$len)
+		if(isset($val[$len]))
 			return true;
 		return false;
 	}

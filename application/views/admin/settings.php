@@ -56,6 +56,10 @@
 			<form id="formMailTemplate">
 			<table width="99%">
 				<thead>
+					<tr>
+						<td id="msg2">
+						</td>
+					</tr>
 					<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:30px;text-align:center;">
 						<td>
 							<select id="mail_type" name="mail_type" onchange="selectMailtype(this.value)">
@@ -73,10 +77,6 @@
 				</thead>
 				<tbody>
 				<tr>
-					<tr>
-						<td id="msg2">
-						</td>
-					</tr>
 					<td align="left" width="100%">
 					<textarea id="mail_content" name="mail_content" style="border:none;width:100%" cols="60" rows="15" ></textarea>
 					</td>
@@ -107,7 +107,7 @@
 	function message2(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
-			byId("msg").innerHTML = str;
+			byId("msg2").innerHTML = str;
 		} else if(type == 0) { //Thong diep bao loi
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
 			byId("msg2").innerHTML = str;

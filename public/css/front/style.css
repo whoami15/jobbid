@@ -368,3 +368,6 @@ div.jHtmlArea { border: solid 1px #ccc; }
 	text-align:left;
 	width:500px;
 }
+#msg {
+	padding:5px;
+}

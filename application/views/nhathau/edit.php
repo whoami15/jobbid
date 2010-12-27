@@ -235,7 +235,23 @@
 						if(data == "ERROR_FILESIZE") {
 							message("File Upload có kích thước quá lớn!",0);
 							return;
-						}						
+						}		
+						if(data == AJAX_ERROR_NOTLOGIN) {
+							location.href = url("/account/login");
+							return;
+						}
+						if(data == "ERROR_NOTACTIVE") {
+							message("Bạn cần phải xác nhận tài khoản mới có thể tạo hồ sơ thầu!",0);
+							return;
+						}
+						if(data == "ERROR_MAKEPROFILE") {
+							message("Lỗi! Bạn chưa tạo hồ sơ nhà thầu!",0);
+							return;
+						}
+						if(data == "ERROR_LOCKED") {
+							message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
+							return;
+						}	
 						if(data == AJAX_DONE) {
 							message("Cập nhật hồ sơ thành công! Đang chuyển trang...",1);
 							setTimeout("redirectPage()",redirect_time);

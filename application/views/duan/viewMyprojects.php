@@ -81,15 +81,6 @@
 	</div>
 </div>
 <script>
-	function message(msg,type) {
-		if(type==1) { //Thong diep thong bao
-			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
-			byId("msg").innerHTML = str;
-		} else if(type == 0) { //Thong diep bao loi
-			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
-			byId("msg").innerHTML = str;
-		}
-	}	
 	function selectpage(page) {
 		loadListDuans(page);
 	};

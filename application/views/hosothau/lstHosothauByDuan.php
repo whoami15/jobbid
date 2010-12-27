@@ -46,7 +46,7 @@
 				<td id="td_thoigian"  style="display:none"><?php echo $hosothau["hosothau"]["thoigian"]?> ngày</td>
 				<td id="td_timeofbid" style="display:none"><?php echo $html->getDaysFromSecond($hosothau[""]["timeofbid"]) ?></td>
 				<td id="td_id" style="display:none"><?php echo $hosothau["hosothau"]["id"] ?></td>
-				<td align="left">
+				<td align="left" width="100px">
 				<div style="float: left;" id="ctl00_SampleContent_ThaiRating">
 					<a style="text-decoration: none;" title="2" id="ctl00_SampleContent_ThaiRating_A" href="javascript:void(0)">
 					<?php

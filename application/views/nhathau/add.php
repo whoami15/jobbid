@@ -229,8 +229,12 @@
 					location.href = url("/account/login");
 					return;
 				}
-				if(data == "ERROR_FILESIZE") {
-					message("File upload phải nhỏ hơn 2Mb!",0);
+				if(data == "ERROR_NOTACTIVE") {
+					message("Bạn cần phải xác nhận tài khoản mới có thể tạo hồ sơ thầu!",0);
+					return;
+				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
 					return;
 				}
 				if(data == AJAX_DONE) {

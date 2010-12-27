@@ -24,13 +24,26 @@ class DuanController extends VanillaController {
 		}
 	}
 	function checkActive($isAjax=false,$msg='Vui lòng kiểm tra email để xác nhận tài khoản!') {
-		if($_SESSION['account']['active']<1) {
+		if($_SESSION['account']['active']==0) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
 				error($msg);
 			}
 		}
+	}
+	function checkLock($isAjax=false) {
+		$this->setModel('account');
+		$this->account->id = $_SESSION['account']['id'];
+		$data = $this->account->search('active');
+		if(empty($data) || $data['account']['active']==-1) {
+			if($isAjax == true) {
+				die("ERROR_LOCKED");
+			} else {
+				error('Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!');
+			}
+		}
+		$this->setModel('duan');
 	}
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
@@ -233,6 +246,7 @@ class DuanController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->checkActive(false,'Bạn cần xác nhận tài khoản để có thể tạo dự án cho bạn.');
+		$this->checkLock();
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
@@ -244,7 +258,8 @@ class DuanController extends VanillaController {
 	function doAdd() {
 		try {
 			$this->checkLogin(true);
-			$this->checkActive(true);
+			$this->checkActive(true,' ');
+			$this->checkLock(true);
 			$id = $_SESSION["account"]["id"];
 			$tenduan = $_POST["duan_tenduan"];
 			$alias = $_POST["duan_alias"];
@@ -254,6 +269,10 @@ class DuanController extends VanillaController {
 			$costmin = $_POST["duan_costmin"];
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
+			if(isset($_POST["duan_skills"])) {
+				if(isset($_POST["duan_skills"][MAX_SKILL]))
+					die('ERROR_MAXSKILL');
+			}
 			$validate = new Validate();
 			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet))==false)
 				die('ERROR_SYSTEM');
@@ -538,6 +557,8 @@ class DuanController extends VanillaController {
 	function edit() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
+		$this->checkActive();
+		$this->checkLock();
 		$duan_id = $_GET["duan_id"];
 		$duan_id = mysql_real_escape_string($duan_id);
 		$account_id = $_SESSION["account"]["id"];
@@ -580,6 +601,7 @@ class DuanController extends VanillaController {
 		try {
 			$this->checkLogin(true);
 			$this->checkActive(true);
+			$this->checkLock(true);
 			$account_id = $_SESSION["account"]["id"];
 			$duan_id = mysql_real_escape_string($_POST["duan_id"]);
 			$tenduan = $_POST["duan_tenduan"];
@@ -591,6 +613,10 @@ class DuanController extends VanillaController {
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
 			//Validate
+			if(isset($_POST["duan_skills"])) {
+				if(isset($_POST["duan_skills"][MAX_SKILL]))
+					die('ERROR_MAXSKILL');
+			}
 			$validate = new Validate();
 			if($validate->check_null(array($duan_id,$tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet))==false)
 				die('ERROR_SYSTEM');
@@ -692,6 +718,8 @@ class DuanController extends VanillaController {
 			die("ERROR_SYSTEM");
 		try {
 			$this->checkLogin(true);
+			$this->checkActive(true);
+			$this->checkLock(true);
 			$account_id = $_SESSION["account"]["id"];
 			$duan_id = mysql_real_escape_string($_GET["duan_id"]);
 			$this->duan->id = $duan_id;

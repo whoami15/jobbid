@@ -127,6 +127,10 @@
 					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
 					return;
 				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
+					return;
+				}
 				if(data == "ERROR_EXPIRED") {
 					message("Dự án này đã hết thời gian đấu thầu!",0);
 					return;

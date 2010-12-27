@@ -101,13 +101,26 @@ class NhathauController extends VanillaController {
 		}
 	}
 	function checkActive($isAjax=false,$msg = 'Vui lòng kiểm tra email để xác nhận tài khoản!') {
-		if($_SESSION['account']['active']<1) {
+		if($_SESSION['account']['active']==0) {
 			if($isAjax == true) {
 				die("ERROR_NOTACTIVE");
 			} else {
 				error($msg);
 			}
 		}
+	}
+	function checkLock($isAjax=false) {
+		$this->setModel('account');
+		$this->account->id = $_SESSION['account']['id'];
+		$data = $this->account->search('active');
+		if(empty($data) || $data['account']['active']==-1) {
+			if($isAjax == true) {
+				die("ERROR_LOCKED");
+			} else {
+				error('Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!');
+			}
+		}
+		$this->setModel('nhathau');
 	}
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
@@ -160,6 +173,7 @@ class NhathauController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->checkActive(false,'Bạn cần xác nhận tài khoản mới có thể tạo hồ sơ thầu!');
+		$this->checkLock();
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
@@ -168,6 +182,8 @@ class NhathauController extends VanillaController {
 	function doAdd() {
 		try {
 			$this->checkLogin(true);
+			$this->checkActive(true,'Bạn cần xác nhận tài khoản mới có thể tạo hồ sơ thầu!');
+			$this->checkLock(true);
 			$validate = new Validate();
 			if($validate->check_submit(1,array("nhathau_birthyear","nhathau_diachilienhe","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
 				die('ERROR_SYSTEM');
@@ -274,7 +290,9 @@ class NhathauController extends VanillaController {
 	function edit() {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
+		$this->checkActive();
 		$this->checkNhathau();
+		$this->checkLock();
 		//print_r($_SESSION["nhathau"]["nhathau"]["id"]);die();
 		$this->nhathau->showHasOne();
 		$this->nhathau->id = $_SESSION["nhathau"]["id"];
@@ -296,6 +314,9 @@ class NhathauController extends VanillaController {
 	function doEdit() {
 		try {
 			$this->checkLogin(true);
+			$this->checkActive(true,'Bạn cần phải xác nhận tài khoản mới có thể tạo hồ sơ thầu!');
+			$this->checkNhathau(true);
+			$this->checkLock(true);
 			$validate = new Validate();
 			if($validate->check_submit(1,array("nhathau_id","nhathau_birthyear","nhathau_diachilienhe","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
 				die('ERROR_SYSTEM');
@@ -404,8 +425,9 @@ class NhathauController extends VanillaController {
 	
 	function doChecknhathau() {
 		$this->checkLogin(true);
-		$this->checkNhathau(true);
 		$this->checkActive(true);
+		$this->checkNhathau(true);
+		$this->checkLock(true);
 		$duan_id = $_GET['duan_id'];
 		if($duan_id == null)
 			die('ERROR_SYSTEM');
