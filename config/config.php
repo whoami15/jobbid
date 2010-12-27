@@ -28,5 +28,5 @@ define('NUM_NEWS','5');
 define('LINK_BAOGIA','/download/file/baogia.pdf');
 define('mUser','2741987@gmail.com');
 define('mPass','74198788');
-define('mFooter','<br/>-------------------------------------------------------------------------------<br><a href="http://www.jobbid.vn">www.jobbid.vn</a> - Trang thông tin đấu giá dự án, công việc trực tuyến tại Việt Nam.');
-
+define('SMTP_HOST','smtp.gmail.com');
+define('SMTP_PORT',465);

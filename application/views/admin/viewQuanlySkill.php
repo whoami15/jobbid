@@ -30,7 +30,7 @@
 					<tr>
 						<td width="75px" align="right">Tên Skill :</td>
 						<td align="left">
-							<input type="text" name="skill_skillname" id="skill_skillname" style="width:90%"  tabindex="1"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
+							<input type="text" name="skill_skillname" id="skill_skillname" style="width:90%"  tabindex="1" onfocus="this.select()"/><span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>
 						</td>	
 					</tr>
 					<tr>
