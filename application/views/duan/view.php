@@ -145,6 +145,9 @@
 	function selectpage(page) {
 		loadListHosothau(page);
 	};
+	function redirectMakeProfile() {
+		location.href = url('/nhathau/view');
+	}
 	function guihosothau(duan_id) {
 		location.href = "#top";
 		$('#btGuihoso').attr('disabled','disabled');

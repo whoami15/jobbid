@@ -203,7 +203,7 @@ class NhathauController extends VanillaController {
 			$data = $this->nhathau->search("id");
 			if(!empty($data))
 				die("ERROR_SYSTEM");
-			$file_id = 0;
+			$file_id = null;
 			//Get upload attach file_id
 			global $cache;
 			$ma=time();
@@ -338,7 +338,7 @@ class NhathauController extends VanillaController {
 				die("ERROR_SYSTEM");
 			if($data["nhathau"]["account_id"] != $account_id)
 				die("ERROR_SYSTEM");
-			$file_id = 0;
+			$file_id = null;
 			//Get upload attach file_id
 			global $cache;
 			$ma=time();

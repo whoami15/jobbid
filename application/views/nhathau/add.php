@@ -11,7 +11,7 @@
 		width:170px;
 	}
 	.tdInput {
-		width:400px;
+		width:492px;
 	}
 </style>
 <div id="content" style="width:100%;">
@@ -65,7 +65,7 @@
 					while($i<count($lstLinhvuc)) {
 						$linhvuc = $lstLinhvuc[$i];
 						echo "<tr>";
-						echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+						echo "<td width='50%'><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
 						$i++;
 						if($i<count($lstLinhvuc)) {
 							$linhvuc = $lstLinhvuc[$i];

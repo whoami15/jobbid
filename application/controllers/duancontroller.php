@@ -279,7 +279,7 @@ class DuanController extends VanillaController {
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
 			$ngayketthuc = SQLDate($ngayketthuc);
-			$file_id = 0;
+			$file_id = null;
 			//Get upload attach file_id
 			global $cache;
 			$ma=time();
@@ -631,7 +631,7 @@ class DuanController extends VanillaController {
 				die("ERROR_SYSTEM");
 			$ngaypost = $data["duan"]["ngaypost"];
 			$data_id = $data["duan"]["data_id"];
-			$file_id = 0;
+			$file_id = null;
 			//Get upload attach file_id
 			global $cache;
 			$ma=time();

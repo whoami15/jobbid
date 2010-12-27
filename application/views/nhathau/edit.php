@@ -3,6 +3,9 @@
 		text-align:right;
 		width:170px;
 	}
+	.tdInput {
+		width:492px;
+	}
 </style>
 <div id="content" style="width:100%;">
 	<form id="formnhathau" style="padding-top: 0px; padding-bottom: 10px;">
