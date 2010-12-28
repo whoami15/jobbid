@@ -3,7 +3,7 @@ div.jHtmlArea div { padding: 0px; margin: 0px; }
 div.jHtmlArea div iframe {
 	border :none;
 }	
-div.jHtmlArea .ToolBar { height:28px }
+div.jHtmlArea .ToolBar { height:28px;width:100% !important;background-color:gray }
 div.jHtmlArea .ToolBar ul { border: solid 1px #ccc; margin: 1px; padding: 1px; float: left; background: #fff url(jHtmlArea_Toolbar_Group_BG.png) repeat-x;}
 div.jHtmlArea .ToolBar ul li { list-style-type: none; float: left; border: none; padding: 1px; margin: 1px; }
 div.jHtmlArea .ToolBar ul li:hover { border: solid 1px #ccc; background: #ddd url(jHtmlArea_Toolbar_Group__Btn_Select_BG.png); padding: 0; }

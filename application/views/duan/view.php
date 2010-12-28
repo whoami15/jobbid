@@ -51,6 +51,17 @@
 				</tr>
 				<tr height="30px">
 					<td align="left" colspan="2">
+					<b>Hình thức đấu thầu : </b> 
+					<?php
+					if($dataDuan["duan"]["isbid"]==1)
+						echo 'Đấu thầu tự do.';
+					else
+						echo 'Liên hệ trực tiếp.';
+					?>
+					</td>
+				</tr>
+				<tr height="30px">
+					<td align="left" colspan="2">
 					<b>File đính kèm : </b><a class="link" title="<?php echo $dataDuan["file"]["filename"] ?>" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$dataDuan["file"]["id"] ?>"><?php echo $html->trimString($dataDuan["file"]["filename"],100) ?></a>
 					</td>
 				</tr>
@@ -83,6 +94,20 @@
 					</td>
 				</tr>
 				<?php
+				if($dataDuan["duan"]["isbid"] == 0) {
+				?>
+				<tr height="30px">
+					<td align="left" colspan="2">
+					<b><span style="color:red">Email : </span></b> <?php echo $dataDuan["account"]["username"] ?>
+					</td>
+				</tr>
+				<tr height="30px">
+					<td align="left" colspan="2">
+					<b><span style="color:red">Số điện thoại : </span></b> <?php echo $dataDuan["account"]["sodienthoai"] ?>
+					</td>
+				</tr>
+				<?php
+				}
 				if(isset($dataDuan["nhathau"]["id"])) {
 				?>
 				<tr height="30px">
@@ -101,7 +126,7 @@
 						<input type="button" value="Sửa dự án này" onclick="editMyProject(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php
 					} else {
-						if($dataDuan[""]["timeleft"]>0 && $dataDuan["duan"]["hosothau_id"] ==null) {
+						if($dataDuan[""]["timeleft"]>0 && $dataDuan["duan"]["hosothau_id"] ==null && $dataDuan["duan"]["isbid"] ==1) {
 						?>
 						<input id="btGuihoso" type="button" value="Gửi hồ sơ thầu" onclick="guihosothau(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php
@@ -271,6 +296,9 @@
 		menuid = '#tim-du-an';
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
-		loadListHosothau(1);
+		<?php
+		if($dataDuan["duan"]["isbid"]==1)
+			echo 'loadListHosothau(1);';
+		?>
 	});
 </script>

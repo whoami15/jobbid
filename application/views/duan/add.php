@@ -24,7 +24,14 @@
 		<center>
 		<div class="divTable" style="width:100%">
 			<div class="tr" style="border:none;padding-top:5px">
-				<div class="td" id="msg"></div>
+				<div class="td" id="msg">(Những thông tin có dấu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> là những thông tin bắt buộc bạn phải khai báo)</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Hình thức đấu thầu :</div>
+				<div class="td tdInput">
+				<input type="radio" name="duan_isbid" id="duan_isbid" value="1" /> Đấu thầu tự do. <span class="question" id="tip_freebid">(?)</span><br/>
+				<input type="radio" name="duan_isbid" id="duan_isbid" value="0"/> Liên hệ trực tiếp. <span class="question" id="tip_directcontact">(?)</span>
+				</div>
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Tên dự án <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
@@ -191,6 +198,7 @@
 			$('#duan_cost').append("<option value="+arrCostType[i].id+" >"+arrCostType[i].costtype+"</option>");
 		}
 		MultiSelect("btadd","btremove","btaddall","btremoveall","select1","select2");
+		setCheckedValue(document.forms['formDuan'].elements['duan_isbid'], 1);
 		$("#duan_thongtinchitiet").css("width","100%");
 		$("#duan_thongtinchitiet").htmlarea({
 				toolbar: [
@@ -277,6 +285,8 @@
 		boundTip("duan_linhvuc_id","Chọn lĩnh vực dự án bạn muốn tạo. Sau khi chọn thì danh sách kỹ năng thuộc lĩnh vực bạn chọn sẽ được load vào mục kỹ năng.");
 		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các nhà thầu phải có trước khi tham gia đấu thầu dự án của bạn.");
 		boundTip("tip_loinhan","Vui lòng không đưa thông tin số điện thoại cũng như email của bạn ở thông tin mô tả bên dưới để tránh việc các nhà thầu sẽ liên hệ trực tiếp với bạn!",500);
+		boundTip("tip_freebid","Cho phép các nhà thầu đầu đặt ra giá thầu và thời gian để thực hiện dự án này, từ đó bạn có thể lựa chọn ra nhà thầu tốt nhất cho dự án của bạn. (thông tin liên lạc của bạn chỉ hiển thị đối với nhà thầu nào trúng thầu dự án của bạn)",400);
+		boundTip("tip_directcontact","Thông tin liên hệ của bạn sẽ được hiển thị để các nhà thầu liên hệ trực tiếp với bạn. (chức năng đấu thầu sẽ không còn nếu bạn chọn hình thức này)",400);
 
 	});
 </script>

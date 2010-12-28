@@ -27,6 +27,13 @@
 				<div class="td" id="msg"></div>
 			</div>
 			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Hình thức đấu thầu :</div>
+				<div class="td tdInput">
+				<input type="radio" name="duan_isbid" id="duan_isbid" value="1" /> Đấu thầu tự do.<br/>
+				<input type="radio" name="duan_isbid" id="duan_isbid" value="0"/> Liên hệ trực tiếp.
+				</div>
+			</div>
+			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Tên dự án <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
 				<input type="text" name="duan_tenduan" style="width:90%" value="<?php echo $dataDuan["tenduan"]?>" id="duan_tenduan" tabindex=1/>
@@ -56,7 +63,7 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Ngày kết thúc thầu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text" value="<?php echo $html->format_date($dataDuan["ngayketthuc"],'d/m/Y') ?>"  name="duan_ngayketthuc" id="duan_ngayketthuc" tabindex=4 />&nbsp;<span class="question" id="tip_ngayketthuc">(?)</span>
+				<input type="text" value="<?php echo $html->format_date($dataDuan["ngayketthuc"],'d/m/Y') ?>"  name="duan_ngayketthuc" id="duan_ngayketthuc" tabindex=4 />
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -89,7 +96,7 @@
 			<div class="tr" style="border:none">
 				<div class="td">
 				<fieldset>
-					<legend>Yêu cầu về kỹ năng <span class="question" id="tip_skill">(?)</span></legend>
+					<legend>Yêu cầu về kỹ năng</legend>
 				<table class="center" width="500px">
 					<tbody>
 					<tr>
@@ -335,6 +342,7 @@
 				break;
 			}
 		}
+		setCheckedValue(document.forms['formDuan'].elements['duan_isbid'], <?php echo $dataDuan["isbid"]?>);
 		// pass options to ajaxForm 
 		$('#formDuan').ajaxForm(options);
 		$("input:submit, input:button", "body").button();
@@ -343,9 +351,5 @@
 			changeMonth: true,
 			changeYear: true
 		});
-		boundTip("duan_tenduan","Nhập tên dự án bạn muốn đấu thầu");
-		boundTip("tip_ngayketthuc","Là ngày mà bạn muốn phiên đấu thầu cho dự án này kết thúc, sau ngày này thì các nhà thầu không được phép đấu thầu cho dự án này nữa.");
-		boundTip("duan_linhvuc_id","Chọn lĩnh vực dự án bạn muốn tạo. Sau khi chọn thì danh sách kỹ năng thuộc lĩnh vực bạn chọn sẽ được load vào mục kỹ năng.");
-		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các nhà thầu phải có trước khi tham gia đấu thầu dự án của bạn.");
 	});
 </script>

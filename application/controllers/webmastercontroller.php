@@ -181,6 +181,9 @@ class WebmasterController extends VanillaController {
 		$this->set('nOnlines',$nOnlines);
 		$this->_template->renderPage();  
 	}
+	function contact() {
+		$this->_template->render();  
+	}
 	function afterAction() {
 
 	}

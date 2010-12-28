@@ -269,12 +269,13 @@ class DuanController extends VanillaController {
 			$costmin = $_POST["duan_costmin"];
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
+			$isbid = $_POST["duan_isbid"];
 			if(isset($_POST["duan_skills"])) {
 				if(isset($_POST["duan_skills"][MAX_SKILL]))
 					die('ERROR_MAXSKILL');
 			}
 			$validate = new Validate();
-			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet))==false)
+			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
@@ -349,6 +350,7 @@ class DuanController extends VanillaController {
 			$this->duan->averagecost = 0;
 			$this->duan->active = 1;
 			$this->duan->isnew = 1;
+			$this->duan->isbid = $isbid;
 			$this->duan->data_id = $data_id;
 			$duan_id = $this->duan->insert(true);
 			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
@@ -394,9 +396,9 @@ class DuanController extends VanillaController {
 		if($id != null && $id != 0) {
 			$id = mysql_real_escape_string($id);
 			$_SESSION['redirect_url'] = getUrl();
-			$this->duan->showHasOne(array("linhvuc","tinh","file","nhathau",));
+			$this->duan->showHasOne(array("linhvuc","tinh","file","nhathau",'account'));
 			$this->duan->id=$id;
-            $data=$this->duan->search("duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id");
+            $data=$this->duan->search("duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,username,sodienthoai");
 			if(isset($data)) {
 				$viewcount = $data["duan"]["views"];
 				$this->duan->id=$id;
@@ -566,7 +568,7 @@ class DuanController extends VanillaController {
 		if(isset($duan_id)) {
 			$this->duan->showHasOne(array('file'));
 			$this->duan->id = $duan_id;
-			$data = $this->duan->search("duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime");
+			$data = $this->duan->search("duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid");
 			if(empty($data))
 				error("Server too busy!");
 			if($data["duan"]["account_id"]!=$account_id)
@@ -613,13 +615,14 @@ class DuanController extends VanillaController {
 			$costmin = $_POST["duan_costmin"];
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
+			$isbid = $_POST["duan_isbid"];
 			//Validate
 			if(isset($_POST["duan_skills"])) {
 				if(isset($_POST["duan_skills"][MAX_SKILL]))
 					die('ERROR_MAXSKILL');
 			}
 			$validate = new Validate();
-			if($validate->check_null(array($duan_id,$tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet))==false)
+			if($validate->check_null(array($duan_id,$tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
@@ -689,6 +692,7 @@ class DuanController extends VanillaController {
 			$this->duan->tinh_id = $tinh_id;
 			$this->duan->costmin = $costmin;
 			$this->duan->costmax = $costmax;
+			$this->duan->isbid = $isbid;
 			if($file_id!=0)
 				$this->duan->file_id = $file_id;
 			$this->duan->thongtinchitiet = $thongtinchitiet;
