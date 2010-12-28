@@ -10,7 +10,7 @@ class DuanController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	//Admin functions
 	function checkLogin($isAjax=false) {
@@ -348,6 +348,7 @@ class DuanController extends VanillaController {
 			$this->duan->bidcount = 0;
 			$this->duan->averagecost = 0;
 			$this->duan->active = 1;
+			$this->duan->isnew = 1;
 			$this->duan->data_id = $data_id;
 			$duan_id = $this->duan->insert(true);
 			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");

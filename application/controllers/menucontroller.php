@@ -45,7 +45,7 @@ class MenuController extends VanillaController {
 		}
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
     function setModel($model) {
 		 $this->$model =& new $model;

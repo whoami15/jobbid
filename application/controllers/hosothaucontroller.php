@@ -10,7 +10,7 @@ class HosothauController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	function setModel($model) {
 		 $this->$model =& new $model;
@@ -224,7 +224,8 @@ class HosothauController extends VanillaController {
 			$this->hosothau->account_id = $account_id;
 			$this->hosothau->giathau = $giathau;
 			$this->hosothau->thoigian = $thoigian;
-			$this->hosothau->milestone = $milestone;
+			if($milestone!=null)
+				$this->hosothau->milestone = $milestone;
 			$this->hosothau->content = $content;
 			$this->hosothau->duan_id = $duan_id;
 			$this->hosothau->nhathau_id = $nhathau_id;

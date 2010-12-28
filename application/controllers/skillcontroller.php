@@ -11,6 +11,7 @@ class SkillController extends VanillaController {
 
 	}
 	function beforeAction () {	
+		performAction('webmaster', 'updateStatistics');
 	}
 	function checkLogin($isAjax=false) {
 		if(!isset($_SESSION['account'])) {
@@ -41,7 +42,7 @@ class SkillController extends VanillaController {
 		//die("ERROR_NOTLOGIN");
 		$this->checkAdmin(true);
 		$this->skill->showHasOne();
-		$this->skill->orderBy('skill.id','desc');
+		$this->skill->orderBy('linhvuc_id','desc');
 		$this->skill->setPage($ipageindex);
 		$this->skill->setLimit(PAGINATE_LIMIT);
 		$lstskills = $this->skill->search("skill.id,skillname,linhvuc_id,tenlinhvuc");

@@ -10,7 +10,7 @@ class PageController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	function checkLogin($isAjax=false) {
 		if(!isset($_SESSION['account'])) {

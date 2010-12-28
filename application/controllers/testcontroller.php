@@ -11,7 +11,7 @@ class TestController extends VanillaController {
 
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	function setModel($model) {
 		 $this->$model =& new $model;
@@ -22,10 +22,10 @@ class TestController extends VanillaController {
 		//die("done");
 		//$cache_expire = session_cache_expire();
 		//echo "The cached session pages expire after $cache_expire minutes"; 
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
 		include (ROOT.DS.'library'.DS.'sendmail.php');
 		$conn=new DataProvider();
-		$mail=new sendmail();
+		/* $mail=new sendmail();
 		$conn->lstNewProject();
 		$data = $conn->getListSendmail();
 		$arr = array();
@@ -38,8 +38,9 @@ class TestController extends VanillaController {
 			}
 		}
 		$conn->hadSend($arr);
-		$conn->close();
-		
+		$conn->updateStatistics();
+		$conn->close(); */
+		echo 'DONE';
 	}
 	function rmvsession($session) {
 		$_SESSION[$session] = null;

@@ -10,7 +10,7 @@ class AccountController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
@@ -310,7 +310,7 @@ Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá
 			$content = str_replace($search, $replace, $content);
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'Mail xác nhận khôi phục mật khẩu đăng nhập tại jobbid.vn',$content);
+			$mail->send($username,'Mail Xac Nhan Khoi Phuc Mat Khau Dang Nhap jobbid.vn',$content);
 			$_SESSION['sendresetpass'] = $_SESSION['sendresetpass'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {

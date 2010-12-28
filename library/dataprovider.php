@@ -59,7 +59,7 @@ class DataProvider
 			return;
 		mysql_query("delete from sendmails where id in ($lstId)",$this->link) or die("Error:".mysql_error());
 	}
-	function get($fileName) {
+	function get_cache($fileName) {
 		$fileName = ROOT.DS.'tmp'.DS.'cache'.DS.$fileName;
 		if (file_exists($fileName)) {
 			$handle = fopen($fileName, 'rb');
@@ -70,8 +70,21 @@ class DataProvider
 			return null;
 		}
 	}
-	function test() {
-		echo $BASE_PATH;
+	function set_cache($fileName,$variable) {
+		$fileName = ROOT.DS.'tmp'.DS.'cache'.DS.$fileName;
+		$handle = fopen($fileName, 'w');
+		fwrite($handle, serialize($variable));
+		fclose($handle);
+	}
+	function updateStatistics() {
+		$statistics = $this->get_cache('statistics');
+		$result = mysql_query('select count(*) as total from duans where active=1',$this->link) or die("Error:".mysql_error());
+		$statistics['tProjects'] = mysql_fetch_object($result)->total;
+		$result = mysql_query('select count(*) as total from accounts where active>=0',$this->link) or die("Error:".mysql_error());
+		$statistics['tAccounts'] = mysql_fetch_object($result)->total;
+		$result = mysql_query('select count(*) as total from nhathaus where `status`>=0',$this->link) or die("Error:".mysql_error());
+		$statistics['tFreelancers'] = mysql_fetch_object($result)->total;
+		$this->set_cache('statistics',$statistics);
 	}
 	function lstNewProject() {
 		$query="SELECT id,alias,tenduan,costmin,costmax,ngayketthuc,linhvuc_id from duans where isnew=1 and active=1 and nhathau_id is null and ngayketthuc>now()";
@@ -79,7 +92,7 @@ class DataProvider
 		if($result == null || mysql_num_rows($result)==0) {
 			return;
 		}
-		$content = $this->get('mail_newproject');
+		$content = $this->get_cache('mail_newproject');
 		while($a_row=mysql_fetch_object($result))
 		{
 			$duan_id = $a_row->id;

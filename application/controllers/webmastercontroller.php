@@ -8,7 +8,7 @@ class WebmasterController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	function setModel($model) {
 		 $this->$model =& new $model;
@@ -133,6 +133,53 @@ class WebmasterController extends VanillaController {
 			error('Lỗi! Sai mã xác nhận hoặc mã xác nhận này đã được sử dụng!');
 		$_SESSION['resetpassword'] = $data[0]['resetpassword'];
 		$this->_template->render();  
+	}
+	function updateStatistics() {
+		$this->setModel('ppl_online');
+		$now = GetDateSQL();
+		if (! isset($_SESSION['online'])) {
+			$this->ppl_online->id = null;
+			if(!isset($_SERVER['HTTP_REFERER']))
+				$this->ppl_online->refurl = null;
+			$this->ppl_online->activity = $now;
+			$this->ppl_online->access_time = $now;
+			$this->ppl_online->ip_address = $_SERVER['REMOTE_ADDR'];
+			$this->ppl_online->account_id = null;
+			$this->ppl_online->user_agent = $_SERVER['HTTP_USER_AGENT'];
+			$id = $this->ppl_online->insert(true);
+			$_SESSION['online'] = $id; // đăng ký một biến session
+		} else {
+			if (isset($_SESSION['account'])) {
+				$this->ppl_online->id = $_SESSION['online'];
+				$this->ppl_online->activity = $now;
+				$this->ppl_online->account_id = $_SESSION['account']['id'];
+				$this->ppl_online->update();
+			}
+		}
+		if (isset($_SESSION['online'])) {  // nếu là registered.
+			$this->ppl_online->id = $_SESSION['online'];
+			$this->ppl_online->activity = $now;
+			$this->ppl_online->update();
+		}
+		$limit_time = time() - 300;
+		$data = $this->ppl_online->custom("SELECT count(*) as nOnline FROM ppl_onlines WHERE UNIX_TIMESTAMP(activity) >= $limit_time");
+		global $cache;
+		$statistics = $cache->get('statistics');
+		$statistics['nOnlines'] = $data[0]['']['nOnline'];
+		$cache->set('statistics',$statistics);
+	}
+	function showStatistic() {
+		global $cache;
+		$statistics = $cache->get('statistics');
+		$tAccounts = isset($statistics['tAccounts'])?$statistics['tAccounts']:'-';
+		$tProjects = isset($statistics['tProjects'])?$statistics['tProjects']:'-';
+		$tFreelancers = isset($statistics['tFreelancers'])?$statistics['tFreelancers']:'-';
+		$nOnlines = isset($statistics['nOnlines'])?$statistics['nOnlines']:'-';
+		$this->set('tAccounts',$tAccounts);
+		$this->set('tProjects',$tProjects);
+		$this->set('tFreelancers',$tFreelancers);
+		$this->set('nOnlines',$nOnlines);
+		$this->_template->renderPage();  
 	}
 	function afterAction() {
 

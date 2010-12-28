@@ -10,6 +10,7 @@ class AdminController extends VanillaController {
 
 	}
 	function beforeAction () {	
+		performAction('webmaster', 'updateStatistics');
 	}
 	function checkLogin($isAjax=false) {
 		if(!isset($_SESSION['account'])) {

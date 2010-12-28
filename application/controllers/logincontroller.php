@@ -10,6 +10,7 @@ class LoginController extends VanillaController {
 
 	}
 	function beforeAction () {
+		performAction('webmaster', 'updateStatistics');
 	}
 	function isLoged() {
 		if(!isset($_SESSION['account'])) {

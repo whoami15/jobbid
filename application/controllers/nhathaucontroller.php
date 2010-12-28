@@ -10,7 +10,7 @@ class NhathauController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-
+		performAction('webmaster', 'updateStatistics');
 	}
 	//Admin functions
 	function setModel($model) {

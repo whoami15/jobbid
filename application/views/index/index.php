@@ -19,7 +19,7 @@
 					<td>Bid</td>
 					<td>Lĩnh vực</td>
 					<td>Ngày bắt đầu</td>
-					<td>Còn</td>
+					<td width="100px">Còn</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,7 +37,7 @@
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
 						<td id="td_linhvuc" align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
-						<td id="td_ngaypost" align="center"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i')?></td>
+						<td id="td_ngaypost" align="center"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y')?></td>
 						<td id="td_lefttime"align="center"><?php echo $html->getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>
 					</tr>
 					<?php

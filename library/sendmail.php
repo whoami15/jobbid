@@ -16,9 +16,9 @@ class sendmail {
 		$mail->Username   = mUser;  // GMAIL username
 		$mail->Password   = mPass;            // GMAIL password
 		$from = mUser;
-		$mail->AddReplyTo($from, "www.jobbid.vn");
+		$mail->AddReplyTo($from, "Jobbid.vn Support");
 		$mail->From       = $from;
-		$mail->FromName   = "www.jobbid.vn";
+		$mail->FromName   = "Jobbid.vn Support";
 		$mail->Sender = $from;
 		$mail->Subject    = $subject;
 		//$mail->AltBody    = "Xin chao"; // optional, comment out and test

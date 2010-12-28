@@ -54,7 +54,7 @@ function unregisterGlobals() {
 
 /** Secondary Call Function **/
 
-function performAction($controller,$action,$queryString,$render = 0) {
+function performAction($controller,$action,$queryString=null,$render = 0) {
 	
 	$controllerName = ucfirst($controller).'Controller';
 	$dispatch = new $controllerName($controller,$action);

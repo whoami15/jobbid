@@ -1,0 +1,1 @@
+/usr/bin/php /home/jobbid/public_html/config/cron.php
