@@ -102,6 +102,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
+		document.title = "Danh Sách Hồ Sơ Thầu Đã Gửi - "+document.title;
 		$("#ds_ho_so_thau").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		$("#tfoot_paging").html($("#thead_paging").html());

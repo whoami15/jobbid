@@ -178,6 +178,7 @@
 				return true;
 			}
 			$(document).ready(function() {
+				document.title = "Chỉnh Sửa Hồ Sơ Nhà Thầu - "+document.title;
 				yearBegin = 1950;
 				yearEnd = 2011;
 				str = '';

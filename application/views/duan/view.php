@@ -291,6 +291,7 @@
 		
 	}
 	$(document).ready(function() {
+		document.title = "<?php echo $dataDuan["duan"]["tenduan"]?> - "+document.title;
 		$("#content_title").html("<a class='link2' href='"+url('/duan/search')+"'>Tìm dự án</a> &#8250 <a class='link2' href='"+url('/linhvuc&linhvuc_id=<?php echo $dataDuan["duan"]["linhvuc_id"]?>')+"'><?php echo $dataDuan["linhvuc"]["tenlinhvuc"]?></a> &#8250 Thông tin dự án");
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tim-du-an';

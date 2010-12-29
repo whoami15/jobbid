@@ -232,6 +232,7 @@
 		if(isset($nhathau))
 			echo "changeType(".$nhathau["nhathau"]["type"].");";
 		?>
+		document.title = "<?php echo $nhathau["nhathau"]["displayname"] ?> - "+document.title;
 		$("#quan_ly_ho_so_ca_nhan").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		$("#tr_oldpass").hide();

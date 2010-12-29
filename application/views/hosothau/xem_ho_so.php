@@ -205,6 +205,7 @@
 		});
 	}
 	$(document).ready(function() {
+		document.title = "<?php echo $nhathau["displayname"] ?> - "+document.title;
 		changeType(<?php echo $nhathau["type"] ?>);
 		$("input:submit, input:button", "body").button();
 		block("#div_lstDuans");

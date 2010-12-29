@@ -114,6 +114,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
+		document.title = "My Projects - "+document.title;
 		$("#ds_du_an_cua_toi").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		$("#tfoot_paging").html($("#thead_paging").html());

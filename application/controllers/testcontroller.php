@@ -40,6 +40,7 @@ class TestController extends VanillaController {
 		$conn->hadSend($arr);
 		$conn->updateStatistics();
 		$conn->close(); */
+		echo $_SESSION['test'];
 		echo 'DONE';
 	}
 	function rmvsession($session) {

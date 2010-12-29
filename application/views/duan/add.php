@@ -194,6 +194,7 @@
 		location.href = url('/linhvuc&linhvuc_id='+byId("duan_linhvuc_id").value);
 	}
 	$(document).ready(function() {
+		document.title = "Tạo Dự Án - "+document.title;
 		for(i=0;arrCostType[i]!=null;i++) {
 			$('#duan_cost').append("<option value="+arrCostType[i].id+" >"+arrCostType[i].costtype+"</option>");
 		}

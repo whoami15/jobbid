@@ -198,6 +198,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
+		document.title = "Tìm Dự Án - "+document.title;
 		menuid = '#tim-du-an';
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();

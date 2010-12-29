@@ -122,6 +122,7 @@
 		byId("msg").innerHTML="";
 	}
 	$(document).ready(function() {
+		document.title = "Trang Đăng Ký Thành Viên - "+document.title;
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#register';
 		//$("#content_title").text($("#menu "+menuid).text());

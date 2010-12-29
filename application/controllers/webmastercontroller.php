@@ -8,7 +8,6 @@ class WebmasterController extends VanillaController {
 		$this->_template =& new Template($controller,$action);
 	}
 	function beforeAction () {
-		performAction('webmaster', 'updateStatistics');
 	}
 	function setModel($model) {
 		 $this->$model =& new $model;
@@ -36,11 +35,13 @@ class WebmasterController extends VanillaController {
 		$this->_template->render();  	  
 	}
 	function help() {	
+		$this->updateStatistics();
 		$this->_template->render();  	  
 	}
 	function active($account_id) {
 		if($account_id==null)
 			error("Lỗi! Đường link truy cập không hợp lệ");
+		$this->updateStatistics();
 		$url = BASE_PATH;
 		if(isset($_SESSION['redirect_url']))
 			$url = $_SESSION['redirect_url'];
@@ -49,10 +50,12 @@ class WebmasterController extends VanillaController {
 		$this->_template->render();  	  
 	}
 	function resetpass() {
+		$this->updateStatistics();
 		$this->_template->render();  	  
 	}
 	function doActive($isAjax=false) {
 		try {
+			$this->updateStatistics();
 			//Validate data submit
 			$validate = new Validate();
 			if($validate->check_submit(2,array("account_id","active_code"))==false)
@@ -93,6 +96,7 @@ class WebmasterController extends VanillaController {
 	}
 	function doSendActiveCode() {
 		try {
+			$this->updateStatistics();
 			if(!isset($_SESSION['sendactivecode']))
 				$_SESSION['sendactivecode'] = 0;
 			if($_SESSION['sendactivecode']>=MAX_SENDACTIVECODE)
@@ -125,6 +129,7 @@ class WebmasterController extends VanillaController {
 	function changepass($account_id,$rs_verify) {
 		if($account_id == null || $rs_verify == null)
 			error('Lỗi! Liên kết không hợp lệ!');
+		$this->updateStatistics();
 		$this->setModel('resetpassword');
 		$rs_verify = mysql_real_escape_string($rs_verify);
 		$this->resetpassword->where(" and account_id=$account_id and verify='$rs_verify'");
@@ -182,6 +187,7 @@ class WebmasterController extends VanillaController {
 		$this->_template->renderPage();  
 	}
 	function contact() {
+		$this->updateStatistics();
 		$this->_template->render();  
 	}
 	function afterAction() {
