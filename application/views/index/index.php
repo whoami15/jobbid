@@ -19,10 +19,10 @@
 	<img alt="project" src="<?php echo BASE_PATH ?>/public/images/icons/arrow.png"/>
 	<img alt="project" style="cursor:pointer" id="help_payment" src="<?php echo BASE_PATH ?>/public/images/icons/payment.png"/><br/>
 	<ul>
-		<li>Trang web <a href="http://www.jobbid.vn" class="link">jobbid.vn</a> là nơi tin cậy để bạn có thể gửi dự án lên đấu giá công khai, qua đó có thể tìm được ứng viên thích hợp để thực hiện dự án của bạn.</li>
-		<li>Thông qua trang web, các bạn có thể tìm kiếm được những công việc bán thời gian hoặc các dự án nhỏ phù họp với khả năng mà bạn có thể hoàn thành một cách tốt nhất.</li>
+		<li><a href="http://www.jobbid.vn" class="link">Jobbid.vn</a> là nơi tin cậy để bạn có thể gửi dự án đấu giá công khai, qua đó tìm được ứng viên thích hợp để thực hiện dự án của bạn.</li>
+		<li>Thông qua trang web, các bạn có thể tìm kiếm được những công việc bán thời gian hoặc các dự án nhỏ phù hợp với khả năng mà bạn có thể hoàn thành một cách tốt nhất.</li>
 		<li>Là nơi lưu trữ, chia sẻ những dự án nhỏ.</li>
-		<li>Là kênh thông tin về tuyển dụng việc làm và tuyển dụng uy tín.</li>
+		<li>Là kênh thông tin tuyển dụng uy tín.</li>
 	</ul>
 	</div>
 	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px" id="content_title2">Các dự án mới nhất</div>

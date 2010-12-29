@@ -1,5 +1,5 @@
 <style>
-img {
+.picture {
    padding:1px;
    border:1px solid #021a40;
 }
@@ -10,7 +10,7 @@ img {
 		<strong>Hotline :</strong> 0905.267.932 - 0903.578.369<br/>
 		<strong>Địa chỉ :</strong> 172 Đường D2, Phường 25, Quận Bình Thạnh, Thành Phố Hồ Chí Minh.<br/>
 		<strong>Email :</strong> <a class="link" href="mailto:sale@jobbid.vn">sale@jobbid.vn</a> | <a class="link" href="mailto:admin@jobbid.vn">admin@jobbid.vn</a><br/><br/>
-		<img id="map" alt="post-du-an" src="<?php echo BASE_PATH ?>/public/images/map.png" />
+		<img class="picture" id="map" alt="post-du-an" src="<?php echo BASE_PATH ?>/public/images/map.png" />
 	</div>
 </div>
 <script>
