@@ -4,13 +4,6 @@
 	<div id="layout_top">
 		Banner + Menu
 	</div>
-	<div id="layout_leftcol">
-		<?php
-		foreach($leftcol as $widget) {
-			echo "<div id='".$widget["widget"]["id"]."' class='layout_widget'>".$widget["widget"]["name"]."</div>";
-		}
-		?>
-	</div>
 	<div style="float:left;padding:28px">
 	Content Here!
 	</div>
