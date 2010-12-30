@@ -103,7 +103,31 @@ class MoithauController extends VanillaController {
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
 		$this->_template->render();
-		
+	}
+	function lstMyLetters($ipageindex) {
+		$_SESSION['redirect_url'] = getUrl();
+		$this->checkLogin();
+		$account_id = $_SESSION["account"]["id"];
+		$this->moithau->showHasOne(array('duan'));
+		$this->moithau->orderBy('hadread,time','desc');
+		$this->moithau->setPage($ipageindex);
+		$this->moithau->setLimit(PAGINATE_LIMIT);
+		$this->moithau->where(" and moithau.account_id = $account_id");
+		$data = $this->moithau->search("moithau.id,duan.id,tenduan,alias,bidcount,averagecost,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id,hadread");
+		$totalPages = $this->moithau->totalPages();
+		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstDuan);die();
+		$this->set("lstDuan",$data);
+		$this->set('pagesindex',$ipageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->_template->renderPage();
 	}
 	function doRead($moithau_id=null) {
 		if($moithau_id==null)

@@ -126,7 +126,7 @@
 	<input type="hidden" name="moithau_duan_id" id="moithau_duan_id" value="" />
 	<input type="hidden" name="moithau_account_id" id="moithau_account_id" value="<?php echo $nhathau["account_id"] ?>" />
 	<input id="btsubmit" type="button" value="Xác Nhận" onclick="saveMoithau()"/>
-	<input type="button" value="Không" onclick="$('#dialogVerify').dialog('close')"/>
+	<input type="button" value="Đóng" onclick="$('#dialogVerify').dialog('close')"/>
 	</form>
 	</center>
 </div>

@@ -97,7 +97,7 @@
 		$.ajax({
 			type : "GET",
 			cache: false,
-			url: url("/duan/lstMyProjects/"+page),
+			url: url("/moithau/lstMyLetters/"+page),
 			success : function(data){	
 				//alert(data);
 				unblock("#content");
@@ -117,7 +117,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
-		document.title = "My Projects - "+document.title;
+		document.title = "Danh sách thư mời thầu - "+document.title;
 		$("#ds_thu_moi_thau").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		$("#tfoot_paging").html($("#thead_paging").html());
