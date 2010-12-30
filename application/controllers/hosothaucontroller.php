@@ -305,7 +305,7 @@ class HosothauController extends VanillaController {
 		$this->hosothau->orderBy("hosothau.id","desc");
 		$this->hosothau->setPage(1);
 		$this->hosothau->setLimit(PAGINATE_LIMIT);
-		$data = $this->hosothau->search("duan.id,alias,tenduan,giathau,ngaygui,duan.nhathau_id,hosothau.nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,duan.active,trangthai");
+		$data = $this->hosothau->search("hosothau.id,duan.id,alias,tenduan,giathau,ngaygui,duan.nhathau_id,hosothau.nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,duan.active,trangthai");
 		$totalPages = $this->hosothau->totalPages();
 		$ipagesbefore = 1 - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -350,7 +350,9 @@ class HosothauController extends VanillaController {
 		if(isset($hosothau_id) && isset($duan_id)) {
 			$_SESSION['redirect_url'] = getUrl();
 			$this->checkLogin();
+			$this->checkNhathau();
 			$account_id = $_SESSION['account']['id'];
+			$nhathau_id = $_SESSION['nhathau']['id'];
 			$hosothau_id = mysql_real_escape_string($hosothau_id);
 			$duan_id = mysql_real_escape_string($duan_id);
 			$this->setModel('duan');
@@ -359,8 +361,7 @@ class HosothauController extends VanillaController {
 			$data = $this->duan->search('account_id,hosothau_id');
 			if(empty($data))
 				error('Server đang quá tải, vui lòng thử lại sau!');
-			if($account_id != $data['duan']['account_id'])
-				error('Chỉ có chủ dự án mới xem được hồ sơ thầu này!');
+			$employerId = $data['duan']['account_id'];
 			$hosotrungthau = $data['duan']['hosothau_id'];
 			$this->setModel('hosothau');
 			$this->hosothau->showHasOne(array('nhathau'));
@@ -369,8 +370,10 @@ class HosothauController extends VanillaController {
 			$data = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,hosothau_email,content,hosothau_sodienthoai,ngaygui,nhathau.id,nhathau.displayname');
 			if(empty($data))
 				error("Server đang quá tải, vui lòng thử lại sau!");
+			if($account_id != $employerId && $nhathau_id != $data['nhathau']['id'])
+				error('Chỉ có chủ dự án mới xem được hồ sơ thầu này!');
 			$flag = true;
-			if($hosotrungthau ==null || $hosotrungthau !=$hosothau_id) {
+			if(($hosotrungthau ==null || $hosotrungthau !=$hosothau_id) && $nhathau_id != $data['nhathau']['id']) {
 				$data['hosothau']['hosothau_email'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
 				$data['hosothau']['hosothau_sodienthoai'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
 				$flag = false;
@@ -393,13 +396,11 @@ class HosothauController extends VanillaController {
 				$hosothau_id = mysql_real_escape_string($hosothau_id);
 				$duan_id = mysql_real_escape_string($duan_id);
 				$this->hosothau->id = $hosothau_id;
-				$this->hosothau->showHasOne(array('nhathau'));
-				$this->hosothau->hasJoin(array('nhathau'),array('account'));
-				$data = $this->hosothau->search("nhathau_id,username");
+				$data = $this->hosothau->search("nhathau_id,hosothau_email");
 				if(empty($data))
-					error("Server đang quá tải, vui lòng thử lại sau!");
+					die("ERROR_SYSTEM");
 				$nhathau_id = $data["hosothau"]["nhathau_id"];
-				$freelancerMail = $data["account"]["username"];
+				$freelancerMail = $data["hosothau"]["hosothau_email"];
 				$this->hosothau->id = $hosothau_id;
 				$this->hosothau->trangthai = 2;
 				$this->hosothau->update();
