@@ -322,15 +322,15 @@ class HosothauController extends VanillaController {
 		$this->_template->render();
 	}
 	function lstHosothauByNhathau($ipageindex) {
-		$this->checkLogin();
-		$this->checkNhathau();
+		$this->checkLogin(true);
+		$this->checkNhathau(true);
 		$nhathau_id = $_SESSION["nhathau"]["id"];
 		$this->hosothau->showHasOne(array("duan"));
 		$this->hosothau->where(" and trangthai>=1 and hosothau.nhathau_id = $nhathau_id");
 		$this->hosothau->orderBy("hosothau.id","desc");
 		$this->hosothau->setPage($ipageindex);
 		$this->hosothau->setLimit(PAGINATE_LIMIT);
-		$data = $this->hosothau->search("duan.id,alias,tenduan,giathau,ngaygui");
+		$data = $this->hosothau->search("hosothau.id,duan.id,alias,tenduan,giathau,ngaygui,duan.nhathau_id,hosothau.nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,duan.active,trangthai");
 		$totalPages = $this->hosothau->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -350,9 +350,8 @@ class HosothauController extends VanillaController {
 		if(isset($hosothau_id) && isset($duan_id)) {
 			$_SESSION['redirect_url'] = getUrl();
 			$this->checkLogin();
-			$this->checkNhathau();
 			$account_id = $_SESSION['account']['id'];
-			$nhathau_id = $_SESSION['nhathau']['id'];
+			$nhathau_id = isset($_SESSION['nhathau'])?$_SESSION['nhathau']['id']:-1;
 			$hosothau_id = mysql_real_escape_string($hosothau_id);
 			$duan_id = mysql_real_escape_string($duan_id);
 			$this->setModel('duan');

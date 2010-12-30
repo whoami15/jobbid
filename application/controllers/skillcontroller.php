@@ -42,7 +42,7 @@ class SkillController extends VanillaController {
 		//die("ERROR_NOTLOGIN");
 		$this->checkAdmin(true);
 		$this->skill->showHasOne();
-		$this->skill->orderBy('linhvuc_id','desc');
+		$this->skill->orderBy('skill.id','desc');
 		$this->skill->setPage($ipageindex);
 		$this->skill->setLimit(PAGINATE_LIMIT);
 		$lstskills = $this->skill->search("skill.id,skillname,linhvuc_id,tenlinhvuc");
