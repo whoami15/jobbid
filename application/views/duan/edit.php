@@ -67,6 +67,18 @@
 				</div>
 			</div>
 			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $dataDuan["duan_email"] ?>"/>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $dataDuan["duan_sodienthoai"] ?>"/>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
 				<div class="td tdInput">
 				<input type="file" name="duan_filedinhkem" id="duan_filedinhkem" tabindex=5/> (Size < 2Mb)
@@ -180,6 +192,8 @@
 		checkValidate=true;
 		validate(['require'],'duan_tenduan',["Vui lòng nhập tên dự án!"]);
 		validate(['require','checkdate'],'duan_ngayketthuc',["Vui lòng nhập ngày kết thúc"]);
+		validate(['require','email'],'duan_email',["Vui lòng nhập email chủ dự án!","Email sai định dạng!"]);
+		validate(['require'],'duan_sodienthoai',["Vui lòng nhập số điện thoại chủ dự án!"]);
 		validate(['requireselect'],'duan_linhvuc_id',["Vui lòng chọn 1 lĩnh vực!"]);
 		if(checkValidate==false) {
 			return false;
@@ -224,6 +238,8 @@
 	}
 	function changeStatus(duan_id,active) {
 		if(duan_id==null)
+			return;
+		if(!confirm("Dự án này sẽ không được hiển thị cho đến khi bạn mở lại.\nBạn có muốn dóng dự án này?"))
 			return;
 		$('#btChangeStatusProject').attr('disabled','disabled');
 		location.href = "#top";

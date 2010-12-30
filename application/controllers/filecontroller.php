@@ -39,6 +39,7 @@ class FileController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function download($id) {
+		$this->checkLogin();
 		if(!empty($id)) {
 			if(!isset($_SESSION['filedownloads']))
 				$_SESSION['filedownloads'] = 0;
@@ -52,7 +53,6 @@ class FileController extends VanillaController {
 				error("File download không tồn tại!");
 			$data = $data["file"];
 			if($data["account_share"]!=null) {
-				$this->checkLogin();
 				$account_id = $_SESSION["account"]["id"];
 				if($account_id != $data["account_share"] && $account_id != $data["account_id"])
 					error("Bạn không được phép download file này!");

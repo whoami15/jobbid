@@ -45,13 +45,13 @@
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Email :</div>
 					<div class="td tdInput">
-					<input type="text" style="width:70%" value="<?php echo $username ?>" disabled=true/>
+					<input type="text" id="hosothau_email" name="hosothau_email" style="width:70%" value="<?php echo $username ?>" tabindex=3/> <span class="question" id="tip_email">(?)</span>
 					</div>
 				</div>
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Số điện thoại :</div>
 					<div class="td tdInput">
-					<input type="text" style="width:70%" value="<?php echo $sodienthoai ?>" disabled=true/>
+					<input type="text" id="hosothau_sodienthoai" name="hosothau_sodienthoai" style="width:70%" value="<?php echo $sodienthoai ?>" tabindex=3/> <span class="question" id="tip_sodienthoai">(?)</span>
 					</div>
 				</div>
 				<div class="tr" style="border:none;text-align:left">
@@ -89,6 +89,8 @@
 		validate(['require','number'],'hosothau_giathau',["Vui lòng nhập giá thầu!","Vui lòng nhập kiểu số!"]);
 		validate(['require','number'],'hosothau_thoigian',["Vui lòng nhập thời gian!","Vui lòng nhập kiểu số!"]);
 		validate(['number'],'hosothau_milestone',["Vui lòng nhập kiểu số!"]);
+		validate(['require','email'],'hosothau_email',["Vui lòng nhập email của bạn!","Email sai định dạng!"]);
+		validate(['require'],'hosothau_sodienthoai',["Vui lòng nhập số điện thoại của bạn!"]);
 		if(checkValidate==false) {
 			return;
 		}
@@ -177,6 +179,8 @@
 		boundTip("hosothau_milestone","Ví dụ : Nếu bạn đặt milestone là 50%, khi bạn hoàn thành được 50% dự án đó, chủ dự án sẽ chi trả 50% số tiền cho bạn");
 		boundTip("tip_thoigian","Nhập số ngày bạn sẽ hoàn thành dự án.");
 		boundTip("tip_giathau","Nhập số tiền (VNĐ) bạn sẽ thầu dự án này, với giá thầu và thời gian hợp lý, bạn sẽ có nhiều cơ hội được chủ dự án lựa chọn");
+		boundTip("tip_email","Chủ dự án sẽ liên hệ với bạn qua email này nếu bạn thắng thầu.");
+		boundTip("tip_sodienthoai","Chủ dự án sẽ liên hệ với bạn qua số điện thoại này nếu bạn thắng thầu.");
 		boundTip("tip_loinhan","Số điện thoại và email của bạn (khi đăng ký tài khoản) sẽ được chủ dự án sử dụng để liên lạc với bạn <span style='color:red'>nếu bạn được trúng thầu</span>, vui lòng không điền số điện thoại và email của bạn trong phần thông tin mô tả bên dưới!",500);
 	});
 </script>

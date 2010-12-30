@@ -1,0 +1,3 @@
+Them 2 field duan_email va duan_sodienthoai vao bang duans
+Them 2 field hosothau_email,hosothau_sodienthoai vao bang hosothaus
+Them bang moithaus	

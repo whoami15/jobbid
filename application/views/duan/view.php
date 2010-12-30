@@ -98,12 +98,12 @@
 				?>
 				<tr height="30px">
 					<td align="left" colspan="2">
-					<b><span style="color:red">Email : </span></b> <?php echo $dataDuan["account"]["username"] ?>
+					<b>Email :</b> <span style="color:red"><?php echo $dataDuan["duan"]["duan_email"] ?></span>
 					</td>
 				</tr>
 				<tr height="30px">
 					<td align="left" colspan="2">
-					<b><span style="color:red">Số điện thoại : </span></b> <?php echo $dataDuan["account"]["sodienthoai"] ?>
+					<b>Số điện thoại :</b> <span style="color:red"><?php echo $dataDuan["duan"]["duan_sodienthoai"] ?></span>
 					</td>
 				</tr>
 				<?php

@@ -67,6 +67,18 @@
 				</div>
 			</div>
 			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $_SESSION['account']['username'] ?>"/>&nbsp;<span class="question" id="tip_email">(?)</span>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdInput">
+				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $_SESSION['account']['sodienthoai'] ?>"/>&nbsp;<span class="question" id="tip_sodienthoai">(?)</span>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
 				<div class="td tdInput">
 				<input type="file" name="duan_filedinhkem" id="duan_filedinhkem" tabindex=5/> (Size < 2Mb)
@@ -113,7 +125,7 @@
 			</div>
 			<div class="tr" style="border:none;text-align:left">
 				<div class="td">
-				Thông tin chi tiết (vui lòng<span id="tip_loinhan" style="color:red;font-weight:bold;cursor:pointer;" > không điền email, số điện thoại </span>của bạn ở đây) :<br/>
+				Thông tin chi tiết :<br/>
 				<textarea id="duan_thongtinchitiet" name="duan_thongtinchitiet" style="border:none;" rows="15" tabindex=8></textarea>
 				</div>
 			</div>
@@ -148,6 +160,8 @@
 		checkValidate=true;
 		validate(['require'],'duan_tenduan',["Vui lòng nhập tên dự án!"]);
 		validate(['require','checkdate'],'duan_ngayketthuc',["Vui lòng nhập ngày kết thúc"]);
+		validate(['require','email'],'duan_email',["Vui lòng nhập email chủ dự án!","Email sai định dạng!"]);
+		validate(['require'],'duan_sodienthoai',["Vui lòng nhập số điện thoại chủ dự án!"]);
 		validate(['requireselect'],'duan_linhvuc_id',["Vui lòng chọn 1 lĩnh vực!"]);
 		if(checkValidate==false) {
 			return false;
@@ -283,9 +297,10 @@
 		});
 		boundTip("duan_tenduan","Nhập tên dự án bạn muốn đấu thầu");
 		boundTip("tip_ngayketthuc","Là ngày mà bạn muốn phiên đấu thầu cho dự án này kết thúc, sau ngày này thì các nhà thầu không được phép đấu thầu cho dự án này nữa.");
-		boundTip("duan_linhvuc_id","Chọn lĩnh vực dự án bạn muốn tạo. Sau khi chọn thì danh sách kỹ năng thuộc lĩnh vực bạn chọn sẽ được load vào mục kỹ năng.");
+		boundTip("duan_linhvuc_id","Danh sách các kỹ năng sẽ được load vào mục kỹ năng sau khi một lĩnh vực được chọn.");
 		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các nhà thầu phải có trước khi tham gia đấu thầu dự án của bạn.");
-		boundTip("tip_loinhan","Vui lòng không đưa thông tin số điện thoại cũng như email của bạn ở thông tin mô tả bên dưới để tránh việc các nhà thầu sẽ liên hệ trực tiếp với bạn!",500);
+		boundTip("tip_email","Là email của chủ dự án mà nhà thầu thắng thầu sẽ liên lạc.");
+		boundTip("tip_sodienthoai","Là số điện thoại của chủ dự án mà nhà thầu thắng thầu sẽ liên lạc.");
 		boundTip("tip_freebid","Cho phép các nhà thầu đầu đặt ra giá thầu và thời gian để thực hiện dự án này, từ đó bạn có thể lựa chọn ra nhà thầu tốt nhất cho dự án của bạn. (thông tin liên lạc của bạn chỉ hiển thị đối với nhà thầu nào trúng thầu dự án của bạn)",400);
 		boundTip("tip_directcontact","Thông tin liên hệ của bạn sẽ được hiển thị để các nhà thầu liên hệ trực tiếp với bạn. (chức năng đấu thầu sẽ không còn nếu bạn chọn hình thức này)",400);
 

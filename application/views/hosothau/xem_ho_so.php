@@ -1,8 +1,9 @@
 <div id="content" style="width:100%">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin nhà thầu</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin hồ sơ thầu</div>
+	<div style="padding:10px">
 	<form>
-	<input type="hidden" id="duan_id" name="duan_id" value="<?php echo $duan["id"] ?>"/>
-	<input type="hidden" id="hosothau_id" value="<?php echo $hosothau_id ?>"/>
+	<input type="hidden" id="duan_id" name="duan_id" value="<?php echo $duan_id ?>"/>
+	<input type="hidden" id="hosothau_id" value="<?php echo $data['hosothau']['id'] ?>"/>
 	</form>
 	<table class="center" width="100%">
 		<thead>
@@ -13,122 +14,54 @@
 		</thead>
 		<tbody>
 			<tr height="30px">
-				<td align="center" colspan="2">
-				<h2><?php echo $nhathau["displayname"] ?></h2> 
+				<td align="left" >
+				<b>Nhà thầu :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $data['nhathau']["id"] ?>"><?php echo $data['nhathau']["displayname"] ?></a>
 				</td>
 			</tr>
 			<tr height="30px">
 				<td align="left" >
-				<b>Đại diện cho :</b> 
-				<?php 
-				if($nhathau["type"]==1)
-					echo 'Cá nhân';
-				else
-					echo 'Công ty';
-				?>
+				<b>Giá thầu :</b> <?php echo $data['hosothau']['giathau'] ?>
 				</td>
 			</tr>
 			<tr height="30px">
 				<td align="left" >
-				<span style="float:left;padding-right:10px"> <b>JobBid đánh giá :</b></span>
-				<?php
-				for($j=0;$j<$nhathau["diemdanhgia"];$j++) {
-					echo '<span style="float:left" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span>';
-				}
-				if($nhathau["diemdanhgia"]>3) {
-					echo "&nbsp;&nbsp;(Rất tốt)";
-				} else if($nhathau["diemdanhgia"]>1) {
-					echo "&nbsp;&nbsp;(Tốt)";
-				} else if($nhathau["diemdanhgia"]>0){
-					echo "&nbsp;&nbsp;(Khá)";
-				} else {
-					echo "(Chưa đánh giá)";
-				}
-				?>
-				
+				<b>Thời gian :</b> <?php echo $data['hosothau']['thoigian'] ?>
 				</td>
 			</tr>
 			<tr height="30px">
 				<td align="left" >
-				<b><span id="display_gpkd_cmnd"></span> :</b> <?php echo $nhathau["gpkd_cmnd"] ?>
+				<b>Milestone :</b> <?php echo $data['hosothau']['milestone'] ?>
 				</td>
 			</tr>
 			<tr height="30px">
 				<td align="left" >
-				<b><span id="display_birthyear"></span> :</b> <?php echo $nhathau["birthyear"] ?>
+				<b>Lời nhắn :</b> <?php echo $data['hosothau']['content'] ?>
 				</td>
 			</tr>
 			<tr height="30px">
 				<td align="left" >
-				<b><span id="display_diachilienhe"></span> :</b> <?php echo $nhathau["diachilienhe"] ?>
+				<b>Ngày gửi :</b> <?php  echo $html->format_date($data['hosothau']['ngaygui'],'d/m/Y H:i')?>
 				</td>
 			</tr>
 			<tr height="30px">
-				<td align="left" >
-				<b>Lĩnh vực :</b>
-				</td>
-			</tr>
-			<tr align="left" >
-				<td align="left" style="padding-left:50px">
-				<?php 
-				if(isset($lstLinhvucquantam)) {
-					echo "<ul style='padding-left:15px'>";
-					foreach($lstLinhvucquantam as $linhvuc) {
-						echo "<li>".$linhvuc['linhvuc']['tenlinhvuc']."</li>";
-					}
-					echo "</ul>";
-				}
-				?>
-				</td>
-			</tr>
-			<tr height="30px">
-				<td align="left" >
-				<b><span id="display_file"></span> :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>"><?php echo $file["filename"] ?></a>
-				</td>
-			</tr>
-			<tr height="30px">
-				<td align="left" >
-				<b>Mô tả thêm :</b>
-				</td>
-			</tr>
-			<tr height="30px">
-				<td align="left" style="padding-left:50px">
-				<?php echo $nhathau["motachitiet"] ?>
-				</td>
-			</tr>
-			<tr height="30px">
-				<td align="left"><b>Email :</b><span style="color:red"> <?php echo $account["username"]?></span>
+				<td align="left"><b>Email :</b><span style="color:red"> <?php echo $data['hosothau']['hosothau_email']?></span>
 				</td>	
 			</tr>
 			<tr height="30px">
-				<td align="left"><b>Số điện thoại :</b><span style="color:red"> <?php echo $account["sodienthoai"]?></span>
+				<td align="left"><b>Số điện thoại :</b><span style="color:red"> <?php echo $data['hosothau']['hosothau_sodienthoai']?></span>
 				</td>
 			</tr>
 			<tr height="30px">
 				<td align="center" height="50px">
 					<?php
-					if($flag == true) {
-						?>
-						<input id="btChonnhathau" onclick="doChonnhathau()" value="Chọn Nhà Thầu Này" type="button" tabindex="11">
-						<?php
-					} 
+					if(!$flag)
+						echo '<input id="btChonnhathau" onclick="doChonnhathau()" value="Chọn Nhà Thầu Này" type="button" tabindex="11">';
 					?>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Các dự án đã hoàn thành trên JobBid</div>
-		<div style="min-height:30px;width:100%">
-		<ul id="">
-		Chưa có dự án nào.
-		</ul>
-		</div>
-	<div class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:10px" id="content_title">Các dự án vừa trúng thầu</div>
-		<div id="div_lstDuans" style="min-height:50px;width:100%">
-		<ul id="ul_lstDuans">
-		
-		</ul>
-		</div>
+	</div>
 </div>
 <script>
 	function message(msg,type) {
@@ -139,29 +72,6 @@
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
 			byId("msg").innerHTML = str;
 		}
-	}
-	var display_gpkd_cmnd = '';
-	var display_birthyear = '';
-	var display_diachilienhe = '';
-	var display_file = '';
-	function changeType(value) {
-		if(value==null)
-			return;
-		if(value == 1) {
-			display_gpkd_cmnd = "Số CMND";
-			display_birthyear = "Năm sinh";
-			display_diachilienhe = "Địa chỉ liên hệ";
-			display_file = "File mô tả kinh nghiệm";
-		} else {
-			display_gpkd_cmnd = "Giấy phép kinh doanh";
-			display_birthyear = "Năm thành lập";
-			display_diachilienhe = "Trụ sở chính";
-			display_file = "File hồ sơ năng lực";
-		}
-		byId("display_gpkd_cmnd").innerHTML = display_gpkd_cmnd;
-		byId("display_birthyear").innerHTML = display_birthyear;
-		byId("display_diachilienhe").innerHTML = display_diachilienhe;
-		byId("display_file").innerHTML = display_file;
 	}
 	function redirectPage() {
 		location.reload(true);
@@ -205,35 +115,7 @@
 		});
 	}
 	$(document).ready(function() {
-		document.title = "<?php echo $nhathau["displayname"] ?> - "+document.title;
-		changeType(<?php echo $nhathau["type"] ?>);
+		document.title = "<?php echo $data['nhathau']["displayname"] ?>";
 		$("input:submit, input:button", "body").button();
-		block("#div_lstDuans");
-		$.ajax({
-			type: "GET",
-			cache: false,
-			url : url("/duan/lstDuanByNhaThau&nhathau_id="+<?php echo $nhathau["id"] ?>),
-			success: function(data){
-				unblock("#div_lstDuans");
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/account/login");
-					return;
-				}
-				if(data == AJAX_ERROR_SYSTEM) {
-					message('Load danh sách dự án bị lỗi!',0);
-					return;
-				}
-				byId("ul_lstDuans").innerHTML = "";
-				var jsonObj = eval( "(" + data + ")" );
-				var html = '';
-				for(i=0;jsonObj[i]!=null;i++) {
-					html += "<li><a class='link' href='"+url('/duan/view/'+jsonObj[i].id+'/'+jsonObj[i].alias)+"'>"+jsonObj[i].tenduan+"</a></li>";
-				}
-				if(html=='')
-					html = 'Chưa có dự án nào.';
-				$("#ul_lstDuans").append(html);
-			},
-			error: function(data){ unblock("#div_lstDuans");;alert (data);}	
-		});
 	});
 </script>

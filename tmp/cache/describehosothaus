@@ -1,1 +1,1 @@
-a:9:{i:0;s:2:"id";i:1;s:7:"giathau";i:2;s:9:"milestone";i:3;s:8:"thoigian";i:4;s:7:"content";i:5;s:7:"ngaygui";i:6;s:10:"nhathau_id";i:7;s:7:"duan_id";i:8;s:9:"trangthai";}
+a:11:{i:0;s:2:"id";i:1;s:7:"giathau";i:2;s:9:"milestone";i:3;s:8:"thoigian";i:4;s:14:"hosothau_email";i:5;s:20:"hosothau_sodienthoai";i:6;s:7:"content";i:7;s:7:"ngaygui";i:8;s:10:"nhathau_id";i:9;s:7:"duan_id";i:10;s:9:"trangthai";}

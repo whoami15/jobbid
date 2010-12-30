@@ -190,13 +190,15 @@ class HosothauController extends VanillaController {
 			$thoigian = $_POST["hosothau_thoigian"];
 			$milestone = $_POST["hosothau_milestone"];
 			$content = $_POST["hosothau_content"];
+			$hosothau_email = $_POST["hosothau_email"];
+			$hosothau_sodienthoai = $_POST["hosothau_sodienthoai"];
 			$nhathau = $_SESSION["nhathau"];
 			$account_id = $_SESSION["account"]["id"];
 			$nhathau_id = $nhathau["id"];
 			if(isset($content[1000]))
 				die('ERROR_MAXLENGTH');
 			$validate = new Validate();
-			if($validate->check_null(array($duan_id,$giathau,$thoigian))==false)
+			if($validate->check_null(array($duan_id,$giathau,$thoigian,$hosothau_email,$hosothau_sodienthoai))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_number($giathau) == false)
 				die('ERROR_SYSTEM');
@@ -207,7 +209,7 @@ class HosothauController extends VanillaController {
 			$this->duan->showHasOne(array('account'));
 			$this->duan->id = $duan_id;
 			$this->duan->where(" and duan.active=1 and nhathau_id is null");
-			$data = $this->duan->search('duan.id,tenduan,alias,account_id,username,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau');
+			$data = $this->duan->search('duan.id,tenduan,alias,account_id,duan_email,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau');
 			if(empty($data))
 				die("ERROR_SYSTEM");
 			if($data[""]["lefttime"] <= 0)
@@ -217,7 +219,7 @@ class HosothauController extends VanillaController {
 				die("ERROR_SELFBID");
 			if($data["duan"]["lastbid_nhathau"] == $nhathau_id)
 				die("ERROR_DUPLICATE");
-			$employerMail =  $data["account"]["username"];
+			$employerMail =  $data["duan"]["duan_email"];
 			//Insert ho so thau
 			$this->setModel("hosothau");
 			$this->hosothau->id = null;
@@ -231,6 +233,8 @@ class HosothauController extends VanillaController {
 			$this->hosothau->nhathau_id = $nhathau_id;
 			$this->hosothau->ngaygui = GetDateSQL();
 			$this->hosothau->trangthai = 1;
+			$this->hosothau->hosothau_email = $hosothau_email;
+			$this->hosothau->hosothau_sodienthoai = $hosothau_sodienthoai;
 			$hosothau_id = $this->hosothau->insert(true);
 			//Send mail cho chu du an
 			$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"];
@@ -345,54 +349,35 @@ class HosothauController extends VanillaController {
 	function xem_ho_so($hosothau_id,$duan_id) {
 		if(isset($hosothau_id) && isset($duan_id)) {
 			$_SESSION['redirect_url'] = getUrl();
-			//$this->checkLogin();
+			$this->checkLogin();
+			$account_id = $_SESSION['account']['id'];
 			$hosothau_id = mysql_real_escape_string($hosothau_id);
 			$duan_id = mysql_real_escape_string($duan_id);
+			$this->setModel('duan');
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=1');
+			$data = $this->duan->search('account_id,hosothau_id');
+			if(empty($data))
+				error('Server đang quá tải, vui lòng thử lại sau!');
+			if($account_id != $data['duan']['account_id'])
+				error('Chỉ có chủ dự án mới xem được hồ sơ thầu này!');
+			$hosotrungthau = $data['duan']['hosothau_id'];
+			$this->setModel('hosothau');
+			$this->hosothau->showHasOne(array('nhathau'));
 			$this->hosothau->id = $hosothau_id;
 			$this->hosothau->where(" and trangthai>=1");
-			$data = $this->hosothau->search("nhathau_id");
+			$data = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,hosothau_email,content,hosothau_sodienthoai,ngaygui,nhathau.id,nhathau.displayname');
 			if(empty($data))
-				error("Server đang quá tải, vui lòng thử lại!");
-			$nhathau_id = $data["hosothau"]["nhathau_id"];
-			$this->setModel("nhathau");
-			$this->nhathau->showHasOne();
-			$this->nhathau->id = $nhathau_id;
-			$this->nhathau->where(' and nhathau.status>=0');
-			$data = $this->nhathau->search("nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,nhathau.account_id,file.id,filename,gpkd_cmnd,type,birthyear,diachilienhe,username,sodienthoai");
-			if(empty($data)==false) {
-				$this->setModel("duan");
-				$this->duan->id = $duan_id;
-				$duan = $this->duan->search("id,account_id,nhathau_id");
-				if(empty($duan))
-					error("Server đang quá tải, vui lòng thử lại!");
-				$this->set("flag",false);
-				if(isset($_SESSION["account"])) {
-					$account_id = $_SESSION["account"]["id"];
-					if($duan["duan"]["account_id"] == $account_id) { //la chu du an
-						if($duan["duan"]["nhathau_id"]!=$nhathau_id) { // nha thau nay ko duoc chon
-							$data["account"]["sodienthoai"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
-							$data["account"]["username"] = "(Chỉ hiển thị khi nhà thầu này được chọn)";
-							//print_r($duan["duan"]["account_id"]);die();
-							$this->set("flag",true);
-						} 
-					} else if($data["nhathau"]["account_id"] != $account_id){
-						$data["account"]["sodienthoai"] = "(Không hiển thị)";
-						$data["account"]["username"] = "(Không hiển thị)";
-					}
-				} else {
-					$data["account"]["sodienthoai"] = '(Vui lòng <a class="link" href="'.BASE_PATH.'/account/login">đăng nhập</a> để xem)';
-					$data["account"]["username"] = '(Vui lòng <a class="link" href="'.BASE_PATH.'/account/login">đăng nhập</a> để xem)';
-				}
-				
-				$this->set("nhathau",$data["nhathau"]);
-				$this->set("account",$data["account"]);
-				$this->set("file",$data["file"]);
-				$this->set("duan",$duan["duan"]);
-				$this->set("hosothau_id",$hosothau_id);
-				$this->setModel("nhathaulinhvuc");
-				$data = $this->nhathaulinhvuc->custom("select tenlinhvuc from nhathaulinhvucs as nhathaulinhvuc join linhvucs as linhvuc on nhathaulinhvuc.linhvuc_id = linhvuc.id where nhathau_id = ".$data["nhathau"]["id"]);
-				$this->set("lstLinhvucquantam",$data);
+				error("Server đang quá tải, vui lòng thử lại sau!");
+			$flag = true;
+			if($hosotrungthau ==null || $hosotrungthau !=$hosothau_id) {
+				$data['hosothau']['hosothau_email'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
+				$data['hosothau']['hosothau_sodienthoai'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
+				$flag = false;
 			}
+			$this->set('flag',$flag);
+			$this->set('data',$data);
+			$this->set('duan_id',$duan_id);
 			$this->_template->render();	
 		}
 	}
@@ -421,7 +406,7 @@ class HosothauController extends VanillaController {
 				$this->setModel("duan");
 				$this->duan->id = $duan_id;
 				$this->duan->where(" and duan.account_id = $account_id");
-				$data = $this->duan->search("id,tenduan,alias,linhvuc_id");
+				$data = $this->duan->search("id,tenduan,alias,linhvuc_id,duan_email,duan_sodienthoai");
 				if(empty($data))
 					die("ERROR_SYSTEM");
 				$this->duan->id = $duan_id;
@@ -437,7 +422,7 @@ class HosothauController extends VanillaController {
 				global $cache;
 				$content = $cache->get('mail_win');
 				$search  = array('#LINKTENDUAN#', '#EMAIL#', '#SODIENTHOAI#', '#LINKDUAN#');
-				$replace = array($linktenduan,$_SESSION['account']['username'],$_SESSION['account']['sodienthoai'],$linkduan);
+				$replace = array($linktenduan,$data['duan']['duan_email'],$data['duan']['duan_sodienthoai'],$linkduan);
 				$content = str_replace($search, $replace, $content);
 				$this->setModel('sendmail');
 				$this->sendmail->id = null;

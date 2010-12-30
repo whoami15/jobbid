@@ -449,6 +449,67 @@ class NhathauController extends VanillaController {
 			die("ERROR_DUPLICATE");
 		echo 'DONE';
 	}
+	function xem_ho_so($nhathau_id) {
+		if($nhathau_id==null)
+			error('Liên kết bị lỗi!');
+		$_SESSION['redirect_url'] = getUrl();
+		$this->nhathau->showHasOne(array('file'));
+		$this->nhathau->id = $nhathau_id;
+		$this->nhathau->where(' and nhathau.`status` = 1');
+		$data = $this->nhathau->search('nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,nhathau.account_id,file.id,filename,gpkd_cmnd,type,birthyear,diachilienhe');
+		if(empty($data))
+			error('Không tìm thấy thông tin nhà thầu này!');
+		$this->set("nhathau",$data["nhathau"]);
+		$this->set("file",$data["file"]);
+		$this->setModel("nhathaulinhvuc");
+		$data = $this->nhathaulinhvuc->custom("select tenlinhvuc from nhathaulinhvucs as nhathaulinhvuc join linhvucs as linhvuc on nhathaulinhvuc.linhvuc_id = linhvuc.id where nhathau_id = ".$data["nhathau"]["id"]);
+		$this->set("lstLinhvucquantam",$data);
+		//load du an da trung thau theo nha thau
+		$nhathau_id = mysql_real_escape_string($nhathau_id);
+		$this->setModel('duan');
+		$this->duan->where(" and nhathau_id = $nhathau_id");
+		$this->duan->orderBy("timeupdate","desc");
+		$data = $this->duan->search("id,tenduan,alias");
+		$this->set("lstDuanTrungThau",$data);
+		$this->_template->render();
+	}
+	function doAddMoiThau($account_id=null,$duan_id=null) {
+		if($duan_id == null || $account_id == null)
+			die('ERROR_SYSTEM');
+		try {
+			$this->checkLogin(true);
+			$this->checkActive(true);
+			$this->checkLock(true);
+			$this->setModel('moithau');
+			$employer_id = $_SESSION['account']['id'];
+			$account_id = mysql_real_escape_string($account_id);
+			$duan_id = mysql_real_escape_string($duan_id);
+			$this->nhathau->where(" and `status`=1 and account_id=$account_id");
+			$data = $this->nhathau->search('id');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			$this->setModel('duan');
+			$this->duan->id = $duan_id;
+			$this->duan->where(" and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$employer_id");
+			$data = $this->duan->search('id');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			$this->setModel('moithau');
+			$this->moithau->where(" and duan_id=$duan_id and account_id=$account_id");
+			$data = $this->moithau->search('id');
+			if(!empty($data))
+				die('ERROR_INVITED');
+			$this->moithau->id = null;
+			$this->moithau->account_id = $account_id;
+			$this->moithau->duan_id = $duan_id;
+			$this->moithau->time = GetDateSQL();
+			$this->moithau->hadread = 0;
+			$this->moithau->insert();
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
 	function afterAction() {
 
 	}

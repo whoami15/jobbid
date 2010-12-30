@@ -269,13 +269,15 @@ class DuanController extends VanillaController {
 			$costmin = $_POST["duan_costmin"];
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
+			$duan_email = $_POST["duan_email"];
+			$duan_sodienthoai = $_POST["duan_sodienthoai"];
 			$isbid = $_POST["duan_isbid"];
 			if(isset($_POST["duan_skills"])) {
 				if(isset($_POST["duan_skills"][MAX_SKILL]))
 					die('ERROR_MAXSKILL');
 			}
 			$validate = new Validate();
-			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid))==false)
+			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid,$duan_email,$duan_sodienthoai))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
@@ -352,6 +354,8 @@ class DuanController extends VanillaController {
 			$this->duan->isnew = 1;
 			$this->duan->isbid = $isbid;
 			$this->duan->data_id = $data_id;
+			$this->duan->duan_email = $duan_email;
+			$this->duan->duan_sodienthoai = $duan_sodienthoai;
 			$duan_id = $this->duan->insert(true);
 			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search("count(*) as soduan");
@@ -396,9 +400,9 @@ class DuanController extends VanillaController {
 		if($id != null && $id != 0) {
 			$id = mysql_real_escape_string($id);
 			$_SESSION['redirect_url'] = getUrl();
-			$this->duan->showHasOne(array("linhvuc","tinh","file","nhathau",'account'));
+			$this->duan->showHasOne(array("linhvuc","tinh","file","nhathau"));
 			$this->duan->id=$id;
-            $data=$this->duan->search("duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,username,sodienthoai");
+            $data=$this->duan->search("duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,duan_email,duan_sodienthoai");
 			if(isset($data)) {
 				$viewcount = $data["duan"]["views"];
 				$this->duan->id=$id;
@@ -568,7 +572,7 @@ class DuanController extends VanillaController {
 		if(isset($duan_id)) {
 			$this->duan->showHasOne(array('file'));
 			$this->duan->id = $duan_id;
-			$data = $this->duan->search("duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid");
+			$data = $this->duan->search("duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid,duan_email,duan_sodienthoai");
 			if(empty($data))
 				error("Server too busy!");
 			if($data["duan"]["account_id"]!=$account_id)
@@ -615,6 +619,8 @@ class DuanController extends VanillaController {
 			$costmin = $_POST["duan_costmin"];
 			$costmax = $_POST["duan_costmax"];
 			$thongtinchitiet = $_POST["duan_thongtinchitiet"];
+			$duan_email = $_POST["duan_email"];
+			$duan_sodienthoai = $_POST["duan_sodienthoai"];
 			$isbid = $_POST["duan_isbid"];
 			//Validate
 			if(isset($_POST["duan_skills"])) {
@@ -622,7 +628,7 @@ class DuanController extends VanillaController {
 					die('ERROR_MAXSKILL');
 			}
 			$validate = new Validate();
-			if($validate->check_null(array($duan_id,$tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid))==false)
+			if($validate->check_null(array($duan_id,$tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid,$duan_email,$duan_sodienthoai))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
@@ -699,6 +705,8 @@ class DuanController extends VanillaController {
 			$currentDate = GetDateSQL();
 			$this->duan->timeupdate = $currentDate;
 			$this->duan->ngayketthuc = $ngayketthuc;
+			$this->duan->duan_email = $duan_email;
+			$this->duan->duan_sodienthoai = $duan_sodienthoai;
 			if($data["duan"]["ngayketthuc"] > $currentDate)
 				$this->duan->nhathau_id = "";
 			$this->duan->update();
@@ -748,27 +756,6 @@ class DuanController extends VanillaController {
 			echo 'ERROR_SYSTEM';
 		}
 	}
-	function lstDuanByNhaThau() {
-		$nhathau_id = $_GET["nhathau_id"];
-		if($nhathau_id == null)
-			die("ERROR_SYSTEM");
-		$nhathau_id = mysql_real_escape_string($nhathau_id);
-		$this->duan->where(" and nhathau_id = $nhathau_id");
-		$this->duan->orderBy("timeupdate","desc");
-		$data = $this->duan->search("id,tenduan,alias");
-		$jsonResult = "{";
-		$i=0;
-		$len = count($data);
-		while($i<$len) {
-			$duan = $data[$i];
-			$jsonResult = $jsonResult."$i:{'id':".$duan["duan"]["id"].",'tenduan':'".$duan["duan"]["tenduan"]."','alias':'".$duan["duan"]["alias"]."'}";
-			if($i < $len-1)
-				$jsonResult = $jsonResult.",";
-			$i++;
-		}
-		$jsonResult = $jsonResult."}";
-		print($jsonResult);
-	}
 	function lstDuanBySearch() {
 		$cond_keyword = $_POST["duan_keyword"];
 		$cond_linhvuc = $_POST["linhvuc_id"];
@@ -810,6 +797,22 @@ class DuanController extends VanillaController {
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
+	}
+	function lstMyActivityProject() {
+		$this->checkLogin(true);
+		$this->checkActive(true);
+		$this->checkLock(true);
+		$account_id = $_SESSION['account']['id'];
+		$this->duan->where(" and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$account_id");
+		$data = $this->duan->search('id,tenduan,alias');
+		if(empty($data))
+			die('NO_PROJECT');
+		foreach($data as $duan) {
+			$linkduan = BASE_PATH.'/duan/view/'.$duan['duan']['id'].'/'.$duan['duan']['alias'];
+			$tenduan = $duan['duan']['tenduan'];
+			$duan_id = $duan['duan']['id'];
+			echo "<li><a class='link' id='moithau_$duan_id' href='javascript:showDialogVerify($duan_id)'>$tenduan</a></li>";
+		}
 	}
 	function afterAction() {
 
