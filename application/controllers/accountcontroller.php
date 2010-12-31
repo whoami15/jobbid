@@ -5,7 +5,7 @@ class AccountController extends VanillaController {
 		global $inflect;
 		$this->_controller = ucfirst($controller);		
 		$this->_action = $action;
-		$model = "account";
+		$model = 'account';
 		$this->$model =& new $model;
 		$this->_template =& new Template($controller,$action);
 	}
@@ -15,9 +15,9 @@ class AccountController extends VanillaController {
 	function checkAdmin($isAjax=false) {
 		if($isAjax==false)
 			$_SESSION['redirect_url'] = getUrl();
-		if(!isset($_SESSION['account']) || $_SESSION["account"]["role"]>1) {
+		if(!isset($_SESSION['account']) || $_SESSION['account']['role']>1) {
 			if($isAjax == true) {
-				die("ERROR_NOTLOGIN");
+				die('ERROR_NOTLOGIN');
 			} else {
 				redirect(BASE_PATH.'/admin/login&reason=admin');
 				die();
@@ -27,7 +27,7 @@ class AccountController extends VanillaController {
 	function checkLogin($isAjax=false) {
 		if(!isset($_SESSION['account'])) {
 			if($isAjax == true) {
-				die("ERROR_NOTLOGIN");
+				die('ERROR_NOTLOGIN');
 			} else {
 				redirect(BASE_PATH.'/account/login');
 				die();
@@ -59,7 +59,7 @@ class AccountController extends VanillaController {
 		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
 		if ($ipagesnext > $totalPages)
 			$ipagesnext = $totalPages;
-		$this->set("lstAccounts",$lstAccounts);
+		$this->set('lstAccounts',$lstAccounts);
 		$this->set('pagesindex',$ipageindex);
 		$this->set('pagesbefore',$ipagesbefore);
 		$this->set('pagesnext',$ipagesnext);
@@ -68,19 +68,19 @@ class AccountController extends VanillaController {
 	}
 	function saveAccount() {
 		$this->checkAdmin(true);
-		$id = $_POST["account_id"];
-		$username = $_POST["account_username"];
-		$password = $_POST["account_password"];
-		$sodienthoai = $_POST["account_sodienthoai"];
-		$role = $_POST["account_role"];
-		$active = $_POST["account_active"];
+		$id = $_POST['account_id'];
+		$username = $_POST['account_username'];
+		$password = $_POST['account_password'];
+		$sodienthoai = $_POST['account_sodienthoai'];
+		$role = $_POST['account_role'];
+		$active = $_POST['account_active'];
 		if(isEmpty($username))
-			die("ERROR_SYSTEM");
+			die('ERROR_SYSTEM');
 		if($id==null) { //insert
 			if($this->existUsername($username))
-				die("ERROR_EXIST");
+				die('ERROR_EXIST');
 			if(isEmpty($password))
-				die("ERROR_SYSTEM");
+				die('ERROR_SYSTEM');
 			$this->account->id = null;
 			$this->account->username = $username;
 			$this->account->password = md5($password);
@@ -91,7 +91,7 @@ class AccountController extends VanillaController {
 			$this->account->save();						
 		} else { //update
 			if(!$this->existUsername($username))
-				die("ERROR_NOTEXIST");
+				die('ERROR_NOTEXIST');
 			$this->account->id = $id;
 			$this->account->username = $username;
 			if(isEmpty($password)==false)
@@ -101,7 +101,7 @@ class AccountController extends VanillaController {
 			$this->account->active = $active;
 			$this->account->save();		
 		}
-		echo "DONE";
+		echo 'DONE';
 	}  
 	
 	//Functions of User
@@ -109,7 +109,7 @@ class AccountController extends VanillaController {
 		if($username!=null) {
 			$strWhere = "AND username='".mysql_real_escape_string($username)."'";
 			$this->account->where($strWhere);
-			$account = $this->account->search("id");
+			$account = $this->account->search('id');
 			if(empty($account))
 				return false;
 			else
@@ -117,9 +117,9 @@ class AccountController extends VanillaController {
 		}
 		return false;
 	}
-	function doLogin($type="admin") {
-		$username = $_POST["username"];
-		$password = $_POST["password"];
+	function doLogin($type='admin') {
+		$username = $_POST['username'];
+		$password = $_POST['password'];
 		$url = BASE_PATH;
 		if(isset($_SESSION['redirect_url']))
 			$url = $_SESSION['redirect_url'];
@@ -133,18 +133,18 @@ class AccountController extends VanillaController {
 		if(empty($account)) {
 			redirect(BASE_PATH."/$type/login&username=$username&reason=username");
 		} else {
-			if(strcmp(md5($password),$account[0]["account"]["password"])!=0) {
+			if(strcmp(md5($password),$account[0]['account']['password'])!=0) {
 				redirect(BASE_PATH."/$type/login&username=$username&reason=password");
 			} else { //Login thanh cong
-				$_SESSION["account"] = $account[0]['account'];
-				$this->account->id = $account[0]["account"]["id"];
+				$_SESSION['account'] = $account[0]['account'];
+				$this->account->id = $account[0]['account']['id'];
 				$this->account->lastlogin = GetDateSQL();
 				$this->account->save();
-				$this->setModel("nhathau");
-				$this->nhathau->where("and status>=0 and account_id=".$account[0]["account"]["id"]);
-				$nhathau = $this->nhathau->search("id,displayname,account_id,diemdanhgia");
+				$this->setModel('nhathau');
+				$this->nhathau->where('and status>=0 and account_id='.$account[0]['account']['id']);
+				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia');
 				if(!empty($nhathau))
-					$_SESSION["nhathau"] = $nhathau[0]["nhathau"];
+					$_SESSION['nhathau'] = $nhathau[0]['nhathau'];
 				redirect($url);
 			}
 		}
@@ -154,22 +154,22 @@ class AccountController extends VanillaController {
 			if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
 				unset($_SESSION['security_code']);
 			} else {
-				die("ERROR_SECURITY_CODE");
+				die('ERROR_SECURITY_CODE');
 			}
 			$validate = new Validate();
-			if($validate->check_submit(1,array("account_username","account_password","account_sodienthoai"))==false)
+			if($validate->check_submit(1,array('account_username','account_password','account_sodienthoai'))==false)
 				die('ERROR_SYSTEM');
-			$username = $_POST["account_username"];
-			$password = $_POST["account_password"];
-			$sodienthoai = $_POST["account_sodienthoai"];
+			$username = $_POST['account_username'];
+			$password = $_POST['account_password'];
+			$sodienthoai = $_POST['account_sodienthoai'];
 			if($validate->check_null(array($username,$password,$sodienthoai))==false)
 				die('ERROR_SYSTEM');
 			if(!$validate->check_email($username))
-				die("ERROR_SYSTEM");
+				die('ERROR_SYSTEM');
 			if(!$validate->check_length($password,5))
-				die("ERROR_SYSTEM");
+				die('ERROR_SYSTEM');
 			if($this->existUsername($username))
-				die("ERROR_EXIST");
+				die('ERROR_EXIST');
 			$this->account->id = null;
 			$this->account->username = $username;
 			$this->account->password = md5($password);
@@ -195,36 +195,27 @@ class AccountController extends VanillaController {
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
 			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
-			/* $this->setModel('sendmail');
-			$this->sendmail->id = null;
-			$this->sendmail->to = $username;
-			$this->sendmail->subject = "Chào mừng bạn đến với bidjob.vn";
-			$linkactive = BASE_PATH."/webmaster/doActive&account_id=$account_id&active_code=$active_code";
-			$content = '<p>Chào bạn,<br>Chào mừng bạn đến với&nbsp; <a href="'.BASE_PATH.'">jobbid.vn!</a><br>
-Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá dự án, công việc trực tuyến JobBid.vn.<br>Xin bạn hãy click vào đường link sau đây để kích hoạt tài khoản của bạn trên hệ thống: <a href="'.$linkactive.'">'.$linkactive.'</a><br>Trong trường hợp link kích hoạt trên không hoạt động, xin vui lòng nhập mã xác nhận <b>'.$active_code.'</b> vào link sau <a href="'.BASE_PATH.'/webmaster/active/'.$account_id.'">'.BASE_PATH.'/webmaster/active</a>.<br>Sau khi tài khoản của bạn được kích hoạt thành công, bạn có thể sử dụng thông tin dưới đây để truy cập vào tài khoản cá nhân trên <a href="'.BASE_PATH.'/account/login">jobbid.vn!</a>:<br><strong>TÊN ĐĂNG NHẬP: '.$username.'<br>MẬT KHẨU:****** </strong>(Vì lý do bảo mật chúng tôi không hiển thị mật khẩu trong email này)<br>	Thân,<br>Ban quản trị <a href="'.BASE_PATH.'">jobbid.vn!</a></p>';
-			$this->sendmail->content = $content;
-			$this->sendmail->insert(); */
-			echo "DONE";
+			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}
 	}
-	function doLogout($type="admin") {
-		if(isset($_SESSION["account"]))
-			$_SESSION["account"] = null;
-		if(isset($_SESSION["nhathau"]))
-			$_SESSION["nhathau"] = null;
-		if(isset($_SESSION["redirect_url"]))
-			$_SESSION["redirect_url"] = null;
+	function doLogout($type='admin') {
+		if(isset($_SESSION['account']))
+			$_SESSION['account'] = null;
+		if(isset($_SESSION['nhathau']))
+			$_SESSION['nhathau'] = null;
+		if(isset($_SESSION['redirect_url']))
+			$_SESSION['redirect_url'] = null;
 		redirect(BASE_PATH."/$type/login");
 	}
 	function getSuggestionAccount() {
-		$key = $_POST["keyword"];
+		$key = $_POST['keyword'];
 		if(isset($key)) {
 			$sql = "select username from `accounts` as `account` where active>=0 and username like '$key%' LIMIT 8 OFFSET 0";
 			$data = $this->account->custom($sql);
 			foreach($data as $account) {
-				echo '<li onClick="fill(\''.$account["account"]["username"].'\');">'.$account["account"]["username"].'</li>';
+				echo '<li onClick="fill(\''.$account['account']['username'].'\');">'.$account['account']['username'].'</li>';
 			}
 			
 		}
@@ -241,16 +232,16 @@ Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá
 	function doUpdate() {
 		try {
 			$this->checkLogin(true);
-			$account_id = $_SESSION["account"]["id"];
-			$oldpassword = $_POST["account_oldpassword"];
-			$sodienthoai = $_POST["account_sodienthoai"];
+			$account_id = $_SESSION['account']['id'];
+			$oldpassword = $_POST['account_oldpassword'];
+			$sodienthoai = $_POST['account_sodienthoai'];
 			$validate = new Validate();
-			if($oldpassword != "") {
-				if(md5($oldpassword) != $_SESSION["account"]["password"])
-					die("ERROR_WRONGPASSWORD");
-				$password = $_POST["account_password"];
+			if($oldpassword != '') {
+				if(md5($oldpassword) != $_SESSION['account']['password'])
+					die('ERROR_WRONGPASSWORD');
+				$password = $_POST['account_password'];
 				if(!$validate->check_length($password,5))
-					die("ERROR_SYSTEM");
+					die('ERROR_SYSTEM');
 				$this->account->password = md5($password);
 			}
 			$this->account->id = $account_id;
@@ -258,8 +249,8 @@ Cảm ơn bạn đã đăng ký làm thành viên tại hệ thống đấu giá
 			$this->account->update();
 			$this->account->id = $account_id;
 			$data = $this->account->search();
-			$_SESSION["account"] = $data;
-			echo "DONE";
+			$_SESSION['account'] = $data['account'];
+			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}

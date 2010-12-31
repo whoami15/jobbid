@@ -170,7 +170,7 @@ class SkillController extends VanillaController {
 		$linhvuc_id = $_GET["linhvuc_id"];
 		if($linhvuc_id==null)
 			die("ERROR_SYSTEM");
-		$data = $this->skill->custom("select * from skills as skill where linhvuc_id='$linhvuc_id'");
+		$data = $this->skill->custom("select * from skills as skill where linhvuc_id='$linhvuc_id' order by skillname");
 		$jsonResult = "{";
 		$i=0;
 		$len = count($data);

@@ -510,6 +510,85 @@ class NhathauController extends VanillaController {
 			echo 'ERROR_SYSTEM';
 		}
 	}
+	function tim_nha_thau() {
+		$_SESSION['redirect_url'] = getUrl();
+		$this->nhathau->orderBy('diemdanhgia','desc');
+		$this->nhathau->setPage(1);
+		$this->nhathau->setLimit(PAGINATE_LIMIT);
+		$this->nhathau->where(' and nhathau.`status`=1');
+		$data = $this->nhathau->search('id,displayname,diemdanhgia');
+		$totalPages = $this->nhathau->totalPages();
+		$ipagesbefore = 1 - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = 1 + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstDuan);die();
+		$this->set("lstNhathau",$data);
+		$this->set('pagesindex',1);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->setModel("linhvuc");
+		$data = $this->linhvuc->search();
+		$this->set("lstLinhvuc",$data);
+		$this->_template->render();
+	}
+	function lst_tim_nha_thau($ipageindex) {
+		$_SESSION['redirect_url'] = getUrl();
+		$this->nhathau->orderBy('diemdanhgia','desc');
+		$this->nhathau->setPage($ipageindex);
+		$this->nhathau->setLimit(PAGINATE_LIMIT);
+		$this->nhathau->where(' and nhathau.`status`=1');
+		$data = $this->nhathau->search('id,displayname,diemdanhgia');
+		$totalPages = $this->nhathau->totalPages();
+		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstDuan);die();
+		$this->set("lstNhathau",$data);
+		$this->set('pagesindex',$ipageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->_template->renderPage();
+	}
+	function lstNhathauBySearch() {
+		$ipageindex = $_POST["pageindex"];
+		if(!isset($ipageindex))
+			$ipageindex = 1;
+		$strWhere = " and nhathau.`status` = 1";
+		if(isset($_POST["linhvuc_id"])) {
+			$cond_linhvuc = $_POST["linhvuc_id"];
+			if(!empty($cond_linhvuc)) {
+				$this->nhathau->hasJoin(array("nhathaulinhvuc"),array("nhathau"));
+				$cond_linhvuc = mysql_real_escape_string($cond_linhvuc);
+				$strWhere.=" and linhvuc_id = '$cond_linhvuc'";
+			}
+		}
+		$this->nhathau->where($strWhere);
+		$this->nhathau->orderBy('diemdanhgia','desc');
+		$this->nhathau->setPage($ipageindex);
+		$this->nhathau->setLimit(PAGINATE_LIMIT);
+		$data = $this->nhathau->search('nhathau.id,displayname,diemdanhgia');
+		$totalPages = $this->nhathau->totalPages();
+		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		$this->set("lstNhathau",$data);
+		$this->set('pagesindex',$ipageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->_template->renderPage();
+	}
 	function afterAction() {
 
 	}

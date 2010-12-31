@@ -43,14 +43,15 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="right"></td>
-				<td align="left">
-					<a class="link" href="javascript:location.href=url('/webmaster/resetpass')">Quên mật khẩu đăng nhập?</a>
+				<td colspan="4" align="center" height="30px">
+					<input value="Đăng Nhập" type="submit" tabindex="3">
 				</td>
 			</tr>
 			<tr>
-				<td colspan="4" align="center" height="50px">
-					<input value="Đăng Nhập" type="submit" tabindex="3">
+				<td align="right"></td>
+				<td align="left">
+					<a class="link" href="javascript:location.href=url('/webmaster/resetpass')">Quên mật khẩu đăng nhập?</a><br/>
+					<a class="link" href="<?php echo BASE_PATH ?>/account/register">Đăng ký tài khoản miễn phí!</a>
 				</td>
 			</tr>
 		</tbody>
@@ -83,5 +84,6 @@
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
 		document.title = "Trang Đăng Nhập - "+document.title;
+		byId("username").focus();
 	});
 </script>

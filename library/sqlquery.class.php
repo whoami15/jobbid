@@ -102,8 +102,13 @@ class SQLQuery {
 			while($i<count($this->_hParentModels)) {
 				$pModels = $this->_hParentModels[$i];
 				$cModels = $this->_hChildModels[$i];
-				$pTable = strtolower($inflect->pluralize($pModels));
-				$from .= 'LEFT JOIN `'.$pTable.'` as `'.$pModels.'` ';
+				if($this->_model == $pModels) {
+					$cTable = strtolower($inflect->pluralize($cModels));
+					$from .= 'LEFT JOIN `'.$cTable.'` as `'.$cModels.'` ';
+				} else {
+					$pTable = strtolower($inflect->pluralize($pModels));
+					$from .= 'LEFT JOIN `'.$pTable.'` as `'.$pModels.'` ';
+				}
 				$from .= 'ON `'.$pModels.'`.`'.'id` = `'.$cModels.'`.`'.$pModels.'_id`  ';
 				$i++;
 			}
