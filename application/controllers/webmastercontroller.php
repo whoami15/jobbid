@@ -38,6 +38,10 @@ class WebmasterController extends VanillaController {
 		$this->updateStatistics();
 		$this->_template->render();  	  
 	}
+	function activesuccess() {	
+		$this->updateStatistics();
+		$this->_template->render();  	  
+	}
 	function active($account_id) {
 		if($account_id==null)
 			error("Lỗi! Đường link truy cập không hợp lệ");
@@ -85,9 +89,10 @@ class WebmasterController extends VanillaController {
 				if($_SESSION['account']['id'] == $account_id)
 					$_SESSION['account']['active'] = 1;
 			}
-			if($isAjax)
-				success('Xác nhận tài khoản thành công!');
-			echo 'DONE';
+			if($isAjax) {
+				redirect(BASE_PATH.'/webmaster/activesuccess');
+			} else
+				echo 'DONE';
 		} catch (Exception $e) {
 			if($isAjax)
 				error('Xác nhận tài khoản không thành công!');

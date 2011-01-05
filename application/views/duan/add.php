@@ -249,7 +249,7 @@
 			dataType: "xml",
 			success:    function(data) { 
 				$('#btsubmit').removeAttr('disabled');
-				data = data.activeElement.childNodes[0].data;	
+				data = data.body.childNodes[0].data;	
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/account/login");
 					return;

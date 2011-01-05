@@ -178,6 +178,9 @@ class AccountController extends VanillaController {
 			$this->account->role = 2;
 			$this->account->active = 0;
 			$account_id = $this->account->insert(true);
+			$this->account->id = $account_id;
+			$data = $this->account->search();
+			$_SESSION['account']=$data['account'];
 			$active_code = genString();
 			$this->setModel('activecode');
 			$this->activecode->id = null;

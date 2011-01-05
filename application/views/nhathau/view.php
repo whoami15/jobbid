@@ -69,9 +69,9 @@
 		<?php
 		} else {
 		?>
-		<div style="text-align:center">
+		<div style="text-align:left;padding:5px">
 		Hiện tại bạn chưa có hồ sơ nhà thầu!<br/>
-		Để tham gia đấu giá các dự án trên website, bạn cần phải tạo hồ sơ nhà thầu.<br/>
+		<span style="color:red">Để tham gia đấu thầu các dự án trên website, bạn cần phải tạo hồ sơ nhà thầu.</span><br/>
 		Click <a class="link" href="<?php echo BASE_PATH ?>/nhathau/add"/>vào đây</a> để tạo hồ sơ nhà thầu.
 		</div>
 		<?php

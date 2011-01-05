@@ -70,7 +70,7 @@ $(document).ready(function() {
 		type:      "post",
 		dataType: "xml",
 		success:    function(data) { 
-			data = data.activeElement.childNodes[0].innerHTML;		
+			data = data.body.childNodes[0].innerHTML;		
 			if(data == AJAX_DONE) {
 				loadimages(1);
 				image_msg("Upload file thành công!",1);

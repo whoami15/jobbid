@@ -22,6 +22,11 @@
 		</div>
 		<div class="tr" style="border:none;text-align:left">
 			<div class="td">
+			( mã xác nhận là 1 chuỗi ký tự mà chúng tôi đã gửi đến hộp mail của bạn )
+			</div>
+		</div>
+		<div class="tr" style="border:none;text-align:left">
+			<div class="td">
 			<a class="link" href="javascript:doSendActiveCode();">Gửi lại mail kích hoạt?</a>
 			</div>
 		</div>
@@ -38,9 +43,6 @@
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
 			byId("msg").innerHTML = str;
 		}
-	}
-	function redirectPage() {
-		location.href = '<?php echo $redirect_url ?>';
 	}
 	function doSendActiveCode() {
 		block("#content");
@@ -93,8 +95,7 @@
 				}
 				if(data == AJAX_DONE) {
 					//Dang ky thanh cong	
-					message('Xác nhận tài khoản thành công, đang chuyển đến trang vừa xem...',1);
-					setTimeout("redirectPage()",redirect_time);
+					location.href = url("/webmaster/activesuccess");
 				} else {
 					message('Xác nhận tài khoản không thành công!',0);
 				}

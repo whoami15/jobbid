@@ -9,7 +9,7 @@
 </style>
 <div id="content" style="width:100%;">
 	<form id="formnhathau" style="padding-top: 0px; padding-bottom: 10px;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Chỉnh sửa hồ sơ cá nhân</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Chỉnh sửa hồ sơ nhà thầu</div>
 		<?php
 		if(isset($nhathau)) {
 		?>
@@ -235,7 +235,7 @@
 					dataType: "xml",
 					success:    function(data) { 
 						$('#btsubmit').removeAttr('disabled');
-						data = data.activeElement.childNodes[0].data;
+						data = data.body.childNodes[0].data;
 						if(data == "ERROR_FILESIZE") {
 							message("File Upload có kích thước quá lớn!",0);
 							return;
