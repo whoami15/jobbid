@@ -221,7 +221,7 @@
 			autoOpen: false,
 			minWidth: 500,
 			modal: true,
-			resizable :false,
+			resizable :false
 		});	
 		block("#ul_myactivityproject");
 		$.ajax({

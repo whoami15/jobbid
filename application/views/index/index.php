@@ -3,7 +3,7 @@
 		float:left;
 		padding:5px 5px 5px 15px;
 		position:relative;
-		width:46%;
+		width:300px;
 		text-align: left;
 	}
 	#intro li {

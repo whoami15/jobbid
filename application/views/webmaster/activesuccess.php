@@ -22,7 +22,7 @@
 			autoOpen: true,
 			minWidth: 500,
 			modal: true,
-			resizable :false,
+			resizable :false
 		});	
 		$("input:submit, input:button", "body").button();
 	});
