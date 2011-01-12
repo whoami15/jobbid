@@ -8,8 +8,8 @@
 	</fieldset>
 </div>
 <div id="dialogHelp" title="Hướng Dẫn Thành Viên Mới" style="text-align:left">
-	+ Nếu bạn là nhà thầu muốn tham gia đấu thầu các dự án trên JobBid, vui lòng nhấn vào nút <span style="color:red;font-weight: bold;">Tạo Hồ Sơ Thầu</span>.<br/><br/>
-	+ Nếu bạn là chủ dự án muốn post dự án ngay bây giờ, vui lòng nhấn vào nút <span style="color:red;font-weight: bold;">Tạo Dự Án</span>.
+	+ Nếu bạn cần tìm công việc bán thời gian, vui lòng nhấn vào nút <span style="color:red;font-weight: bold;">Tạo Hồ Sơ Thầu</span>.<br/><br/>
+	+ Nếu bạn cần đăng dự án của bạn ngay bây giờ, vui lòng nhấn vào nút <span style="color:red;font-weight: bold;">Tạo Dự Án</span>.
 	<br/><br/>
 	<center>
 	<input id="btsubmit" type="button" value="Tạo Hồ Sơ Thầu" onclick="location.href=url('/nhathau/add')"/>
