@@ -371,3 +371,53 @@ div.jHtmlArea { border: solid 1px #ccc; }
 #msg {
 	padding:5px;
 }
+.ui-widget-header {
+	font-size:14px;
+	height:20px;
+	padding-top:5px;
+}
+.ui-widget-content a {
+	color:#0000ff;
+}
+.ui-widget {
+	font-size:13px;
+}
+.link {
+	color:blue;
+	font-size:13px;
+	text-align:left;
+}
+#datagrid .link {
+	padding-left: 5px;
+	padding-right:5px;
+}
+.link:hover {
+	color: #F68618;
+}
+.link2 {
+	color: #A3A3A3 !important;
+}
+.link2:hover {
+	color: #fff !important;
+}
+.imgbanner {
+	color:transparent !important;
+}
+input.ui-button {
+	border:medium none;
+	padding:1px 1em;
+}
+table.center {margin-left:auto; margin-right:auto;}
+.divfloat1 {
+	float:left;
+	padding:5px 5px 5px 15px;
+	position:relative;
+	width:300px;
+	text-align: left;
+}
+#intro li {
+	padding-bottom:5px;
+}
+#account_widget li {
+	padding-bottom:5px;
+}

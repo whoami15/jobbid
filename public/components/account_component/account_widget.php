@@ -1,8 +1,3 @@
-<style>
-#account_widget li {
-	padding-bottom:5px;
-}
-</style>
 <div id="account_widget" style="margin:5px;">
 <?php 
 	if(isset($_SESSION["account"])) {
@@ -35,7 +30,7 @@
 	}
 ?>
 </div>
-<script>
+<script type="text/javascript">
 	function laythumoithaumoi() {
 		$.ajax({
 			type: "GET",

@@ -6,7 +6,7 @@ foreach($menuList as $menu) {
 ?>	
 	<li style="float: right; margin-right: 5px;border:none">
 	<div class="search">
-		<form id="formsearch" method="post" action="<?php echo BASE_PATH?>/duan/search"/>
+		<form id="formsearch" method="post" action="<?php echo BASE_PATH?>/duan/search">
 		<input type="text" class="txtsearch" name="keyword" id="keyword" value="<?php echo isset($_POST["keyword"])?$_POST["keyword"]:"" ?>"/>
 		<div class="textboxstyle" title="Tìm kiếm" onclick="$('#formsearch').submit();"></div>
 		</form>

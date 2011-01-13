@@ -1,15 +1,3 @@
-<style type="text/css">
-	.divfloat1 {
-		float:left;
-		padding:5px 5px 5px 15px;
-		position:relative;
-		width:300px;
-		text-align: left;
-	}
-	#intro li {
-		padding-bottom:5px;
-	}
-</style>
 <div id="content" style="width:100%;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px;text-align:center" id="content_title">How it works!</div>
 	<div style="padding:20px">
@@ -28,7 +16,7 @@
 		<li><span style="color:red">Hoàn toàn miễn phí.</span></li>
 	</ul>
 	</div>
-	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px" id="content_title2">Các dự án mới nhất</div>
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px">Các dự án mới nhất</div>
 	<div id="datagrid" style="padding-top:10px;padding-bottom:10px;">
 		<table width="100%">
 			<thead>
@@ -65,11 +53,11 @@
 			</tbody>
 		</table>
 	</div>
-	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px" id="content_title2">Tìm dự án theo lĩnh vực</div>	
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px">Tìm dự án theo lĩnh vực</div>	
 	<div style="padding-top: 5px; padding-bottom: 5px; position: relative; float: left;">
 	<?php
 	foreach($lstLinhvuc as $e) {
-		echo "<div class='divfloat1'><a href='".BASE_PATH."/linhvuc&linhvuc_id=".$e["linhvuc"]["id"]."' class='link'>".$e["linhvuc"]["tenlinhvuc"]."</a> (".$e["linhvuc"]["soduan"].")</div>";
+		echo "<div class='divfloat1'><a href='".BASE_PATH."/linhvuc&amp;linhvuc_id=".$e["linhvuc"]["id"]."' class='link'>".$e["linhvuc"]["tenlinhvuc"]."</a> (".$e["linhvuc"]["soduan"].")</div>";
 	}
 	?>
 	</div>

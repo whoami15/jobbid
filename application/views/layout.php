@@ -19,43 +19,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery_blockUI.js"></script>	
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/constances.js"></script>	
 <style type="text/css">
-.ui-widget-header {
-	font-size:14px;
-	height:20px;
-	padding-top:5px;
-}
-.ui-widget-content a {
-	color:#0000ff;
-}
-.ui-widget {
-	font-size:13px;
-}
-.link {
-	color:blue;
-	font-size:13px;
-	text-align:left;
-}
-#datagrid .link {
-	padding-left: 5px;
-	padding-right:5px;
-}
-.link:hover {
-	color: #F68618;
-}
-.link2 {
-	color: #A3A3A3 !important;
-}
-.link2:hover {
-	color: #fff !important;
-}
-.imgbanner {
-	color:transparent !important;
-}
-input.ui-button {
-	border:medium none;
-	padding:1px 1em;
-}
-table.center {margin-left:auto; margin-right:auto;}
 .textboxstyle{
 	background-image:url('<?php echo BASE_PATH?>/public/images/icons/search_icon.gif');
 	background-position: center center;
@@ -79,7 +42,7 @@ table.center {margin-left:auto; margin-right:auto;}
 <![endif]-->
 </head>
 <body>
-<center>
+<CENTER>
 <div id="dhtmltooltip"></div>
 <img alt="tooltiparrow" id="dhtmlpointer" src="<?php echo BASE_PATH ?>/public/images/icons/tooltiparrow.png" />
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tooltip.js"></script>
@@ -143,10 +106,10 @@ table.center {margin-left:auto; margin-right:auto;}
 		<tbody>
 		<tr>
 		<td valign="top">
-		<br>&nbsp;&nbsp; - Tìm được công việc làm thêm phù hợp với khả năng của mình.<br>&nbsp;&nbsp; - Tận dụng được tối đa thời gian nhàn rỗi của bạn<br>&nbsp;&nbsp; - <span style="color:rgb(255, 0, 0)">Nhận được email thông báo nếu có dự án, công việc mới</span><br>&nbsp;&nbsp; - Luôn cập nhật những dự án, công việc mới.<br>&nbsp;&nbsp; <span style="color:rgb(255, 0, 0)"><b>- Hoàn toàn miễn phí.</b></span><br><br>(bạn chỉ cần đăng ký 1 tài khoản và tạo 1 hồ sơ năng lực, chúng tôi sẽ dựa vào hồ sơ đó để gửi các dự án mới đến cho bạn)
+		<br/>&nbsp;&nbsp; - Tìm được công việc làm thêm phù hợp với khả năng của mình.<br/>&nbsp;&nbsp; - Tận dụng được tối đa thời gian nhàn rỗi của bạn<br/>&nbsp;&nbsp; - <span style="color:rgb(255, 0, 0)">Nhận được email thông báo nếu có dự án, công việc mới</span><br/>&nbsp;&nbsp; - Luôn cập nhật những dự án, công việc mới.<br/>&nbsp;&nbsp; <span style="color:rgb(255, 0, 0)"><b>- Hoàn toàn miễn phí.</b></span><br/><br/>(bạn chỉ cần đăng ký 1 tài khoản và tạo 1 hồ sơ năng lực, chúng tôi sẽ dựa vào hồ sơ đó để gửi các dự án mới đến cho bạn)
 		</td>
 		<td valign="top">
-		<br>&nbsp;&nbsp; - Đăng dự án, công việc của bạn <span style="color:rgb(255, 0, 0)">(miễn phí)</span><br/>
+		<br/>&nbsp;&nbsp; - Đăng dự án, công việc của bạn <span style="color:rgb(255, 0, 0)">(miễn phí)</span><br/>
 		&nbsp;&nbsp; - Tìm được những cá nhân (hoặc công ty) ưu tú nhất để thực hiện dự án của bạn với chi phí và thời gian hợp lý nhất.<br/>
 		&nbsp;&nbsp; - Gửi email cho bạn ngay khi có người muốn thầu dự án của bạn.<br/>
 		&nbsp;&nbsp; <span style="color:rgb(255, 0, 0)"><b>- Hoàn toàn miễn phí.</b></span>
@@ -155,7 +118,7 @@ table.center {margin-left:auto; margin-right:auto;}
 		</tbody>
 	</table>
 </div>
-</center>
+</CENTER>
 </body>
 </html>
 <script type="text/javascript">
