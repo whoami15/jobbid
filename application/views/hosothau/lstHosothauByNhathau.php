@@ -39,9 +39,9 @@
 						$trangthaiduan = "Đã đóng";
 					$i++;
 					if($i%2==0)
-						echo "<tr class='alternateRow' height='30px'>";
+						echo "<tr class='alternateRow'>";
 					else 
-						echo "<tr class='normalRow' height='30px'>";
+						echo "<tr class='normalRow'>";
 					?>
 						<td id="td_tenduan" align="left"><a class='link' href='<?php echo BASE_PATH."/hosothau/xem_ho_so/".$hosothau["hosothau"]["id"]."/".$hosothau["duan"]["id"] ?>'><?php echo $hosothau["duan"]["tenduan"]?></a></td>
 						<td align="center" ><?php echo $trangthaiduan ?></td>

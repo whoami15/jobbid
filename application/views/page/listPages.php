@@ -1,14 +1,14 @@
 <table width="100%">
 	<thead>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-			<td width="20px">#</td>
+			<td style="width:20px">#</td>
 			<td>Tiêu đề</td>
 			<td>URL View</td>
 			<td>Menu</td>
-			<td width="110px">Ngày cập nhật</td>
-			<td width="110px">Người cập nhật</td>
+			<td style="width:110px">Ngày cập nhật</td>
+			<td style="width:100px">Người cập nhật</td>
 			<td>Active</td>
-			<td width="40px">Xử lý</td>
+			<td style="width:40px">Xử lý</td>
 		</tr>
 	</thead>
 	<tbody>

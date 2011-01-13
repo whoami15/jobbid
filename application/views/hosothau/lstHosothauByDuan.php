@@ -35,9 +35,9 @@
 		foreach($lstHosthau as $hosothau) {
 			$i++;
 			if($i%2==0)
-				echo "<tr class='alternateRow' height='30px'>";
+				echo "<tr class='alternateRow'>";
 			else 
-				echo "<tr class='normalRow' height='30px'>";
+				echo "<tr class='normalRow'>";
 			?>
 				<td rowspan="2"><?php echo $i ?></td>
 				<td align="center"><a class='link' onmouseover='showinfo(this)' onmouseout="hidetip()" href='<?php echo BASE_PATH."/hosothau/xem_ho_so/".$hosothau["hosothau"]["id"]."/".$duan_id ?>'><?php echo $hosothau["nhathau"]["displayname"]?></a></td>
@@ -60,9 +60,9 @@
 			</tr>
 			<?php
 			if($i%2==0)
-				echo "<tr class='alternateRow' height='30px'>";
+				echo "<tr class='alternateRow'>";
 			else 
-				echo "<tr class='normalRow' height='30px'>";
+				echo "<tr class='normalRow'>";
 			?>
 				<td colspan="3" align="left">
 					<span style="padding-left:5px"><?php echo $hosothau["hosothau"]["content"] ?></span>

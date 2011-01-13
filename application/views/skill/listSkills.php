@@ -20,10 +20,10 @@
 			</td>
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-			<td width="20px">#</td>
+			<td style="width:20px">#</td>
 			<td>Tên Skill</td>
 			<td>Lĩnh vực</td>
-			<td width="50px">Xử lý</td>
+			<td style="width:50px">Xử lý</td>
 		</tr>
 	</thead>
 	<tfoot>

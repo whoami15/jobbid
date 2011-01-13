@@ -55,7 +55,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="4" align="center" height="50px">
+						<td colspan="4" align="center" style="height:50px">
 							<input onclick="doRegist()" value="Cập Nhật" type="button" tabindex="11">
 							<input onclick="doReset()" value="Reset" type="button"tabindex="12">
 						</td>

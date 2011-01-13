@@ -1,12 +1,12 @@
 <table width="100%">
 	<thead>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-			<td width="60px">ID Menu</td>
+			<td style="width:60px">ID Menu</td>
 			<td>Tên Menu</td>
 			<td>URL</td>
 			<td>Thứ tự</td>
 			<td>Active</td>
-			<td width="40px">Xử lý</td>
+			<td style="width:40px">Xử lý</td>
 		</tr>
 	</thead>
 	<tbody>

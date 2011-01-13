@@ -40,16 +40,16 @@
 				foreach($lstDuan as $duan) {
 					$i++;
 					if($i%2==0)
-						echo "<tr class='alternateRow' height='30px'>";
+						echo "<tr class='alternateRow'>";
 					else 
-						echo "<tr class='normalRow' height='30px'>";
+						echo "<tr class='normalRow'>";
 					?>
 						<td id="td_id" style="display:none"><?php echo $duan["duan"]["id"]?></td>
-						<td id="td_tenduan" align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
-						<td id="td_linhvuc" align="left"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
-						<td id="td_lefttime"align="center">
+						<td align="left"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
+						<td align="center">
 						<?php 
 						if($duan["duan"]["nhathau_id"]!=null)
 							echo "Đã đóng";

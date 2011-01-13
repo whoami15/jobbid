@@ -65,7 +65,7 @@
 					while($i<count($lstLinhvuc)) {
 						$linhvuc = $lstLinhvuc[$i];
 						echo "<tr>";
-						echo "<td width='50%'><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+						echo "<td style='width:50%'><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
 						$i++;
 						if($i<count($lstLinhvuc)) {
 							$linhvuc = $lstLinhvuc[$i];

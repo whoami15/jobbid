@@ -17,8 +17,8 @@
 	}
 </style>
 <div id="content" style="width:100%;">
+	<form id="formDuan" style="padding-bottom: 10px;" >
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Sửa dự án</div>
-	<form id="formDuan" style="padding-top: 10px; padding-bottom: 10px;" >
 		<input type="hidden" name="duan_id" id="duan_id" value="<?php echo $dataDuan["id"]?>" />
 		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>

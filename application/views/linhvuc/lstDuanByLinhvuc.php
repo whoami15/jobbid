@@ -36,15 +36,15 @@
 		foreach($lstDuan as $duan) {
 			$i++;
 			if($i%2==0)
-				echo "<tr class='alternateRow' height='30px'>";
+				echo "<tr class='alternateRow'>";
 			else 
-				echo "<tr class='normalRow' height='30px'>";
+				echo "<tr class='normalRow'>";
 			?>
-				<td id="td_tenduan" align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
+				<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
 				<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
 				<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
-				<td id="td_ngaypost" align="left"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i:s')?></td>
-				<td id="td_lefttime"align="center"><?php echo $html->getDaysFromSecond($duan[""]["timeleft"])?></td>
+				<td align="left"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i:s')?></td>
+				<td align="center"><?php echo $html->getDaysFromSecond($duan[""]["timeleft"])?></td>
 			</tr>
 			<?php
 		}

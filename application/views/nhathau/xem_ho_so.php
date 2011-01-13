@@ -2,12 +2,12 @@
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin nhà thầu</div>
 	<table class="center" width="100%">
 		<tbody>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="center" colspan="2">
 				<h2><?php echo $nhathau["displayname"] ?></h2> 
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Đại diện cho :</b> 
 				<?php 
@@ -18,7 +18,7 @@
 				?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<span style="float:left;padding-right:10px"> <b>JobBid đánh giá :</b></span>
 				<?php
@@ -37,22 +37,22 @@
 				?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b><span id="display_gpkd_cmnd"></span> :</b> <?php echo $nhathau["gpkd_cmnd"] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b><span id="display_birthyear"></span> :</b> <?php echo $nhathau["birthyear"] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b><span id="display_diachilienhe"></span> :</b> <?php echo $nhathau["diachilienhe"] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Lĩnh vực :</b>
 				</td>
@@ -70,22 +70,22 @@
 				?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b><span id="display_file"></span> :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$file["id"] ?>"><?php echo $file["filename"] ?></a>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Mô tả thêm :</b>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" style="padding-left:50px">
 				<?php echo $nhathau["motachitiet"] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left">
 				<b>Mời nhà thầu này tham gia thầu dự án của bạn trên JobBid:</b><br/>
 				<ul style='padding-left:15px;margin-left:15px' id="ul_myactivityproject">

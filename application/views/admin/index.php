@@ -86,7 +86,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="6" align="center" height="50px">
+						<td colspan="6" align="center" style="height:50px">
 							<input onclick="saveWidget()" value="Lưu" type="button"> 
 							<input onclick="deleteWidget()" value="Xóa" type="button">
 							<input onclick="doReset()" value="Reset" type="button">

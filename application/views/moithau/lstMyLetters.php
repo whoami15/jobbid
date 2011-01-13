@@ -42,12 +42,12 @@
 						echo ' style="font-weight: bold;cursor:pointer"';
 					else 
 						echo 'style="cursor:pointer"';
-					echo ' onclick="doRead('.$duan["moithau"]["id"].')" height="30px">';
+					echo ' onclick="doRead('.$duan["moithau"]["id"].')" >';
 					?>
-						<td id="td_tenduan" align="left"><a class='link' href='#'><?php echo $duan["duan"]["tenduan"]?></a></td>
+						<td align="left"><a class='link' href='#'><?php echo $duan["duan"]["tenduan"]?></a></td>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
-						<td id="td_lefttime"align="center">
+						<td align="center">
 							<?php 
 							if($duan["duan"]["nhathau_id"]!=null)
 								echo "Đã đóng";

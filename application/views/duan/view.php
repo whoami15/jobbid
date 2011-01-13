@@ -17,7 +17,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td width="50%" align="left" >
 					<b>Trạng thái :</b> <?php echo $status ?>
 					</td>
@@ -25,7 +25,7 @@
 					<b>Số hồ sơ thầu :</b> <?php echo $dataDuan["duan"]["bidcount"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b>Chi phí : </b><?php echo $html->FormatMoney($dataDuan["duan"]["costmin"])?> &#8250 <?php echo $html->FormatMoney($dataDuan["duan"]["costmax"])?> (VNĐ)
 					</td>
@@ -33,7 +33,7 @@
 					<b>Giá thầu trung bình : </b><?php echo $html->FormatMoney($dataDuan["duan"]["averagecost"])?> VNĐ
 					</td> 
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td width="33%" align="left" >
 					<b>Địa điểm :</b> <?php echo $dataDuan["tinh"]["tentinh"] ?>
 					</td>
@@ -41,7 +41,7 @@
 					<b>Lĩnh vực :</b> <?php echo $dataDuan["linhvuc"]["tenlinhvuc"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b>Ngày kết thúc : </b><?php echo $html->format_date($dataDuan["duan"]["ngayketthuc"],'d/m/Y') ?>
 					</td>
@@ -49,7 +49,7 @@
 					<b>Số lượt xem : </b><?php echo $dataDuan["duan"]["views"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b>Hình thức đấu thầu : </b> 
 					<?php
@@ -60,12 +60,12 @@
 					?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b>File đính kèm : </b><a class="link" title="<?php echo $dataDuan["file"]["filename"] ?>" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$dataDuan["file"]["id"] ?>"><?php echo $html->trimString($dataDuan["file"]["filename"],100) ?></a>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b>Kỹ năng bắt buộc :</b>
 					</td>
@@ -83,7 +83,7 @@
 						</div>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b>Thông tin chi tiết :</b>
 					</td>
@@ -96,12 +96,12 @@
 				<?php
 				if($dataDuan["duan"]["isbid"] == 0) {
 				?>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b>Email :</b> <span style="color:red"><?php echo $dataDuan["duan"]["duan_email"] ?></span>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b>Số điện thoại :</b> <span style="color:red"><?php echo $dataDuan["duan"]["duan_sodienthoai"] ?></span>
 					</td>
@@ -110,7 +110,7 @@
 				}
 				if(isset($dataDuan["nhathau"]["id"])) {
 				?>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" colspan="2">
 					<b><span style="color:red">Thắng thầu : </span></b><a class='link' href='<?php echo BASE_PATH."/hosothau/xem_ho_so/".$dataDuan["duan"]["hosothau_id"]."/".$dataDuan["duan"]["id"] ?>'><?php echo $dataDuan["nhathau"]["displayname"]?></a>
 					</td>
@@ -118,7 +118,7 @@
 				<?php
 				}
 				?>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="center" colspan="2">
 					<?php
 					if(isset($_SESSION["account"]) && $dataDuan["duan"]["account_id"]==$_SESSION["account"]["id"]) {

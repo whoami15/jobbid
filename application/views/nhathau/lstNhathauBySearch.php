@@ -22,7 +22,7 @@
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 			<td>#</td>
 			<td>Tên nhà thầu</td>
-			<td width="100px">Đánh giá</td>
+			<td style="width:100px">Đánh giá</td>
 		</tr>
 	</thead>
 	<tfoot>
@@ -37,11 +37,11 @@
 				echo "<tr class='alternateRow'";
 			else 
 				echo "<tr class='normalRow'";
-			echo ' style="cursor:pointer" onclick="location.href=\''.BASE_PATH.'/nhathau/xem_ho_so/'.$nhathau["nhathau"]["id"].'\'" height="30px">';
+			echo ' style="cursor:pointer" onclick="location.href=\''.BASE_PATH.'/nhathau/xem_ho_so/'.$nhathau["nhathau"]["id"].'\'" >';
 			?>
 				<td align="center"><?php echo $i ?></td>
-				<td id="td_tennhathau" align="left"><a class='link' href='#'><?php echo $nhathau["nhathau"]["displayname"]?></a></td>
-				<td align="left" width="100px">
+				<td align="left"><a class='link' href='#'><?php echo $nhathau["nhathau"]["displayname"]?></a></td>
+				<td align="left" style="width:100px">
 					<div style="float: left;" id="ctl00_SampleContent_ThaiRating">
 						<a style="text-decoration: none;" title="2" id="ctl00_SampleContent_ThaiRating_A" href="javascript:void(0)">
 						<?php

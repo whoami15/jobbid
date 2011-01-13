@@ -136,7 +136,7 @@ table.center {margin-left:auto; margin-right:auto;}
 	<table width="100%" border="thin">
 		<thead>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-			<td width="50%">BẠN LÀ FREELANCER</td>
+			<td style="width:50%">BẠN LÀ FREELANCER</td>
 			<td>BẠN LÀ CHỦ DỰ ÁN</td>
 		</tr>
 		</thead>

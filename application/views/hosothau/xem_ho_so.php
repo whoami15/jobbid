@@ -13,46 +13,46 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Nhà thầu :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $data['nhathau']["id"] ?>"><?php echo $data['nhathau']["displayname"] ?></a>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Giá thầu :</b> <?php echo $data['hosothau']['giathau'] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Thời gian :</b> <?php echo $data['hosothau']['thoigian'] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Milestone :</b> <?php echo $data['hosothau']['milestone'] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Lời nhắn :</b> <?php echo $data['hosothau']['content'] ?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left" >
 				<b>Ngày gửi :</b> <?php  echo $html->format_date($data['hosothau']['ngaygui'],'d/m/Y H:i')?>
 				</td>
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left"><b>Email :</b><span style="color:red"> <?php echo $data['hosothau']['hosothau_email']?></span>
 				</td>	
 			</tr>
-			<tr height="30px">
+			<tr style="height:30px">
 				<td align="left"><b>Số điện thoại :</b><span style="color:red"> <?php echo $data['hosothau']['hosothau_sodienthoai']?></span>
 				</td>
 			</tr>
-			<tr height="30px">
-				<td align="center" height="50px">
+			<tr style="height:30px">
+				<td align="center" style="height:50px">
 					<?php
 					if(!$flag)
 						echo '<input id="btChonnhathau" onclick="doChonnhathau()" value="Chọn Nhà Thầu Này" type="button" tabindex="11">';

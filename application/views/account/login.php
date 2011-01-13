@@ -43,7 +43,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="4" align="center" height="30px">
+				<td colspan="4" align="center" style="height:30px">
 					<input value="Đăng Nhập" type="submit" tabindex="3">
 				</td>
 			</tr>

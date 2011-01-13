@@ -20,14 +20,14 @@
 			</td>
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-			<td width="20px">#</td>
+			<td style="width:20px">#</td>
 			<td>Username</td>
 			<td>Tên hiển thị</td>
 			<td>GPKD(CMND)</td>
-			<td width="50px">Point</td>
-			<td width="85px">Nhận Email</td>
-			<td width="85px">Lĩnh vực</td>
-			<td width="40px">Xử lý</td>
+			<td style="width:50px">Point</td>
+			<td style="width:85px">Nhận Email</td>
+			<td style="width:85px">Lĩnh vực</td>
+			<td style="width:40px">Xử lý</td>
 		</tr>
 	</thead>
 	<tfoot>

@@ -6,27 +6,27 @@
 		?>
 		<table class="center" width="100%">
 			<tbody>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b><span id="display_tenhienthi"></span> :</b> <?php echo $nhathau["nhathau"]["displayname"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b><span id="display_gpkd_cmnd"></span> :</b> <?php echo $nhathau["nhathau"]["gpkd_cmnd"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b><span id="display_birthyear"></span> :</b> <?php echo $nhathau["nhathau"]["birthyear"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b><span id="display_diachilienhe"></span> :</b> <?php echo $nhathau["nhathau"]["diachilienhe"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b>Lĩnh vực :</b>
 					</td>
@@ -44,22 +44,22 @@
 					?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b><span id="display_file"></span> :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH.'/file/download/'.$nhathau["file"]["id"] ?>"><?php echo $nhathau["file"]["filename"] ?></a>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" >
 					<b>Mô tả thêm :</b>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="left" style="padding-left:50px">
 					<?php echo $nhathau["nhathau"]["motachitiet"] ?>
 					</td>
 				</tr>
-				<tr height="30px">
+				<tr style="height:30px">
 					<td align="center">
 					<input type="button" value="Sửa hồ sơ" onclick="location.href=url('/nhathau/edit')"/>
 					</td>
@@ -88,7 +88,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td width="150px" align="right">Email :</td>
+					<td style="width:150px" align="right">Email :</td>
 					<td align="left">
 						<a href="#" class="link"><?php echo $dataAccount["username"]?></a>
 					</td>
@@ -106,7 +106,7 @@
 					</td>
 				</tr>
 				<tr id="tr_oldpass">
-					<td width="150px" align="right">Mật khẩu cũ <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
+					<td style="width:150px" align="right">Mật khẩu cũ <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</td>
 					<td align="left">
 						<input type="password" name="account_oldpassword" id="account_oldpassword" style="width:200px" tabindex="2"/>
 					</td>
@@ -124,7 +124,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4" align="center" height="50px">
+					<td colspan="4" align="center" style="height:50px">
 						<input id="btUpdate" onclick="doUpdate()" value="Cập Nhật" type="button" tabindex="11">
 					</td>
 				</tr>
