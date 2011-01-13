@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 #tipmsg {
 	padding-left:10px;
 	color:white !important;
@@ -157,7 +157,7 @@
 	</div>
 	</fieldset>
 </div>
-<script>
+<script type="text/javascript">
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";

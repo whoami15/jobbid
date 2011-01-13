@@ -6,7 +6,7 @@
 		<title>My CMS</title>         
 		<link href="<?php echo BASE_PATH ?>/public/css/backend/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
 		<link href="<?php echo BASE_PATH ?>/public/css/backend/admin_style.css" rel="stylesheet" type="text/css" />
-		<style>
+		<style type="text/css">
 		input.ui-button {
 			border:medium none;
 			padding:1px 1em;
@@ -14,7 +14,7 @@
 		</style>
 		<!--[if !IE]> 
 		<-->
-		<style>
+		<style type="text/css">
 			fieldset {
 				border:1px solid #A6C9E2;
 				-moz-border-radius:5px 5px 5px 5px;

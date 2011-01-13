@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 	.multiselect {  
 		height:200px;
 		width:270px; 
@@ -80,7 +80,7 @@
 		</table>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	function selectpage(page) {
 		loadListDuans(page);
 	};

@@ -7,7 +7,7 @@
 
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
-<style>
+<style type="text/css">
 	.multiselect {  
 		height:200px;
 		width:300px; 
@@ -139,7 +139,7 @@
 		</center>
 	</form>
 </div>
-<script>
+<script type="text/javascript">
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";

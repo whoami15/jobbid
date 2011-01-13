@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
-<style>
+<style type="text/css">
 	.tdLabel {
 		text-align:right;
 		width:100px;
@@ -70,7 +70,7 @@
 		</fieldset>
 	</form>
 </div>
-<script>
+<script type="text/javascript">
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";

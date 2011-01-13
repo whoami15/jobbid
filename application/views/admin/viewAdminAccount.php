@@ -1,4 +1,4 @@
-<style> 	
+<style type="text/css"> 	
 	.input {
 		width:86%;
 	}

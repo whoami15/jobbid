@@ -40,8 +40,21 @@ class TestController extends VanillaController {
 		$conn->hadSend($arr);
 		$conn->updateStatistics();
 		$conn->close(); */
-		echo $_SESSION['test'];
-		echo 'DONE';
+		//echo $_SESSION['test'];
+		/* include (ROOT.DS.'library'.DS.'crawler.php');
+		$crawl = new crawler('http://thienduongweb.com'); 
+		$images = $crawl->get('images'); 
+		$links = $crawl->get('links');
+		print_r($images); */
+		$handle = fopen("http://www.raovat.vn/lao-dong-viec-lam/nhung-trang-web-kiem-tien-uy-tin-nhat-hien-nay-raovat-403664636.html", "rb");
+		$contents = stream_get_contents($handle);
+		fclose($handle);
+		$str2 = strtolower($contents);
+		//echo $str2;
+		$start = strpos($str2, "email: ")+8;
+		$end   = strpos($str2, " ",$start);
+		$email= trim(substr($contents, $start, $end-$start));
+		echo $email;
 	}
 	function rmvsession($session) {
 		$_SESSION[$session] = null;

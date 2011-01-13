@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 .picture {
    padding:1px;
    border:1px solid #021a40;
@@ -13,7 +13,7 @@
 		<img class="picture" id="map" alt="post-du-an" src="<?php echo BASE_PATH ?>/public/images/map.png" />
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	
 	$(document).ready(function() {
 		$("input:submit, input:button", "body").button();

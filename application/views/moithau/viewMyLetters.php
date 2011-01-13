@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 	.multiselect {  
 		height:200px;
 		width:270px; 
@@ -78,7 +78,7 @@
 		</table>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	function doRead(moithau_id) {
 		if(moithau_id==null)
 			return;

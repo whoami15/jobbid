@@ -196,7 +196,7 @@ class NhathauController extends VanillaController {
 			$type = $_POST["nhathau_type"];
 			$nhanemail = isset($_POST["nhathau_nhanemail"])?1:0;
 			$validate = new Validate();
-			if($validate->check_null(array($sodienthoai,$displayname,$gpkd_cmnd))==false)
+			if($validate->check_null(array($sodienthoai,$displayname))==false)
 				die('ERROR_SYSTEM');
 			$account_id = $_SESSION["account"]["id"];
 			$this->nhathau->where(" and account_id= $account_id ");
@@ -329,7 +329,7 @@ class NhathauController extends VanillaController {
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
 			$type = $_POST["nhathau_type"];
 			$nhanemail = isset($_POST["nhathau_nhanemail"])?1:0;
-			if($validate->check_null(array($id,$sodienthoai,$displayname,$gpkd_cmnd))==false)
+			if($validate->check_null(array($id,$sodienthoai,$displayname))==false)
 				die('ERROR_SYSTEM');
 			$account_id = $_SESSION["account"]["id"];
 			$this->nhathau->id = $id;

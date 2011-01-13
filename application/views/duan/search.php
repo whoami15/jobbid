@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
-<style>
+<style type="text/css">
 	.multiselect {  
 		height:200px;
 		width:270px; 
@@ -94,7 +94,7 @@
 	}
 	?>
 </div>
-<script>
+<script type="text/javascript">
 	//Search area
 	var arrCondition = {cond_keyword:"",cond_linhvuc:"",cond_tinh:""};
 	var searchString = '';

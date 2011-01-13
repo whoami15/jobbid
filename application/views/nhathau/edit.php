@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 	.tdLabel {
 		text-align:right;
 		width:170px;
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;"><span id="display_gpkd_cmnd"></span> <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
+				<div class="td tdLabel" style="text-align:right;"><span id="display_gpkd_cmnd"></span> :</div>
 				<div class="td tdInput">
 				<input maxlength="255" type="text" name="nhathau_gpkd_cmnd" id="nhathau_gpkd_cmnd" style="width:90%" tabindex=1 value="<?php echo $nhathau["gpkd_cmnd"] ?>"/>
 				</div>
@@ -120,7 +120,7 @@
 			</div>
 		</div>
 		</center>
-		<script>
+		<script type="text/javascript">
 			function message(msg,type) {
 				if(type==1) { //Thong diep thong bao
 					str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
@@ -168,7 +168,7 @@
 				location.href = "#top";
 				checkValidate=true;
 				validate(['require'],'nhathau_displayname',["Vui lòng nhập "+display_tenhienthi+"!"]);
-				validate(['require'],'nhathau_gpkd_cmnd',["Vui lòng nhập "+display_gpkd_cmnd+"!"]);
+				//validate(['require'],'nhathau_gpkd_cmnd',["Vui lòng nhập "+display_gpkd_cmnd+"!"]);
 				validate(['require'],'account_sodienthoai',["Vui lòng nhập số điện thoại!"]);
 				if(checkValidate==false) {
 					return false;
@@ -282,7 +282,7 @@
 		?>
 	</form>
 </div>
-<script>
+<script type="text/javascript">
 	$(document).ready(function() {
 		$("#quan_ly_ho_so_ca_nhan").css('color','#F68618');
 		$("input:submit, input:button", "body").button();

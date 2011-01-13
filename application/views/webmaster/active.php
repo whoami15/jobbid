@@ -1,5 +1,5 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
-<style>
+<style type="text/css">
 	.tdLabel {
 		text-align:right;
 		width:133px;
@@ -34,7 +34,7 @@
 	</center>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";

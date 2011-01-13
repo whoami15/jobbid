@@ -1,7 +1,7 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tiny_mce/jquery.tinymce.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/costtype.js"></script>
-<style> 	
+<style type="text/css"> 	
 	.input {
 		width:86%;
 	}

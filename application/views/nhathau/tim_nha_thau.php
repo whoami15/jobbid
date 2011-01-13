@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 	.divfloat1 {
 		float:left;
 		padding:5px 5px 5px 15px;
@@ -92,7 +92,7 @@
 		</table>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	var arrCondition = {cond_linhvuc:""};
 	var searchString = '';
 	function checkChangeConditionSearch() {

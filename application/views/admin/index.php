@@ -1,5 +1,5 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tiny_mce/jquery.tinymce.js"></script>
-<style>
+<style type="text/css">
 	.multiselect {  
 		height:400px;
 		width:350px;  

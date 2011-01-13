@@ -1,4 +1,4 @@
-<style>
+<style type="text/css">
 	.divfloat1 {
 		float:left;
 		padding:5px 5px 5px 15px;
@@ -74,7 +74,7 @@
 	?>
 	</div>
 </div>
-<script>
+<script type="text/javascript">
 	$(document).ready(function() {
 		menuid = '#home';
 		$("#menu "+menuid).addClass("current");
