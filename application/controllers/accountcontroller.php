@@ -34,6 +34,15 @@ class AccountController extends VanillaController {
 			}
 		}
 	}
+	function checkActive($isAjax=false,$msg='Vui lòng kiểm tra email để xác nhận tài khoản!') {
+		if($_SESSION['account']['active']==0) {
+			if($isAjax == true) {
+				die('ERROR_NOTACTIVE');
+			} else {
+				error($msg);
+			}
+		}
+	}
 	function setModel($model) {
 		 $this->$model =& new $model;
 	}
@@ -149,7 +158,7 @@ class AccountController extends VanillaController {
 			}
 		}
 	}
-	function doRegist() {
+	/* function doRegist() {
 		try {
 			if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
 				unset($_SESSION['security_code']);
@@ -174,6 +183,49 @@ class AccountController extends VanillaController {
 			$this->account->username = $username;
 			$this->account->password = md5($password);
 			$this->account->sodienthoai = $sodienthoai;
+			$this->account->timeonline = 0;
+			$this->account->role = 2;
+			$this->account->active = 0;
+			$account_id = $this->account->insert(true);
+			$this->account->id = $account_id;
+			$data = $this->account->search();
+			$_SESSION['account']=$data['account'];
+			$active_code = genString();
+			$this->setModel('activecode');
+			$this->activecode->id = null;
+			$this->activecode->account_id = $account_id;
+			$this->activecode->active_code = $active_code;
+			$this->activecode->insert();
+			//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
+			$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
+			$linkactive = "<a href='$linkactive'>$linkactive</a>";
+			global $cache;
+			$content = $cache->get('mail_verify');
+			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
+			$replace = array($linkactive, $active_code, $username);
+			$content = str_replace($search, $replace, $content);
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	} */
+	function doRegist() {
+		try {
+			$validate = new Validate();
+			if($validate->check_submit(1,array('account_username'))==false)
+				die('ERROR_SYSTEM');
+			$username = $_POST['account_username'];
+			if($validate->check_null(array($username))==false)
+				die('ERROR_SYSTEM');
+			if(!$validate->check_email($username))
+				die('ERROR_SYSTEM');
+			if($this->existUsername($username))
+				die('ERROR_EXIST');
+			$this->account->id = null;
+			$this->account->username = $username;
 			$this->account->timeonline = 0;
 			$this->account->role = 2;
 			$this->account->active = 0;
@@ -327,6 +379,34 @@ class AccountController extends VanillaController {
 			$this->resetpassword->id = $_SESSION['resetpassword']['id'];
 			$this->resetpassword->delete();
 			$_SESSION['resetpassword'] = null;
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function updateinfo() {
+		$this->checkLogin();
+		$this->checkActive();
+		$this->_template->render(); 
+	}
+	function doUpdateInfo() {
+		$this->checkLogin();
+		$this->checkActive();
+		try {
+			$validate = new Validate();
+			if($validate->check_submit(1,array('account_password','account_sodienthoai'))==false)
+				die('ERROR_SYSTEM');
+			$password = $_POST['account_password'];
+			$sodienthoai = $_POST['account_sodienthoai'];
+			if($validate->check_null(array($password,$sodienthoai))==false)
+				die('ERROR_SYSTEM');
+			if(!$validate->check_length($password,5))
+				die('ERROR_SYSTEM');
+			$this->account->id = $_SESSION['account']['id'];
+			$this->account->password = md5($password);
+			$this->account->sodienthoai = $sodienthoai;
+			$this->account->update();
+			$_SESSION['account']['sodienthoai'] = $sodienthoai;
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

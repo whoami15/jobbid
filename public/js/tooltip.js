@@ -18,7 +18,8 @@ var pointerobj = document.all ? document.all["dhtmlpointer"] : document.getEleme
 function ietruebody() {
 	return (document.compatMode && document.compatMode != "BackCompat") ? document.documentElement : document.body;
 }
-
+var xTip;
+var yTip;
 function showtip(thetext, thewidth, thecolor) {
 	if (ns6 || ie) {
 		if (typeof thewidth != "undefined")
@@ -27,6 +28,7 @@ function showtip(thetext, thewidth, thecolor) {
 			tipobj.style.backgroundColor = thecolor;
 		tipobj.innerHTML = thetext;		
 		enabletip = true;
+		positiontip();
 		return false;
 	}
 }
@@ -34,17 +36,18 @@ function showtip(thetext, thewidth, thecolor) {
 function positiontip(e) {
 	if (enabletip) {		
 		var nondefaultpos = false;
-		var curX = (ns6) ? e.pageX : event.clientX + ietruebody().scrollLeft;
-		var curY = (ns6) ? e.pageY : event.clientY + ietruebody().scrollTop;
+		//var curX = (ns6) ? e.pageX : event.clientX + ietruebody().scrollLeft;
+		//var curY = (ns6) ? e.pageY : event.clientY + ietruebody().scrollTop;
+		var curX = xTip;
+		var curY = yTip;
 		
 		var winwidth = ie && ! window.opera ? ietruebody().clientWidth : window.innerWidth - 20;
 		var winheight = ie && ! window.opera ? ietruebody().clientHeight : window.innerHeight - 20;
 
-		var rightedge = ie && ! window.opera ? winwidth - event.clientX - offsetfromcursorX : winwidth - e.clientX - offsetfromcursorX;
-		var bottomedge = ie && ! window.opera ? winheight - event.clientY - offsetfromcursorY : winheight - e.clientY - offsetfromcursorY;
+		var rightedge = ie && ! window.opera ? winwidth - event.clientX - offsetfromcursorX : winwidth - xTip - offsetfromcursorX;
+		var bottomedge = ie && ! window.opera ? winheight - event.clientY - offsetfromcursorY : winheight - yTip - offsetfromcursorY;
 
 		var leftedge = (offsetfromcursorX < 0) ? offsetfromcursorX * (- 1) : - 1000;
-
 		if (rightedge < tipobj.offsetWidth) {
 			tipobj.style.left = curX - tipobj.offsetWidth + "px";
 			nondefaultpos = true;
@@ -85,4 +88,4 @@ function hidetip() {
 	}
 }
 
-document.onmousemove = positiontip;
+//document.onmousemove = positiontip;

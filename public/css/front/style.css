@@ -421,3 +421,7 @@ table.center {margin-left:auto; margin-right:auto;}
 #account_widget li {
 	padding-bottom:5px;
 }
+.sample {
+	color:#6f6f6f;
+	font-size:-1
+}

@@ -156,17 +156,32 @@
 	function unblock(id) {
 		$(id).unblock(); 
 	}
-	function boundTip(id,content,width) {
+	function boundTip(id,content,width,action) {
 		if(width==null)
 			width = 250;
-		$("#"+id).hover(
-			function () {
-			showtip(content,width);
-			}, 
-			function () {
-			hidetip();
-			}
-		);
+		if(action==null) {
+			$("#"+id).focus(function () {
+				xTip = $(this).offset().left+$(this).width();
+				yTip = $(this).offset().top;
+				showtip(content,width);
+			});
+			$("#"+id).blur(function () {
+				hidetip();
+			});
+		}
+		if(action=="hover") {
+			$("#"+id).hover(
+				function () {
+					xTip = $(this).offset().left+$(this).width();
+					yTip = $(this).offset().top;
+					showtip(content,width);
+				}, 
+				function () {
+					hidetip();
+				}
+			);
+		}
+		
 	}
 	//Config
 	var width_content;

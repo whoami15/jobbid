@@ -66,9 +66,9 @@
 	$(document).ready(function() {
 		menuid = '#home';
 		$("#menu "+menuid).addClass("current");
-		boundTip("help_project","Chủ dự án sẽ đưa dự án cần tìm kiếm nhà thầu lên jobbid.vn");
-		boundTip("help_bid","Các nhà thầu sẽ đưa ra mức giá và thời gian để thực hiện dự án này, để có thể tham gia đấu thầu.<br/>Các nhà thầu cần tạo 1 bộ hồ sơ nhà thầu trên jobbid.vn để chủ dự án có thể xem và lựa chọn ra nhà thầu tốt nhất.");
-		boundTip("help_select","Chủ dự án sẽ so sánh các nhà thầu đã tham gia đấu giá dự án của mình và chọn ra 1 nhà thầu ưng ý nhất.");
-		boundTip("help_payment","Chủ dự án và nhà thầu sẽ liên hệ với nhau để thỏa thuận về việc thực hiện dự án và thanh toán.");
+		boundTip("help_project","Chủ dự án sẽ đưa dự án cần tìm kiếm nhà thầu lên jobbid.vn",200,"hover");
+		boundTip("help_bid","Các nhà thầu sẽ đưa ra mức giá và thời gian để thực hiện dự án này, để có thể tham gia đấu thầu.<br/>Các nhà thầu cần tạo 1 bộ hồ sơ nhà thầu trên jobbid.vn để chủ dự án có thể xem và lựa chọn ra nhà thầu tốt nhất.",300,"hover");
+		boundTip("help_select","Chủ dự án sẽ so sánh các nhà thầu đã tham gia đấu giá dự án của mình và chọn ra 1 nhà thầu ưng ý nhất.",200,"hover");
+		boundTip("help_payment","Chủ dự án và nhà thầu sẽ liên hệ với nhau để thỏa thuận về việc thực hiện dự án và thanh toán.",200,"hover");
 	});
 </script>

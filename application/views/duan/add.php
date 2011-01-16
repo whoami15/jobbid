@@ -29,8 +29,8 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Hình thức đấu thầu :</div>
 				<div class="td tdInput">
-				<input type="radio" name="duan_isbid" id="duan_isbid" value="1" /> Đấu thầu tự do. <span class="question" id="tip_freebid">(?)</span><br/>
-				<input type="radio" name="duan_isbid" id="duan_isbid" value="0"/> Liên hệ trực tiếp. <span class="question" id="tip_directcontact">(?)</span>
+				<span id="tip_freebid"><input type="radio" name="duan_isbid" id="duan_isbid" value="1" /> Đấu thầu tự do.</span><br/>
+				<span id="tip_directcontact"><input type="radio" name="duan_isbid" id="duan_isbid" value="0"/> Liên hệ trực tiếp.</span>
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -69,13 +69,13 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $_SESSION['account']['username'] ?>"/>&nbsp;<span class="question" id="tip_email">(?)</span>
+				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $_SESSION['account']['username'] ?>"/>
 				</div>
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $_SESSION['account']['sodienthoai'] ?>"/>&nbsp;<span class="question" id="tip_sodienthoai">(?)</span>
+				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $_SESSION['account']['sodienthoai'] ?>"/>
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -296,13 +296,13 @@
 			changeYear: true
 		});
 		boundTip("duan_tenduan","Nhập tên dự án bạn muốn đấu thầu");
-		boundTip("tip_ngayketthuc","Là ngày mà bạn muốn phiên đấu thầu cho dự án này kết thúc, sau ngày này thì các nhà thầu không được phép đấu thầu cho dự án này nữa.");
+		boundTip("tip_ngayketthuc","Là ngày mà bạn muốn phiên đấu thầu cho dự án này kết thúc, sau ngày này thì các nhà thầu không được phép đấu thầu cho dự án này nữa.",200,"hover");
 		boundTip("duan_linhvuc_id","Danh sách các kỹ năng sẽ được load vào mục kỹ năng sau khi một lĩnh vực được chọn.");
-		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các nhà thầu phải có trước khi tham gia đấu thầu dự án của bạn.");
-		boundTip("tip_email","Là email của chủ dự án mà nhà thầu thắng thầu sẽ liên lạc.");
-		boundTip("tip_sodienthoai","Là số điện thoại của chủ dự án mà nhà thầu thắng thầu sẽ liên lạc.");
-		boundTip("tip_freebid","Cho phép các nhà thầu đầu đặt ra giá thầu và thời gian để thực hiện dự án này, từ đó bạn có thể lựa chọn ra nhà thầu tốt nhất cho dự án của bạn. (thông tin liên lạc của bạn chỉ hiển thị đối với nhà thầu nào trúng thầu dự án của bạn)",400);
-		boundTip("tip_directcontact","Thông tin liên hệ của bạn sẽ được hiển thị để các nhà thầu liên hệ trực tiếp với bạn. (chức năng đấu thầu sẽ không còn nếu bạn chọn hình thức này)",400);
+		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các nhà thầu phải có trước khi tham gia đấu thầu dự án của bạn.",300,"hover");
+		boundTip("duan_email","Là email của chủ dự án mà nhà thầu thắng thầu sẽ liên lạc.");
+		boundTip("duan_sodienthoai","Là số điện thoại của chủ dự án mà nhà thầu thắng thầu sẽ liên lạc.");
+		boundTip("tip_freebid","Cho phép các nhà thầu đầu đặt ra giá thầu và thời gian để thực hiện dự án này, từ đó bạn có thể lựa chọn ra nhà thầu tốt nhất cho dự án của bạn. (thông tin liên lạc của bạn chỉ hiển thị đối với nhà thầu nào trúng thầu dự án của bạn)",400,"hover");
+		boundTip("tip_directcontact","Thông tin liên hệ của bạn sẽ được hiển thị để các nhà thầu liên hệ trực tiếp với bạn. (chức năng đấu thầu sẽ không còn nếu bạn chọn hình thức này)",400,"hover");
 
 	});
 </script>

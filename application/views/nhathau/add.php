@@ -252,6 +252,5 @@
 		$('#formnhathau').ajaxForm(options);
 		$("#quan_ly_ho_so_ca_nhan").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
-		boundTip("tip_loinhan","Số điện thoại và email của bạn (khi đăng ký tài khoản) sẽ được chủ dự án sử dụng để liên lạc với bạn <span style='color:red'>nếu bạn được trúng thầu</span>, vui lòng không điền số điện thoại và email của bạn trong phần thông tin mô tả bên dưới!",500);
 	});
 </script>

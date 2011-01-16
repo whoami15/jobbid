@@ -27,13 +27,13 @@
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Giá thầu (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</div>
 					<div class="td tdInput">
-					<input maxlength=10 type="text" name="hosothau_giathau" style="width:70%" value="" id="hosothau_giathau" tabindex=1/> <span class="question" id="tip_giathau">(?)</span>
+					<input maxlength=10 type="text" name="hosothau_giathau" style="width:70%" value="" id="hosothau_giathau" tabindex=1/>
 					</div>
 				</div>
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Thời gian (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</div>
 					<div class="td tdInput">
-					<input maxlength=2 type="text" name="hosothau_thoigian" style="width:40%" value="" id="hosothau_thoigian" tabindex=2/> <span class="question" id="tip_thoigian">(?)</span>
+					<input maxlength=2 type="text" name="hosothau_thoigian" style="width:40%" value="" id="hosothau_thoigian" tabindex=2/>
 					</div>
 				</div>
 				<div class="tr" style="border:none">
@@ -45,18 +45,18 @@
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Email :</div>
 					<div class="td tdInput">
-					<input type="text" id="hosothau_email" name="hosothau_email" style="width:70%" value="<?php echo $username ?>" tabindex=3/> <span class="question" id="tip_email">(?)</span>
+					<input type="text" id="hosothau_email" name="hosothau_email" style="width:70%" value="<?php echo $username ?>" tabindex=3/>
 					</div>
 				</div>
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Số điện thoại :</div>
 					<div class="td tdInput">
-					<input type="text" id="hosothau_sodienthoai" name="hosothau_sodienthoai" style="width:70%" value="<?php echo $sodienthoai ?>" tabindex=3/> <span class="question" id="tip_sodienthoai">(?)</span>
+					<input type="text" id="hosothau_sodienthoai" name="hosothau_sodienthoai" style="width:70%" value="<?php echo $sodienthoai ?>" tabindex=3/>
 					</div>
 				</div>
 				<div class="tr" style="border:none;text-align:left">
 					<div class="td">
-					Lời nhắn :( nhỏ hơn 1000 từ )<br/>
+					Lời nhắn ( nhỏ hơn 1000 từ ) :<br/>
 					<textarea  id="hosothau_content" name="hosothau_content" style="margin-top: 5px; width: 99%;" rows="5" tabindex=5></textarea>
 					</div>
 				</div>
@@ -177,10 +177,9 @@
 		document.title = "Gửi Hồ Sơ Thầu - "+document.title;
 		$("input:submit, input:button", "body").button();
 		boundTip("hosothau_milestone","Ví dụ : Nếu bạn đặt milestone là 50%, khi bạn hoàn thành được 50% dự án đó, chủ dự án sẽ chi trả 50% số tiền cho bạn");
-		boundTip("tip_thoigian","Nhập số ngày bạn sẽ hoàn thành dự án.");
-		boundTip("tip_giathau","Nhập số tiền (VNĐ) bạn sẽ thầu dự án này, với giá thầu và thời gian hợp lý, bạn sẽ có nhiều cơ hội được chủ dự án lựa chọn");
-		boundTip("tip_email","Chủ dự án sẽ liên hệ với bạn qua email này nếu bạn thắng thầu.");
-		boundTip("tip_sodienthoai","Chủ dự án sẽ liên hệ với bạn qua số điện thoại này nếu bạn thắng thầu.");
-		boundTip("tip_loinhan","Số điện thoại và email của bạn (khi đăng ký tài khoản) sẽ được chủ dự án sử dụng để liên lạc với bạn <span style='color:red'>nếu bạn được trúng thầu</span>, vui lòng không điền số điện thoại và email của bạn trong phần thông tin mô tả bên dưới!",500);
+		boundTip("hosothau_thoigian","Nhập số ngày bạn sẽ hoàn thành dự án.");
+		boundTip("hosothau_giathau","Nhập số tiền (VNĐ) bạn sẽ thầu dự án này, với giá thầu và thời gian hợp lý, bạn sẽ có nhiều cơ hội được chủ dự án lựa chọn");
+		boundTip("hosothau_email","Chủ dự án sẽ liên hệ với bạn qua email này nếu bạn thắng thầu.");
+		boundTip("hosothau_sodienthoai","Chủ dự án sẽ liên hệ với bạn qua số điện thoại này nếu bạn thắng thầu.");
 	});
 </script>

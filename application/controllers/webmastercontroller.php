@@ -42,9 +42,17 @@ class WebmasterController extends VanillaController {
 		$this->updateStatistics();
 		$this->_template->render();  	  
 	}
-	function active($account_id) {
-		if($account_id==null)
-			error("Lỗi! Đường link truy cập không hợp lệ");
+	function registcomplete() {	
+		$this->updateStatistics();
+		$this->_template->render();  	  
+	}
+	function active($account_id=null) {
+		if($account_id==null) {
+			if(!isset($_SESSION['account']))
+				error("Lỗi! Đường link truy cập không hợp lệ");
+			else
+				$account_id = $_SESSION['account']['id'];
+		}
 		$this->updateStatistics();
 		$url = BASE_PATH;
 		if(isset($_SESSION['redirect_url']))
@@ -88,9 +96,13 @@ class WebmasterController extends VanillaController {
 			if(isset($_SESSION['account'])) {
 				if($_SESSION['account']['id'] == $account_id)
 					$_SESSION['account']['active'] = 1;
+			} else {
+				$this->account->id = $account_id;
+				$account = $this->account->search();
+				$_SESSION['account'] = $account['account'];
 			}
 			if($isAjax) {
-				redirect(BASE_PATH.'/webmaster/activesuccess');
+				redirect(BASE_PATH.'/account/updateinfo');
 			} else
 				echo 'DONE';
 		} catch (Exception $e) {

@@ -6,13 +6,18 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Kích hoạt tài khoản</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Bước 2: Kích hoạt tài khoản</div>
 	<div style="width:100%">
 	<center>
 	<input type="hidden" name="account_id" id="account_id" value="<?php echo $account_id ?>"/>
 	<div class="divTable" style="width:100%">
 		<div class="tr" style="border:none;padding-top:5px">
 			<div class="td" id="msg"></div>
+		</div>
+		<div class="tr" style="border:none;text-align:left">
+			<div class="td">
+			Chúng tôi vừa gửi cho bạn 1 email xác nhận, vui lòng kiểm tra email <span style="color:red;font-weight: bold;"><?php echo $_SESSION["account"]['username'] ?></span> (có thể nằm trong thư rác) để xác nhận việc đăng ký của bạn.<br/>
+			</div>
 		</div>
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Nhập mã xác nhận :</div>
@@ -22,12 +27,7 @@
 		</div>
 		<div class="tr" style="border:none;text-align:left">
 			<div class="td">
-			( mã xác nhận là 1 chuỗi ký tự mà chúng tôi đã gửi đến hộp mail của bạn )
-			</div>
-		</div>
-		<div class="tr" style="border:none;text-align:left">
-			<div class="td">
-			<a class="link" href="javascript:doSendActiveCode();">Gửi lại mail kích hoạt?</a>
+			<a class="link" href="javascript:doSendActiveCode();">Gửi lại mã xác nhận?</a>
 			</div>
 		</div>
 	</div>
@@ -95,7 +95,7 @@
 				}
 				if(data == AJAX_DONE) {
 					//Dang ky thanh cong	
-					location.href = url("/webmaster/activesuccess");
+					location.href = url("/account/updateinfo");
 				} else {
 					message('Xác nhận tài khoản không thành công!',0);
 				}
