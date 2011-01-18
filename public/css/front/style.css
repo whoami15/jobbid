@@ -288,6 +288,12 @@ div.jHtmlArea { border: solid 1px #ccc; }
 	visibility: hidden;
 	position: absolute;
 }
+#dhtmlpointer2{
+	z-index: 101;
+	left: -300px;
+	visibility: hidden;
+	position: absolute;
+}
 .normalRow {
 	background: #F0F5F7;
 	padding: 2px 3px 3px 4px;

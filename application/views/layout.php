@@ -45,6 +45,7 @@
 <CENTER>
 <div id="dhtmltooltip"></div>
 <img alt="tooltiparrow" id="dhtmlpointer" src="<?php echo BASE_PATH ?>/public/images/icons/tooltiparrow.png" />
+<img alt="tooltiparrow" id="dhtmlpointer2" src="<?php echo BASE_PATH ?>/public/images/icons/tooltiparrow2.png" />
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tooltip.js"></script>
 <div id="wrapcontent">
 	<div style="position:relative;float:left;width:100%">

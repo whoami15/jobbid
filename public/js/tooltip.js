@@ -14,6 +14,7 @@ if (ie || ns6)
 	var tipobj = document.all ? document.all["dhtmltooltip"] : document.getElementById ? document.getElementById("dhtmltooltip") : "";
 
 var pointerobj = document.all ? document.all["dhtmlpointer"] : document.getElementById ? document.getElementById("dhtmlpointer") : "";
+var pointerobj2 = document.all ? document.all["dhtmlpointer"] : document.getElementById ? document.getElementById("dhtmlpointer2") : "";
 
 function ietruebody() {
 	return (document.compatMode && document.compatMode != "BackCompat") ? document.documentElement : document.body;
@@ -57,11 +58,13 @@ function positiontip(e) {
 		else {
 			tipobj.style.left = curX + offsetfromcursorX - offsetdivfrompointerX + "px";
 			pointerobj.style.left = curX + offsetfromcursorX + "px";
+			pointerobj2.style.left = curX + offsetfromcursorX + "px";
 		}
 
 		if (bottomedge < tipobj.offsetHeight) {
 			tipobj.style.top = curY - tipobj.offsetHeight - offsetfromcursorY + "px";
 			nondefaultpos = true;
+			pointerobj2.style.top = curY + offsetfromcursorY - 21 + "px";
 		}
 		else {
 			tipobj.style.top = curY + offsetfromcursorY + offsetdivfrompointerY + "px";
@@ -69,11 +72,13 @@ function positiontip(e) {
 		}
 
 		tipobj.style.visibility = "visible";
-
-		if (! nondefaultpos)
+		pointerobj.style.visibility = "hidden";
+		pointerobj2.style.visibility = "hidden";
+		if (!nondefaultpos) 
 			pointerobj.style.visibility = "visible";
 		else
-			pointerobj.style.visibility = "hidden";
+			pointerobj2.style.visibility = "visible";
+		
 	}
 }
 
@@ -82,6 +87,7 @@ function hidetip() {
 		enabletip = false;
 		tipobj.style.visibility = "hidden";
 		pointerobj.style.visibility = "hidden";
+		pointerobj2.style.visibility = "hidden";
 		tipobj.style.left = "-1000px";
 		tipobj.style.backgroundColor = '';
 		tipobj.style.width = '';
