@@ -71,6 +71,7 @@
 								<option value="mail_newbid">Gói thầu mới</option>
 								<option value="mail_win">Nhà thầu trúng thầu</option>
 								<option value="mail_lost">Nhà thầu trúng thầu hụt</option>
+								<option value="mail_moithau">Mời thầu</option>
 							</select>
 						</td>
 					</tr>

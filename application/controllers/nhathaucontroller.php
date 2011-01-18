@@ -484,16 +484,28 @@ class NhathauController extends VanillaController {
 			$employer_id = $_SESSION['account']['id'];
 			$account_id = mysql_real_escape_string($account_id);
 			$duan_id = mysql_real_escape_string($duan_id);
+			$this->nhathau->showHasOne(array('account'));
 			$this->nhathau->where(" and `status`=1 and account_id=$account_id");
-			$data = $this->nhathau->search('id');
+			$data = $this->nhathau->search('nhathau.id,username');
 			if(empty($data))
 				die('ERROR_SYSTEM');
+			$email = $data[0]['account']['username'];
 			$this->setModel('duan');
+			$this->duan->showHasOne(array('linhvuc'));
 			$this->duan->id = $duan_id;
 			$this->duan->where(" and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$employer_id");
-			$data = $this->duan->search('id');
+			$data = $this->duan->search('duan.id,tenduan,costmax,costmin,tenlinhvuc');
 			if(empty($data))
 				die('ERROR_SYSTEM');
+			$chiphi = formatMoney($data["duan"]["costmin"]).' đến '.formatMoney($data["duan"]["costmax"]);
+			$linkmoithau = BASE_PATH.'/moithau/viewMyLetters';
+			$linkmoithau = "<a href='$linkmoithau'>$linkmoithau</a>";
+			global $cache;
+			$content = $cache->get('mail_moithau');
+			$search  = array('#TENDUAN#', '#CHIPHI#', '#LINHVUC#', '#LINKMOITHAU#');
+			$replace = array($data['duan']['tenduan'], $chiphi, $data['linhvuc']['tenlinhvuc'], $linkmoithau);
+			$content = str_replace($search, $replace, $content);
+			
 			$this->setModel('moithau');
 			$this->moithau->where(" and duan_id=$duan_id and account_id=$account_id");
 			$data = $this->moithau->search('id');
@@ -505,6 +517,10 @@ class NhathauController extends VanillaController {
 			$this->moithau->time = GetDateSQL();
 			$this->moithau->hadread = 0;
 			$this->moithau->insert();
+			//Gui mail_moithau
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send($email,'Ban Duoc Moi Thau 1 Du An Tren JobBid.vn!!!',$content);
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

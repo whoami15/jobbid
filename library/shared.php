@@ -110,6 +110,22 @@ function  matchString($strResult,$strKey) {
     }
     return $strResult;
 }
+function formatMoney($str){
+	$rs="";
+	$dem=0;
+	for($i=strlen($str)-1;$i>=0;$i--)
+	{
+		$dem++;
+		if($dem==3 && $i>0)
+		{
+			$rs=".".$str[$i].$rs;
+			$dem=0;
+		}
+		else
+			$rs=$str[$i].$rs;
+	}
+	return $rs;
+}
 /** Main Call Function **/
 
 function callHook() {
