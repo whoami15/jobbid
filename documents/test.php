@@ -6,6 +6,13 @@
 	<input type="submit" name="Submit" value="OK"/>
 </form>
 <?php
+	class couple {
+		var $engineerA;
+		var $engineerB;
+		var $preferenceScore;
+		function couple() {
+		}
+	}
 	function readLine($fp, $line_num, $delimiter="\n")
 	{
 		/*** set the counter to one ***/
@@ -62,6 +69,8 @@
 		return -1;
 	}
 	function calculatePreferenceScore($Alist, $Blist) {
+		array_shift($Alist);
+		array_shift($Blist);
 		$totalScore = 0;
 		$nBaseValue = count($Alist);
 		$i = 0;
@@ -93,31 +102,36 @@
 		$matrixValue = array();
 		for($i=0;$i<$nEngineer;$i++) {
 			$arrValue = readValues(readLine($fp,1));
-			array_shift($arrValue);
 			array_push($matrixValue,$arrValue);
 		}
 		fclose($fp);
 		//End read file input
 		
-		//Begin create matrix preference score	
-		$matrixPreferenceScore = array();
+		//Begin create array couple preference score	
+		$arrCouple = array();
 		$nMean = $nEngineer/2; // nEngineer alway be even
 		for($i=0;$i<$nMean;$i++) {
-			$arrTotalScore = array();
 			for($j=$nMean;$j<$nEngineer;$j++) {
+				$couple = new couple();
+				$couple->engineerA = $matrixValue[$i][0];
+				$couple->engineerB = $matrixValue[$j][0];
 				$totalScore = calculatePreferenceScore($matrixValue[$i],$matrixValue[$j]);
-				array_push($arrTotalScore,$totalScore);
+				$couple->preferenceScore = $totalScore;
+				array_push($arrCouple,$couple);
 			}
-			array_push($matrixPreferenceScore,$arrTotalScore);
 		}
+		//Sort this array
+		//for($i=0;$i<
+		//End sort
 		//Print
-		for($i=0;$i<$nMean;$i++) {
+		print_r($arrCouple);
+		/* for($i=0;$i<$nMean;$i++) {
 			for($j=0;$j<$nMean;$j++) {
 				echo $matrixPreferenceScore[$i][$j];echo '	';
 			}
 			echo '<br>';
-		}
-		//End create matrix preference score	
+		} */
+		//End create array couple preference score	
 	}
 ?>
 </body>
