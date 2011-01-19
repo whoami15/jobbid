@@ -1,3 +1,8 @@
-Them 2 field duan_email va duan_sodienthoai vao bang duans
-Them 2 field hosothau_email,hosothau_sodienthoai vao bang hosothaus
-Them bang moithaus	
+1. Tao friendly link cho thong tin nha thau
+2. Tao link lien ket cho viewMyLetter (cai cu la su dung javascript)
+3. Tao cac du an lien quan trong phan xem du an
+4. Cai tien chuong trinh : cho nhap thong tin roi moi bat dau dang ky (neu chua co account)
+	+ chu du an : chi dang ky tai khoan 
+	+ nha thau : dang ky tai khoan + thanh vien
+5. Tao meta tag theo tung du an
+6. Viet ct moi : mail gioi thieu
