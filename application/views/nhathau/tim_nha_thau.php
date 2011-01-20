@@ -66,13 +66,12 @@
 				foreach($lstNhathau as $nhathau) {
 					$i++;
 					if($i%2==0)
-						echo "<tr class='alternateRow'";
+						echo "<tr class='alternateRow'>";
 					else 
-						echo "<tr class='normalRow'";
-					echo ' style="cursor:pointer" onclick="location.href=\''.BASE_PATH.'/nhathau/xem_ho_so/'.$nhathau["nhathau"]["id"].'\'">';
+						echo "<tr class='normalRow'>";
 					?>
 						<td align="center"><?php echo $i ?></td>
-						<td align="left"><a class='link' href='#'><?php echo $nhathau["nhathau"]["displayname"]?></a></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $nhathau["nhathau"]["id"] ?>'><?php echo $nhathau["nhathau"]["displayname"]?></a></td>
 						<td align="left" style="width:100px">
 							<div style="float: left;" id="ctl00_SampleContent_ThaiRating">
 								<a style="text-decoration: none;" title="2" id="ctl00_SampleContent_ThaiRating_A" href="javascript:void(0)">

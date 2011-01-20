@@ -1,6 +1,6 @@
 <div id="content" style="width:100%;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px;text-align:center" id="content_title">How it works!</div>
-	<div style="padding:20px">
+	<div style="padding:20px;padding-bottom:5px">
 	<img alt="project" style="cursor:pointer" id="help_project" src="<?php echo BASE_PATH ?>/public/images/icons/project.png"/>
 	<img alt="project" src="<?php echo BASE_PATH ?>/public/images/icons/arrow.png"/>
 	<img alt="project" style="cursor:pointer" id="help_bid" src="<?php echo BASE_PATH ?>/public/images/icons/bid.png"/>
@@ -16,8 +16,8 @@
 		<li><span style="color:red">Hoàn toàn miễn phí.</span></li>
 	</ul>
 	</div>
-	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px">Các dự án mới nhất</div>
-	<div id="datagrid" style="padding-top:10px;padding-bottom:10px;">
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px">các dự án vừa kết thúc</div>
+	<div id="datagrid2" style="padding-bottom:10px;">
 		<table width="100%">
 			<thead>
 				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
@@ -25,7 +25,44 @@
 					<td style="width:100px">Giá thầu TB</td>
 					<td>Bid</td>
 					<td>Lĩnh vực</td>
-					<td style="width:100px">Ngày bắt đầu</td>
+					<td style="width:200px">Trúng thầu</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				$i=0;
+				foreach($lstData2 as $duan) {
+					$i++;
+					if($i%2==0)
+						echo "<tr class='alternateRow' >";
+					else 
+						echo "<tr class='normalRow'>";
+					?>
+						<td style="display:none"><?php echo $duan["duan"]["id"]?></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
+						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
+						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
+						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
+						<td align="left">
+						<a class='link' title="<?php echo $duan["nhathau"]["displayname"]?>" href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $duan["duan"]["nhathau_id"] ?>'><?php echo $html->trimString($duan["nhathau"]["displayname"])?></a>
+						</td>
+					</tr>
+					<?php
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px">Các dự án mới nhất</div>
+	<div id="datagrid1" style="padding-bottom:10px;">
+		<table width="100%">
+			<thead>
+				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
+					<td>Tên dự án</td>
+					<td style="width:100px">Giá thầu TB</td>
+					<td>Bid</td>
+					<td>Lĩnh vực</td>
+					<td style="width:50px">Xem</td>
 					<td style="width:100px">Còn</td>
 				</tr>
 			</thead>
@@ -42,9 +79,9 @@
 						<td style="display:none"><?php echo $duan["duan"]["id"]?></td>
 						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
-						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
+						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
-						<td align="center"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y')?></td>
+						<td align="center"><?php  echo $duan["duan"]["views"] ?></td>
 						<td align="center"><?php echo $html->getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>
 					</tr>
 					<?php

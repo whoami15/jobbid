@@ -107,6 +107,14 @@
 					</td>
 				</tr>
 				<?php
+				} else {
+				?>
+				<tr style="height:30px">
+					<td align="left" colspan="2">
+					<b>Nếu bạn muốn tham gia đấu thầu công việc này, xin vui lòng nhấn vào nút <font color="red">"Gửi Hồ Sơ Thầu"</font>.</b>
+					</td>
+				</tr>
+				<?php
 				}
 				if(isset($dataDuan["nhathau"]["id"])) {
 				?>
@@ -287,6 +295,8 @@
 		thoigian = $(cells.td_thoigian).text();
 		timeofbid = $(cells.td_timeofbid).text();
 		var str = '&nbsp;<b>MileStone :</b> '+milestone+'<br/>&nbsp;<b>Thời gian :</b> '+thoigian+'<br/>&nbsp;<b>Đã gửi :</b> '+timeofbid+'<br/>';
+		xTip = $("#"+_this.id).offset().left+$("#"+_this.id).width();
+		yTip = $("#"+_this.id).offset().top;
 		showtip(str,300);
 		
 	}

@@ -267,15 +267,20 @@ class NhathauController extends VanillaController {
 				$this->account->update();
 				$_SESSION["account"]["sodienthoai"] = $sodienthoai;
 			}
+			$this->setModel("nhathaulinhvuc");
 			if(isset($_POST["nhathau_linhvuc"])) {
 				$lstLinhvuc = $_POST["nhathau_linhvuc"];
-				$this->setModel("nhathaulinhvuc");
 				foreach($lstLinhvuc as $linhvuc_id) {
 					$this->nhathaulinhvuc->id=null;
 					$this->nhathaulinhvuc->nhathau_id=$nhathau_id;
 					$this->nhathaulinhvuc->linhvuc_id=$linhvuc_id;
 					$this->nhathaulinhvuc->save();
 				}
+			} else {
+				$this->nhathaulinhvuc->id=null;
+				$this->nhathaulinhvuc->nhathau_id=$nhathau_id;
+				$this->nhathaulinhvuc->linhvuc_id= 'khac';
+				$this->nhathaulinhvuc->save();
 			}
 			$this->setModel("nhathau");
 			$this->nhathau->id = $nhathau_id;
@@ -411,6 +416,11 @@ class NhathauController extends VanillaController {
 					$this->nhathaulinhvuc->linhvuc_id=$linhvuc_id;
 					$this->nhathaulinhvuc->save();
 				}
+			} else {
+				$this->nhathaulinhvuc->id=null;
+				$this->nhathaulinhvuc->nhathau_id=$id;
+				$this->nhathaulinhvuc->linhvuc_id= 'khac';
+				$this->nhathaulinhvuc->save();
 			}
 			$this->setModel("nhathau");
 			$this->nhathau->id = $id;
