@@ -1,10 +1,77 @@
-<html>
-<body>
 <?php
+	/* ***Begin process*** */
+	$inputfile = $argv[1];
+	$outputfile = $argv[2];
+	//Begin read file input
+	$fp = fopen($inputfile, 'r');
+	$arrValue = readValues(readLine($fp, 1));
+	$nEngineer = $arrValue[0];
+	$nDrink = $arrValue[1];
+	for($i=1;$i<=$nDrink;$i++)
+		readValues(readLine($fp, 1));
+	$matrixValue = array();
+	for($i=0;$i<$nEngineer;$i++) {
+		$arrValue = readValues(readLine($fp,1));
+		array_push($matrixValue,$arrValue);
+	}
+	fclose($fp);
+	//Begin create array couple preference score	
+	$arrCouple = array();
+	$nMean = $nEngineer/2; // nEngineer alway be even
+	for($i=0;$i<$nMean;$i++) {
+		for($j=$nMean;$j<$nEngineer;$j++) {
+			$couple = new couple();
+			$couple->engineerA = $matrixValue[$i][0];
+			$couple->engineerB = $matrixValue[$j][0];
+			$totalScoreAB = calculatePreferenceScore($matrixValue[$i],$matrixValue[$j]);
+			$totalScoreBA = calculatePreferenceScore($matrixValue[$j],$matrixValue[$i]);
+			$couple->preferenceScoreAB = $totalScoreAB;
+			$couple->preferenceScoreBA = $totalScoreBA;
+			array_push($arrCouple,$couple);
+		}
+	}
+	//Sort this array
+	$arrCouple = insertionSort($arrCouple);
+	/* $str = '';
+	for($i=0;$i<count($arrCouple);$i++)
+		$str .= '['.$arrCouple[$i]->engineerA.','.$arrCouple[$i]->engineerB.'] = '.$arrCouple[$i]->preferenceScore."\n";
+	echo $str; */ 
+	//Push in arrCoupleOutput the couples have hight preferenceScore
+	$arrCoupleOutput = array();
+	$arrTmp = array(); //contain engineers's id in arrCoupleOutput
+	$i = 1;
+	while($i<=$nMean) {
+		$couple = array_shift($arrCouple);
+		if(in_array($couple->engineerA,$arrTmp) == false && in_array($couple->engineerB,$arrTmp)==false) {
+			$arrCoupleOutput[$couple->engineerA] = $couple;
+			array_push($arrTmp,$couple->engineerA);
+			array_push($arrTmp,$couple->engineerB);
+			$i++;
+		}
+	}
+	//Print result
+	$i = 0;
+	$strResult = '';
+	while(isset($arrCoupleOutput[$i])) {
+		$couple = $arrCoupleOutput[$i];
+		$strResult.=$couple->engineerA.' '.$couple->engineerB."\n";
+		$i++;
+		/* if(isset($arrCoupleOutput[$i]))
+			$strResult.="\n"; */
+	}
+	if(isset($outputfile)) {
+		//Write file
+		$fh = fopen($outputfile, 'w');
+		fwrite($fh, $strResult);
+		fclose($fh);
+	} else
+		echo $strResult;
+	//***End process***
 	class couple {
 		var $engineerA;
 		var $engineerB;
-		var $preferenceScore;
+		var $preferenceScoreAB;
+		var $preferenceScoreBA;
 		function couple() {
 		}
 	}
@@ -88,76 +155,20 @@
 		for($i=0; $i < $N; $i++){ 
 			$ai = $arr[$i];
 			$j = $i-1;
-			while( $arr[$j]->preferenceScore < $ai->preferenceScore && $j>=0) { 
-				$arr[$j+1] = $arr[$j];
+			while(true) { 
+				$aj = $arr[$j];
+				if($aj->preferenceScoreAB > $ai->preferenceScoreAB || $j<0) {
+					break;
+				}
+				if($aj->preferenceScoreAB == $ai->preferenceScoreAB) {
+					if($aj->preferenceScoreBA<$ai->preferenceScoreBA)
+						break;
+				}
+				$arr[$j+1] = $aj;
 				$j--;
 			}
 			$arr[$j+1] = $ai;
 		}
 		return $arr;
 	}
-	//End Insertion Sort
-	if (isset($_POST['Submit'])) {
-		$fName=$_FILES['input']['name'];
-		$fSize= $_FILES['input']['size'];
-		//Begin read file input
-		$fp = fopen($_FILES['input']['tmp_name'], 'r');
-		$arrValue = readValues(readLine($fp, 1));
-		$nEngineer = $arrValue[0];
-		$nDrink = $arrValue[1];
-		for($i=1;$i<=$nDrink;$i++)
-			readValues(readLine($fp, 1));
-		$matrixValue = array();
-		for($i=0;$i<$nEngineer;$i++) {
-			$arrValue = readValues(readLine($fp,1));
-			array_push($matrixValue,$arrValue);
-		}
-		fclose($fp);
-		//End read file input
-		//Begin create array couple preference score	
-		$arrCouple = array();
-		$nMean = $nEngineer/2; // nEngineer alway be even
-		for($i=0;$i<$nMean;$i++) {
-			for($j=$nMean;$j<$nEngineer;$j++) {
-				$couple = new couple();
-				$couple->engineerA = $matrixValue[$i][0];
-				$couple->engineerB = $matrixValue[$j][0];
-				$totalScore = calculatePreferenceScore($matrixValue[$i],$matrixValue[$j]);
-				$couple->preferenceScore = $totalScore;
-				array_push($arrCouple,$couple);
-			}
-		}
-		//Sort this array
-		$arrCouple = insertionSort($arrCouple);
-		//Push in arrCoupleOutput the couples have hight preferenceScore
-		$arrCoupleOutput = array();
-		$arrTmp = array(); //contain engineers's id in arrCoupleOutput
-		$i = 1;
-		while($i<=$nMean) {
-			$couple = array_shift($arrCouple);
-			if(in_array($couple->engineerA,$arrTmp) == false && in_array($couple->engineerB,$arrTmp)==false) {
-				$arrCoupleOutput[$couple->engineerA] = $couple;
-				array_push($arrTmp,$couple->engineerA);
-				array_push($arrTmp,$couple->engineerB);
-				$i++;
-			}
-		}
-		//Print result
-		$i = 0;
-		while(isset($arrCoupleOutput[$i])) {
-			$couple = $arrCoupleOutput[$i];
-			echo $couple->engineerA.' '.$couple->engineerB.'<br>';
-			$i++;
-		}
-	} else {
-	?>
-	<form name="themsanpham" ENCTYPE="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-		Input File: <input type="file" name="input" />
-		<br/>
-		<input type="submit" name="Submit" value="OK"/>
-	</form>
-	<?php
-	}
 ?>
-</body>
-</html>
