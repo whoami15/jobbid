@@ -1,8 +1,10 @@
 1. Tao friendly link cho thong tin nha thau
-2. Tao link lien ket cho viewMyLetter (cai cu la su dung javascript)
+2. Hien thi noi bat du an VIP, NEW
+2. Danh sach ho so thau nen link den du an ( cu la link den thong tin goi thau)
 3. Tao cac du an lien quan trong phan xem du an
 4. Cai tien chuong trinh : cho nhap thong tin roi moi bat dau dang ky (neu chua co account)
 	+ chu du an : chi dang ky tai khoan 
 	+ nha thau : dang ky tai khoan + thanh vien
 5. Tao meta tag theo tung du an
 6. Viet ct moi : mail gioi thieu
+7. Lam moi du an (refesh news)

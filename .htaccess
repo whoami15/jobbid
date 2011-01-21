@@ -1,5 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
+	RewriteCond %{HTTP_HOST} ^jobbid\.vn$ [NC]
+	RewriteRule ^(.*)$ http://www.jobbid.vn/$1 [R=301,L] 
     RewriteRule (^robots.txt$) robots.txt [L]
     RewriteRule    ^$    public/    [L]
     RewriteRule    (.*) public/$1    [L]
