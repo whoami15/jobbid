@@ -8,3 +8,8 @@
 5. Tao meta tag theo tung du an
 6. Viet ct moi : mail gioi thieu
 7. Lam moi du an (refesh news)
+
+
+The title tag is too long. It should be 70 characters or less, including spaces.
+The meta description is too long. It should have no more than 250 characters, including spaces.
+The home page for this website should have an H1 heading.
