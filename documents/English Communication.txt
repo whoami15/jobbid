@@ -6,13 +6,13 @@ Nhóm này có thể đi với N mà có thể có OF hoặc không có OF
 Công thức như sau:
 CÓ OF CÓ THE KHÔNG OF KHÔNG THE
 
-
+First,I'm sorry about my poor English.
 
 How do you do? / How are you doing?/ # Hello
 What do you do? (ban lam nghe ji)
 What line of work are you in? (ban lam trong nganh ji)
 Where do you work? 
-I work as a programmer.
+I work as a programmer(developer).
 I've just started at a software company.
 How do you feel about...?
 How long have you been ...? (married, in Vietnam...)
@@ -20,12 +20,13 @@ a you a student?what do you study?
 what do you want to do when you've finished?
 do you know each other? (chung ta co biet nhau truoc day ko nhi)
 what bring you to Vietnam?/Why did you come to..?
-I see your recruitment information on the Internet
-i've just graduated in Software Technology at University Of Science
+I see your info recruitment on the Internet
+i've just graduated in Software Technology at University Of Natural Sciences
 That decides me! (nhat dinh roi!)
 I decide to ...
 I decide against to... (quyet dinh ko lam ji)
 not conformable to ... (ko phu hop voi)
+suitable for...
 I can't reveal(ri`vi:l). (toi ko the tiet lo)
 
 I want to try in a new environment and extend(expand) my relationship
@@ -33,7 +34,7 @@ I want to face up to new challenges and expand...
 
 I worked at LV in java developer position for about 1 year.
 I'm very responsible for my task, regardless sometime this make some difficulty(trouble) for me.
-Because of carefulness, I work slow a bit.I realized this problem, so i work hard for finishing my work ahead of schedule.
+Because of carefulness, I work slow a bit.I realized this weakness, so i work hard for finishing my work ahead of schedule.
 
 My short term goal is to learn everything that i can from everybody, improve my english skill and work laboriously to get the successes with the company that i work for.
 
