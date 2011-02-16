@@ -44,7 +44,7 @@
 						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
 						<td align="left">
-						<a class='link' title="<?php echo $duan["nhathau"]["displayname"]?>" href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $duan["duan"]["nhathau_id"] ?>'><?php echo $html->trimString($duan["nhathau"]["displayname"])?></a>
+						<a class='link' title="<?php echo $duan["nhathau"]["displayname"]?>" href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $duan["duan"]["nhathau_id"].'/'.$duan["nhathau"]['nhathau_alias'] ?>'><?php echo $html->trimString($duan["nhathau"]["displayname"])?></a>
 						</td>
 					</tr>
 					<?php

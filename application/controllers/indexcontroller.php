@@ -52,7 +52,7 @@ class IndexController extends VanillaController {
 		$this->duan->setPage(1);
 		$this->duan->setLimit(5);
 		$this->duan->where(" and duan.active = 1 and duan.nhathau_id is not null");
-		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias");
 		$this->set("lstData2",$data);
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();

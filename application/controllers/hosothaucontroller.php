@@ -273,12 +273,12 @@ class HosothauController extends VanillaController {
 		$duan_id = $_GET["duan_id"];
 		if($duan_id!=null) {
 			$duan_id = mysql_real_escape_string($duan_id);
-			$this->hosothau->showHasOne(array("nhathau"));
+			$this->hosothau->showHasOne(array('nhathau'));
 			$this->hosothau->where("and nhathau.status>=0 and trangthai>=1 and duan_id=$duan_id");
 			$this->hosothau->orderBy('hosothau.id','desc');
 			$this->hosothau->setPage($ipageindex);
 			$this->hosothau->setLimit(PAGINATE_LIMIT);
-			$lstHosthau = $this->hosothau->search("hosothau.id,giathau,milestone,UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(ngaygui) as timeofbid,thoigian,nhathau.id,displayname,trangthai,diemdanhgia,content");
+			$lstHosthau = $this->hosothau->search('hosothau.id,giathau,milestone,UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(ngaygui) as timeofbid,thoigian,nhathau.id,displayname,trangthai,diemdanhgia,content,nhathau.id,nhathau_alias');
 			$totalPages = $this->hosothau->totalPages();
 			$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 			if ($ipagesbefore < 1)
@@ -287,7 +287,7 @@ class HosothauController extends VanillaController {
 			if ($ipagesnext > $totalPages)
 				$ipagesnext = $totalPages;
 			//print_r($lstDuan);die();
-			$this->set("lstHosthau",$lstHosthau);
+			$this->set('lstHosthau',$lstHosthau);
 			$this->set('pagesindex',$ipageindex);
 			$this->set('pagesbefore',$ipagesbefore);
 			$this->set('pagesnext',$ipagesnext);
@@ -368,7 +368,7 @@ class HosothauController extends VanillaController {
 			$this->hosothau->showHasOne(array('nhathau'));
 			$this->hosothau->id = $hosothau_id;
 			$this->hosothau->where(" and trangthai>=1");
-			$data = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,hosothau_email,content,hosothau_sodienthoai,ngaygui,nhathau.id,nhathau.displayname');
+			$data = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,hosothau_email,content,hosothau_sodienthoai,ngaygui,nhathau.id,nhathau.displayname,nhathau_alias');
 			if(empty($data))
 				error("Server đang quá tải, vui lòng thử lại sau!");
 			if($account_id != $employerId && $nhathau_id != $data['nhathau']['id'])

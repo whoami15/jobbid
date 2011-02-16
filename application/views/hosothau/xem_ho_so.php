@@ -15,7 +15,7 @@
 		<tbody>
 			<tr style="height:30px">
 				<td align="left" >
-				<b>Nhà thầu :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $data['nhathau']["id"] ?>"><?php echo $data['nhathau']["displayname"] ?></a>
+				<b>Nhà thầu :</b> <a class="link" target="_blank" href="<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $data['nhathau']["id"].'/'.$data["nhathau"]['nhathau_alias'] ?>"><?php echo $data['nhathau']["displayname"] ?></a>
 				</td>
 			</tr>
 			<tr style="height:30px">

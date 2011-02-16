@@ -40,7 +40,7 @@
 				echo "<tr class='normalRow'>";
 			?>
 				<td rowspan="2"><?php echo $i ?></td>
-				<td align="center"><a id="hosothau_<?php echo $hosothau["hosothau"]["id"] ?>" class='link' onmouseover='showinfo(this)' onmouseout="hidetip()" href='<?php echo BASE_PATH."/hosothau/xem_ho_so/".$hosothau["hosothau"]["id"]."/".$duan_id ?>'><?php echo $hosothau["nhathau"]["displayname"]?></a></td>
+				<td align="center"><a id="hosothau_<?php echo $hosothau["hosothau"]["id"] ?>" class='link' onmouseover='showinfo(this)' onmouseout="hidetip()" href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $hosothau["nhathau"]["id"].'/'.$hosothau["nhathau"]['nhathau_alias'] ?>'><?php echo $hosothau["nhathau"]["displayname"]?></a></td>
 				<td align="center"><?php echo $html->FormatMoney($hosothau["hosothau"]["giathau"])?> VNĐ</td>
 				<td id="td_milestone" style="display:none"><?php echo $hosothau["hosothau"]["milestone"]?> %</td>
 				<td id="td_thoigian"  style="display:none"><?php echo $hosothau["hosothau"]["thoigian"]?> ngày</td>
@@ -65,7 +65,7 @@
 				echo "<tr class='normalRow'>";
 			?>
 				<td colspan="3" align="left">
-					<span style="padding-left:5px"><?php echo $hosothau["hosothau"]["content"] ?></span>
+					<span style="padding-left:5px"><?php echo $hosothau["hosothau"]["content"] ?></span><a class="link" href="<?php echo BASE_PATH."/hosothau/xem_ho_so/".$hosothau["hosothau"]["id"]."/".$duan_id ?>">(Xem chi tiết)</a>
 				</td>
 				</tr>
 			<?php
