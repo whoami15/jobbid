@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tiny_mce/jquery.tinymce.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 <style type="text/css"> 	
 	.input {
 		width:86%;
@@ -43,6 +44,7 @@
 		</div>
 		<form id="formNhathau">
 		<input type="hidden" name="nhathau_id" id="nhathau_id" value=""/>
+		<input type="hidden" name="nhathau_alias" id="nhathau_alias" value=""/>
 		<fieldset>
 			<legend><span style="font-weight:bold;">Thông Tin Nhà Thầu</span></legend>
 			<table class="center" width="100%">
@@ -216,6 +218,7 @@
 		validate(['number'],'nhathau_diemdanhgia',["Vui lòng nhập kiểu số!"]);
 		if(checkValidate == false)
 			return;
+		byId("nhathau_alias").value = remove_space(remove_accents(byId("nhathau_displayname").value));
 		dataString = $("#formNhathau").serialize();
 		byId("msg").innerHTML="";
 		if(isUpdate==true) {

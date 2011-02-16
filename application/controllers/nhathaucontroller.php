@@ -49,6 +49,7 @@ class NhathauController extends VanillaController {
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
 			$diemdanhgia = $_POST["nhathau_diemdanhgia"];
 			$displayname = $_POST["nhathau_displayname"];
+			$nhathau_alias = $_POST["nhathau_alias"];
 			if($id==null) { //insert
 				die("ERROR_SYSTEM");						
 			} 
@@ -59,6 +60,7 @@ class NhathauController extends VanillaController {
 			$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
 			$this->nhathau->diemdanhgia = $diemdanhgia;
 			$this->nhathau->displayname = $displayname;
+			$this->nhathau->nhathau_alias = $nhathau_alias;
 			$this->nhathau->status = 1;
 			$this->nhathau->update();
 			echo "DONE";
