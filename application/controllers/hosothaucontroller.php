@@ -175,6 +175,7 @@ class HosothauController extends VanillaController {
 				$this->set("dataDuan",$data);
 				$this->set("username",$_SESSION['account']['username']);
 				$this->set("sodienthoai",$_SESSION['account']['sodienthoai']);
+				$this->set('title','Jobbid.vn - Gửi hồ sơ thầu');
 				$this->_template->render();
 			}
 		}
@@ -319,6 +320,7 @@ class HosothauController extends VanillaController {
 		$this->set('pagesbefore',$ipagesbefore);
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
+		$this->set('title','Jobbid.vn - Danh Sách Hồ Sơ Thầu Đã Gửi');
 		$this->_template->render();
 	}
 	function lstHosothauByNhathau($ipageindex) {
@@ -380,6 +382,7 @@ class HosothauController extends VanillaController {
 			$this->set('flag',$flag);
 			$this->set('data',$data);
 			$this->set('duan_id',$duan_id);
+			$this->set('title','Thông tin hồ sơ thầu - Nhà thầu : '.$data['nhathau']["displayname"]);
 			$this->_template->render();	
 		}
 	}

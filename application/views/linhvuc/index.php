@@ -98,7 +98,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
-		document.title = "<?php echo $dataLinhvuc["linhvuc"]["tenlinhvuc"] ?> - "+document.title;
+		//document.title = "<?php echo $dataLinhvuc["linhvuc"]["tenlinhvuc"] ?> - "+document.title;
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tim-du-an';
 		$("#menu "+menuid).addClass("current");

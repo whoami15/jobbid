@@ -253,6 +253,7 @@ class DuanController extends VanillaController {
 		$this->setModel('tinh');
 		$data = $this->tinh->search();
 		$this->set('lstTinh',$data);
+		$this->set('title','Jobbid.vn - Tạo Dự Án');
 		$this->_template->render();	
 	}
 	function doAdd() {
@@ -394,6 +395,8 @@ class DuanController extends VanillaController {
 		$this->duanskill->where(' and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now()');
 		$data = $this->duanskill->search('linhvuc.id,tenlinhvuc,skill.id,skillname,count(*) as soduan');
 		$this->set('lstData2',$data);
+		$keyword = isset($_POST['keyword'])?' - Từ khóa : '.$_POST['keyword']:'';
+		$this->set('title',"Tìm Dự Án$keyword");
 		$this->_template->render();
 	}
 	function view($id=null) {
@@ -413,12 +416,28 @@ class DuanController extends VanillaController {
 					$data['']['lefttime'] = -1;
 				} else 
 					$this->set('status','Đang mở');
+				$this->set('title','Jobbid.vn - '.$data['duan']['tenduan']);
 				$this->set('dataDuan',$data);
 				$this->setModel('duanskill');
 				$this->duanskill->showHasOne(array('skill'));
 				$this->duanskill->where(" and duan_id=$id ");
-				$data = $this->duanskill->search('skillname');
+				$data = $this->duanskill->search('skillname,skill_id');
 				$this->set('lstSkill',$data);
+				$strWhere = '';
+				foreach($data as $skill) {
+					$strWhere.=' skill_id='.$skill['duanskill']['skill_id'].' or';
+				}
+				if(isset($strWhere[2])) {
+					$strWhere = substr($strWhere,0,-2);
+					$this->duanskill->showHasOne(array('duan'));
+					$this->duanskill->orderBy('n','desc');
+					$this->duanskill->groupBy('duan_id');
+					$this->duanskill->setPage(1);
+					$this->duanskill->setLimit(5);
+					$this->duanskill->where(" and ($strWhere) and duan_id<>$id ");
+					$data = $this->duanskill->search('duan.id,alias,tenduan,count(*) n');
+					$this->set('relatedProjects',$data);
+				}
 				$this->_template->render();
 			}
 		}
@@ -469,6 +488,7 @@ class DuanController extends VanillaController {
 		$this->set('pagesbefore',$ipagesbefore);
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
+		$this->set('title','Jobbid.vn - Danh Sách Dự Án Bạn Quan Tâm');
 		$this->_template->render();
 	}
 	function lstDuanMark($ipageindex) {
@@ -534,6 +554,7 @@ class DuanController extends VanillaController {
 		$this->set('pagesbefore',$ipagesbefore);
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
+		$this->set('title','Jobbid.vn - Danh Sách Dự Án Của Bạn');
 		$this->_template->render();
 	}
 	function lstMyProjects($ipageindex) {
@@ -600,7 +621,7 @@ class DuanController extends VanillaController {
 			$this->setModel('tinh');
 			$data = $this->tinh->search();
 			$this->set('lstTinh',$data);
-			
+			$this->set('title','Jobbid.vn - Chỉnh Sửa Dự Án');
 			$this->_template->render();	
 		}
 	}

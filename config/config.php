@@ -19,7 +19,7 @@ define('MAX_SENDRESETPASS',3);
 define('MAX_TIMESRESETPASS',3);
 define('MAX_SKILL',10);
 
-define('PAGINATE_LIMIT', 12);
+define('PAGINATE_LIMIT', 6);
 define('INT_PAGE_SUPPORT', 4);
 define('YAHOO1', 'nclong87');
 define('YAHOO2', 'nclong87');

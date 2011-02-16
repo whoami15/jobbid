@@ -214,7 +214,7 @@
 		});
 	}
 	$(document).ready(function() {
-		document.title = "Thông tin nhà thầu : <?php echo $nhathau["displayname"] ?>";
+		//document.title = "Thông tin nhà thầu : <?php echo $nhathau["displayname"] ?>";
 		changeType(<?php echo $nhathau["type"] ?>);
 		$("input:submit, input:button", "body").button();
 		$("#dialogVerify").dialog({

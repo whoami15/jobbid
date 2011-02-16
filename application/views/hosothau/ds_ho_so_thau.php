@@ -46,7 +46,7 @@
 					else 
 						echo "<tr class='normalRow'>";
 					?>
-						<td align="left"><a class='link' href='<?php echo BASE_PATH."/hosothau/xem_ho_so/".$hosothau["hosothau"]["id"]."/".$hosothau["duan"]["id"] ?>'><?php echo $hosothau["duan"]["tenduan"]?></a></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$hosothau["duan"]["id"]."/".$hosothau["duan"]["alias"] ?>'><?php echo $hosothau["duan"]["tenduan"]?></a></td>
 						<td align="center" ><?php echo $trangthaiduan ?></td>
 						<td align="center" ><?php echo $html->FormatMoney($hosothau["hosothau"]["giathau"])?> VNĐ</td>
 						<td align="center" ><?php echo $html->format_date($hosothau["hosothau"]["ngaygui"],'d/m/Y H:i:s')?></td>
@@ -102,7 +102,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
-		document.title = "Danh Sách Hồ Sơ Thầu Đã Gửi - "+document.title;
+		//document.title = "Danh Sách Hồ Sơ Thầu Đã Gửi - "+document.title;
 		$("#ds_ho_so_thau").css('color','#F68618');
 		$("input:submit, input:button", "body").button();
 		$("#tfoot_paging").html($("#thead_paging").html());

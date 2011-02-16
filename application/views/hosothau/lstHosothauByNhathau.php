@@ -43,7 +43,7 @@
 					else 
 						echo "<tr class='normalRow'>";
 					?>
-						<td id="td_tenduan" align="left"><a class='link' href='<?php echo BASE_PATH."/hosothau/xem_ho_so/".$hosothau["hosothau"]["id"]."/".$hosothau["duan"]["id"] ?>'><?php echo $hosothau["duan"]["tenduan"]?></a></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$hosothau["duan"]["id"]."/".$hosothau["duan"]["alias"] ?>'><?php echo $hosothau["duan"]["tenduan"]?></a></td>
 						<td align="center" ><?php echo $trangthaiduan ?></td>
 						<td align="center" ><?php echo $html->FormatMoney($hosothau["hosothau"]["giathau"])?> VNĐ</td>
 						<td align="center" ><?php echo $html->format_date($hosothau["hosothau"]["ngaygui"],'d/m/Y H:i:s')?></td>

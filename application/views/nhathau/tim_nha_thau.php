@@ -29,15 +29,18 @@
 		<tbody>
 	</table>
 	</div>
+	<?php
+	$linktmp = BASE_PATH.'/nhathau/tim_nha_thau';
+	?>
 	<div id="datagrid" style="padding-top:5px;padding-bottom:10px;">
 		<table width="100%">
 			<thead>
 				<tr id="thead_paging">
 					<td colspan="11" align="center" style="color:black">
-						<a class="link" style="padding-right:5px" href='#' onclick="selectpage(1)">Begin</a>
+						<a class="link" style="padding-right:5px" href='<?php echo $linktmp ?>'>Begin</a>
 						<?php 
 						while($pagesbefore<$pagesindex) {
-							echo "<a class='link' href='#' onclick='selectpage($pagesbefore)'>$pagesbefore</a>";
+							echo "<a class='link' href='$linktmp/$pagesbefore'>$pagesbefore</a>";
 							$pagesbefore++;
 						}
 						?>
@@ -45,10 +48,10 @@
 						<?php 
 						while($pagesnext>$pagesindex) {
 							$pagesindex++;
-							echo "<a class='link' href='#' onclick='selectpage($pagesindex)'>$pagesindex</a>";
+							echo "<a class='link' href='$linktmp/$pagesindex'>$pagesindex</a>";
 						}
 						?>
-						<a class="link" style="padding-left:5px" href='#' onclick="selectpage(<?php echo $pageend ?>)">...<?php echo $pageend ?></a>			
+						<a class="link" style="padding-right:5px" href='<?php echo $linktmp.'/'.$pageend ?>'>...<?php echo $pageend ?></a>			
 					</td>
 				</tr>
 				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
@@ -71,7 +74,7 @@
 						echo "<tr class='normalRow'>";
 					?>
 						<td align="center"><?php echo $i ?></td>
-						<td align="left"><a class='link' href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $nhathau["nhathau"]["id"] ?>'><?php echo $nhathau["nhathau"]["displayname"]?></a></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $nhathau["nhathau"]["id"].'/'.$nhathau["nhathau"]['nhathau_alias'] ?>'><?php echo $nhathau["nhathau"]["displayname"]?></a></td>
 						<td align="left" style="width:100px">
 							<div style="float: left;" id="ctl00_SampleContent_ThaiRating">
 								<a style="text-decoration: none;" title="2" id="ctl00_SampleContent_ThaiRating_A" href="javascript:void(0)">
@@ -129,7 +132,7 @@
 	
 	$(document).ready(function() {
 		// pass options to ajaxForm 
-		document.title = "Tìm Kiếm Nhà Thầu - www.jobbid.vn";
+		//document.title = "Tìm Kiếm Nhà Thầu - www.jobbid.vn";
 		menuid = '#tim-nha-thau';
 		byId("linhvuc_id").value="";
 		$("#menu "+menuid).addClass("current");

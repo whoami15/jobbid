@@ -275,7 +275,7 @@
 		location.href = url('/duan/view/'+byId("duan_id").value+'/'+byId("duan_alias").value);
 	}
 	$(document).ready(function() {
-		document.title = "Chỉnh Sửa Dự Án - "+document.title;
+		//document.title = "Chỉnh Sửa Dự Án - "+document.title;
 		for(i=0;arrCostType[i]!=null;i++) {
 			$('#duan_cost').append("<option value="+arrCostType[i].id+" >"+arrCostType[i].costtype+"</option>");
 		}

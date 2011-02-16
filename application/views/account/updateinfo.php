@@ -79,7 +79,7 @@
 		});
 	}
 	$(document).ready(function() {
-		document.title = "Bước 3: Cập Nhật Thông Tin Tài Khoản";
+		//document.title = "Bước 3: Cập Nhật Thông Tin Tài Khoản";
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#register';
 		//$("#content_title").text($("#menu "+menuid).text());

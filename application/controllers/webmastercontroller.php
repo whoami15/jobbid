@@ -26,6 +26,7 @@ class WebmasterController extends VanillaController {
 		$msg = $_SESSION["msg"];
 		$_SESSION["msg"] = null;
 		$this->set("msg",$msg);
+		$this->set('title','Thông báo : Có lỗi xảy ra!');
 		$this->_template->render();  	  
 	}
 	function success() {	
@@ -40,10 +41,12 @@ class WebmasterController extends VanillaController {
 	}
 	function activesuccess() {	
 		$this->updateStatistics();
+		$this->set('title','Thông báo : Đã xác nhận tài khoản thành công!');
 		$this->_template->render();  	  
 	}
 	function registcomplete() {	
 		$this->updateStatistics();
+		$this->set('title','Bước 4: Hoàn tất đăng ký');
 		$this->_template->render();  	  
 	}
 	function active($account_id=null) {
@@ -59,10 +62,12 @@ class WebmasterController extends VanillaController {
 			$url = $_SESSION['redirect_url'];
 		$this->set('redirect_url',$url);
 		$this->set('account_id',$account_id);
+		$this->set('title','Bước 2: Kích hoạt tài khoản');
 		$this->_template->render();  	  
 	}
 	function resetpass() {
 		$this->updateStatistics();
+		$this->set('title','Jobbid.vn - Hỗ trợ khôi phục mật khẩu');
 		$this->_template->render();  	  
 	}
 	function doActive($isAjax=false) {
@@ -205,6 +210,7 @@ class WebmasterController extends VanillaController {
 	}
 	function contact() {
 		$this->updateStatistics();
+		$this->set('title','Jobbid.vn - Thông tin liên hệ');
 		$this->_template->render();  
 	}
 	function afterAction() {

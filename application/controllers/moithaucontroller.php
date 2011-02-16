@@ -102,6 +102,7 @@ class MoithauController extends VanillaController {
 		$this->set('pagesbefore',$ipagesbefore);
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
+		$this->set('title','Jobbid.vn - Danh sách thư mời thầu');
 		$this->_template->render();
 	}
 	function lstMyLetters($ipageindex) {

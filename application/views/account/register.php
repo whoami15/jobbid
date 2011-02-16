@@ -71,7 +71,7 @@
 		byId("msg").innerHTML="";
 	}
 	$(document).ready(function() {
-		document.title = "Bước 1: Đăng ký email";
+		//document.title = "Bước 1: Đăng ký email";
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#register';
 		//$("#content_title").text($("#menu "+menuid).text());

@@ -132,7 +132,8 @@
 			data: dataString,
 			success: function(data){
 				unblock('#content');
-				$("#datagrid").html(data);		
+				$("#datagrid").html(data);	
+				document.title = "Tìm Dự Án - Từ khóa : "+byId('duan_keyword').value;
 			},
 			error: function(data){ alert (data);unblock('#content');}	
 		});
@@ -198,7 +199,7 @@
 	}
 	$(document).ready(function() {
 		// pass options to ajaxForm 
-		document.title = "Tìm Dự Án - "+document.title;
+		//document.title = "Tìm Dự Án - "+document.title;
 		menuid = '#tim-du-an';
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();

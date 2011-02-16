@@ -1,4 +1,4 @@
-1. Tao friendly link cho thong tin nha thau
+1. Tao friendly link cho thong tin nha thau (them cot nhathau_alias vao bang nhathau)
 2. Hien thi noi bat du an VIP, NEW
 2. Danh sach ho so thau nen link den du an ( cu la link den thong tin goi thau)
 3. Tao cac du an lien quan trong phan xem du an

@@ -146,6 +146,20 @@
 					?>
 					</td>
 				</tr>
+				<tr style="height:30px">
+					<td align="left" colspan="2">
+					<b>Các dự án tương tự :</b>
+					<ul>
+						<?php
+						if(isset($relatedProjects)) {
+							foreach($relatedProjects as $duan) {
+								echo '<li><a class="link" href="'.BASE_PATH.'/duan/view/'.$duan['duan']['id'].'/'.$duan['duan']['alias'].'">'.$duan['duan']['tenduan'].'</a></li>';
+							}
+						}
+						?>
+					</ul>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</fieldset>
@@ -301,7 +315,7 @@
 		
 	}
 	$(document).ready(function() {
-		document.title = "<?php echo $dataDuan["duan"]["tenduan"]?> - "+document.title;
+		//document.title = "<?php echo $dataDuan["duan"]["tenduan"]?> - "+document.title;
 		$("#content_title").html("<a class='link2' href='"+url('/duan/search')+"'>Tìm dự án</a> &#8250 <a class='link2' href='"+url('/linhvuc&linhvuc_id=<?php echo $dataDuan["duan"]["linhvuc_id"]?>')+"'><?php echo $dataDuan["linhvuc"]["tenlinhvuc"]?></a> &#8250 Thông tin dự án");
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tim-du-an';

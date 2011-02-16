@@ -174,7 +174,7 @@
 		location.href = url('/nhathau/view');
 	}
 	$(document).ready(function() {
-		document.title = "Gửi Hồ Sơ Thầu - "+document.title;
+		//document.title = "Gửi Hồ Sơ Thầu - "+document.title;
 		$("input:submit, input:button", "body").button();
 		boundTip("hosothau_milestone","Ví dụ : Nếu bạn đặt milestone là 50%, khi bạn hoàn thành được 50% dự án đó, chủ dự án sẽ chi trả 50% số tiền cho bạn");
 		boundTip("hosothau_thoigian","Nhập số ngày bạn sẽ hoàn thành dự án.");

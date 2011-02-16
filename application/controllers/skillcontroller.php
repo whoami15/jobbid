@@ -134,6 +134,7 @@ class SkillController extends VanillaController {
 			$this->set('pagesbefore',$ipagesbefore);
 			$this->set('pagesnext',$ipagesnext);
 			$this->set('pageend',$totalPages);
+			$this->set('title','Danh sách dự án theo kỹ năng : '.$lstDuan[0]['skill']['skillname']);
 			$this->_template->render();
 		}
 	}

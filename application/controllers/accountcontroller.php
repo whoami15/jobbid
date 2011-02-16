@@ -158,60 +158,6 @@ class AccountController extends VanillaController {
 			}
 		}
 	}
-	/* function doRegist() {
-		try {
-			if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
-				unset($_SESSION['security_code']);
-			} else {
-				die('ERROR_SECURITY_CODE');
-			}
-			$validate = new Validate();
-			if($validate->check_submit(1,array('account_username','account_password','account_sodienthoai'))==false)
-				die('ERROR_SYSTEM');
-			$username = $_POST['account_username'];
-			$password = $_POST['account_password'];
-			$sodienthoai = $_POST['account_sodienthoai'];
-			if($validate->check_null(array($username,$password,$sodienthoai))==false)
-				die('ERROR_SYSTEM');
-			if(!$validate->check_email($username))
-				die('ERROR_SYSTEM');
-			if(!$validate->check_length($password,5))
-				die('ERROR_SYSTEM');
-			if($this->existUsername($username))
-				die('ERROR_EXIST');
-			$this->account->id = null;
-			$this->account->username = $username;
-			$this->account->password = md5($password);
-			$this->account->sodienthoai = $sodienthoai;
-			$this->account->timeonline = 0;
-			$this->account->role = 2;
-			$this->account->active = 0;
-			$account_id = $this->account->insert(true);
-			$this->account->id = $account_id;
-			$data = $this->account->search();
-			$_SESSION['account']=$data['account'];
-			$active_code = genString();
-			$this->setModel('activecode');
-			$this->activecode->id = null;
-			$this->activecode->account_id = $account_id;
-			$this->activecode->active_code = $active_code;
-			$this->activecode->insert();
-			//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
-			$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
-			$linkactive = "<a href='$linkactive'>$linkactive</a>";
-			global $cache;
-			$content = $cache->get('mail_verify');
-			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
-			$replace = array($linkactive, $active_code, $username);
-			$content = str_replace($search, $replace, $content);
-			include (ROOT.DS.'library'.DS.'sendmail.php');
-			$mail = new sendmail();
-			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
-			echo 'DONE';
-		} catch (Exception $e) {
-			echo 'ERROR_SYSTEM';
-		}
-	} */
 	function doRegist() {
 		try {
 			$validate = new Validate();
@@ -276,12 +222,15 @@ class AccountController extends VanillaController {
 		}
 	}	
 	function register() {
+		$this->set('title','Bước 1: Đăng ký email');
 		$this->_template->render();
 	}
 	function registsuccess() {
+		$this->set('title','Thông báo : Bạn đã đăng ký thành viên thành công!');
 		$this->_template->render();
 	}
-	function login() {		
+	function login() {	
+		$this->set('title','Jobbid.vn - Trang đăng nhập');
 		$this->_template->render();  	  
 	}
 	function doUpdate() {
@@ -387,6 +336,7 @@ class AccountController extends VanillaController {
 	function updateinfo() {
 		$this->checkLogin();
 		$this->checkActive();
+		$this->set('title','Bước 3: Cập Nhật Thông Tin Tài Khoản');
 		$this->_template->render(); 
 	}
 	function doUpdateInfo() {

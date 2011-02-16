@@ -22,7 +22,7 @@
 			<thead>
 				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 					<td>Tên dự án</td>
-					<td style="width:100px">Giá thầu TB</td>
+					<td style="width:100px">Giá thầu</td>
 					<td>Bid</td>
 					<td>Lĩnh vực</td>
 					<td style="width:200px">Trúng thầu</td>
@@ -40,7 +40,7 @@
 					?>
 						<td style="display:none"><?php echo $duan["duan"]["id"]?></td>
 						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
-						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
+						<td align="center" ><?php echo $html->FormatMoney($duan["hosothau"]["giathau"])?></td>
 						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
 						<td align="left">

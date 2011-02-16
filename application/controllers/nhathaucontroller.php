@@ -167,6 +167,7 @@ class NhathauController extends VanillaController {
 			$this->set("lstLinhvucquantam",$data);
 		}
 		$this->set("dataAccount",$_SESSION["account"]);
+		$this->set('title','Xem Thông Tin Hồ Sơ Cá Nhân');
 		$this->_template->render();	
 	}
 	function add() {
@@ -177,6 +178,7 @@ class NhathauController extends VanillaController {
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
+		$this->set('title','Jobbid.vn - Tạo Hồ Sơ Nhà Thầu');
 		$this->_template->render();	
 	}	
 	function doAdd() {
@@ -190,6 +192,7 @@ class NhathauController extends VanillaController {
 			$sodienthoai = $_POST["account_sodienthoai"];
 			$motachitiet = $_POST["nhathau_motachitiet"];
 			$displayname = $_POST["nhathau_displayname"];
+			$nhathau_alias = $_POST["nhathau_alias"];
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
 			$birthyear = $_POST["nhathau_birthyear"];
 			$diachilienhe = $_POST["nhathau_diachilienhe"];
@@ -250,6 +253,7 @@ class NhathauController extends VanillaController {
 			$this->nhathau->id = null;
 			$this->nhathau->motachitiet = $motachitiet;
 			$this->nhathau->displayname = $displayname;
+			$this->nhathau->nhathau_alias = $nhathau_alias;
 			$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
 			$this->nhathau->birthyear = $birthyear;
 			$this->nhathau->diachilienhe = $diachilienhe;
@@ -313,6 +317,7 @@ class NhathauController extends VanillaController {
 			$this->setModel("linhvuc");
 			$data = $this->linhvuc->search();
 			$this->set("lstLinhvuc",$data);
+			$this->set('title','Jobbid.vn - Chỉnh Sửa Hồ Sơ Nhà Thầu');
 			$this->_template->render();
 		}
 	}	
@@ -329,6 +334,7 @@ class NhathauController extends VanillaController {
 			$sodienthoai = $_POST["account_sodienthoai"];
 			$motachitiet = $_POST["nhathau_motachitiet"];
 			$displayname = $_POST["nhathau_displayname"];
+			$nhathau_alias = $_POST["nhathau_alias"];
 			$birthyear = $_POST["nhathau_birthyear"];
 			$diachilienhe = $_POST["nhathau_diachilienhe"];
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
@@ -390,6 +396,7 @@ class NhathauController extends VanillaController {
 			$this->nhathau->id = $id;
 			$this->nhathau->motachitiet = $motachitiet;
 			$this->nhathau->displayname = $displayname;
+			$this->nhathau->nhathau_alias = $nhathau_alias;
 			if($file_id!=0)
 				$this->nhathau->file_id = $file_id;
 			$this->nhathau->nhanemail = $nhanemail;
@@ -469,6 +476,7 @@ class NhathauController extends VanillaController {
 		$data = $this->nhathau->search('nhathau.id,motachitiet,displayname,diemdanhgia,nhanemail,nhathau.account_id,file.id,filename,gpkd_cmnd,type,birthyear,diachilienhe');
 		if(empty($data))
 			error('Không tìm thấy thông tin nhà thầu này!');
+		$this->set('title','Thông tin nhà thầu : '.$data['nhathau']['displayname']);
 		$this->set("nhathau",$data["nhathau"]);
 		$this->set("file",$data["file"]);
 		$this->setModel("nhathaulinhvuc");
@@ -536,52 +544,32 @@ class NhathauController extends VanillaController {
 			echo 'ERROR_SYSTEM';
 		}
 	}
-	function tim_nha_thau() {
+	function tim_nha_thau($pageindex=1) {
 		$_SESSION['redirect_url'] = getUrl();
+		$this->nhathau->showHasOne(array('account'));
 		$this->nhathau->orderBy('diemdanhgia','desc');
-		$this->nhathau->setPage(1);
+		$this->nhathau->setPage($pageindex);
 		$this->nhathau->setLimit(PAGINATE_LIMIT);
-		$this->nhathau->where(' and nhathau.`status`=1');
-		$data = $this->nhathau->search('id,displayname,diemdanhgia');
+		$this->nhathau->where(' and nhathau.`status`=1 and account.active=1');
+		$data = $this->nhathau->search('nhathau.id,displayname,diemdanhgia,nhathau_alias');
 		$totalPages = $this->nhathau->totalPages();
-		$ipagesbefore = 1 - INT_PAGE_SUPPORT;
+		$ipagesbefore = $pageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
 			$ipagesbefore = 1;
-		$ipagesnext = 1 + INT_PAGE_SUPPORT;
+		$ipagesnext = $pageindex + INT_PAGE_SUPPORT;
 		if ($ipagesnext > $totalPages)
 			$ipagesnext = $totalPages;
 		//print_r($lstDuan);die();
 		$this->set("lstNhathau",$data);
-		$this->set('pagesindex',1);
+		$this->set('pagesindex',$pageindex);
 		$this->set('pagesbefore',$ipagesbefore);
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
+		$this->set('title','Jobbid.vn - Tìm Kiếm Nhà Thầu');
 		$this->_template->render();
-	}
-	function lst_tim_nha_thau($ipageindex) {
-		$_SESSION['redirect_url'] = getUrl();
-		$this->nhathau->orderBy('diemdanhgia','desc');
-		$this->nhathau->setPage($ipageindex);
-		$this->nhathau->setLimit(PAGINATE_LIMIT);
-		$this->nhathau->where(' and nhathau.`status`=1');
-		$data = $this->nhathau->search('id,displayname,diemdanhgia');
-		$totalPages = $this->nhathau->totalPages();
-		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
-		if ($ipagesbefore < 1)
-			$ipagesbefore = 1;
-		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
-		if ($ipagesnext > $totalPages)
-			$ipagesnext = $totalPages;
-		//print_r($lstDuan);die();
-		$this->set("lstNhathau",$data);
-		$this->set('pagesindex',$ipageindex);
-		$this->set('pagesbefore',$ipagesbefore);
-		$this->set('pagesnext',$ipagesnext);
-		$this->set('pageend',$totalPages);
-		$this->_template->renderPage();
 	}
 	function lstNhathauBySearch() {
 		$ipageindex = $_POST["pageindex"];
@@ -600,7 +588,7 @@ class NhathauController extends VanillaController {
 		$this->nhathau->orderBy('diemdanhgia','desc');
 		$this->nhathau->setPage($ipageindex);
 		$this->nhathau->setLimit(PAGINATE_LIMIT);
-		$data = $this->nhathau->search('nhathau.id,displayname,diemdanhgia');
+		$data = $this->nhathau->search('nhathau.id,displayname,diemdanhgia,nhathau_alias');
 		$totalPages = $this->nhathau->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)

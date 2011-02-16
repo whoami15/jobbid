@@ -83,7 +83,6 @@
 		//$("#content_title").text($("#menu "+menuid).text());
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
-		document.title = "Trang Đăng Nhập - "+document.title;
 		byId("username").focus();
 	});
 </script>

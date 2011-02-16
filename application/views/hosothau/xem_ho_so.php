@@ -115,7 +115,7 @@
 		});
 	}
 	$(document).ready(function() {
-		document.title = "<?php echo $data['nhathau']["displayname"] ?>";
+		//document.title = "<?php echo $data['nhathau']["displayname"] ?>";
 		$("input:submit, input:button", "body").button();
 	});
 </script>

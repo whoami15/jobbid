@@ -132,6 +132,7 @@ class LinhvucController extends VanillaController {
 			$this->set('pagesbefore',$ipagesbefore);
 			$this->set('pagesnext',$ipagesnext);
 			$this->set('pageend',$totalPages);
+			$this->set('title','Danh sách dự án theo lĩnh vực : '.$data["linhvuc"]["tenlinhvuc"]);
 			$this->_template->render();
 		}
 	}

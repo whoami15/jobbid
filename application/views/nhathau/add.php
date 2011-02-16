@@ -16,6 +16,7 @@
 </style>
 <div id="content" style="width:100%;">
 	<form id="formnhathau" style="padding-top: 0px; padding-bottom: 10px;">
+	<input type="hidden" name="nhathau_alias" id="nhathau_alias" value="" />
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo hồ sơ nhà thầu</div>
 		<center>
 		<div class="divTable" style="width:99%;padding-top:5px;">
@@ -170,12 +171,13 @@
 		if(checkValidate==false) {
 			return false;
 		}
+		byId("nhathau_alias").value = remove_space(remove_accents(byId("nhathau_displayname").value));
 		$('#btsubmit').attr('disabled','disabled');
 		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
 		return true;
 	}
 	$(document).ready(function() {
-		document.title = "Tạo Hồ Sơ Nhà Thầu - "+document.title;
+		//document.title = "Tạo Hồ Sơ Nhà Thầu - "+document.title;
 		yearBegin = 1950;
 		yearEnd = 2011;
 		str = '';
