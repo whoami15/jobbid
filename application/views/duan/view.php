@@ -109,11 +109,7 @@
 				<?php
 				} else {
 				?>
-				<tr style="height:30px">
-					<td align="left" colspan="2">
-					<b>Nếu bạn muốn tham gia đấu thầu công việc này, xin vui lòng nhấn vào nút <font color="red">"Gửi Hồ Sơ Thầu"</font>.</b>
-					</td>
-				</tr>
+				
 				<?php
 				}
 				if(isset($dataDuan["nhathau"]["id"])) {
@@ -136,6 +132,7 @@
 					} else {
 						if($dataDuan[""]["timeleft"]>0 && $dataDuan["duan"]["hosothau_id"] ==null && $dataDuan["duan"]["isbid"] ==1) {
 						?>
+						<b>Nếu bạn muốn tham gia đấu thầu công việc này, xin vui lòng nhấn vào nút <font color="red">"Gửi Hồ Sơ Thầu"</font>.</b><br/><br/>
 						<input id="btGuihoso" type="button" value="Gửi hồ sơ thầu" onclick="guihosothau(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php
 						}

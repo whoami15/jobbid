@@ -167,7 +167,7 @@ class SkillController extends VanillaController {
 		}
 	}
 	function getSkillsByLinhvuc() {
-		$this->checkLogin(true);
+		//$this->checkLogin(true);
 		$linhvuc_id = $_GET["linhvuc_id"];
 		if($linhvuc_id==null)
 			die("ERROR_SYSTEM");

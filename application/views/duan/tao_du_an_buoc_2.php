@@ -19,19 +19,12 @@
 </style>
 <div id="content" style="width:100%;">
 	<form id="formDuan" style="padding-top: 0px; padding-bottom: 10px;" >
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án - Bước 2</div>
 		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>
 		<div class="divTable" style="width:100%">
 			<div class="tr" style="border:none;padding-top:5px">
 				<div class="td" id="msg">(Những thông tin có dấu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> là những thông tin bắt buộc bạn phải nhập)</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Hình thức đấu thầu :</div>
-				<div class="td tdInput">
-				<span id="tip_freebid"><input type="radio" name="duan_isbid" id="duan_isbid" value="1" /> Đấu thầu tự do.</span><br/>
-				<span id="tip_directcontact"><input type="radio" name="duan_isbid" id="duan_isbid" value="0"/> Liên hệ trực tiếp.</span>
-				</div>
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Tên dự án <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
@@ -64,18 +57,6 @@
 				<div class="td tdLabel" style="text-align:right;">Ngày kết thúc thầu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
 				<input type="text"  name="duan_ngayketthuc" id="duan_ngayketthuc" tabindex=4 />&nbsp;<span class="question" id="tip_ngayketthuc">(?)</span>
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-				<div class="td tdInput">
-				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $_SESSION['account']['username'] ?>"/>
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-				<div class="td tdInput">
-				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $_SESSION['account']['sodienthoai'] ?>"/>
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -123,16 +104,10 @@
 				</fieldset>
 				</div>
 			</div>
-			<div class="tr" style="border:none;text-align:left">
-				<div class="td">
-				Thông tin chi tiết :<br/>
-				<textarea id="duan_thongtinchitiet" name="duan_thongtinchitiet" style="border:none;" rows="15" tabindex=8></textarea>
-				</div>
-			</div>
 			<div class="tr" style="border:none">
 				<div class="td">
-				<input id="btsubmit" type="submit" value="Tạo Dự Án"  tabindex=9>
-				<input onclick="doReset()" value="Reset" type="button" tabindex=10>
+				<input id="btsubmit" type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_1'" value="Trở Lại Bước 1"  tabindex=9>
+				<input id="btsubmit" type="submit" value="Qua Bước 3"  tabindex=9>
 				</div>
 			</div>
 		</div>
@@ -160,8 +135,6 @@
 		checkValidate=true;
 		validate(['require'],'duan_tenduan',["Vui lòng nhập tên dự án!"]);
 		validate(['require','checkdate'],'duan_ngayketthuc',["Vui lòng nhập ngày kết thúc"]);
-		validate(['require','email'],'duan_email',["Vui lòng nhập email chủ dự án!","Email sai định dạng!"]);
-		validate(['require'],'duan_sodienthoai',["Vui lòng nhập số điện thoại chủ dự án!"]);
 		validate(['requireselect'],'duan_linhvuc_id',["Vui lòng chọn 1 lĩnh vực!"]);
 		if(checkValidate==false) {
 			return false;
@@ -244,24 +217,12 @@
 		});
 		var options = { 
 			beforeSubmit: validateFormDuAn,
-			url:        url("/duan/doAdd"), 
+			url:        url("/duan/submit_tao_du_an_buoc_2"), 
 			type:      "post",
 			dataType: "xml",
 			success:    function(data) { 
 				$('#btsubmit').removeAttr('disabled');
 				data = data.body.childNodes[0].data;	
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/account/login");
-					return;
-				}
-				if(data == "ERROR_NOTACTIVE") {
-					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
-					return;
-				}
-				if(data == "ERROR_LOCKED") {
-					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
-					return;
-				}
 				if(data == "ERROR_MAXSKILL") {
 					message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
 					return;
@@ -271,12 +232,11 @@
 					return;
 				}
 				if(data == AJAX_DONE) {
-					message("Tạo mới dự án thành công! Đang chuyển trang...",1);
-					setTimeout("redirectPage()",redirect_time);
+					location.href = url("/duan/submit_tao_du_an_buoc_3");
 				} else if(data == AJAX_ERROR_WRONGFORMAT) {
 					message("Upload file sai định dạng!",0);
 				} else {
-					message("Tạo mới dự án không thành công!",0);
+					message("Lỗi hệ thống, vui lòng thử lại sau!",0);
 				}
 			},
 			error : function(data) {
@@ -299,10 +259,5 @@
 		boundTip("tip_ngayketthuc","Là ngày mà bạn muốn phiên đấu thầu cho dự án này kết thúc, sau ngày này thì các ứng viên không được phép đấu thầu cho dự án này nữa.",200,"hover");
 		boundTip("duan_linhvuc_id","Danh sách các kỹ năng sẽ được load vào mục kỹ năng sau khi một lĩnh vực được chọn.");
 		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các ứng viên phải có trước khi tham gia đấu thầu dự án của bạn.",300,"hover");
-		boundTip("duan_email","Là email của chủ dự án mà ứng viên thắng thầu sẽ liên lạc.");
-		boundTip("duan_sodienthoai","Là số điện thoại của chủ dự án mà ứng viên thắng thầu sẽ liên lạc.");
-		boundTip("tip_freebid","Cho phép các ứng viên đưa ra giá thầu và thời gian để thực hiện dự án này, từ đó bạn có thể lựa chọn ra ứng viên tốt nhất cho dự án của bạn. (thông tin liên lạc của bạn chỉ hiển thị đối với ứng viên nào trúng thầu dự án của bạn)",400,"hover");
-		boundTip("tip_directcontact","Thông tin liên hệ của bạn sẽ được hiển thị để các ứng viên liên hệ trực tiếp với bạn. (chức năng đấu thầu sẽ không còn nếu bạn chọn hình thức này)",400,"hover");
-
 	});
 </script>

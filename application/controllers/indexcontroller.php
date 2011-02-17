@@ -39,6 +39,7 @@ class IndexController extends VanillaController {
 	}
 	function index() {
 		//error('Test');
+		//print_r(session_cache_expire());die();
 		$this->setModel("duan");
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->orderBy('duan.id','desc');

@@ -19,53 +19,10 @@
 </style>
 <div id="content" style="width:100%;">
 	<form id="formDuan" style="padding-top: 0px; padding-bottom: 10px;" >
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án - Bước 3</div>
 		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>
-		<div class="divTable" style="width:100%">
-			<div class="tr" style="border:none;padding-top:5px">
-				<div class="td" id="msg">(Những thông tin có dấu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> là những thông tin bắt buộc bạn phải nhập)</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Hình thức đấu thầu :</div>
-				<div class="td tdInput">
-				<span id="tip_freebid"><input type="radio" name="duan_isbid" id="duan_isbid" value="1" /> Đấu thầu tự do.</span><br/>
-				<span id="tip_directcontact"><input type="radio" name="duan_isbid" id="duan_isbid" value="0"/> Liên hệ trực tiếp.</span>
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Tên dự án <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-				<div class="td tdInput">
-				<input type="text" name="duan_tenduan" style="width:90%" value="" id="duan_tenduan" tabindex=1/>
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Tỉnh/TP :</div>
-				<div class="td tdInput">
-				<select name="duan_tinh_id" id="duan_tinh_id" tabindex=2>
-					<?php
-					foreach($lstTinh as $tinh) {
-						echo "<option value='".$tinh["tinh"]["id"]."'>".$tinh["tinh"]["tentinh"]."</option>";
-					}
-					?>
-				</select>
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Chi phí :</div>
-				<div class="td tdInput">
-				<input type="hidden" name="duan_costmin" id="duan_costmin" value="0"/>
-				<input type="hidden" name="duan_costmax" id="duan_costmax" value="0"/>
-				<select id="duan_cost" tabindex=3>
-				</select> (VNĐ)
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Ngày kết thúc thầu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-				<div class="td tdInput">
-				<input type="text"  name="duan_ngayketthuc" id="duan_ngayketthuc" tabindex=4 />&nbsp;<span class="question" id="tip_ngayketthuc">(?)</span>
-				</div>
-			</div>
+		<div class="divTable" style="width:100%">		
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
@@ -78,51 +35,6 @@
 				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $_SESSION['account']['sodienthoai'] ?>"/>
 				</div>
 			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
-				<div class="td tdInput">
-				<input type="file" name="duan_filedinhkem" id="duan_filedinhkem" tabindex=5/> (Size < 2Mb)
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td tdLabel" style="text-align:right;">Lĩnh vực <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
-				<div class="td tdInput">
-				<select name="duan_linhvuc_id" id="duan_linhvuc_id" tabindex=6 onchange="loadListSkills()" >
-					<option value="">---Chọn lĩnh vực---</option>
-					<?php
-					foreach($lstLinhvuc as $linhvuc) {
-						echo "<option value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</option>";
-					}
-					?>
-				</select>
-				</div>
-			</div>
-			<div class="tr" style="border:none">
-				<div class="td">
-				<fieldset>
-					<legend>Yêu cầu về kỹ năng <span class="question" id="tip_skill">(?)</span></legend>
-				<table class="center" width="500px">
-					<tbody>
-					<tr>
-						<td align="right">
-							<select class="multiselect" multiple id="select1" >
-							</select>   
-						</td>
-						<td align="center">
-							<button id="btadd"><span class="ui-icon ui-icon-seek-end"></button><br>
-							<button id="btremove"><span class="ui-icon ui-icon-seek-first"></button><br>
-							<button id="btaddall"><span class="ui-icon ui-icon-seek-next"></button><br>
-							<button id="btremoveall"><span class="ui-icon ui-icon-seek-prev"></button><br>
-						</td>
-						<td align="left">
-							<select class="multiselect" name="duan_skills[]" multiple id="select2" tabindex=7></select> 
-						</td>
-					</tr>
-					</tbody>
-				</table>
-				</fieldset>
-				</div>
-			</div>
 			<div class="tr" style="border:none;text-align:left">
 				<div class="td">
 				Thông tin chi tiết :<br/>
@@ -131,8 +43,8 @@
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td">
-				<input id="btsubmit" type="submit" value="Tạo Dự Án"  tabindex=9>
-				<input onclick="doReset()" value="Reset" type="button" tabindex=10>
+				<input id="btsubmit" type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2'" value="Trở Lại Bước 2"  tabindex=9>
+				<input id="btsubmit" type="submit" value="Qua Bước 4"  tabindex=9>
 				</div>
 			</div>
 		</div>

@@ -256,6 +256,118 @@ class DuanController extends VanillaController {
 		$this->set('title','Jobbid.vn - Tạo Dự Án');
 		$this->_template->render();	
 	}
+	function tao_du_an_buoc_1() {
+		include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
+		$mDuan = new mDuan();
+		$this->set('isbid',isset($mDuan->isbid)?$mDuan->isbid:1);
+		$this->set('title','Jobbid.vn - Tạo Dự Án');
+		$this->_template->render();	
+	}
+	function tao_du_an_buoc_2() {
+		if(isset($_POST['duan_isbid'])==false)
+			error('Error!');
+		$isbid = $_POST['duan_isbid'];
+		include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
+		$mDuan = new mDuan();
+		$mDuan->setisbid($isbid);
+		$this->set('tenduan',isset($mDuan->tenduan)?$mDuan->tenduan:'');
+		$this->set('alias',isset($mDuan->alias)?$mDuan->alias:'');
+		$this->set('linhvuc_id',isset($mDuan->linhvuc_id)?$mDuan->linhvuc_id:'');
+		$this->set('tinh_id',isset($mDuan->tinh_id)?$mDuan->tinh_id:null);
+		$this->set('ngayketthuc',isset($mDuan->ngayketthuc)?$mDuan->ngayketthuc:'');
+		$this->set('costmin',isset($mDuan->costmin)?$mDuan->costmin:0);
+		$this->set('costmax',isset($mDuan->costmax)?$mDuan->costmax:0);
+		$this->set('skills',isset($mDuan->skills)?$mDuan->skills:null);
+		$this->setModel('linhvuc');
+		$data = $this->linhvuc->search();
+		$this->set('lstLinhvuc',$data);
+		$this->setModel('tinh');
+		$data = $this->tinh->search();
+		$this->set('lstTinh',$data);
+		$this->set('title','Jobbid.vn - Tạo Dự Án');
+		$this->_template->render();	
+	}
+	function submit_tao_du_an_buoc_2() {
+		try {
+			$tenduan = $_POST['duan_tenduan'];
+			$alias = $_POST['duan_alias'];
+			$linhvuc_id = $_POST['duan_linhvuc_id'];
+			$tinh_id = $_POST['duan_tinh_id'];
+			$ngayketthuc = $_POST['duan_ngayketthuc'];
+			$costmin = $_POST['duan_costmin'];
+			$costmax = $_POST['duan_costmax'];
+			if(isset($_POST['duan_skills'])) {
+				if(isset($_POST['duan_skills'][MAX_SKILL]))
+					die('ERROR_MAXSKILL');
+			}
+			$validate = new Validate();
+			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$isbid))==false)
+				die('ERROR_SYSTEM');
+			if($validate->check_date($ngayketthuc)==false)
+				die('ERROR_SYSTEM');
+			//$ngayketthuc = SQLDate($ngayketthuc);
+			$file_id = null;
+			//Get upload attach file_id
+			global $cache;
+			$ma=time();
+			if($_FILES['duan_filedinhkem']['name']!=NULL) {
+				$str=$_FILES['duan_filedinhkem']['tmp_name'];
+				$size= $_FILES['duan_filedinhkem']['size'];
+				if($size==0) {
+					echo 'ERROR_FILESIZE';
+				}
+				else {
+					$dir = ROOT . DS . 'public'. DS . 'upload' . DS . 'files' . DS;
+					$filename = preg_replace("/[&' +-]/","_",$_FILES['duan_filedinhkem']['name']);				
+					move_uploaded_file($_FILES['duan_filedinhkem']['tmp_name'],$dir . $filename);
+					//die($filename);
+					$sFileType='';
+					$i = strlen($filename)-1;
+					while($i>=0) {
+						if($filename[$i]=='.')
+							break;
+						$sFileType=$filename[$i].$sFileType;
+						$i--;
+					}
+					$str=$dir . $filename;
+					$fname=$ma.'_'.$filename;
+					$arrType = $cache->get('fileTypes');
+					if(!in_array(strtolower($sFileType),$arrType)) {
+						unlink($str);
+						die('ERROR_WRONGFORMAT');
+					}
+					else {
+						$str2= $dir . $fname;
+						rename($str,$str2);
+						$this->setModel('file');
+						$this->file->id = null;
+						$this->file->filename = $filename;
+						$this->file->fileurl = BASE_PATH.'/upload/files/'.$fname;
+						$this->file->status = 1;
+						$file_id = $this->file->insert(true);
+					}
+				}
+			}
+			include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
+			$mDuan = new mDuan();
+			$mDuan->setlinhvuc_id($linhvuc_id);
+			$mDuan->setalias($alias);
+			$mDuan->settenduan($tenduan);
+			$mDuan->setskills($_POST['duan_skills']);
+			$mDuan->setfile_id($file_id);
+			$mDuan->setcostmin($costmin);
+			$mDuan->setcostmax($costmax);
+			$mDuan->setngayketthuc($ngayketthuc);
+			$mDuan->settinh_id($tinh_id);
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function tao_du_an_buoc_3() {
+		$this->set('title','Jobbid.vn - Tạo Dự Án');
+		$this->_template->render();	
+	}
 	function doAdd() {
 		try {
 			$this->checkLogin(true);
