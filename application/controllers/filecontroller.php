@@ -61,7 +61,54 @@ class FileController extends VanillaController {
 			redirect($data["fileurl"]);
 		}
 	}
-	
+	function upload() {
+		try {
+			$file_id = null;
+			//Get upload attach file_id
+			global $cache;
+			$ma=time();
+			if($_FILES['fileupload']['name']==NULL)
+				die('ERROR_SYSTEM');
+			$str=$_FILES['fileupload']['tmp_name'];
+			$size= $_FILES['fileupload']['size'];
+			if($size==0) {
+				die('ERROR_FILESIZE');
+			} else {
+				$dir = ROOT . DS . 'public'. DS . 'upload' . DS . 'files' . DS;
+				$filename = preg_replace("/[&' +-]/","_",$_FILES['fileupload']['name']);				
+				move_uploaded_file($_FILES['fileupload']['tmp_name'],$dir . $filename);
+				//die($filename);
+				$sFileType='';
+				$i = strlen($filename)-1;
+				while($i>=0) {
+					if($filename[$i]=='.')
+						break;
+					$sFileType=$filename[$i].$sFileType;
+					$i--;
+				}
+				$str=$dir . $filename;
+				$fname=$ma.'_'.$filename;
+				$arrType = $cache->get('fileTypes');
+				if(!in_array(strtolower($sFileType),$arrType)) {
+					unlink($str);
+					die('ERROR_WRONGFORMAT');
+				}
+				else {
+					$str2= $dir . $fname;
+					rename($str,$str2);
+					$this->setModel('file');
+					$this->file->id = null;
+					$this->file->filename = $filename;
+					$this->file->fileurl = BASE_PATH.'/upload/files/'.$fname;
+					$this->file->status = 1;
+					$file_id = $this->file->insert(true);
+				}
+			}
+			echo $file_id;
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
 	function afterAction() {
 
 	}

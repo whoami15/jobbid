@@ -1,7 +1,12 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea-0.7.0.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery.form.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/costtype.js"></script>
 
+<link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 	.multiselect {  
 		height:200px;
@@ -15,7 +20,7 @@
 <div id="content" style="width:100%;">
 	<form id="formDuan" style="padding-top: 0px; padding-bottom: 10px;" >
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án - Bước 2</div>
-		<input type="hidden" name="duan_alias" id="duan_alias" value="<?php echo $alias ?>" />
+		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>
 		<div class="divTable" style="width:100%">
 			<div class="tr" style="border:none;padding-top:5px">
@@ -24,7 +29,7 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Tên dự án <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text" name="duan_tenduan" style="width:90%" id="duan_tenduan" value="<?php echo $tenduan ?>" tabindex=1/>
+				<input type="text" name="duan_tenduan" style="width:90%" value="" id="duan_tenduan" tabindex=1/>
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -42,8 +47,8 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Chi phí :</div>
 				<div class="td tdInput">
-				<input type="hidden" name="duan_costmin" id="duan_costmin" value="<?php echo $costmin ?>"/>
-				<input type="hidden" name="duan_costmax" id="duan_costmax" value="<?php echo $costmax ?>"/>
+				<input type="hidden" name="duan_costmin" id="duan_costmin" value="0"/>
+				<input type="hidden" name="duan_costmax" id="duan_costmax" value="0"/>
 				<select id="duan_cost" tabindex=3>
 				</select> (VNĐ)
 				</div>
@@ -51,7 +56,19 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Ngày kết thúc thầu <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text"  name="duan_ngayketthuc" id="duan_ngayketthuc" value="<?php echo $html->format_date($ngayketthuc,'d/m/Y') ?>" tabindex=4 />&nbsp;<span class="question" id="tip_ngayketthuc">(?)</span>
+				<input type="text"  name="duan_ngayketthuc" id="duan_ngayketthuc" tabindex=4 />&nbsp;<span class="question" id="tip_ngayketthuc">(?)</span>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
+				<div class="td tdInput">
+				<input type="hidden" name="duan_filedinhkem" id="duan_filedinhkem" value="0"/>
+				<input type="file" name="fileupload" id="fileupload" onchange="doUploadFile()" tabindex=5/> (Size < 2Mb)
+				</div>
+			</div>
+			<div style="border:none">
+				<div class="td tdLabel" style="text-align:right;">&nbsp;</div>
+				<div class="td tdInput" id="fileuploaded">
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -85,13 +102,7 @@
 							<button id="btremoveall"><span class="ui-icon ui-icon-seek-prev"></button><br>
 						</td>
 						<td align="left">
-							<select class="multiselect" name="duan_skills[]" multiple id="select2" tabindex=7>
-							<?php
-							if(isset($lstSkill))
-								foreach($lstSkill as $skill)
-									echo "<option value='".$skill["skill"]["id"]."'>".$skill["skill"]["skillname"]."</option>";
-							?>	
-							</select> 
+							<select class="multiselect" name="duan_skills[]" multiple id="select2" tabindex=7></select> 
 						</td>
 					</tr>
 					</tbody>
@@ -102,7 +113,7 @@
 			<div class="tr" style="border:none">
 				<div class="td">
 				<input id="btsubmit" type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_1'" value="Trở Lại Bước 1"  tabindex=9>
-				<input id="btsubmit" type="button" onclick="doSubmit()" value="Qua Bước 3"  tabindex=9>
+				<input id="btsubmit" type="submit" value="Qua Bước 3"  tabindex=9>
 				</div>
 			</div>
 		</div>
@@ -110,6 +121,8 @@
 	</form>
 </div>
 <script type="text/javascript">
+	var options; 
+	var options2; 
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
@@ -125,18 +138,18 @@
 		byId("msg").innerHTML="";
 		$('#btsubmit').removeAttr('disabled');
 	}
-	function doSubmit() {
+	function validateFormDuAn(formData, jqForm, options) {
 		location.href = "#top";
 		checkValidate=true;
 		validate(['require'],'duan_tenduan',["Vui lòng nhập tên dự án!"]);
 		validate(['require','checkdate'],'duan_ngayketthuc',["Vui lòng nhập ngày kết thúc"]);
 		validate(['requireselect'],'duan_linhvuc_id',["Vui lòng chọn 1 lĩnh vực!"]);
 		if(checkValidate==false) {
-			return;
+			return false;
 		}
 		if($("#select2 option").length><?php echo MAX_SKILL ?>) {
 			message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
-			return;
+			return false;
 		}
 		byId("duan_alias").value = remove_space(remove_accents(byId("duan_tenduan").value));
 		$("#select2").each(function(){  
@@ -146,33 +159,8 @@
 		byId("duan_costmin").value = arrCostType[value].min;
 		byId("duan_costmax").value = arrCostType[value].max;
 		$('#btsubmit').attr('disabled','disabled');
-		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Kiểm tra dữ liệu nhập...</span></div>";
-		dataString = $("#formDuan").serialize();
-		//alert(dataString);return;
-		$.ajax({
-			type : "POST",
-			cache: false,
-			url : url("/duan/submit_tao_du_an_buoc_2&"),
-			data: dataString,
-			success : function(data){	
-				//alert(data);
-				$('#btsubmit').removeAttr('disabled');
-				if(data == "ERROR_MAXSKILL") {
-					message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
-					return;
-				}
-				if(data == AJAX_DONE) {
-					location.href = url("/duan/tao_du_an_buoc_3");
-				} else {
-					message("Có lỗi xảy ra, vui lòng thử lại!",0);
-				}
-				
-			},
-			error: function(data){ 
-				$('#btsubmit').removeAttr('disabled');
-				alert (data);
-			}			
-		});
+		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
+		return true;
 	}
 	function loadListSkills() {
 		var value = byId("duan_linhvuc_id").value;
@@ -197,6 +185,17 @@
 			error: function(data){ unblock("#select1");;alert (data);}	
 		});
 	}
+	function redirectPage() {
+		location.href = url('/linhvuc&linhvuc_id='+byId("duan_linhvuc_id").value);
+	}
+	function doUploadFile() {
+		$('#formDuan').ajaxForm(options2);
+		$("#fileuploaded").html("Uploading...");
+		$('#formDuan').submit();
+	}
+	function removechosen(idchosen) {
+		$("#chosen_"+idchosen).remove();
+	}
 	$(document).ready(function() {
 		//document.title = "Tạo Dự Án - "+document.title;
 		//alert(arrCostType);
@@ -204,16 +203,90 @@
 			$('#duan_cost').append("<option value="+arrCostType[i].id+" >"+arrCostType[i].costtype+"</option>");
 		}
 		MultiSelect("btadd","btremove","btaddall","btremoveall","select1","select2");
-		byId("duan_tinh_id").value = '<?php echo $tinh_id ?>';
-		byId("duan_linhvuc_id").value = '<?php echo $linhvuc_id ?>';
-		costmin = <?php echo $costmin?>;
-		for(i=0;arrCostType[i]!=null;i++) {
-			if(arrCostType[i].min == costmin) {
-				byId("duan_cost").value = i;
-				break;
-			}
-		}
-		loadListSkills();
+		setCheckedValue(document.forms['formDuan'].elements['duan_isbid'], 1);
+		$("#duan_thongtinchitiet").css("width","100%");
+		$("#duan_thongtinchitiet").htmlarea({
+				toolbar: [
+					["html"], ["bold", "italic", "underline"],
+					["increasefontsize", "decreasefontsize", "forecolor"],
+					["orderedlist", "unorderedlist"],
+					["indent", "outdent"],
+					["justifyleft", "justifycenter", "justifyright"],
+					["link", "unlink", "image", "horizontalrule"],
+					["cut", "copy", "paste"]
+				],
+                toolbarText: $.extend({}, jHtmlArea.defaultOptions.toolbarText, {
+                        "bold": "fett",
+                        "italic": "kursiv",
+                        "underline": "unterstreichen"
+                    }),
+                css: "<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.Editor.css",
+                loaded: function() {
+                }
+			
+		}) ;
+		$("#choosecolor").click(function() {
+			jHtmlAreaColorPickerMenu(this, {
+				colorChosen: function(color) {
+					$(document.body).css('background-color', color);
+				}
+			});
+		});
+		options = { 
+			beforeSubmit: validateFormDuAn,
+			url:        url("/duan/submit_tao_du_an_buoc_2"), 
+			type:      "post",
+			dataType: "xml",
+			success:    function(data) { 
+				$('#btsubmit').removeAttr('disabled');
+				data = data.body.childNodes[0].data;	
+				if(data == "ERROR_MAXSKILL") {
+					message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
+					return;
+				}
+				if(data == "ERROR_FILESIZE") {
+					message("File upload phải nhỏ hơn 2Mb!",0);
+					return;
+				}
+				if(data == AJAX_DONE) {
+					location.href = url("/duan/submit_tao_du_an_buoc_3");
+				} else if(data == AJAX_ERROR_WRONGFORMAT) {
+					message("Upload file sai định dạng!",0);
+				} else {
+					message("Lỗi hệ thống, vui lòng thử lại sau!",0);
+				}
+			},
+			error : function(data) {
+				$('#btsubmit').removeAttr('disabled');
+				alert(data);
+			} 
+		}; 
+		options2 = { 
+			url:        url("/file/upload"), 
+			type:      "post",
+			dataType: "xml",
+			success:    function(data) { 
+				data = data.body.childNodes[0].data;	
+				if(data == "ERROR_FILESIZE") {
+					message("File upload phải nhỏ hơn 2Mb!",0);
+					return;
+				}
+				if(data == AJAX_ERROR_WRONGFORMAT) {
+					message("Upload file sai định dạng!",0);
+					return;
+				}
+				if(isNaN(data) == true) {
+					message("Lỗi hệ thống, vui lòng thử lại sau!",0);
+				} else {
+					byId("duan_filedinhkem").value = data;
+					idchosen = "chosen_"+data;
+					$("#fileuploaded").html('<div style="display: block;" id="'+idchosen+'" ") class="chosen-container"><span class="chosen">'+byId("fileupload").value+'<img onclick="removechosen('+data+')" class="btn-remove-chosen" src="<?php echo BASE_PATH?>/public/images/icons/close_8x8.gif"/></span></div>');
+				} 
+			},
+			error : function(data) {
+				alert(data);
+			} 
+		}; 
 		// pass options to ajaxForm 
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tao-du-an';

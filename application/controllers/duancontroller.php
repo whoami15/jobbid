@@ -257,27 +257,74 @@ class DuanController extends VanillaController {
 		$this->_template->render();	
 	}
 	function tao_du_an_buoc_1() {
-		include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
-		$mDuan = new mDuan();
-		$this->set('isbid',isset($mDuan->isbid)?$mDuan->isbid:1);
+		//include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
+		//$mDuan = new mDuan();
+		//$this->set('isbid',isset($mDuan->isbid)?$mDuan->isbid:1);
+		//print_r($_COOKIE['duan_id']);die();
+		$isbid = 1;
+		if(isset($_COOKIE['duan_id'])) {
+			$duan_id = $_COOKIE['duan_id'];
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=-1');
+			$data = $this->duan->search('isbid');
+			if(empty($data)==false)
+				$isbid = $data['duan']['isbid'];
+		}
+		$this->set('isbid',$isbid);
 		$this->set('title','Jobbid.vn - Tạo Dự Án');
 		$this->_template->render();	
 	}
 	function tao_du_an_buoc_2() {
-		if(isset($_POST['duan_isbid'])==false)
-			error('Error!');
-		$isbid = $_POST['duan_isbid'];
-		include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
-		$mDuan = new mDuan();
-		$mDuan->setisbid($isbid);
-		$this->set('tenduan',isset($mDuan->tenduan)?$mDuan->tenduan:'');
-		$this->set('alias',isset($mDuan->alias)?$mDuan->alias:'');
-		$this->set('linhvuc_id',isset($mDuan->linhvuc_id)?$mDuan->linhvuc_id:'');
-		$this->set('tinh_id',isset($mDuan->tinh_id)?$mDuan->tinh_id:null);
-		$this->set('ngayketthuc',isset($mDuan->ngayketthuc)?$mDuan->ngayketthuc:'');
-		$this->set('costmin',isset($mDuan->costmin)?$mDuan->costmin:0);
-		$this->set('costmax',isset($mDuan->costmax)?$mDuan->costmax:0);
-		$this->set('skills',isset($mDuan->skills)?$mDuan->skills:null);
+		$isbid = null;
+		if(isset($_POST['duan_isbid']))
+			$isbid = $_POST['duan_isbid'];
+		$tenduan = '';
+		$alias = '';
+		$linhvuc_id = '';
+		$tinh_id = null;
+		$ngayketthuc = '';
+		$costmin = 0;
+		$costmax = 0;
+		if(isset($_COOKIE['duan_id'])) {
+			$duan_id = $_COOKIE['duan_id'];
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=-1');
+			$data = $this->duan->search('id,tenduan,alias,linhvuc_id,tinh_id,ngayketthuc,costmin,costmax');
+			if(empty($data))
+				error('Lỗi! Vui lòng thử lại.');
+			$tenduan = $data['duan']['tenduan'];
+			$alias = $data['duan']['alias'];
+			$linhvuc_id = $data['duan']['linhvuc_id'];
+			$tinh_id = $data['duan']['tinh_id'];
+			$ngayketthuc = $data['duan']['ngayketthuc'];
+			$costmin = $data['duan']['costmin'];
+			$costmax = $data['duan']['costmax'];
+			if(isset($isbid)) {
+				$this->duan->id = $duan_id;
+				$this->duan->isbid = $isbid;
+				$this->duan->update();
+			}
+			$this->setModel('duanskill');
+			$this->duanskill->showHasOne(array('skill'));
+			$this->duanskill->where(" and duan_id = $duan_id");
+			$data = $this->duanskill->search('skill.id,skillname');
+			$this->set('lstSkill',$data);
+		} else {
+			if(isset($isbid)) {
+				$this->duan->id = null;
+				$this->duan->isbid = $isbid;
+				$this->duan->active = -1;
+				$duan_id = $this->duan->insert(true);
+				setcookie('duan_id', $duan_id);
+			}
+		}
+		$this->set('tenduan',$tenduan);
+		$this->set('alias',$alias);
+		$this->set('linhvuc_id',$linhvuc_id);
+		$this->set('tinh_id',$tinh_id);
+		$this->set('ngayketthuc',$ngayketthuc);
+		$this->set('costmin',$costmin);
+		$this->set('costmax',$costmax);
 		$this->setModel('linhvuc');
 		$data = $this->linhvuc->search();
 		$this->set('lstLinhvuc',$data);
@@ -289,6 +336,14 @@ class DuanController extends VanillaController {
 	}
 	function submit_tao_du_an_buoc_2() {
 		try {
+			if(isset($_COOKIE['duan_id'])==false)
+				die('ERROR_SYSTEM');
+			$duan_id = $_COOKIE['duan_id'];
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=-1');
+			$data = $this->duan->search('id');
+			if(empty($data))
+				die('ERROR_SYSTEM');
 			$tenduan = $_POST['duan_tenduan'];
 			$alias = $_POST['duan_alias'];
 			$linhvuc_id = $_POST['duan_linhvuc_id'];
@@ -301,70 +356,45 @@ class DuanController extends VanillaController {
 					die('ERROR_MAXSKILL');
 			}
 			$validate = new Validate();
-			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$isbid))==false)
+			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
-			//$ngayketthuc = SQLDate($ngayketthuc);
-			$file_id = null;
-			//Get upload attach file_id
-			global $cache;
-			$ma=time();
-			if($_FILES['duan_filedinhkem']['name']!=NULL) {
-				$str=$_FILES['duan_filedinhkem']['tmp_name'];
-				$size= $_FILES['duan_filedinhkem']['size'];
-				if($size==0) {
-					echo 'ERROR_FILESIZE';
-				}
-				else {
-					$dir = ROOT . DS . 'public'. DS . 'upload' . DS . 'files' . DS;
-					$filename = preg_replace("/[&' +-]/","_",$_FILES['duan_filedinhkem']['name']);				
-					move_uploaded_file($_FILES['duan_filedinhkem']['tmp_name'],$dir . $filename);
-					//die($filename);
-					$sFileType='';
-					$i = strlen($filename)-1;
-					while($i>=0) {
-						if($filename[$i]=='.')
-							break;
-						$sFileType=$filename[$i].$sFileType;
-						$i--;
-					}
-					$str=$dir . $filename;
-					$fname=$ma.'_'.$filename;
-					$arrType = $cache->get('fileTypes');
-					if(!in_array(strtolower($sFileType),$arrType)) {
-						unlink($str);
-						die('ERROR_WRONGFORMAT');
-					}
-					else {
-						$str2= $dir . $fname;
-						rename($str,$str2);
-						$this->setModel('file');
-						$this->file->id = null;
-						$this->file->filename = $filename;
-						$this->file->fileurl = BASE_PATH.'/upload/files/'.$fname;
-						$this->file->status = 1;
-						$file_id = $this->file->insert(true);
-					}
+			$ngayketthuc = SQLDate($ngayketthuc);
+			$this->duan->id = $duan_id;
+			$this->duan->tenduan = $tenduan;
+			$this->duan->alias = $alias;
+			$this->duan->linhvuc_id = $linhvuc_id;
+			$this->duan->tinh_id = $tinh_id;
+			$this->duan->costmin = $costmin;
+			$this->duan->costmax = $costmax;
+			$this->duan->ngayketthuc = $ngayketthuc;
+			$this->duan->update();
+			$this->setModel('duanskill');
+			$this->duanskill->custom("delete from duanskills where duan_id = $duan_id");
+			if(isset($_POST['duan_skills'])) {
+				$lstSkill= $_POST['duan_skills'];
+				foreach($lstSkill as $skill_id) {
+					$this->duanskill->id=null;
+					$this->duanskill->duan_id=$duan_id;
+					$this->duanskill->skill_id=$skill_id;
+					$this->duanskill->insert();
 				}
 			}
-			include (ROOT.DS.'application'.DS.'models'.DS.'mDuan.php');
-			$mDuan = new mDuan();
-			$mDuan->setlinhvuc_id($linhvuc_id);
-			$mDuan->setalias($alias);
-			$mDuan->settenduan($tenduan);
-			$mDuan->setskills($_POST['duan_skills']);
-			$mDuan->setfile_id($file_id);
-			$mDuan->setcostmin($costmin);
-			$mDuan->setcostmax($costmax);
-			$mDuan->setngayketthuc($ngayketthuc);
-			$mDuan->settinh_id($tinh_id);
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}
 	}
 	function tao_du_an_buoc_3() {
+		$email = '';
+		$sodienthoai = '';
+		if(isset($_SESSION['account'])) {
+			$email = $_SESSION['account']['username'];
+			$sodienthoai = $_SESSION['account']['sodienthoai'];
+		}
+		$this->set('email',$email);
+		$this->set('sodienthoai',$sodienthoai);
 		$this->set('title','Jobbid.vn - Tạo Dự Án');
 		$this->_template->render();	
 	}

@@ -14,31 +14,45 @@
 	} 
 	.tdLabel {
 		text-align:right;
-		width:170px;
+		width:114px;
 	}
 </style>
 <div id="content" style="width:100%;">
 	<form id="formDuan" style="padding-top: 0px; padding-bottom: 10px;" >
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án - Bước 3</div>
-		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>
-		<div class="divTable" style="width:100%">		
+		<div class="divTable" style="width:100%">	
+			<div class="tr" style="border:none">
+				<div class="td" id="msg"></div>
+			</div>
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $_SESSION['account']['username'] ?>"/>
+				<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $email ?>"/>
 				</div>
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $_SESSION['account']['sodienthoai'] ?>"/>
+				<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $sodienthoai ?>"/>
 				</div>
 			</div>
 			<div class="tr" style="border:none;text-align:left">
 				<div class="td">
-				Thông tin chi tiết :<br/>
+				Chi tiết công việc:<br/>
 				<textarea id="duan_thongtinchitiet" name="duan_thongtinchitiet" style="border:none;" rows="15" tabindex=8></textarea>
+				</div>
+			</div>
+			<div class="tr" style="border:none">
+				<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
+				<div class="td tdInput">
+				<input type="hidden" name="duan_filedinhkem" id="duan_filedinhkem" value="0"/>
+				<input type="file" name="fileupload" id="fileupload" onchange="doUploadFile()" tabindex=5/> (Size < 2Mb)
+				</div>
+			</div>
+			<div style="border:none">
+				<div class="td tdLabel" style="text-align:right;">&nbsp;</div>
+				<div class="td tdInput" id="fileuploaded">
 				</div>
 			</div>
 			<div class="tr" style="border:none">
@@ -52,6 +66,8 @@
 	</form>
 </div>
 <script type="text/javascript">
+	var options; 
+	var options2;
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
@@ -119,13 +135,16 @@
 	function redirectPage() {
 		location.href = url('/linhvuc&linhvuc_id='+byId("duan_linhvuc_id").value);
 	}
+	function doUploadFile() {
+		$('#formDuan').ajaxForm(options2);
+		$("#fileuploaded").html("Uploading...");
+		$('#formDuan').submit();
+	}
+	function removechosen(idchosen) {
+		$("#chosen_"+idchosen).remove();
+	}
 	$(document).ready(function() {
 		//document.title = "Tạo Dự Án - "+document.title;
-		for(i=0;arrCostType[i]!=null;i++) {
-			$('#duan_cost').append("<option value="+arrCostType[i].id+" >"+arrCostType[i].costtype+"</option>");
-		}
-		MultiSelect("btadd","btremove","btaddall","btremoveall","select1","select2");
-		setCheckedValue(document.forms['formDuan'].elements['duan_isbid'], 1);
 		$("#duan_thongtinchitiet").css("width","100%");
 		$("#duan_thongtinchitiet").htmlarea({
 				toolbar: [
@@ -154,7 +173,7 @@
 				}
 			});
 		});
-		var options = { 
+		options = { 
 			beforeSubmit: validateFormDuAn,
 			url:        url("/duan/doAdd"), 
 			type:      "post",
@@ -196,25 +215,40 @@
 				alert(data);
 			} 
 		}; 
+		options2 = { 
+			url:        url("/file/upload"), 
+			type:      "post",
+			dataType: "xml",
+			success:    function(data) { 
+				data = data.body.childNodes[0].data;	
+				$("#fileuploaded").html('');
+				if(data == "ERROR_FILESIZE") {
+					message("File upload phải nhỏ hơn 2Mb!",0);
+					return;
+				}
+				if(data == AJAX_ERROR_WRONGFORMAT) {
+					message("Upload file sai định dạng!",0);
+					return;
+				}
+				if(isNaN(data) == true) {
+					message("Lỗi hệ thống, vui lòng thử lại sau!",0);
+				} else {
+					byId("duan_filedinhkem").value = data;
+					idchosen = "chosen_"+data;
+					$("#fileuploaded").html('<div style="display: block;" id="'+idchosen+'" ") class="chosen-container"><span class="chosen">'+byId("fileupload").value+'<img onclick="removechosen('+data+')" class="btn-remove-chosen" src="<?php echo BASE_PATH?>/public/images/icons/close_8x8.gif"/></span></div>');
+				} 
+			},
+			error : function(data) {
+				alert(data);
+			} 
+		}; 
 		// pass options to ajaxForm 
-		$('#formDuan').ajaxForm(options);
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tao-du-an';
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
-		$('#duan_ngayketthuc').datepicker({
-			dateFormat: "dd/mm/yy",
-			changeMonth: true,
-			changeYear: true
-		});
-		boundTip("duan_tenduan","Nhập tên dự án bạn muốn đấu thầu");
-		boundTip("tip_ngayketthuc","Là ngày mà bạn muốn phiên đấu thầu cho dự án này kết thúc, sau ngày này thì các ứng viên không được phép đấu thầu cho dự án này nữa.",200,"hover");
-		boundTip("duan_linhvuc_id","Danh sách các kỹ năng sẽ được load vào mục kỹ năng sau khi một lĩnh vực được chọn.");
-		boundTip("tip_skill","Chọn kỹ năng cần thiết ở cột bên trái đưa qua cột bên phải, đây là các kỹ năng bạn yêu cầu các ứng viên phải có trước khi tham gia đấu thầu dự án của bạn.",300,"hover");
 		boundTip("duan_email","Là email của chủ dự án mà ứng viên thắng thầu sẽ liên lạc.");
 		boundTip("duan_sodienthoai","Là số điện thoại của chủ dự án mà ứng viên thắng thầu sẽ liên lạc.");
-		boundTip("tip_freebid","Cho phép các ứng viên đưa ra giá thầu và thời gian để thực hiện dự án này, từ đó bạn có thể lựa chọn ra ứng viên tốt nhất cho dự án của bạn. (thông tin liên lạc của bạn chỉ hiển thị đối với ứng viên nào trúng thầu dự án của bạn)",400,"hover");
-		boundTip("tip_directcontact","Thông tin liên hệ của bạn sẽ được hiển thị để các ứng viên liên hệ trực tiếp với bạn. (chức năng đấu thầu sẽ không còn nếu bạn chọn hình thức này)",400,"hover");
 
 	});
 </script>
