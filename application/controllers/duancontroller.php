@@ -297,8 +297,8 @@ class DuanController extends VanillaController {
 			$linhvuc_id = $data['duan']['linhvuc_id'];
 			$tinh_id = $data['duan']['tinh_id'];
 			$ngayketthuc = $data['duan']['ngayketthuc'];
-			$costmin = $data['duan']['costmin'];
-			$costmax = $data['duan']['costmax'];
+			$costmin = isset($data['duan']['costmin'])?$data['duan']['costmin']:0;
+			$costmax = isset($data['duan']['costmax'])?$data['duan']['costmax']:0;
 			if(isset($isbid)) {
 				$this->duan->id = $duan_id;
 				$this->duan->isbid = $isbid;
@@ -387,6 +387,78 @@ class DuanController extends VanillaController {
 		}
 	}
 	function tao_du_an_buoc_3() {
+		$email = '';
+		$sodienthoai = '';
+		if(isset($_SESSION['account'])) {
+			$email = $_SESSION['account']['username'];
+			$sodienthoai = $_SESSION['account']['sodienthoai'];
+		}
+		$this->set('email',$email);
+		$this->set('sodienthoai',$sodienthoai);
+		$this->set('title','Jobbid.vn - Tạo Dự Án');
+		$this->_template->render();	
+	}
+	function submit_tao_du_an_buoc_3() {
+		try {
+			if(isset($_COOKIE['duan_id'])==false)
+				die('ERROR_SYSTEM');
+			$account_id = null;
+			if(isset($_SESSION['account']))
+				$account_id = $_SESSION['account']['id'];
+			$duan_id = $_COOKIE['duan_id'];
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=-1');
+			$data = $this->duan->search('id');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			$email = $_POST['duan_email'];
+			$sodienthoai = $_POST['duan_sodienthoai'];
+			$thongtinchitiet = $_POST['duan_thongtinchitiet'];
+			$file_id = $_POST['duan_filedinhkem'];
+			$validate = new Validate();
+			if($validate->check_null(array($email,$sodienthoai))==false)
+				die('ERROR_SYSTEM');
+			$this->duan->id = $duan_id;
+			$this->duan->email = $email;
+			$this->duan->sodienthoai = $sodienthoai;
+			$this->duan->thongtinchitiet = $thongtinchitiet;
+			$this->duan->file_id = $file_id;
+			$this->duan->account_id = $account_id;
+			if(isset($_SESSION['account'])) {
+				setcookie('duan_id', null);
+				if($_SESSION['account']['active']==1)
+					$this->duan->active = 1;
+			}
+			$this->duan->update();
+			if(isset($account_id))
+				echo 'DONE';
+			else 
+				echo 'ERROR_NOTLOGIN';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function tao_du_an_dang_nhap() {
+		if(isset($_COOKIE['duan_id'])==false)
+			die('ERROR_SYSTEM');
+		$duan_id = $_COOKIE['duan_id'];
+		$this->duan->id = $duan_id;
+		$this->duan->where(' and active=-1');
+		$data = $this->duan->search('id,tenduan,alias,linhvuc_id,tinh_id,ngayketthuc,costmin,costmax');
+		if(empty($data))
+			error('Lỗi! Vui lòng thử lại.');
+		$tenduan = $data['duan']['tenduan'];
+		$alias = $data['duan']['alias'];
+		$linhvuc_id = $data['duan']['linhvuc_id'];
+		$tinh_id = $data['duan']['tinh_id'];
+		$ngayketthuc = $data['duan']['ngayketthuc'];
+		$costmin = isset($data['duan']['costmin'])?$data['duan']['costmin']:0;
+		$costmax = isset($data['duan']['costmax'])?$data['duan']['costmax']:0;
+		if(isset($isbid)) {
+			$this->duan->id = $duan_id;
+			$this->duan->isbid = $isbid;
+			$this->duan->update();
+		}
 		$email = '';
 		$sodienthoai = '';
 		if(isset($_SESSION['account'])) {
