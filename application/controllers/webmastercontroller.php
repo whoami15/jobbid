@@ -106,6 +106,21 @@ class WebmasterController extends VanillaController {
 				$account = $this->account->search();
 				$_SESSION['account'] = $account['account'];
 			}
+			if(isset($_COOKIE['duan_id'])) {
+				$duan_id = $_COOKIE['duan_id'];
+				$this->setModel('duan');
+				$this->duan->id = $duan_id;
+				$this->duan->where(' and active=-1 and account_id='.$account_id);
+				$data = $this->duan->search('id');
+				if(!empty($data)) {
+					if($account[0]['account']['active']==1) {
+						$this->duan->id = $duan_id;
+						$this->duan->active = 1;
+						$this->duan->update();
+					}
+				}
+				setcookie('duan_id', null);
+			}
 			if($isAjax) {
 				redirect(BASE_PATH.'/account/updateinfo');
 			} else

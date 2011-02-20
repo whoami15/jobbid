@@ -282,7 +282,7 @@ class DuanController extends VanillaController {
 		$alias = '';
 		$linhvuc_id = '';
 		$tinh_id = null;
-		$ngayketthuc = '';
+		$ngayketthuc = null;
 		$costmin = 0;
 		$costmax = 0;
 		if(isset($_COOKIE['duan_id'])) {
@@ -408,9 +408,10 @@ class DuanController extends VanillaController {
 			$duan_id = $_COOKIE['duan_id'];
 			$this->duan->id = $duan_id;
 			$this->duan->where(' and active=-1');
-			$data = $this->duan->search('id');
+			$data = $this->duan->search('id,tenduan');
 			if(empty($data))
 				die('ERROR_SYSTEM');
+			$tenduan = $data['duan']['tenduan'];
 			$email = $_POST['duan_email'];
 			$sodienthoai = $_POST['duan_sodienthoai'];
 			$thongtinchitiet = $_POST['duan_thongtinchitiet'];
@@ -418,21 +419,48 @@ class DuanController extends VanillaController {
 			$validate = new Validate();
 			if($validate->check_null(array($email,$sodienthoai))==false)
 				die('ERROR_SYSTEM');
+			if($account_id == null) {
+				$this->setModel('account');
+				$strWhere = "AND username='".mysql_real_escape_string($email)."' AND active>=0";
+				$this->account->where($strWhere);
+				$data = $this->account->search('id');
+				if(!empty($data)) {
+					$account_id = $data[0]['account']['id'];
+				}
+			}
+			$this->setModel('data');
+			$sIndex = "$tenduan ".strip_tags($thongtinchitiet);
+			$sIndex = strtolower(remove_accents($sIndex));
+			$this->data->id = null;
+			$this->data->data = $sIndex;
+			$data_id = $this->data->insert(true);
+			$this->setModel('duan');
 			$this->duan->id = $duan_id;
 			$this->duan->email = $email;
 			$this->duan->sodienthoai = $sodienthoai;
 			$this->duan->thongtinchitiet = $thongtinchitiet;
 			$this->duan->file_id = $file_id;
 			$this->duan->account_id = $account_id;
+			$this->duan->prior = 0;
+			$currentDate = GetDateSQL();
+			$this->duan->ngaypost = $currentDate;
+			$this->duan->timeupdate = $currentDate;
+			$this->duan->views = 0;
+			$this->duan->bidcount = 0;
+			$this->duan->averagecost = 0;
+			$this->duan->isnew = 1;
+			$this->duan->data_id = $data_id;
 			if(isset($_SESSION['account'])) {
 				setcookie('duan_id', null);
 				if($_SESSION['account']['active']==1)
 					$this->duan->active = 1;
 			}
 			$this->duan->update();
-			if(isset($account_id))
+			if(isset($_SESSION['account']))
 				echo 'DONE';
-			else 
+			else if($account_id == null)
+				echo 'ERROR_NOTREGIST';
+			else
 				echo 'ERROR_NOTLOGIN';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -444,29 +472,11 @@ class DuanController extends VanillaController {
 		$duan_id = $_COOKIE['duan_id'];
 		$this->duan->id = $duan_id;
 		$this->duan->where(' and active=-1');
-		$data = $this->duan->search('id,tenduan,alias,linhvuc_id,tinh_id,ngayketthuc,costmin,costmax');
+		$data = $this->duan->search('id,email');
 		if(empty($data))
 			error('Lỗi! Vui lòng thử lại.');
-		$tenduan = $data['duan']['tenduan'];
-		$alias = $data['duan']['alias'];
-		$linhvuc_id = $data['duan']['linhvuc_id'];
-		$tinh_id = $data['duan']['tinh_id'];
-		$ngayketthuc = $data['duan']['ngayketthuc'];
-		$costmin = isset($data['duan']['costmin'])?$data['duan']['costmin']:0;
-		$costmax = isset($data['duan']['costmax'])?$data['duan']['costmax']:0;
-		if(isset($isbid)) {
-			$this->duan->id = $duan_id;
-			$this->duan->isbid = $isbid;
-			$this->duan->update();
-		}
-		$email = '';
-		$sodienthoai = '';
-		if(isset($_SESSION['account'])) {
-			$email = $_SESSION['account']['username'];
-			$sodienthoai = $_SESSION['account']['sodienthoai'];
-		}
+		$email = $data['duan']['email'];
 		$this->set('email',$email);
-		$this->set('sodienthoai',$sodienthoai);
 		$this->set('title','Jobbid.vn - Tạo Dự Án');
 		$this->_template->render();	
 	}

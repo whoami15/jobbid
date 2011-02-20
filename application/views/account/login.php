@@ -9,11 +9,11 @@
 			$msg = "Sai mật khẩu đăng nhập!";
 		else if ($msg == "admin")
 			$msg = "Vui lòng đăng nhập bằng tài khoản quản trị!";
+		else if($msg == 'taoduan')
+			$msg = "Vui lòng đăng nhập bằng tài khoản của bạn để hoàn tất tạo dự án!";
 	}
-		
-	$username = "";
 	if(isset($_GET["username"]))
-		$username = $_GET["username"];
+		$email = $_GET["username"];
 ?>
 <div id="content" style="width:100%;">
 	<form id="formAccount" style="padding-top: 0px; padding-bottom: 10px;" method="POST" action="<?php echo BASE_PATH ?>/account/doLogin/account" onsubmit="return validaFormAccount()">
@@ -33,7 +33,7 @@
 			<tr>
 				<td width="250px" align="right">Email :</td>
 				<td align="left">
-					<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $username ?>"/>
+					<input type="text" name="username" id="username" style="width:200px"  tabindex="1"  value="<?php echo $email ?>"/>
 				</td>	
 			</tr>
 			<tr>

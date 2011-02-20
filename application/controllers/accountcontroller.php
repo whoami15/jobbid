@@ -149,6 +149,21 @@ class AccountController extends VanillaController {
 				$this->account->id = $account[0]['account']['id'];
 				$this->account->lastlogin = GetDateSQL();
 				$this->account->save();
+				if(isset($_COOKIE['duan_id'])) {
+					$duan_id = $_COOKIE['duan_id'];
+					$this->setModel('duan');
+					$this->duan->id = $duan_id;
+					$this->duan->where(' and active=-1 and account_id='.$account[0]['account']['id']);
+					$data = $this->duan->search('id');
+					if(!empty($data)) {
+						if($account[0]['account']['active']==1) {
+							$this->duan->id = $duan_id;
+							$this->duan->active = 1;
+							$this->duan->update();
+						}
+					}
+					setcookie('duan_id', null);
+				}
 				$this->setModel('nhathau');
 				$this->nhathau->where('and status>=0 and account_id='.$account[0]['account']['id']);
 				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia');
@@ -179,6 +194,20 @@ class AccountController extends VanillaController {
 			$this->account->id = $account_id;
 			$data = $this->account->search();
 			$_SESSION['account']=$data['account'];
+			if(isset($_COOKIE['duan_id'])) {
+				$duan_id = $_COOKIE['duan_id'];
+				$this->setModel('duan');
+				$this->duan->id = $duan_id;
+				$this->duan->where(' and active=-1 and account_id is null');
+				$data = $this->duan->search('id');
+				if(!empty($data)) {
+					if($account[0]['account']['active']==1) {
+						$this->duan->id = $duan_id;
+						$this->duan->account_id = $account_id;
+						$this->duan->update();
+					}
+				}
+			}
 			$active_code = genString();
 			$this->setModel('activecode');
 			$this->activecode->id = null;
@@ -222,6 +251,20 @@ class AccountController extends VanillaController {
 		}
 	}	
 	function register() {
+		$email = '';
+		if(isset($_COOKIE['duan_id'])) {
+			$duan_id = $_COOKIE['duan_id'];
+			$this->setModel('duan');
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=-1');
+			$data = $this->duan->search('id,email');
+			if(!empty($data)) {
+				$email = $data['duan']['email'];
+			} else {
+				setcookie('duan_id', null);
+			}
+		}
+		$this->set('email',$email);
 		$this->set('title','Bước 1: Đăng ký email');
 		$this->_template->render();
 	}
@@ -230,6 +273,20 @@ class AccountController extends VanillaController {
 		$this->_template->render();
 	}
 	function login() {	
+		$email = '';
+		if(isset($_COOKIE['duan_id'])) {
+			$duan_id = $_COOKIE['duan_id'];
+			$this->setModel('duan');
+			$this->duan->id = $duan_id;
+			$this->duan->where(' and active=-1');
+			$data = $this->duan->search('id,email');
+			if(!empty($data)) {
+				$email = $data['duan']['email'];
+			} else {
+				setcookie('duan_id', null);
+			}
+		}
+		$this->set('email',$email);
 		$this->set('title','Jobbid.vn - Trang đăng nhập');
 		$this->_template->render();  	  
 	}

@@ -1,4 +1,12 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
+<?php
+	$msg = "";
+	if(isset($_GET["msg"])) {
+		$msg = $_GET["msg"];
+		if($msg == 'taoduan')
+			$msg = "Vui lòng đăng ký tài khoản để hoàn tất tạo dự án!";
+	}
+?>
 <div id="content" style="width:100%;">
 	<form id="formAccount" style="padding-top: 0px; padding-bottom: 10px;">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Bước 1: Đăng ký email</div>
@@ -6,6 +14,10 @@
 		<thead>
 			<tr>
 				<td colspan="4" id="msg">
+				<?php
+				if(!empty($msg))
+					echo "<div class='negative'><span class='bodytext' style='padding-left:30px;'>$msg</span></div>";
+				?>
 				</td>
 			</tr>
 		</thead>
@@ -13,7 +25,7 @@
 			<tr>
 				<td style="width:200px" align="right" valign="top">Nhập địa chỉ email của bạn :</td>
 				<td align="left">
-					<input type="text" name="account_username" id="account_username" style="width:200px"  tabindex="1"/><br/><span class="sample">(Ví dụ: nclong87@gmail.com)</span>
+					<input type="text" name="account_username" id="account_username" style="width:200px" value="<?php echo $email ?>"  tabindex="1"/><br/><span class="sample">(Ví dụ: nclong87@gmail.com)</span>
 				</td>	
 			</tr>
 			<tr>

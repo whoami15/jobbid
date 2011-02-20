@@ -22,6 +22,7 @@
 	<center>
 	<div class="divTable" style="width:100%">
 		<form id="formDuan" >
+		<input type="hidden" name="duan_filedinhkem" id="duan_filedinhkem" value="0"/>
 		<div class="tr" style="border:none">
 			<div class="td" id="msg"></div>
 		</div>
@@ -48,7 +49,6 @@
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
 			<div class="td tdInput">
-			<input type="hidden" name="duan_filedinhkem" id="duan_filedinhkem" value="0"/>
 			<input type="file" name="fileupload" id="fileupload" onchange="doUploadFile()" tabindex=5/> (Size < 2Mb)
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 		</form>
 		<div class="tr" style="border:none">
 			<div class="td">
-			<input id="btsubmit" type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2'" value="Trở Lại Bước 2"  tabindex=9>
+			<input type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2'" value="Trở Lại Bước 2"  tabindex=9>
 			<input id="btsubmit" type="button" onclick="doSubmit()" value="Hoàn Tất"  tabindex=9>
 			</div>
 		</div>
@@ -91,17 +91,6 @@
 		if(checkValidate==false) {
 			return false;
 		}
-		if($("#select2 option").length><?php echo MAX_SKILL ?>) {
-			message("Bạn được phép chọn tối đa <?php echo MAX_SKILL ?> Skill!",0);
-			return false;
-		}
-		byId("duan_alias").value = remove_space(remove_accents(byId("duan_tenduan").value));
-		$("#select2").each(function(){  
-			$("#select2 option").attr("selected","selected");
-		});
-		var value = byId("duan_cost").value;
-		byId("duan_costmin").value = arrCostType[value].min;
-		byId("duan_costmax").value = arrCostType[value].max;
 		$('#btsubmit').attr('disabled','disabled');
 		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
 		return true;
@@ -157,13 +146,13 @@
 			success:    function(data) { 
 				$('#btsubmit').removeAttr('disabled');
 				data = data.body.childNodes[0].data;	
-				
 				if(data == AJAX_DONE) {
 					message("Tạo mới dự án thành công! Đang chuyển đến trang chủ...",1);
 					setTimeout("redirectPage()",redirect_time);
-				} if(data == AJAX_DONE) {
-					message("Tạo mới dự án thành công! Đang chuyển đến trang chủ...",1);
-					setTimeout("redirectPage()",redirect_time);
+				} else if(data == "ERROR_NOTREGIST") {
+					location.href = url("/account/register&msg=taoduan");
+				} else if(data == "ERROR_NOTLOGIN") {
+					location.href = url("/account/login&reason=taoduan");
 				} else {
 					message("Tạo mới dự án không thành công!",0);
 				}
