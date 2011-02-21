@@ -126,6 +126,19 @@ class AccountController extends VanillaController {
 		}
 		return false;
 	}
+	function checkEmail() {
+		if(isset($_SESSION['account']))
+			die('OK');
+		if(!isset($_GET['email']))
+			die('ERROR_SYSTEM');
+		$email = $_GET['email'];
+		$strWhere = "and active>=0 AND username='".mysql_real_escape_string($email)."'";
+		$this->account->where($strWhere);
+		$data = $this->account->search('id');
+		if(empty($data))
+			die('REGISTER');
+		echo 'LOGIN';
+	}
 	function doLogin($type='admin') {
 		$username = $_POST['username'];
 		$password = $_POST['password'];
@@ -149,21 +162,6 @@ class AccountController extends VanillaController {
 				$this->account->id = $account[0]['account']['id'];
 				$this->account->lastlogin = GetDateSQL();
 				$this->account->save();
-				if(isset($_COOKIE['duan_id'])) {
-					$duan_id = $_COOKIE['duan_id'];
-					$this->setModel('duan');
-					$this->duan->id = $duan_id;
-					$this->duan->where(' and active=-1 and account_id='.$account[0]['account']['id']);
-					$data = $this->duan->search('id');
-					if(!empty($data)) {
-						if($account[0]['account']['active']==1) {
-							$this->duan->id = $duan_id;
-							$this->duan->active = 1;
-							$this->duan->update();
-						}
-					}
-					setcookie('duan_id', null);
-				}
 				$this->setModel('nhathau');
 				$this->nhathau->where('and status>=0 and account_id='.$account[0]['account']['id']);
 				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia');
@@ -194,20 +192,6 @@ class AccountController extends VanillaController {
 			$this->account->id = $account_id;
 			$data = $this->account->search();
 			$_SESSION['account']=$data['account'];
-			if(isset($_COOKIE['duan_id'])) {
-				$duan_id = $_COOKIE['duan_id'];
-				$this->setModel('duan');
-				$this->duan->id = $duan_id;
-				$this->duan->where(' and active=-1 and account_id is null');
-				$data = $this->duan->search('id');
-				if(!empty($data)) {
-					if($account[0]['account']['active']==1) {
-						$this->duan->id = $duan_id;
-						$this->duan->account_id = $account_id;
-						$this->duan->update();
-					}
-				}
-			}
 			$active_code = genString();
 			$this->setModel('activecode');
 			$this->activecode->id = null;
@@ -251,20 +235,6 @@ class AccountController extends VanillaController {
 		}
 	}	
 	function register() {
-		$email = '';
-		if(isset($_COOKIE['duan_id'])) {
-			$duan_id = $_COOKIE['duan_id'];
-			$this->setModel('duan');
-			$this->duan->id = $duan_id;
-			$this->duan->where(' and active=-1');
-			$data = $this->duan->search('id,email');
-			if(!empty($data)) {
-				$email = $data['duan']['email'];
-			} else {
-				setcookie('duan_id', null);
-			}
-		}
-		$this->set('email',$email);
 		$this->set('title','Bước 1: Đăng ký email');
 		$this->_template->render();
 	}
@@ -274,18 +244,6 @@ class AccountController extends VanillaController {
 	}
 	function login() {	
 		$email = '';
-		if(isset($_COOKIE['duan_id'])) {
-			$duan_id = $_COOKIE['duan_id'];
-			$this->setModel('duan');
-			$this->duan->id = $duan_id;
-			$this->duan->where(' and active=-1');
-			$data = $this->duan->search('id,email');
-			if(!empty($data)) {
-				$email = $data['duan']['email'];
-			} else {
-				setcookie('duan_id', null);
-			}
-		}
 		$this->set('email',$email);
 		$this->set('title','Jobbid.vn - Trang đăng nhập');
 		$this->_template->render();  	  
@@ -417,6 +375,44 @@ class AccountController extends VanillaController {
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
+		}
+	}
+	function login_box() {
+		$this->_template->renderPage(); 
+	}
+	function submit_login_box() {
+		if(!isset($_SESSION['submit_login_times']))
+			$_SESSION['submit_login_times'] = 0;
+		if($_SESSION['submit_login_times']>=MAX_SUBMIT_LOGIN_TIMES)
+			die('ERROR_MANYTIMES');
+		$_SESSION['submit_login_times'] = $_SESSION['submit_login_times'] + 1;
+		$validate = new Validate();
+		if($validate->check_submit(1,array('username','password'))==false)
+			die('ERROR_SYSTEM');
+		$password = $_POST['password'];
+		$email = $_POST['username'];
+		if($validate->check_null(array($password,$email))==false)
+			die('ERROR_SYSTEM');
+		$strWhere = "AND username='".mysql_real_escape_string($email)."' AND active>=0";
+		$this->account->where($strWhere);
+		$account = $this->account->search();
+		if(empty($account)) {
+			die('ERROR_NOTEXIST');
+		} else {
+			if(strcmp(md5($password),$account[0]['account']['password'])!=0) {
+				die('ERROR_WRONGPASSWORD');
+			} else { //Login thanh cong
+				$_SESSION['account'] = $account[0]['account'];
+				$this->account->id = $account[0]['account']['id'];
+				$this->account->lastlogin = GetDateSQL();
+				$this->account->save();
+				$this->setModel('nhathau');
+				$this->nhathau->where('and status>=0 and account_id='.$account[0]['account']['id']);
+				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia');
+				if(!empty($nhathau))
+					$_SESSION['nhathau'] = $nhathau[0]['nhathau'];
+				echo 'OK';
+			}
 		}
 	}
 	function afterAction() {

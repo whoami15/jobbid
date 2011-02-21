@@ -56,8 +56,9 @@ class TestController extends VanillaController {
 		$email= trim(substr($contents, $start, $end-$start));
 		echo $email; */
 		//$_COOKIE['username'] = 'hello';
-		//setcookie('username', 'Hello');
-		echo $_COOKIE['username'];
+		setcookie('duan_id', 34);
+		$_SESSION['submit_login_times'] = null;
+		//echo $_COOKIE['username'];
 	}
 	function rmvsession($session) {
 		$_SESSION[$session] = null;

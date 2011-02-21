@@ -16,6 +16,7 @@ define('PINGBOX','wid=hlrqrgS1QG6c0M2LmECPawfh');
 define('MAX_FILEDOWNLOADS',30);
 define('MAX_SENDACTIVECODE',3);
 define('MAX_SENDRESETPASS',3);
+define('MAX_SUBMIT_LOGIN_TIMES',5);
 define('MAX_TIMESRESETPASS',3);
 define('MAX_SKILL',10);
 

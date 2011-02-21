@@ -25,7 +25,7 @@
 			<tr>
 				<td style="width:200px" align="right" valign="top">Nhập địa chỉ email của bạn :</td>
 				<td align="left">
-					<input type="text" name="account_username" id="account_username" style="width:200px" value="<?php echo $email ?>"  tabindex="1"/><br/><span class="sample">(Ví dụ: nclong87@gmail.com)</span>
+					<input type="text" name="account_username" id="account_username" style="width:200px"  tabindex="1"/><br/><span class="sample">(Ví dụ: nclong87@gmail.com)</span>
 				</td>	
 			</tr>
 			<tr>

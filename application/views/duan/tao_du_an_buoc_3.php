@@ -77,24 +77,6 @@
 			byId("msg").innerHTML = str;
 		}
 	}	
-	function doReset() {
-		$("#formDuan")[0].reset(); //Reset form cua jquery, giu lai gia tri mac dinh cua cac field	
-		$("#formDuan :input").css('border-color','');
-		byId("msg").innerHTML="";
-		$('#btsubmit').removeAttr('disabled');
-	}
-	function validateFormDuAn(formData, jqForm, options) {
-		location.href = "#top";
-		checkValidate=true;
-		validate(['require','email'],'duan_email',["Vui lòng nhập email chủ dự án!","Email sai định dạng!"]);
-		validate(['require'],'duan_sodienthoai',["Vui lòng nhập số điện thoại chủ dự án!"]);
-		if(checkValidate==false) {
-			return false;
-		}
-		$('#btsubmit').attr('disabled','disabled');
-		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
-		return true;
-	}
 	function redirectPage() {
 		location.href = url("/");
 	}
@@ -102,8 +84,89 @@
 		$("#fileuploaded").html("Uploading...");
 		$('#formUpload').submit();
 	}
+	function checkEmail() {
+		$.ajax({
+			type : "GET",
+			cache: false,
+			url : url("/account/checkEmail&email="+byId("duan_email").value),
+			success : function(data){	
+				//alert(data);return;
+				if(data=="OK" || data == "REGISTER") {
+					dataString = $("#formDuan").serialize();
+					//alert(dataString);return;
+					$.ajax({
+						type : "POST",
+						cache: false,
+						url : url("/duan/submit_tao_du_an_buoc_3&"),
+						data: dataString,
+						success : function(data){	
+							//alert(data);return;
+							$('#btsubmit').removeAttr('disabled');
+							if(data == "OK") {
+								message("Tạo mới dự án thành công! Đang chuyển đến trang chủ...",1);
+								setTimeout("redirectPage()",redirect_time);
+							} else if(data == "NOT_ACTIVE") {
+								location.href = url("/duan/active_account&email="+byId("duan_email").value);
+							} else {
+								message("Tạo mới dự án không thành công!",0);
+							}
+							
+						},
+						error: function(data){ 
+							$('#btsubmit').removeAttr('disabled');
+							alert (data);
+						}			
+					});
+				} else {
+					byId("msg").innerHTML="";
+					$('#btsubmit').removeAttr('disabled');
+					if(data == "LOGIN") {
+						$("#dialogIntro").dialog({
+							minWidth: 450,
+							title: 'Đăng Nhập',
+							buttons: {}
+						});	
+						$.ajax({
+							type : "GET",
+							cache: false,
+							url : url("/account/login_box"),
+							success : function(data){	
+								//alert(data);return;
+								$("#dialogIntro").html(data);
+								$("#dialogIntro").dialog("open");
+								email = byId("duan_email").value;
+								$("#loginbox_msg").html("<font color='red'>Email <b>"+email+"</b> đã được đăng ký trước đây, vui lòng đăng nhập bằng email này!</font>");
+								byId("username").value = email;
+								byId("password").focus();
+							},
+							error: function(data){ alert (data);}			
+						});
+					} else {
+						message("Tạo mới dự án không thành công!",0);
+					}
+				}
+			},
+			error: function(data){ 
+				$('#btsubmit').removeAttr('disabled');
+				alert (data);
+			}			
+		});
+	}
+	var timer1;
 	function doSubmit() {
-		$('#formDuan').submit();
+		$("#dialogIntro").dialog("close");
+		clearTimeout(timer1);
+		location.href = "#top";
+		checkValidate=true;
+		validate(['require','email'],'duan_email',["Vui lòng nhập email chủ dự án!","Email sai định dạng!"]);
+		validate(['require'],'duan_sodienthoai',["Vui lòng nhập số điện thoại chủ dự án!"]);
+		if(checkValidate==false) {
+			return;
+		}
+		$('#btsubmit').attr('disabled','disabled');
+		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang xử lý...</span></div>";
+		checkEmail();
+		
 	}
 	function removechosen(idchosen) {
 		$("#chosen_"+idchosen).remove();
@@ -138,31 +201,7 @@
 				}
 			});
 		});
-		options = { 
-			beforeSubmit: validateFormDuAn,
-			url:        url("/duan/submit_tao_du_an_buoc_3"), 
-			type:      "post",
-			dataType: "xml",
-			success:    function(data) { 
-				$('#btsubmit').removeAttr('disabled');
-				data = data.body.childNodes[0].data;	
-				if(data == AJAX_DONE) {
-					message("Tạo mới dự án thành công! Đang chuyển đến trang chủ...",1);
-					setTimeout("redirectPage()",redirect_time);
-				} else if(data == "ERROR_NOTREGIST") {
-					location.href = url("/account/register&msg=taoduan");
-				} else if(data == "ERROR_NOTLOGIN") {
-					location.href = url("/account/login&reason=taoduan");
-				} else {
-					message("Tạo mới dự án không thành công!",0);
-				}
-			},
-			error : function(data) {
-				$('#btsubmit').removeAttr('disabled');
-				alert(data);
-			} 
-		}; 
-		options2 = { 
+		$('#formUpload').ajaxForm({ 
 			url:        url("/file/upload"), 
 			type:      "post",
 			dataType: "xml",
@@ -189,9 +228,7 @@
 			error : function(data) {
 				alert(data);
 			} 
-		}; 
-		$('#formDuan').ajaxForm(options);
-		$('#formUpload').ajaxForm(options2);
+		});
 		// pass options to ajaxForm 
 		$("#tfoot_paging").html($("#thead_paging").html());
 		menuid = '#tao-du-an';
