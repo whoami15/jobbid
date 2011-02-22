@@ -45,6 +45,7 @@
 			?>
 				<td align="center"><?php echo $i?></td>
 				<td id="td_id" style="display:none"><?php echo $nhathau["nhathau"]["id"]?></td>
+				<td id="td_account_id" style="display:none"><?php echo $nhathau["account"]["id"]?></td>
 				<td id="td_type" style="display:none"><?php echo $nhathau["nhathau"]["type"]?></td>
 				<td id="td_username" align="center"><?php echo $nhathau["account"]["username"]?></td>
 				<td id="td_displayname" align="left"><?php echo $nhathau["nhathau"]["displayname"]?></td>

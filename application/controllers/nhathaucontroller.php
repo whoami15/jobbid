@@ -23,7 +23,7 @@ class NhathauController extends VanillaController {
 		$this->nhathau->orderBy('nhathau.id','desc');
 		$this->nhathau->setPage($ipageindex);
 		$this->nhathau->setLimit(PAGINATE_LIMIT);
-		$lstNhathau = $this->nhathau->search("nhathau.id,displayname,gpkd_cmnd,username,diemdanhgia,nhanemail,type");
+		$lstNhathau = $this->nhathau->search("nhathau.id,account.id,displayname,gpkd_cmnd,username,diemdanhgia,nhanemail,type");
 		$totalPages = $this->nhathau->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -43,26 +43,74 @@ class NhathauController extends VanillaController {
 	function saveNhathau() {
 		try {
 			$this->checkAdmin(true);
-			$id = $_POST["nhathau_id"];
+			$id = null;
+			if(isset($_POST["nhathau_id"]))
+				$id = $_POST["nhathau_id"];
+			$account_id = null;
+			if(isset($_POST["account_id"]))
+				$account_id = $_POST["account_id"];
 			$motachitiet = $_POST["nhathau_motachitiet"];
 			$type = $_POST["nhathau_type"];
 			$gpkd_cmnd = $_POST["nhathau_gpkd_cmnd"];
 			$diemdanhgia = $_POST["nhathau_diemdanhgia"];
 			$displayname = $_POST["nhathau_displayname"];
 			$nhathau_alias = $_POST["nhathau_alias"];
-			if($id==null) { //insert
-				die("ERROR_SYSTEM");						
-			} 
-			$this->setModel("nhathau");
-			$this->nhathau->id = $id;
-			$this->nhathau->motachitiet = $motachitiet;
-			$this->nhathau->type = $type;
-			$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
-			$this->nhathau->diemdanhgia = $diemdanhgia;
-			$this->nhathau->displayname = $displayname;
-			$this->nhathau->nhathau_alias = $nhathau_alias;
-			$this->nhathau->status = 1;
-			$this->nhathau->update();
+			$password = $_POST['account_password'];
+			if($id==null) {
+				$username = $_POST['account_username'];
+				$this->setModel('account');
+				$this->account->id = null;
+				$this->account->username = $username;
+				$this->account->password = md5($password);
+				$this->account->sodienthoai = '0904653712';
+				$this->account->timeonline = 0;
+				$this->account->role = 2;
+				$this->account->active = 1;
+				$account_id = $this->account->insert(true);
+				$this->setModel('nhathau');
+				$this->nhathau->id = null;
+				$this->nhathau->motachitiet = $motachitiet;
+				$this->nhathau->type = $type;
+				$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
+				$this->nhathau->diemdanhgia = $diemdanhgia;
+				$this->nhathau->displayname = $displayname;
+				$this->nhathau->nhathau_alias = $nhathau_alias;
+				$this->nhathau->account_id = $account_id;
+				$this->nhathau->status = 1;
+				$id = $this->nhathau->insert(true);
+			} else {
+				if($password!=null) {
+					$this->setModel('account');
+					$this->account->id = $account_id;
+					$this->account->password = md5($password);
+					$this->account->update();
+					$this->setModel('nhathau');
+				}
+				$this->nhathau->id = $id;
+				$this->nhathau->motachitiet = $motachitiet;
+				$this->nhathau->type = $type;
+				$this->nhathau->gpkd_cmnd = $gpkd_cmnd;
+				$this->nhathau->diemdanhgia = $diemdanhgia;
+				$this->nhathau->displayname = $displayname;
+				$this->nhathau->nhathau_alias = $nhathau_alias;
+				$this->nhathau->status = 1;
+				$this->nhathau->update();
+			}
+			$this->setModel("nhathaulinhvuc");
+			if(isset($_POST["nhathau_linhvuc"])) {
+				$lstLinhvuc = $_POST["nhathau_linhvuc"];
+				foreach($lstLinhvuc as $linhvuc_id) {
+					$this->nhathaulinhvuc->id=null;
+					$this->nhathaulinhvuc->nhathau_id=$id;
+					$this->nhathaulinhvuc->linhvuc_id=$linhvuc_id;
+					$this->nhathaulinhvuc->save();
+				}
+			} else {
+				$this->nhathaulinhvuc->id=null;
+				$this->nhathaulinhvuc->nhathau_id=$id;
+				$this->nhathaulinhvuc->linhvuc_id= 'khac';
+				$this->nhathaulinhvuc->save();
+			}
 			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -71,7 +119,7 @@ class NhathauController extends VanillaController {
 	function exist($id=null){
 		$this->checkAdmin(true);
 		if($id==null)
-			die("ERROR_SYSTEM");
+			die("0");
 		$this->nhathau->id = $id;
 		$data = $this->nhathau->search();
 		if(empty($data)) {

@@ -44,6 +44,7 @@
 		</div>
 		<form id="formNhathau">
 		<input type="hidden" name="nhathau_id" id="nhathau_id" value=""/>
+		<input type="hidden" name="account_id" id="account_id" value=""/>
 		<input type="hidden" name="nhathau_alias" id="nhathau_alias" value=""/>
 		<fieldset>
 			<legend><span style="font-weight:bold;">Thông Tin Nhà Thầu</span></legend>
@@ -140,7 +141,7 @@
 		  <div align="center">
 			<div><a href="#"><img src="<?php echo BASE_PATH ?>/public/images/icons/add_icon.png" alt="big_settings" width="25" height="26" border="0" /></a></div>
 					<span class="toplinks">
-			  <a href="#" onclick="showDialogWidget()"><span class="toplinks">TẠO NHÀ THẦU</span></a></span><br />
+			  <a href="#" onclick="showDialogNhathau()"><span class="toplinks">TẠO NHÀ THẦU</span></a></span><br />
 		  </div>
 		</div>
 	</div>
@@ -186,6 +187,7 @@
 	};
 	function fillFormValues(cells) { 		
 		byId("nhathau_id").value = $.trim($(cells.td_id).text());
+		byId("account_id").value = $.trim($(cells.td_account_id).text());
 		byId("account_username").value = $.trim($(cells.td_username).text());
 		byId("nhathau_displayname").value = $.trim($(cells.td_displayname).text());
 		byId("nhathau_gpkd_cmnd").value = $.trim($(cells.td_gpkd_cmnd).text());
@@ -196,6 +198,7 @@
 	}
 	function setRowValues(cells) {
 		$(cells.td_id).text(byId("nhathau_id").value);
+		$(cells.td_account_id).text(byId("account_id").value);
 		$(cells.td_username).text(byId("account_username").value);
 		$(cells.td_displayname).text(byId("nhathau_displayname").value);
 		$(cells.td_gpkd_cmnd).text(byId("nhathau_gpkd_cmnd").value);
@@ -278,7 +281,7 @@
 	var isUpdate = false;
 	function saveNhathau() {
 		checkValidate=true;
-		validate(['require'],'nhathau_id',["Vui lòng nhập username nhà thầu!"]);
+		validate(['require'],'account_username',["Vui lòng nhập username nhà thầu!"]);
 		validate(['number'],'nhathau_diemdanhgia',["Vui lòng nhập kiểu số!"]);
 		if(checkValidate == false)
 			return;

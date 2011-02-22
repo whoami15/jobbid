@@ -244,6 +244,7 @@ class DuanController extends VanillaController {
 	//User functions
 	
 	function tao_du_an_buoc_1($duan_id=null) {
+		$isbid = 1;
 		if($duan_id != null) {
 			$this->duan->id = $duan_id;
 			$this->duan->where(' and active=-1');
@@ -252,7 +253,6 @@ class DuanController extends VanillaController {
 				$isbid = $data['duan']['isbid'];
 		}
 		$this->set('duan_id',$duan_id);
-		$isbid = 1;
 		$this->set('isbid',$isbid);
 		$this->set('title','Jobbid.vn - Tạo Dự Án');
 		$this->_template->render();	
@@ -431,7 +431,7 @@ class DuanController extends VanillaController {
 				$this->activecode->active_code = $active_code;
 				$this->activecode->insert();
 				//Send active code
-				/* $linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
+				$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
 				$linkactive = "<a href='$linkactive'>$linkactive</a>";
 				global $cache;
 				$content = $cache->get('mail_verify');
@@ -440,7 +440,7 @@ class DuanController extends VanillaController {
 				$content = str_replace($search, $replace, $content);
 				include (ROOT.DS.'library'.DS.'sendmail.php');
 				$mail = new sendmail();
-				$mail->send($email,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content); */
+				$mail->send($email,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
 			}
 			$this->setModel('data');
 			$sIndex = "$tenduan ".strip_tags($thongtinchitiet);
