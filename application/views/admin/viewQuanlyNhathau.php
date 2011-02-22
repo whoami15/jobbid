@@ -56,6 +56,17 @@
 				</thead>
 				<tbody>
 					<tr>
+						<td width="75px" align="right">Username :</td>
+						<td align="left">
+							<input type="text" name="account_username" id="account_username" style="width:90%"  tabindex="1"/>
+						</td>	
+						<td width="130px" align="right">Mật khẩu :</td>
+						<td align="left">
+							<input type="password" name="account_password" id="account_password" style="width:90%" tabindex="2"/>
+						</td>
+						
+					</tr>
+					<tr>
 						<td width="90px" align="right">Tên hiển thị :</td>
 						<td width="200px" align="left">
 							<input maxlength="255" type="text" name="nhathau_displayname" id="nhathau_displayname" style="width:90%" tabindex=1 value=""/>
@@ -64,7 +75,8 @@
 						<td align="left">
 							<input maxlength="255" type="text" name="nhathau_gpkd_cmnd" id="nhathau_gpkd_cmnd" style="width:90%" tabindex=1 value=""/>
 						</td>
-					</tr><tr>
+					</tr>
+					<tr>
 						<td align="right">Loại :</td>
 						<td align="left">
 							<select name="nhathau_type" id="nhathau_type">
@@ -77,6 +89,32 @@
 							<input type="text" name="nhathau_diemdanhgia" id="nhathau_diemdanhgia" style="width:30%"/>
 						</td>
 					</tr>	
+					<tr>
+						<td align="right">
+							Lĩnh vực :
+						</td>
+						<td align="left" colspan="3">
+							<table id="table_chonlinhvuc" width="99%">
+							<tbody>
+							<?php
+							$i = 0;
+							while($i<count($lstLinhvuc)) {
+								$linhvuc = $lstLinhvuc[$i];
+								echo "<tr>";
+								echo "<td style='width:50%'><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+								$i++;
+								if($i<count($lstLinhvuc)) {
+									$linhvuc = $lstLinhvuc[$i];
+									echo "<td><input type='checkbox' name='nhathau_linhvuc[]' value='".$linhvuc["linhvuc"]["id"]."'>".$linhvuc["linhvuc"]["tenlinhvuc"]."</td>";
+									$i++;
+								}
+								echo "</tr>";
+							}
+							?>
+							</tbody>
+						</table>
+						</td>
+					</tr>
 					<tr>
 						<td align="left" colspan="4">
 							Mô tả chi tiết :(<a href="#" onclick="showImagesPanel()">Mở Gallery</a>)<br/>
@@ -97,6 +135,15 @@
 	<div id="mask"></div>
 </div>
 <div style="padding-top:10px;font-size:14px" >
+	<div style="text-align:left;padding:10px;width:90%;float:left;">
+		<div id="top_icon" style="padding-top:0;">
+		  <div align="center">
+			<div><a href="#"><img src="<?php echo BASE_PATH ?>/public/images/icons/add_icon.png" alt="big_settings" width="25" height="26" border="0" /></a></div>
+					<span class="toplinks">
+			  <a href="#" onclick="showDialogWidget()"><span class="toplinks">TẠO NHÀ THẦU</span></a></span><br />
+		  </div>
+		</div>
+	</div>
 	<fieldset>
 		<legend>Danh Sách Nhà Thầu</legend>
 		<div id="datagrid">
@@ -139,6 +186,7 @@
 	};
 	function fillFormValues(cells) { 		
 		byId("nhathau_id").value = $.trim($(cells.td_id).text());
+		byId("account_username").value = $.trim($(cells.td_username).text());
 		byId("nhathau_displayname").value = $.trim($(cells.td_displayname).text());
 		byId("nhathau_gpkd_cmnd").value = $.trim($(cells.td_gpkd_cmnd).text());
 		byId("nhathau_type").value = $.trim($(cells.td_type).text());
@@ -148,6 +196,7 @@
 	}
 	function setRowValues(cells) {
 		$(cells.td_id).text(byId("nhathau_id").value);
+		$(cells.td_username).text(byId("account_username").value);
 		$(cells.td_displayname).text(byId("nhathau_displayname").value);
 		$(cells.td_gpkd_cmnd).text(byId("nhathau_gpkd_cmnd").value);
 		$(cells.td_type).text(byId("nhathau_type").value);
@@ -163,6 +212,21 @@
 		objediting = tr;			
 		fillFormValues(cells);
 		block("#dialogNhathau #dialog");
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url: url("/nhathau/getLinhvucByNhathau/"+byId("nhathau_id").value),
+			success: function(data){
+				if(data == AJAX_ERROR_SYSTEM) {
+					return;
+				}
+				var jsonObj = eval( "(" + data + ")" );
+				for(i=0;jsonObj[i]!=null;i++) {
+					$('input[value='+jsonObj[i].id+']').attr('checked', true);
+				}	
+			},
+			error: function(data){ unblock("#dialogNhathau #dialog");alert (data);}	
+		});
 		$.ajax({
 			type: "GET",
 			cache: false,

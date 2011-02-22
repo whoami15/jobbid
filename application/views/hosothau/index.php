@@ -171,7 +171,7 @@
 		location.href = url('/duan/view/<?php echo $dataDuan["duan"]["id"]."/".$dataDuan["duan"]["alias"] ?>');
 	}
 	function redirectMakeProfile() {
-		location.href = url('/nhathau/view');
+		location.href = url('/nhathau/add');
 	}
 	$(document).ready(function() {
 		//document.title = "Gửi Hồ Sơ Thầu - "+document.title;

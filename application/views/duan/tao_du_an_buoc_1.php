@@ -6,9 +6,8 @@
 	}
 </style>
 <div id="content" style="width:100%;">
-	<form id="formDuan" method="POST" action="<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2" style="padding-top: 0px; padding-bottom: 10px;" >
+	<form id="formDuan" method="POST" action="<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2/<?php echo $duan_id?>" style="padding-top: 0px; padding-bottom: 10px;" >
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án - Bước 1</div>
-		<input type="hidden" name="duan_alias" id="duan_alias" value="" />
 		<center>
 		<div class="divTable" style="width:100%">
 			<div class="tr" style="border:none">

@@ -91,6 +91,25 @@ class NhathauController extends VanillaController {
 			$this->_template->renderPage();	
 		}
 	}
+	function getLinhvucByNhathau($nhathau_id) {
+		//$this->checkLogin(true);
+		if($nhathau_id==null)
+			die("ERROR_SYSTEM");
+		$this->setModel("nhathaulinhvuc");
+		$data = $this->nhathaulinhvuc->custom("select linhvuc.id from nhathaulinhvucs as nhathaulinhvuc join linhvucs as linhvuc on nhathaulinhvuc.linhvuc_id = linhvuc.id where nhathau_id = '".mysql_real_escape_string($nhathau_id)."'");
+		$jsonResult = "{";
+		$i=0;
+		$len = count($data);
+		while($i<$len) {
+			$linhvuc = $data[$i];
+			$jsonResult = $jsonResult."$i:{'id':'".$linhvuc["linhvuc"]["id"]."'}";
+			if($i < $len-1)
+				$jsonResult = $jsonResult.",";
+			$i++;
+		}
+		$jsonResult = $jsonResult."}";
+		print($jsonResult);
+	}
 	//User functions
 	function checkLogin($isAjax=false) {
 		if(!isset($_SESSION['account'])) {

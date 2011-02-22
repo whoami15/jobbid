@@ -17,7 +17,7 @@
 <div id="content" style="width:100%;">
 	<form id="formnhathau" style="padding-top: 0px; padding-bottom: 10px;">
 	<input type="hidden" name="nhathau_alias" id="nhathau_alias" value="" />
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo hồ sơ nhà thầu</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo hồ sơ ứng viên</div>
 		<center>
 		<div class="divTable" style="width:99%;padding-top:5px;">
 			<div class="tr" style="border:none">
@@ -111,8 +111,7 @@
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td">
-				<input value="Lưu" type="submit" id="btsubmit" tabindex="1">
-				<input onclick="doReset()" value="Reset" type="button"tabindex="2">
+				<input value="Tạo Hồ Sơ" type="submit" id="btsubmit" tabindex="1">
 				</div>
 			</div>
 		</center>

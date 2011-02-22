@@ -56,7 +56,7 @@
 				</tr>
 				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 					<td>#</td>
-					<td>Tên nhà thầu</td>
+					<td>Tên ứng viên</td>
 					<td style="width:100px">Đánh giá</td>
 				</tr>
 			</thead>

@@ -10,7 +10,7 @@
 <div id="content" style="width:100%;">
 	<form id="formnhathau" style="padding-top: 0px; padding-bottom: 10px;">
 	<input type="hidden" name="nhathau_alias" id="nhathau_alias" value="" />
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Chỉnh sửa hồ sơ nhà thầu</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Chỉnh sửa hồ sơ ứng viên</div>
 		<?php
 		if(isset($nhathau)) {
 		?>
@@ -251,7 +251,7 @@
 							return;
 						}
 						if(data == "ERROR_MAKEPROFILE") {
-							message("Lỗi! Bạn chưa tạo hồ sơ nhà thầu!",0);
+							message("Lỗi! Bạn chưa tạo hồ sơ ứng viên!",0);
 							return;
 						}
 						if(data == "ERROR_LOCKED") {
@@ -277,8 +277,8 @@
 		<?php
 		} else {
 		?>
-		Hiện tại bạn chưa có hồ sơ nhà thầu!<br/>
-		Nếu bạn là nhà thầu dự án, click <a class="link" href="<?php echo BASE_PATH ?>/nhathau/add"/>vào đây</a> để tạo hồ sơ nhà thầu.
+		Hiện tại bạn chưa có hồ sơ ứng viên!<br/>
+		Nếu bạn muốn tham gia đấu thầu các dự án trên Jobbid.vn, vui lòng click <a class="link" href="<?php echo BASE_PATH ?>/nhathau/add"/>vào đây</a> để tạo hồ sơ ứng viên.
 		<?php
 		}
 		?>

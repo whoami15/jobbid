@@ -14,6 +14,7 @@
 </style>
 <div id="content" style="width:100%;">
 	<form id="formDuan" style="padding-top: 0px; padding-bottom: 10px;" >
+	<input type="hidden" name="duan_id" id="duan_id" value="<?php echo $duan_id?>" />
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tạo dự án - Bước 2</div>
 		<input type="hidden" name="duan_alias" id="duan_alias" value="<?php echo $alias ?>" />
 		<center>
@@ -101,7 +102,7 @@
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td">
-				<input id="btsubmit" type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_1'" value="Trở Lại Bước 1"  tabindex=9>
+				<input id="btsubmit" type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_1/<?php echo $duan_id?>'" value="Trở Lại Bước 1"  tabindex=9>
 				<input id="btsubmit" type="button" onclick="doSubmit()" value="Qua Bước 3"  tabindex=9>
 				</div>
 			</div>
@@ -162,7 +163,7 @@
 					return;
 				}
 				if(data == AJAX_DONE) {
-					location.href = url("/duan/tao_du_an_buoc_3");
+					location.href = url("/duan/tao_du_an_buoc_3/<?php echo $duan_id?>");
 				} else {
 					message("Có lỗi xảy ra, vui lòng thử lại!",0);
 				}

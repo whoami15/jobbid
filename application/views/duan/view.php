@@ -190,7 +190,7 @@
 		loadListHosothau(page);
 	};
 	function redirectMakeProfile() {
-		location.href = url('/nhathau/view');
+		location.href = url('/nhathau/add');
 	}
 	function guihosothau(duan_id) {
 		location.href = "#top";
@@ -211,7 +211,7 @@
 					return;
 				}
 				if(data == "ERROR_MAKEPROFILE") {
-					message("Lỗi, bạn chưa tạo hồ sơ nhà thầu! Đang chuyển đến trang tạo hồ sơ...",0);
+					message("Lỗi, bạn chưa tạo hồ sơ ứng viên! Đang chuyển đến trang tạo hồ sơ...",0);
 					setTimeout("redirectMakeProfile()",redirect_time);
 					return;
 				}

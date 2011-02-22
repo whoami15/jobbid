@@ -22,6 +22,7 @@
 	<center>
 	<div class="divTable" style="width:100%">
 		<form id="formDuan" >
+		<input type="hidden" name="duan_id" id="duan_id" value="<?php echo $duan_id?>" />
 		<input type="hidden" name="duan_filedinhkem" id="duan_filedinhkem" value="0"/>
 		<div class="tr" style="border:none">
 			<div class="td" id="msg"></div>
@@ -49,18 +50,14 @@
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">File đính kèm :</div>
 			<div class="td tdInput">
-			<input type="file" name="fileupload" id="fileupload" onchange="doUploadFile()" tabindex=5/> (Size < 2Mb)
-			</div>
-		</div>
-		<div style="border:none">
-			<div class="td tdLabel" style="text-align:right;">&nbsp;</div>
-			<div class="td tdInput" id="fileuploaded">
+			<span id="div_filedinhkem"><input type="file" name="fileupload" id="fileupload" onchange="doUploadFile()" tabindex=5/> (Size < 2Mb)</span>
+			<span id="fileuploaded"></span>
 			</div>
 		</div>
 		</form>
 		<div class="tr" style="border:none">
 			<div class="td">
-			<input type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2'" value="Trở Lại Bước 2"  tabindex=9>
+			<input type="button" onclick="location.href='<?php echo BASE_PATH?>/duan/tao_du_an_buoc_2/<?php echo $duan_id?>'" value="Trở Lại Bước 2"  tabindex=9>
 			<input id="btsubmit" type="button" onclick="doSubmit()" value="Hoàn Tất"  tabindex=9>
 			</div>
 		</div>
@@ -81,6 +78,7 @@
 		location.href = url("/");
 	}
 	function doUploadFile() {
+		$("#div_filedinhkem").hide();
 		$("#fileuploaded").html("Uploading...");
 		$('#formUpload').submit();
 	}
@@ -170,6 +168,7 @@
 	}
 	function removechosen(idchosen) {
 		$("#chosen_"+idchosen).remove();
+		$("#div_filedinhkem").show();
 	}
 	$(document).ready(function() {
 		//document.title = "Tạo Dự Án - "+document.title;
@@ -209,23 +208,28 @@
 				data = data.body.childNodes[0].data;	
 				$("#fileuploaded").html('');
 				if(data == "ERROR_FILESIZE") {
+					$("#div_filedinhkem").show();
 					message("File upload phải nhỏ hơn 2Mb!",0);
 					return;
 				}
 				if(data == AJAX_ERROR_WRONGFORMAT) {
+					$("#div_filedinhkem").show();
 					message("Upload file sai định dạng!",0);
 					return;
 				}
 				if(isNaN(data) == true) {
+					$("#div_filedinhkem").show();
 					message("Lỗi hệ thống, vui lòng thử lại sau!",0);
 				} else {
 					byId("msg").innerHTML="";
 					byId("duan_filedinhkem").value = data;
 					idchosen = "chosen_"+data;
+					$("#div_filedinhkem").hide();
 					$("#fileuploaded").html('<div style="display: block;" id="'+idchosen+'" ") class="chosen-container"><span class="chosen">'+byId("fileupload").value+'<img onclick="removechosen('+data+')" class="btn-remove-chosen" src="<?php echo BASE_PATH?>/public/images/icons/close_8x8.gif"/></span></div>');
 				} 
 			},
 			error : function(data) {
+				$("#div_filedinhkem").show();
 				alert(data);
 			} 
 		});

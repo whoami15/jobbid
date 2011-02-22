@@ -1,5 +1,5 @@
 <div id="content" style="width:100%">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin nhà thầu</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Thông tin ứng viên</div>
 	<table class="center" width="100%">
 		<tbody>
 			<tr style="height:30px">
@@ -87,7 +87,7 @@
 			</tr>
 			<tr style="height:30px">
 				<td align="left">
-				<b>Mời nhà thầu này tham gia thầu dự án của bạn trên JobBid:</b><br/>
+				<b>Mời ứng viên này tham gia thầu dự án của bạn trên JobBid:</b><br/>
 				<ul style='padding-left:15px;margin-left:15px' id="ul_myactivityproject">
 					Hiện bạn chưa có dự án nào trên JobBid.vn, click chuột <a href="javascript:location.href=url('/duan/add')" class="link">vào đây</a> để tạo dự án mới cho bạn (<span style="color:red">hoàn toàn miễn phí</span>)
 				</ul>
@@ -120,7 +120,7 @@
 </div>
 <div id="dialogVerify" title="Xác Nhận Mời Thầu" style="text-align:left">
 	<div id="msg"></div>
-	Bạn muốn mời nhà thầu <b><?php echo $nhathau["displayname"] ?></b> tham gia đấu thầu dự án <b><span id="xacnhanmoithau_tenduan"></span></b>?<br/><br/>
+	Bạn muốn mời ứng viên <b><?php echo $nhathau["displayname"] ?></b> tham gia đấu thầu dự án <b><span id="xacnhanmoithau_tenduan"></span></b>?<br/><br/>
 	<center>
 	<form id="formMoithau">
 	<input type="hidden" name="moithau_duan_id" id="moithau_duan_id" value="" />
@@ -200,11 +200,11 @@
 					return;
 				}
 				if(data == "ERROR_INVITED") {
-					message("Bạn đã mời nhà thầu này rồi!",0);
+					message("Bạn đã mời ứng viên này rồi!",0);
 					return;
 				}
 				if(data == 'DONE') {
-					message("Đã gửi thư mời thầu đến nhà thầu này!",1);
+					message("Đã gửi thư mời thầu đến ứng viên này!",1);
 				} else {
 					$('#btsubmit').removeAttr('disabled');
 					message("Hệ thống đang quá tải, vui lòng thử lại sau!",0);
