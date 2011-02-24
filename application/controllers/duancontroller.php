@@ -453,7 +453,8 @@ class DuanController extends VanillaController {
 			$this->duan->duan_email = $email;
 			$this->duan->duan_sodienthoai = $sodienthoai;
 			$this->duan->thongtinchitiet = $thongtinchitiet;
-			$this->duan->file_id = $file_id;
+			if($file_id!=0)
+				$this->duan->file_id = $file_id;
 			$this->duan->account_id = $account_id;
 			$this->duan->prior = '0';
 			$currentDate = GetDateSQL();
@@ -467,6 +468,7 @@ class DuanController extends VanillaController {
 			if(isset($_SESSION['account']) && $_SESSION['account']['active']==1) {
 				$this->duan->active = 1;
 			}
+			//die($email);
 			$this->duan->update();
 			if(isset($_SESSION['account'])) {
 				if($_SESSION['account']['active']==1)

@@ -42,7 +42,7 @@
 		<div class="tr" style="border:none;text-align:left">
 			<div class="td">
 			Chi tiết công việc:<br/>
-			<textarea id="duan_thongtinchitiet" name="duan_thongtinchitiet" style="border:none;" rows="15" tabindex=8></textarea>
+			<textarea id="duan_thongtinchitiet" name="duan_thongtinchitiet" style="width:100%;" spellcheck="false" rows="15" tabindex=8></textarea>
 			</div>
 		</div>
 		</form>
@@ -152,6 +152,7 @@
 	}
 	var timer1;
 	function doSubmit() {
+		//alert($("#duan_thongtinchitiet").html());return;
 		$("#dialogIntro").dialog("close");
 		clearTimeout(timer1);
 		location.href = "#top";
@@ -172,7 +173,7 @@
 	}
 	$(document).ready(function() {
 		//document.title = "Tạo Dự Án - "+document.title;
-		$("#duan_thongtinchitiet").css("width","100%");
+		/* $("#duan_thongtinchitiet").css("width","100%");
 		$("#duan_thongtinchitiet").htmlarea({
 				toolbar: [
 					["html"], ["bold", "italic", "underline"],
@@ -199,7 +200,7 @@
 					$(document.body).css('background-color', color);
 				}
 			});
-		});
+		}); */
 		$('#formUpload').ajaxForm({ 
 			url:        url("/file/upload"), 
 			type:      "post",
