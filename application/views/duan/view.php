@@ -27,7 +27,14 @@
 				</tr>
 				<tr style="height:30px">
 					<td align="left" >
-					<b>Chi phí : </b><?php echo $html->FormatMoney($dataDuan["duan"]["costmin"])?> &#8250 <?php echo $html->FormatMoney($dataDuan["duan"]["costmax"])?> (VNĐ)
+					<b>Chi phí : </b>
+					<?php 
+					if($dataDuan["duan"]["costmax"]==0)
+						echo 'Thỏa thuận';
+					else {
+						echo $html->FormatMoney($dataDuan["duan"]["costmin"]).' &#8250 '.$html->FormatMoney($dataDuan["duan"]["costmax"]).' (VNĐ)';
+					}
+					?>
 					</td>
 					<td align="left" >
 					<b>Giá thầu trung bình : </b><?php echo $html->FormatMoney($dataDuan["duan"]["averagecost"])?> VNĐ

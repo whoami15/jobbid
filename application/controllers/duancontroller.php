@@ -536,7 +536,7 @@ class DuanController extends VanillaController {
 					$this->duanskill->groupBy('duan_id');
 					$this->duanskill->setPage(1);
 					$this->duanskill->setLimit(5);
-					$this->duanskill->where(" and ($strWhere) and duan_id<>$id ");
+					$this->duanskill->where(" and ($strWhere) and duan_id<>$id and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now()");
 					$data = $this->duanskill->search('duan.id,alias,tenduan,count(*) n');
 					$this->set('relatedProjects',$data);
 				}
