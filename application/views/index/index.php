@@ -1,5 +1,5 @@
 <div id="content" style="width:100%;">
-	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px;text-align:center" id="content_title">How it works!</div>
+	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px;text-align:center" id="content_title">CÁCH THỨC HOẠT ĐỘNG</div>
 	<div style="padding:20px;padding-bottom:5px">
 	<img alt="project" style="cursor:pointer" id="help_project" src="<?php echo BASE_PATH ?>/public/images/icons/project.png"/>
 	<img alt="project" src="<?php echo BASE_PATH ?>/public/images/icons/arrow.png"/>

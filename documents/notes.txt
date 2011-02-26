@@ -13,3 +13,6 @@
 The title tag is too long. It should be 70 characters or less, including spaces.
 The meta description is too long. It should have no more than 250 characters, including spaces.
 The home page for this website should have an H1 heading.
+
+
+http://www.sctv.com.vn/showpage.aspx?pid=2&lid=1&eid=385

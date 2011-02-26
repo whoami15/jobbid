@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title><?php echo isset($title)?$title:'Tìm Việc Làm Thêm - Việc Bán Thời Gian - Làm Ngoài Giờ - Làm Parttime' ?></title>
+<title><?php echo isset($title)?$title:'Tìm Việc Làm Thêm - Việc Bán Thời Gian - Sàn Việc Làm - Làm Parttime' ?></title>
 <link rel="shortcut icon" href="<?php echo BASE_PATH ?>/public/css/front/images/favico.ico" type="image/x-icon"/>
 <meta name="google-site-verification" content="nwi63Vcpe4pc79r9h9D_VYVj3CmiNqto9eIt4jUshB0" />
 <meta content="Vietnamese, Vietnam" name="language">
 <meta name="robots" content="index, follow"/>
-<meta content="Jobbid.vn là nơi tin cậy để bạn có thể gửi dự án đấu giá công khai, qua đó tìm được ứng viên thích hợp để thực hiện dự án của bạn.Các bạn có thể tìm kiếm được những công việc bán thời gian (parttime) hoặc các dự án nhỏ phù hợp với khả năng của bạn." name="description"/>
-<meta content="jobbid.vn,viec ban thoi gian,du an, cong viec,lam them tai nha,dau thau,dau thau du an, dau thau cong viec, thau du an, thau cong viec,tim viec lam them, lam them, viec parttime,cong viec ban thoi gian,tim nha thau,tim viec,viec lam online, viec lam ban thoi gian, đấu giá dự án, đấu giá công việc, thầu dự án, thầu công việc, tìm việc làm thêm,làm thêm,việc parttime,công việc tại nhà,công việc bán thời gian,tìm nhà thầu,dự án,công việc, đấu giá,tìm việc,việc làm onlien,việc làm bán thời gian,làm thêm tại nhà, làm thêm online, làm thêm cho sinh viên, làm thêm trên mạng,việc bán thời gian" name="keywords"/>
+<meta content="Jobbid.vn là sàn việc làm để bạn có thể gửi dự án đấu giá công khai, qua đó tìm được ứng viên thích hợp để thực hiện dự án của bạn.Các bạn có thể tìm kiếm được những công việc bán thời gian (parttime) hoặc các dự án nhỏ phù hợp với khả năng của bạn." name="description"/>
+<meta content="jobbid.vn,sàn việc làm,san viec lam,viec ban thoi gian,du an, cong viec,lam them tai nha,dau thau,dau thau du an, dau thau cong viec, thau du an, thau cong viec,tim viec lam them, lam them, viec parttime,cong viec ban thoi gian,tim nha thau,tim viec,viec lam online, viec lam ban thoi gian, đấu giá dự án, đấu giá công việc, thầu dự án, thầu công việc, tìm việc làm thêm,làm thêm,việc parttime,công việc tại nhà,công việc bán thời gian,tìm nhà thầu,dự án,công việc, đấu giá,tìm việc,việc làm onlien,việc làm bán thời gian,làm thêm tại nhà, làm thêm online, làm thêm cho sinh viên, làm thêm trên mạng,việc bán thời gian" name="keywords"/>
 <meta content="jobbid.vn" name="author"/>
 <meta content="jobbid.vn" name="copyright"/>
 <link href="<?php echo BASE_PATH ?>/public/css/front/jquery-ui.css" rel="stylesheet" type="text/css" />

@@ -143,6 +143,10 @@
           <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyHosothau">Quản Lý Hồ Sơ Thầu</a></td>
         </tr>
+		<tr>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
+          <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewCongcuPR">Công Cụ PR</a></td>
+        </tr>
         <tr>
           <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/statistics.png" alt="statistics" width="14" height="16" /></td>
           <td class="navigation"><a href="#">Statistics</a></td> <!--// Statistics -->

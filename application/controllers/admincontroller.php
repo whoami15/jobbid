@@ -93,6 +93,10 @@ class AdminController extends VanillaController {
 		$this->checkAdmin(false);
 		$this->_template->renderAdminPage(); 
 	}
+	function viewCongcuPR() {
+		$this->checkAdmin(false);
+		$this->_template->renderAdminPage(); 
+	}
 	function settings() {
 		$this->checkAdmin(false);
 		global $cache;

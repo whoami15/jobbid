@@ -86,6 +86,7 @@
 		$("#menu "+menuid).addClass("current");
 		$("input:submit, input:button", "body").button();
 		message("Xác nhận đăng ký thành công",1);
+		boundTip("account_password","Bạn sẽ dùng mật khẩu này để đăng nhập vào Jobbid.vn (mật khẩu này sẽ được mã hóa)");
 		//alert($("#account_username").left());
 	});
 </script>
