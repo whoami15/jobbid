@@ -4,8 +4,8 @@ class sendmail {
 		//echo 'sendmail!!';
 		require_once ROOT . DS . 'library' . DS .'class.phpmailer.php';
 		$mail             = new PHPMailer();
-		//$mail->CharSet = "UTF-8";
-		//$mail->SetLanguage('en', $dirname.'/phpmailer/language/');
+		$mail->CharSet = "UTF-8";
+		$mail->SetLanguage('vi', ROOT . DS . 'library' .'/phpmailer/language/');
 		$mail->IsSMTP();
 		$mail->SMTPAuth   = true;                  // enable SMTP authentication
 		$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier

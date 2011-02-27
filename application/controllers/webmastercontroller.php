@@ -144,7 +144,7 @@ class WebmasterController extends VanillaController {
 			$content = str_replace($search, $replace, $content);
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
+			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content);
 			$_SESSION['sendactivecode'] = $_SESSION['sendactivecode'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {

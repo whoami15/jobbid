@@ -251,7 +251,7 @@ class HosothauController extends VanillaController {
 			$this->setModel('sendmail');
 			$this->sendmail->id = null;
 			$this->sendmail->to = $employerMail;
-			$this->sendmail->subject = 'Du An Cua Ban Tren JobBid Vua Co Nguoi Dat Thau!!!';
+			$this->sendmail->subject = 'JobBid.vn - Dự Án Của Bạn Vừa Có Người Đặt Thầu!';
 			$this->sendmail->content = $content;
 			$this->sendmail->insert();
 			//Update bidcount cua du an
@@ -430,7 +430,7 @@ class HosothauController extends VanillaController {
 				$this->setModel('sendmail');
 				$this->sendmail->id = null;
 				$this->sendmail->to = $freelancerMail;
-				$this->sendmail->subject = 'Chuc Mung Ban Da Thang Thau Du An Tren JobBid.vn!!!';
+				$this->sendmail->subject = 'JobBid.vn - Chúc Mừng Bạn Đã Thắng Thầu!!!';
 				$this->sendmail->content = $content;
 				$this->sendmail->insert();
 				//Cap nhat so du an cua linh vuc

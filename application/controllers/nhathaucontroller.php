@@ -607,7 +607,7 @@ class NhathauController extends VanillaController {
 			//Gui mail_moithau
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($email,'Ban Duoc Moi Thau 1 Du An Tren JobBid.vn!!!',$content);
+			$mail->send($email,'Bạn Được Mời Thầu 1 Dự Án Trên JobBid.vn!',$content);
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

@@ -56,9 +56,13 @@ class TestController extends VanillaController {
 		$email= trim(substr($contents, $start, $end-$start));
 		echo $email; */
 		//$_COOKIE['username'] = 'hello';
-		setcookie('duan_id', 34);
-		$_SESSION['submit_login_times'] = null;
+		//setcookie('duan_id', 34);
+		//$_SESSION['submit_login_times'] = null;
 		//echo $_COOKIE['username'];
+		include (ROOT.DS.'library'.DS.'sendmail.php');
+		$mail = new sendmail();
+		$mail->send('nclong87@gmail.com','Mail Xác Nhận Đăng Ký Tài Khoản JobBid.vn','Tôi là Nguyễn Chí Long');
+		echo 'DONE';
 	}
 	function rmvsession($session) {
 		$_SESSION[$session] = null;

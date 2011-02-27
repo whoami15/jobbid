@@ -208,7 +208,7 @@ class AccountController extends VanillaController {
 			$content = str_replace($search, $replace, $content);
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
+			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content);
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -320,7 +320,7 @@ class AccountController extends VanillaController {
 			$content = str_replace($search, $replace, $content);
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'Mail Xac Nhan Khoi Phuc Mat Khau Dang Nhap jobbid.vn',$content);
+			$mail->send($username,'JobBid.vn - Mail Xác Nhận Khôi Phục Mật Khẩu Đăng Nhập!',$content);
 			$_SESSION['sendresetpass'] = $_SESSION['sendresetpass'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {

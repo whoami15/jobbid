@@ -440,7 +440,7 @@ class DuanController extends VanillaController {
 				$content = str_replace($search, $replace, $content);
 				include (ROOT.DS.'library'.DS.'sendmail.php');
 				$mail = new sendmail();
-				$mail->send($email,'Mail Xac Nhan Dang Ky Tai Khoan Tai JobBid.vn',$content);
+				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content);
 			}
 			$this->setModel('data');
 			$sIndex = "$tenduan ".strip_tags($thongtinchitiet);
