@@ -66,7 +66,7 @@
 			</tbody>
 		</table>
 		</form>
-		<div id="tabs-1-result"></div>
+		<div id="tabs_1_result"></div>
 	</div>
 	<div id="tabs-2">
 		
@@ -91,6 +91,42 @@
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
 			byId("msg2").innerHTML = str;
 		}
+	}
+	function doSend1() {
+		dataString = $("#formMoinhatuyendung").serialize();
+		//alert(dataString);return;
+		$("#tabs_1_result").html("");
+		block("#tabs-1");	
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url : url("/admin/sendMailEmployer&"),
+			data: dataString,
+			success: function(data){
+				
+				unblock("#tabs-1");	
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				var jsonObj = eval( "(" + data + ")" );
+				var result = "";
+				for(i=0;jsonObj[i]!=null;i++) {
+					if(jsonObj[i].result=="Ok")
+						result+=jsonObj[i].email+" : <font color='green'>"+jsonObj[i].result+"</font><br/>";
+					else
+						result+=jsonObj[i].email+" : <font color='red'>"+jsonObj[i].result+"</font><br/>";
+				}
+				//alert(result);
+				byId("email1").value = "";
+				byId("email2").value = "";
+				byId("email3").value = "";
+				byId("email4").value = "";
+				byId("email5").value = "";
+				$("#tabs_1_result").html(result);
+			},
+			error: function(data){ unblock("#tabs-1");alert (data);}	
+		});
 	}
 	function selectMailtype(id) {
 		byId("msg2").innerHTML="";

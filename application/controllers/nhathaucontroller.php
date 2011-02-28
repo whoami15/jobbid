@@ -240,7 +240,7 @@ class NhathauController extends VanillaController {
 		$this->_template->render();	
 	}
 	function add() {
-		$_SESSION['redirect_url'] = getUrl();
+		//$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$this->checkActive(false,'Bạn cần xác nhận tài khoản mới có thể tạo hồ sơ thầu!');
 		$this->checkLock();
@@ -512,7 +512,7 @@ class NhathauController extends VanillaController {
 	function doChecknhathau() {
 		$this->checkLogin(true);
 		$this->checkActive(true);
-		$this->checkNhathau(true);
+		//$this->checkNhathau(true);
 		$this->checkLock(true);
 		$duan_id = $_GET['duan_id'];
 		if($duan_id == null)

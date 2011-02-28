@@ -159,7 +159,12 @@
 		byId("display_file").innerHTML = display_file;
 	}
 	function redirectPage() {
-		location.href = url('/nhathau/view');
+		urlref = url('/nhathau/view');
+		<?php
+		if(isset($_SESSION['redirect_url']))
+			echo "urlref = '".$_SESSION['redirect_url']."';";
+		?>
+		location.href = urlref;
 	}
 	function validateFormnhathau(formData, jqForm, options) {
 		location.href = "#top";

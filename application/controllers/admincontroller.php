@@ -242,6 +242,69 @@ class AdminController extends VanillaController {
 		} else
 			echo 'ERROR_SYSTEM';
 	}
+	function sendMailEmployer() {
+		$this->checkAdmin(true);
+		$i=1;
+		$j=0;
+		$jsonResult = "{";
+		$validate = new Validate();
+		while($i<=5) {
+			$email = $_POST['email'.$i];
+			if($email!=null) {
+				//Send mail
+				$result = '';
+				$this->setModel('account');
+				if(!$validate->check_email($email))
+					$result = 'Email not valid!';
+				if($result == '') {
+					$strWhere = "AND username='".mysql_real_escape_string($email)."'";
+					$this->account->where($strWhere);
+					$account = $this->account->search('id');
+					if(empty($account)==false)
+						$result = 'Email has registed!';
+				}
+				if($result == '') {
+					try {
+						$result = 'Ok';
+						$this->account->id = null;
+						$this->account->username = $email;
+						$this->account->timeonline = 0;
+						$this->account->role = 2;
+						$this->account->active = 0;
+						$account_id = $this->account->insert(true);
+						$active_code = genString();
+						$this->setModel('activecode');
+						$this->activecode->id = null;
+						$this->activecode->account_id = $account_id;
+						$this->activecode->active_code = $active_code;
+						$this->activecode->insert();
+						//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
+						$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
+						$linkactive = "<a href='$linkactive'>$linkactive</a>";
+						global $cache;
+						$content = $cache->get('mail_moinhatuyendung');
+						$search  = array('#EMAIL#', '#LINKACTIVE#');
+						$replace = array($email, $linkactive);
+						$content = str_replace($search, $replace, $content);
+						$this->setModel('sendmail');
+						$this->sendmail->id = null;
+						$this->sendmail->to = $email;
+						$this->sendmail->subject = 'Mời Bạn Đăng Tin Tuyển Dụng Miễn Phí Trên JobBid.vn!!!';
+						$this->sendmail->content = $content;
+						$this->sendmail->insert();
+					} catch (Exception $e) {
+						$result = 'Error';
+					}
+				}
+				$jsonResult = $jsonResult."$j:{'email':'".$email."','result':'".$result."'},";
+				$j++;
+			}
+			$i++;
+		}
+		$jsonResult = substr($jsonResult,0,-1);
+		$jsonResult = $jsonResult."}";
+		print($jsonResult);
+	}
 	function afterAction() {
 
 	}

@@ -72,6 +72,8 @@
 								<option value="mail_win">Nhà thầu trúng thầu</option>
 								<option value="mail_lost">Nhà thầu trúng thầu hụt</option>
 								<option value="mail_moithau">Mời thầu</option>
+								<option value="mail_moinhatuyendung">Mời nhà tuyển dụng</option>
+								<option value="mail_moiungvien">Mời ứng viên</option>
 							</select>
 						</td>
 					</tr>

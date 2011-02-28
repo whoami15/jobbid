@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea-0.7.0.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
@@ -27,7 +28,7 @@
 				<div class="tr" style="border:none">
 					<div class="td tdLabel" style="text-align:right;">Giá thầu (<span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span>) :</div>
 					<div class="td tdInput">
-					<input maxlength=10 type="text" name="hosothau_giathau" style="width:70%" value="" id="hosothau_giathau" tabindex=1/>
+					<input maxlength=10 type="text" name="hosothau_giathau" style="width:40%" value="" id="hosothau_giathau" tabindex=1 onkeyup="convertGiathau(this.value)"/><span id="txt_displaygiathau" style="padding-left: 20px; color: red; font-weight: bold;"></span> (VNĐ)
 					</div>
 				</div>
 				<div class="tr" style="border:none">
@@ -169,6 +170,10 @@
 	}
 	function redirectPage() {
 		location.href = url('/duan/view/<?php echo $dataDuan["duan"]["id"]."/".$dataDuan["duan"]["alias"] ?>');
+	}
+	function convertGiathau(value) {
+		//alert(value);
+		$("#txt_displaygiathau").html(FormatMoney(value));
 	}
 	function redirectMakeProfile() {
 		location.href = url('/nhathau/add');

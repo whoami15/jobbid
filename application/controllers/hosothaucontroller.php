@@ -34,7 +34,7 @@ class HosothauController extends VanillaController {
 			if($isAjax == true) {
 				die("ERROR_MAKEPROFILE");
 			} else {
-				redirect(BASE_PATH.'/nhathau/view');
+				redirect(BASE_PATH.'/nhathau/add');
 				die();
 			}
 		}
