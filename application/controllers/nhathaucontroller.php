@@ -98,6 +98,7 @@ class NhathauController extends VanillaController {
 			}
 			$this->setModel("nhathaulinhvuc");
 			if(isset($_POST["nhathau_linhvuc"])) {
+				$this->nhathaulinhvuc->custom("delete from nhathaulinhvucs where nhathau_id='$id'");
 				$lstLinhvuc = $_POST["nhathau_linhvuc"];
 				foreach($lstLinhvuc as $linhvuc_id) {
 					$this->nhathaulinhvuc->id=null;

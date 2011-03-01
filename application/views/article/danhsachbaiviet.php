@@ -1,24 +1,32 @@
-<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Tin tức</div>
-<table width="100%">
-	<thead id="thead_paging">
-		<tr>
+<?php
+	$linktmp = BASE_PATH.'/article/danhsachbaiviet';
+?>
+<div id="content" style="width:100%">
+<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Trao đổi - Chia Sẻ - Thảo Luận</div>
+<table width="99%">
+	<thead>
+		<tr id="thead_paging">
 			<td colspan="11" align="center" style="color:black">
-				<?php
-				if(isset($hasprev)) {
-					$pageTmp = $pageindex-1;
-					echo "<a class='link' href='".BASE_PATH."/article/news/$pageTmp'>Trước</a>";
-				}
-				echo "<span style='font-weight: bold; padding-left: 10px; font-size: 10pt; color: #F68618;'>$pageindex</span>";
-				if(isset($hasnext)) {
-					$pageTmp = $pageindex+1;
-					echo "<a class='link' href='".BASE_PATH."/article/news/$pageTmp'>Sau</a>";
+				<a class="link" style="padding-right:5px" href='<?php echo $linktmp ?>'>Đầu</a>
+				<?php 
+				while($pagesbefore<$pagesindex) {
+					echo "<a class='link' href='$linktmp/$pagesbefore'>$pagesbefore</a>";
+					$pagesbefore++;
 				}
 				?>
+				<span style="font-weight:bold;color:red"><?php echo $pagesindex ?></span>
+				<?php 
+				while($pagesnext>$pagesindex) {
+					$pagesindex++;
+					echo "<a class='link' href='$linktmp/$pagesindex'>$pagesindex</a>";
+				}
+				?>
+				<a class="link" style="padding-right:5px" href='<?php echo $linktmp.'/'.$pageend ?>'>...<?php echo $pageend ?></a>			
 			</td>
 		</tr>
 	</thead>
-	<tfoot id="tfoot_paging">
-		
+	<tfoot>
+		<tr id="tfoot_paging"></tr>
 	</tfoot>
 	<tbody>		
 		<?php
@@ -43,10 +51,9 @@
 		?>
 	</tbody>
 </table>
+</div>
 <script>
 	$(document).ready(function() {
 		$("#tfoot_paging").html($("#thead_paging").html());
-		menuid = '#news';
-		$("#menu "+menuid).addClass("current");
 	});
 </script>

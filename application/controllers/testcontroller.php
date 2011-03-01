@@ -22,9 +22,11 @@ class TestController extends VanillaController {
 		//die("done");
 		//$cache_expire = session_cache_expire();
 		//echo "The cached session pages expire after $cache_expire minutes"; 
-		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
-		include (ROOT.DS.'library'.DS.'sendmail.php');
+		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		//include (ROOT.DS.'library'.DS.'sendmail.php');
 		$conn=new DataProvider();
+		$conn->updateNewArticle();
+		echo 'DONE';
 		/* $mail=new sendmail();
 		$conn->lstNewProject();
 		$data = $conn->getListSendmail();
@@ -59,10 +61,10 @@ class TestController extends VanillaController {
 		//setcookie('duan_id', 34);
 		//$_SESSION['submit_login_times'] = null;
 		//echo $_COOKIE['username'];
-		include (ROOT.DS.'library'.DS.'sendmail.php');
-		$mail = new sendmail();
-		$mail->send('nclong87@gmail.com','Mail Xác Nhận Đăng Ký Tài Khoản JobBid.vn','Tôi là Nguyễn Chí Long');
-		echo 'DONE';
+		//include (ROOT.DS.'library'.DS.'sendmail.php');
+		//$mail = new sendmail();
+		//$mail->send('nclong87@gmail.com','Mail Xác Nhận Đăng Ký Tài Khoản JobBid.vn','Tôi là Nguyễn Chí Long');
+		//echo 'DONE';
 	}
 	function rmvsession($session) {
 		$_SESSION[$session] = null;

@@ -98,9 +98,8 @@ class WebmasterController extends VanillaController {
 			$this->account->id = $account_id;
 			$this->account->active = 1;
 			$this->account->update();
-			if(isset($_SESSION['account'])) {
-				if($_SESSION['account']['id'] == $account_id)
-					$_SESSION['account']['active'] = 1;
+			if(isset($_SESSION['account']) && $_SESSION['account']['id'] == $account_id) {
+				$_SESSION['account']['active'] = 1;
 			} else {
 				$this->account->id = $account_id;
 				$account = $this->account->search();

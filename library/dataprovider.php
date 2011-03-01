@@ -86,6 +86,18 @@ class DataProvider
 		$statistics['tFreelancers'] = mysql_fetch_object($result)->total;
 		$this->set_cache('statistics',$statistics);
 	}
+	function updateNewArticle() {
+		$query = "SELECT id,title,alias FROM `articles` as `article` WHERE active=1 order by datemodified desc LIMIT 5 OFFSET 0";
+		$result = mysql_query($query);
+		$data = array();
+		while($a_row=mysql_fetch_object($result))
+		{
+			$article = array('id'=>$a_row->id,'title'=>$a_row->title,'alias'=>$a_row->alias);
+			array_push($data,$article);
+		}
+		//print_r($data);
+		$this->set_cache('lastnews',$data);
+	}
 	function lstNewProject() {
 		$query="SELECT id,alias,tenduan,costmin,costmax,ngayketthuc,linhvuc_id from duans where isnew=1 and active=1 and nhathau_id is null and ngayketthuc>now()";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());

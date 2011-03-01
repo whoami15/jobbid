@@ -1,37 +1,17 @@
 <style>
 #lastnews_widget li {
-	padding-bottom:5px;
+	padding-bottom:8px;
 }
 </style>
-<div id="lastnews_widget">
-<ul style="padding-left:15px">
-Loading...
+<div id="lastnews_widget" style="margin:5px;">
+<ul style="padding-left: 15px; margin: 0px;">
+<?php
+	$lastnews = $cache->get('lastnews');
+	foreach($lastnews as $article) {
+		$link = BASE_PATH.'/article/view/'.$article['id']."/".$article['alias'];
+		echo '<li><a class="link" href="'.$link.'" title="'.$article['title'].'">'.$article['title'].'</a></li>';
+	}
+?>
 </ul>
+<p align="right" style="padding-right:5px"><a class="link" href="<?php echo BASE_PATH?>/article/danhsachbaiviet">Xem thêm...</a></p>
 </div>
-<script>
-	$(document).ready(function(){
-		$.ajax({
-			type : "GET",
-			cache: false,
-			url: url("/article/testwidget"),
-			success : function(data){	
-				//alert(data);
-				if(data == AJAX_ERROR_SYSTEM) {
-					$("#lastnews_widget").html("Load failed!");
-				} else {
-					$("#lastnews_widget ul").html("");
-					var jsonObj = eval( "(" + data + ")" );
-					for(i=0;i<jsonObj.length;i++) {
-						link = url("/article/view/"+jsonObj[i].article.id+"/"+jsonObj[i].article.alias);
-						$("#lastnews_widget ul").append("<li><a class='link' href='"+link+"'>"+jsonObj[i].article.title+"</a></li>");
-					}
-					
-				}
-				
-			},
-			error: function(data){ 
-				alert (data);
-			}			
-		});
-	});
-</script>

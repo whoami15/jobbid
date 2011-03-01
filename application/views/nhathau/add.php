@@ -106,7 +106,7 @@
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td">
-				<input type="checkbox" name="nhathau_nhanemail" id="nhathau_nhanemail" value="1"/> Đăng ký nhận email thông báo khi có dự án mới.
+				<input type="checkbox" checked name="nhathau_nhanemail" id="nhathau_nhanemail" value="1"/> Đăng ký nhận email thông báo khi có dự án mới.
 				</div>
 			</div>
 			<div class="tr" style="border:none">

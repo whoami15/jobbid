@@ -39,7 +39,7 @@ class ArticleController extends VanillaController {
 	}
 	function view($id=null) {
 		$_SESSION['redirect_url'] = getUrl();
-		$this->checkLogin();
+		//$this->checkLogin();
 		if($id != null && $id != 0) {
 			$this->article->id=$id;
             $article=$this->article->search();
@@ -52,6 +52,7 @@ class ArticleController extends VanillaController {
 				$query = "SELECT id,title,alias FROM `articles` as `article` WHERE active=1 AND `article`.`datemodified` < '".$article["article"]["datemodified"]."' order by datemodified desc LIMIT 5 OFFSET 0";
 				$lstArticlesOlder = $this->article->custom($query);
 				$this->set("lstArticlesOlder",$lstArticlesOlder);
+				$this->set('title','Jobbid.vn - '.$article["article"]["title"]);
 				$this->_template->render();
 			}
 			
@@ -85,21 +86,28 @@ class ArticleController extends VanillaController {
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
 	}
-	function news($ipageindex=1) {
-		if($ipageindex>=1) {
-			$offset = ($ipageindex-1)*PAGINATE_LIMIT;
-			$query = "SELECT id,alias,title,imagedes,contentdes FROM `articles` as `article` WHERE '1'='1' AND `article`.`active` = '1' ORDER BY `article`.`datemodified` desc LIMIT ".PAGINATE_LIMIT." OFFSET ".$offset;
-			$lstArticles = $this->article->custom($query);		
-			$this->set("lstArticles",$lstArticles);
-			if(count($lstArticles)==PAGINATE_LIMIT) {
-				$this->set('hasnext',true);
-			}
-			if($ipageindex>1) {
-				$this->set('hasprev',true);
-			}
-			$this->set('pageindex',$ipageindex);
-			$this->_template->render();
-		}
+	function danhsachbaiviet($pageindex=1) {
+		$_SESSION['redirect_url'] = getUrl();
+		$this->article->orderBy('datemodified','desc');
+		$this->article->setPage($pageindex);
+		$this->article->setLimit(PAGINATE_LIMIT);
+		$this->article->where(' and `active`=1');
+		$data = $this->article->search('id,alias,title,imagedes,contentdes');
+		$totalPages = $this->article->totalPages();
+		$ipagesbefore = $pageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $pageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstDuan);die();
+		$this->set("lstArticles",$data);
+		$this->set('pagesindex',$pageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->set('title','Jobbid.vn - Trao đổi - Chia Sẻ - Thảo Luận');
+		$this->_template->render();
 	}
 	function activeArticle($id=0) {
 		$this->checkAdmin(true);
@@ -169,11 +177,35 @@ class ArticleController extends VanillaController {
 			echo "DONE";
 		}
 	}
-	function testwidget() {
+	/* function testwidget() {
 		$query = "SELECT id,title,alias FROM `articles` as `article` WHERE active=1 order by datemodified desc LIMIT 5 OFFSET 0";
 		$wg_lstArticles = $this->article->custom($query);
 		$json = json_encode($wg_lstArticles);
 		print_r($json);
+	} */
+	function comments($article_id=null,$pageindex=1) {
+		if($article_id==null)
+			die();
+		$this->setModel('comment');
+		$this->comment->orderBy('ngaypost','desc');
+		$this->comment->setPage($pageindex);
+		$this->comment->setLimit(PAGINATE_LIMIT);
+		$this->comment->where(" and article_id=$article_id");
+		$data = $this->comment->search();
+		$totalPages = $this->comment->totalPages();
+		$ipagesbefore = $pageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $pageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstDuan);die();
+		$this->set("lstComment",$data);
+		$this->set('pagesindex',$pageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->_template->renderPage();
 	}
 	function afterAction() {
 
