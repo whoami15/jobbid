@@ -22,11 +22,11 @@ class TestController extends VanillaController {
 		//die("done");
 		//$cache_expire = session_cache_expire();
 		//echo "The cached session pages expire after $cache_expire minutes"; 
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
 		//include (ROOT.DS.'library'.DS.'sendmail.php');
 		$conn=new DataProvider();
 		$conn->updateNewArticle();
-		echo 'DONE';
+		echo 'DONE'; */
 		/* $mail=new sendmail();
 		$conn->lstNewProject();
 		$data = $conn->getListSendmail();
@@ -65,6 +65,31 @@ class TestController extends VanillaController {
 		//$mail = new sendmail();
 		//$mail->send('nclong87@gmail.com','Mail Xác Nhận Đăng Ký Tài Khoản JobBid.vn','Tôi là Nguyễn Chí Long');
 		//echo 'DONE';
+		$domain = $_GET['domain'];
+		if(empty($domain)==false) {
+			$ip = gethostbyname($domain);
+			if($domain != $ip) {
+				echo "IP Address : $ip<br>";
+			}
+			$handle = fopen("http://dns.hostdime.com/$domain/", "rb");
+			$contents = stream_get_contents($handle);
+			fclose($handle);
+			$start = strpos($contents, "<th>Name Servers Reported By Your Servera</th>");
+			$end = strpos($contents,"Name servers returned by the registrar.",$start);
+			$pos1=$start;
+			$i=1;
+			while($i<10) {
+				$pos1 = strpos($contents,"<td>",$pos1);
+				if($pos1==false || $pos1>$end)
+					break;
+				$pos2 = strpos($contents,"</td>",$pos1);
+				$ns = trim(substr($contents, $pos1, $pos2-$pos1));
+				echo "Name Server $i : $ns<br>";
+				$pos1 = $pos2;
+				$i++;
+			}
+		}
+
 	}
 	function rmvsession($session) {
 		$_SESSION[$session] = null;
