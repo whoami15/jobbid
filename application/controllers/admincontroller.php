@@ -266,7 +266,7 @@ class AdminController extends VanillaController {
 				if($result == '') {
 					try {
 						$result = 'Ok';
-						$this->account->id = null;
+/* 						$this->account->id = null;
 						$this->account->username = $email;
 						$this->account->timeonline = 0;
 						$this->account->role = 2;
@@ -280,16 +280,80 @@ class AdminController extends VanillaController {
 						$this->activecode->insert();
 						//Doan nay send mail truc tiep chu ko dua vao sendmail, doan code sau chi demo sendmail
 						$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
-						$linkactive = "<a href='$linkactive'>$linkactive</a>";
+						$linkactive = "<a href='$linkactive'>$linkactive</a>";*/						
 						global $cache;
 						$content = $cache->get('mail_moinhatuyendung');
-						$search  = array('#EMAIL#', '#LINKACTIVE#');
+						/* $search  = array('#EMAIL#', '#LINKACTIVE#');
 						$replace = array($email, $linkactive);
-						$content = str_replace($search, $replace, $content);
+						$content = str_replace($search, $replace, $content); */
 						$this->setModel('sendmail');
 						$this->sendmail->id = null;
 						$this->sendmail->to = $email;
 						$this->sendmail->subject = 'Mời Bạn Đăng Tin Tuyển Dụng Miễn Phí Trên JobBid.vn!!!';
+						$this->sendmail->content = $content;
+						$this->sendmail->insert();
+					} catch (Exception $e) {
+						$result = 'Error';
+					}
+				}
+				$jsonResult = $jsonResult."$j:{'email':'".$email."','result':'".$result."'},";
+				$j++;
+			}
+			$i++;
+		}
+		$jsonResult = substr($jsonResult,0,-1);
+		$jsonResult = $jsonResult."}";
+		print($jsonResult);
+	}
+	function sendMailFreelancer() {
+		$this->checkAdmin(true);
+		$this->setModel("duan");
+		$this->duan->orderBy('duan.id','desc');
+		$this->duan->setPage(1);
+		$this->duan->setLimit(PAGINATE_LIMIT);
+		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
+		$data = $this->duan->search('id,tenduan,alias');
+		$duannew = '';
+		foreach($data as $duan) {
+			$duannew.='<a href="'.BASE_PATH.'/duan/view/'.$duan['duan']['id'].'/'.$duan['duan']['alias'].'">'.$duan['duan']['tenduan'].'</a><br>';
+		}
+		global $cache;
+		$content = $cache->get('mail_moiungvien');
+		$search  = array('#DUAN#');
+		$replace = array($duannew);
+		$content = str_replace($search, $replace, $content);
+		$i=1;
+		$j=0;
+		$jsonResult = "{";
+		$validate = new Validate();
+		while($i<=5) {
+			$email = $_POST['email'.$i];
+			if($email!=null) {
+				//Send mail
+				$result = '';
+				$this->setModel('account');
+				if(!$validate->check_email($email))
+					$result = 'Email not valid!';
+				if($result == '') {
+					$strWhere = "AND username='".mysql_real_escape_string($email)."'";
+					$this->account->where($strWhere);
+					$account = $this->account->search('id');
+					if(empty($account)==false)
+						$result = 'Email has registed!';
+				}
+				if($result == '') {
+					try {
+						$result = 'Ok';
+						$this->setModel('email');
+						$this->email->id = null;
+						$this->email->email = $email;
+						$this->email->ten = '';
+						$this->email->insert();
+
+						$this->setModel('sendmail');
+						$this->sendmail->id = null;
+						$this->sendmail->to = $email;
+						$this->sendmail->subject = 'Rất Nhiều Công Việc Bán Thời Gian Đang Chờ Bạn!!!';
 						$this->sendmail->content = $content;
 						$this->sendmail->insert();
 					} catch (Exception $e) {

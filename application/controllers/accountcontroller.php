@@ -164,7 +164,7 @@ class AccountController extends VanillaController {
 				$this->account->save();
 				$this->setModel('nhathau');
 				$this->nhathau->where('and status>=0 and account_id='.$account[0]['account']['id']);
-				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia');
+				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia,nhathau_alias');
 				if(!empty($nhathau))
 					$_SESSION['nhathau'] = $nhathau[0]['nhathau'];
 				redirect($url);
@@ -408,7 +408,7 @@ class AccountController extends VanillaController {
 				$this->account->save();
 				$this->setModel('nhathau');
 				$this->nhathau->where('and status>=0 and account_id='.$account[0]['account']['id']);
-				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia');
+				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia,nhathau_alias');
 				if(!empty($nhathau))
 					$_SESSION['nhathau'] = $nhathau[0]['nhathau'];
 				echo 'OK';

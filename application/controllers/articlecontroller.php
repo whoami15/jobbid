@@ -52,7 +52,16 @@ class ArticleController extends VanillaController {
 				$query = "SELECT id,title,alias FROM `articles` as `article` WHERE active=1 AND `article`.`datemodified` < '".$article["article"]["datemodified"]."' order by datemodified desc LIMIT 5 OFFSET 0";
 				$lstArticlesOlder = $this->article->custom($query);
 				$this->set("lstArticlesOlder",$lstArticlesOlder);
+				$comment_ten = '';
+				$comment_url = '';
+				if(isset($_SESSION['nhathau'])) {
+					$comment_ten = $_SESSION['nhathau']['displayname'];
+					$comment_url = BASE_PATH.'/nhathau/xem_ho_so/'.$_SESSION['nhathau']['id'].'/'.$_SESSION['nhathau']['nhathau_alias'];
+				}
 				$this->set('title','Jobbid.vn - '.$article["article"]["title"]);
+				$this->set('description',$article["article"]["contentdes"]);
+				$this->set('comment_ten',$comment_ten);
+				$this->set('comment_url',$comment_url);
 				$this->_template->render();
 			}
 			
@@ -159,7 +168,14 @@ class ArticleController extends VanillaController {
 			}
 			$html = new HTML;
 			$value = "{'datemodified':'".$html->format_date($this->article->datemodified,'d/m/Y H:i:s')."','usermodified':'".$this->article->usermodified."'}";
-			$this->article->save();	
+			$this->article->save();
+			$result = $this->article->custom("SELECT id,title,alias FROM `articles` as `article` WHERE active=1 order by datemodified desc LIMIT 5 OFFSET 0");
+			global $cache;
+			$data = array();
+			foreach($result as $article) {
+				array_push($data,array('id'=>$article['article']['id'],'title'=>$article['article']['title'],'alias'=>$article['article']['alias']));
+			}
+			$cache->set('lastnews',$data);
 			print($value);
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -189,9 +205,9 @@ class ArticleController extends VanillaController {
 		$this->setModel('comment');
 		$this->comment->orderBy('ngaypost','desc');
 		$this->comment->setPage($pageindex);
-		$this->comment->setLimit(PAGINATE_LIMIT);
+		$this->comment->setLimit(7);
 		$this->comment->where(" and article_id=$article_id");
-		$data = $this->comment->search();
+		$data = $this->comment->search('id,ten,url,noidung,UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(ngaypost) as timeofpost');
 		$totalPages = $this->comment->totalPages();
 		$ipagesbefore = $pageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -206,6 +222,50 @@ class ArticleController extends VanillaController {
 		$this->set('pagesnext',$ipagesnext);
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
+	}
+	function doSaveComment() {
+		try {
+			if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
+				unset($_SESSION['security_code']);
+			} else {
+				die("ERROR_SECURITY_CODE");
+			}
+			$validate = new Validate();
+			if($validate->check_submit(1,array("article_id","comment_ten","comment_url","comment_noidung"))==false)
+				die('ERROR_SYSTEM');
+			$article_id = $_POST["article_id"];
+			$ten = $_POST["comment_ten"];
+			$url = $_POST["comment_url"];
+			if($url==null)
+				$url = '#';
+			$noidung = $_POST["comment_noidung"];
+			if($validate->check_null(array($article_id,$ten,$noidung))==false)
+				die('ERROR_SYSTEM');
+			$this->setModel('comment');
+			$this->comment->id = null;
+			$this->comment->ten = $ten;
+			$this->comment->url = $url;
+			$this->comment->article_id = $article_id;
+			$this->comment->noidung = $noidung;
+			$this->comment->ngaypost = GetDateSQL();
+			$this->comment->insert();
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function doDeleteComment() {
+		$this->checkAdmin(true);
+		if(!isset($_GET["comment_id"]))
+			die("ERROR_SYSTEM");
+		$id = $_GET["comment_id"];
+		$this->setModel('comment');
+		$this->comment->id=$id;
+		if($this->comment->delete()==-1) {
+			echo "ERROR_SYSTEM";
+		} else {
+			echo "DONE";
+		}
 	}
 	function afterAction() {
 

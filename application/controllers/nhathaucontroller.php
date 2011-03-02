@@ -358,7 +358,7 @@ class NhathauController extends VanillaController {
 			}
 			$this->setModel("nhathau");
 			$this->nhathau->id = $nhathau_id;
-			$nhathau = $this->nhathau->search("id,displayname,account_id,diemdanhgia");
+			$nhathau = $this->nhathau->search("id,displayname,account_id,diemdanhgia,nhathau_alias");
 			if(!empty($nhathau))
 				$_SESSION["nhathau"] = $nhathau["nhathau"];
 			echo "DONE";
@@ -501,7 +501,7 @@ class NhathauController extends VanillaController {
 			}
 			$this->setModel("nhathau");
 			$this->nhathau->id = $id;
-			$nhathau = $this->nhathau->search("id,displayname,account_id,diemdanhgia");
+			$nhathau = $this->nhathau->search("id,displayname,account_id,diemdanhgia,nhathau_alias");
 			if(!empty($nhathau))
 				$_SESSION["nhathau"] = $nhathau["nhathau"];
 			echo "DONE";

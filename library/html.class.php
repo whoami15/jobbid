@@ -73,6 +73,30 @@ class HTML {
 				return "<span style='color:red'>$second giây</span>";
 			return "<span style='color:red'>$m phút $second giây</span>";
         }
+		function getTimeFromSecond($second)
+        {
+			$d = (int)($second/86400);
+			$second = $second%86400;
+			$h = (int)($second/3600);
+			if($d>0) {
+				if($h==0)
+					return "$d ngày";
+				else
+					return "$d ngày $h giờ";
+			}
+			$second = $second%3600;
+			$m = (int)($second/60);
+			if($h>0) {
+				if($m==0)
+					return "$h giờ";
+				else
+					return "$h giờ $m phút";
+			}
+			$second = $second%60;
+			if($m==0)
+				return "$second giây";
+			return "$m phút $second giây";
+        }
         function upper($src)
         {
             return mb_convert_case($src,MB_CASE_UPPER,"utf-8");

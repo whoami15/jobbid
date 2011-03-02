@@ -7,8 +7,9 @@
 	<thead>
 		<tr id="thead_paging">
 			<td colspan="11" align="center" style="color:black">
-				<a class="link" style="padding-right:5px" href='<?php echo $linktmp ?>'>Đầu</a>
 				<?php 
+				if($pagesbefore>1)
+					echo '<a class="link" style="padding-right:5px" href="'.$linktmp.'">1 ...</a>';
 				while($pagesbefore<$pagesindex) {
 					echo "<a class='link' href='$linktmp/$pagesbefore'>$pagesbefore</a>";
 					$pagesbefore++;
@@ -20,8 +21,9 @@
 					$pagesindex++;
 					echo "<a class='link' href='$linktmp/$pagesindex'>$pagesindex</a>";
 				}
+				if($pagesnext<$pageend)
+					echo "<a class='link' style='padding-right:5px' href='$linktmp.'/'.$pageend'>... $pageend</a>";
 				?>
-				<a class="link" style="padding-right:5px" href='<?php echo $linktmp.'/'.$pageend ?>'>...<?php echo $pageend ?></a>			
 			</td>
 		</tr>
 	</thead>

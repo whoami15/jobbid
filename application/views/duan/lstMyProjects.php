@@ -2,21 +2,23 @@
 	<thead>
 		<tr id="thead_paging">
 			<td colspan="11" align="center" style="color:black">
-				<a class="link" style="padding-right:5px" href='#' onclick="selectpage(1)">Begin</a>
-				<?php 
-				while($pagesbefore<$pagesindex) {
-					echo "<a class='link' href='#' onclick='selectpage($pagesbefore)'>$pagesbefore</a>";
-					$pagesbefore++;
-				}
-				?>
-				<span style="font-weight:bold;color:red"><?php echo $pagesindex ?></span>
-				<?php 
-				while($pagesnext>$pagesindex) {
-					$pagesindex++;
-					echo "<a class='link' href='#' onclick='selectpage($pagesindex)'>$pagesindex</a>";
-				}
-				?>
-				<a class="link" style="padding-left:5px" href='#' onclick="selectpage(<?php echo $pageend ?>)">...<?php echo $pageend ?></a>			
+				<div class="yt-uix-pager">
+					<?php
+					if($pagesbefore>1)
+						echo '<button onclick="selectpage(1)" type="button" class=" yt-uix-button" ><span class="yt-uix-button-content">1</span></button> ...';
+					while($pagesbefore<$pagesindex) {
+						echo "<button onclick='selectpage($pagesbefore)' type='button' class=' yt-uix-button' ><span class='yt-uix-button-content'>$pagesbefore</span></button>";
+						$pagesbefore++;
+					}
+					echo "<button type='button' class='yt-uix-pager-selected yt-uix-button' ><span class='yt-uix-button-content'>$pagesindex</span></button>";
+					while($pagesnext>$pagesindex) {
+						$pagesindex++;
+						echo "<button onclick='selectpage($pagesindex)' type='button' class=' yt-uix-button' ><span class='yt-uix-button-content'>$pagesindex</span></button>";
+					}
+					if($pagesnext<$pageend)
+						echo '... <button onclick="selectpage('.$pageend.')" type="button" class=" yt-uix-button" ><span class="yt-uix-button-content">'.$pageend.'</span></button>';
+					?>
+				</div>			
 			</td>
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">

@@ -2,8 +2,9 @@
 	<thead>
 		<tr id="thead_paging">
 			<td colspan="11" align="center" style="color:black">
-				<a class="link" style="padding-right:5px" href='#' onclick="selectpage(1)">Begin</a>
 				<?php 
+				if($pagesbefore>1)
+					echo '<a class="link" style="padding-right:5px" href="#" onclick="selectpage(1)">1 ...</a>';
 				while($pagesbefore<$pagesindex) {
 					echo "<a class='link' href='#' onclick='selectpage($pagesbefore)'>$pagesbefore</a>";
 					$pagesbefore++;
@@ -15,8 +16,9 @@
 					$pagesindex++;
 					echo "<a class='link' href='#' onclick='selectpage($pagesindex)'>$pagesindex</a>";
 				}
+				if($pagesnext<$pageend)
+					echo "<a class='link' style='padding-left:5px' href='#' onclick='selectpage($pageend)'>... $pageend</a>";
 				?>
-				<a class="link" style="padding-left:5px" href='#' onclick="selectpage(<?php echo $pageend ?>)">...<?php echo $pageend ?></a>			
 			</td>
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">

@@ -69,7 +69,54 @@
 		<div id="tabs_1_result"></div>
 	</div>
 	<div id="tabs-2">
-		
+		<form id="formMoiungvien">
+		<table class="center" width="100%">
+			<thead>
+				<tr>
+					<td colspan="4" id="msg2">
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td width="110px" align="left">Email 1 :</td>
+					<td align="left">
+						<input type="text" name="email1" id="email6" value="" style="width:99%" tabindex="1" onfocus="this.select()"/>
+					</td>	
+				</tr>
+				<tr>
+					<td align="left">Email 2 :</td>
+					<td align="left">
+						<input type="text" name="email2" id="email7" value="" style="width:99%" tabindex="2" onfocus="this.select()"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="left">Email 3 :</td>
+					<td align="left">
+						<input type="text" name="email3" id="email8" value="" style="width:99%" tabindex="3" onfocus="this.select()"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="left">Email 4 :</td>
+					<td align="left">
+						<input type="text" name="email4" id="email9" value="" style="width:99%" tabindex="4" onfocus="this.select()"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="left">Email 5 :</td>
+					<td align="left">
+						<input type="text" name="email5" id="email10" value="" style="width:99%" tabindex="5" onfocus="this.select()"/>
+					</td>
+				</tr>				
+				<tr>
+					<td colspan="4" align="center" height="50px">
+						<input onclick="doSend2()" value="Gửi Thư Mời" type="button" tabindex="6">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+		<div id="tabs_2_result"></div>
 	</div>
 </div>
 <script type="text/javascript">
@@ -128,95 +175,44 @@
 			error: function(data){ unblock("#tabs-1");alert (data);}	
 		});
 	}
-	function selectMailtype(id) {
-		byId("msg2").innerHTML="";
+	function doSend2() {
+		dataString = $("#formMoiungvien").serialize();
+		//alert(dataString);return;
+		$("#tabs_2_result").html("");
 		block("#tabs-2");	
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			cache: false,
-			url : url("/admin/getMailTemplate&mail_type="+id),
+			url : url("/admin/sendMailFreelancer&"),
+			data: dataString,
 			success: function(data){
+				
 				unblock("#tabs-2");	
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/admin/login");
 					return;
 				}
-				if(data == 'ERROR_SYSTEM') {
-					message2('Thao tác không thành công!',0);
-				} else {
-					$("#mail_content").html(data);										
+				var jsonObj = eval( "(" + data + ")" );
+				var result = "";
+				for(i=0;jsonObj[i]!=null;i++) {
+					if(jsonObj[i].result=="Ok")
+						result+=jsonObj[i].email+" : <font color='green'>"+jsonObj[i].result+"</font><br/>";
+					else
+						result+=jsonObj[i].email+" : <font color='red'>"+jsonObj[i].result+"</font><br/>";
 				}
+				//alert(result);
+				byId("email6").value = "";
+				byId("email7").value = "";
+				byId("email8").value = "";
+				byId("email9").value = "";
+				byId("email10").value = "";
+				$("#tabs_2_result").html(result);
 			},
 			error: function(data){ unblock("#tabs-2");alert (data);}	
-		});
-	}
-	function saveMailTemplate() {
-		dataString = $("#formMailTemplate").serialize();
-		byId("msg2").innerHTML="";
-		block("#tabs-2");	
-		$.ajax({
-			type: "POST",
-			cache: false,
-			url : url("/admin/saveMailTemplate&"),
-			data: dataString,
-			success: function(data){
-				unblock("#tabs-2");	
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/admin/login");
-					return;
-				}
-				if(data == AJAX_DONE) {
-					//Load luoi du lieu	
-					message2("Lưu cấu hình thành công!",1);
-				} else {
-					message2('Lưu cấu hình không thành công!',0);										
-				}
-			},
-			error: function(data){ unblock("#tabs-2");alert (data);}	
-		});
-	}
-	function save() {
-		dataString = $("#formSettings").serialize();
-		byId("msg1").innerHTML="";
-		block("#tabs-1");	
-		$.ajax({
-			type: "POST",
-			cache: false,
-			url : url("/admin/saveSettings&"),
-			data: dataString,
-			success: function(data){
-				unblock("#tabs-1");	
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/admin/login");
-					return;
-				}
-				if(data == AJAX_DONE) {
-					//Load luoi du lieu	
-					message1("Lưu cấu hình thành công!",1);
-				} else {
-					message1('Lưu cấu hình không thành công!',0);										
-				}
-			},
-			error: function(data){ unblock("#tabs-1");alert (data);}	
 		});
 	}
 	$(document).ready(function(){				
 		$("#title_page").text("Công Cụ PR");
 		$("#tabs").tabs();
-		$('#mail_content').tinymce({
-			script_url : url_base+'/public/js/tiny_mce/tiny_mce.js',
-			theme : "advanced",
-			plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
-			theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-			theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,code,|,preview,|,forecolor,backcolor",
-			theme_advanced_buttons3 : "tablecontrols,emotions,media",
-			theme_advanced_toolbar_location : "top",
-			theme_advanced_toolbar_align : "left",
-			theme_advanced_statusbar_location : "bottom",
-			theme_advanced_resizing : true,
-			relative_urls : false,
-			convert_urls : false,
-			content_css : "css/content.css"
-		});
 	});
 </script>
