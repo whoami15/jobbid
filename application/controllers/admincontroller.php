@@ -322,48 +322,47 @@ class AdminController extends VanillaController {
 		$search  = array('#DUAN#');
 		$replace = array($duannew);
 		$content = str_replace($search, $replace, $content);
-		$i=1;
 		$j=0;
 		$jsonResult = "{";
+		$emails = $_POST['emails'];
+		$pos2 = 0;
+		$pos1 = strpos($emails,";",0);
+		$this->setModel('email');
 		$validate = new Validate();
-		while($i<=5) {
-			$email = $_POST['email'.$i];
-			if($email!=null) {
-				//Send mail
-				$result = '';
-				$this->setModel('account');
+		while($pos1!=false) {
+			$email = trim(substr($emails, $pos2, $pos1-$pos2));
+			$result = '';
+			try {
 				if(!$validate->check_email($email))
 					$result = 'Email not valid!';
-				if($result == '') {
-					$strWhere = "AND username='".mysql_real_escape_string($email)."'";
-					$this->account->where($strWhere);
-					$account = $this->account->search('id');
-					if(empty($account)==false)
-						$result = 'Email has registed!';
+				if($result=='') {
+					$this->email->where(" and email='$email'");
+					$data = $this->email->search();
+					//print_r($data);
+					if(!empty($data))
+						$result = 'Had Send';
 				}
-				if($result == '') {
-					try {
-						$result = 'Ok';
-						$this->setModel('email');
-						$this->email->id = null;
-						$this->email->email = $email;
-						$this->email->ten = '';
-						$this->email->insert();
+				if($result=='') {
+					$result = 'Ok';
+					$this->email->id = null;
+					$this->email->email = $email;
+					$this->email->insert();
 
-						$this->setModel('sendmail');
-						$this->sendmail->id = null;
-						$this->sendmail->to = $email;
-						$this->sendmail->subject = 'Rất Nhiều Công Việc Bán Thời Gian Đang Chờ Bạn!!!';
-						$this->sendmail->content = $content;
-						$this->sendmail->insert();
-					} catch (Exception $e) {
-						$result = 'Error';
-					}
+					$this->setModel('sendmail');
+					$this->sendmail->id = null;
+					$this->sendmail->to = $email;
+					$this->sendmail->subject = 'Rất Nhiều Công Việc Bán Thời Gian Đang Chờ Bạn!!!';
+					$this->sendmail->content = $content;
+					$this->sendmail->insert();
+					$this->setModel('email');
 				}
-				$jsonResult = $jsonResult."$j:{'email':'".$email."','result':'".$result."'},";
-				$j++;
+			} catch (Exception $e) {
+				$result = 'Error';
 			}
-			$i++;
+			$jsonResult = $jsonResult."$j:{'email':'".$email."','result':'".$result."'},";
+			$j++;
+			$pos2=$pos1+1;
+			$pos1 = strpos($emails,";",$pos2);
 		}
 		$jsonResult = substr($jsonResult,0,-1);
 		$jsonResult = $jsonResult."}";

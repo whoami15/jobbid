@@ -79,35 +79,11 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td width="110px" align="left">Email 1 :</td>
+					<td width="150px" align="left">Danh Sách Email :</td>
 					<td align="left">
-						<input type="text" name="email1" id="email6" value="" style="width:99%" tabindex="1" onfocus="this.select()"/>
+						<textarea name="emails" id="emails" style="width:99%" rows="5"></textarea>
 					</td>	
 				</tr>
-				<tr>
-					<td align="left">Email 2 :</td>
-					<td align="left">
-						<input type="text" name="email2" id="email7" value="" style="width:99%" tabindex="2" onfocus="this.select()"/>
-					</td>
-				</tr>
-				<tr>
-					<td align="left">Email 3 :</td>
-					<td align="left">
-						<input type="text" name="email3" id="email8" value="" style="width:99%" tabindex="3" onfocus="this.select()"/>
-					</td>
-				</tr>
-				<tr>
-					<td align="left">Email 4 :</td>
-					<td align="left">
-						<input type="text" name="email4" id="email9" value="" style="width:99%" tabindex="4" onfocus="this.select()"/>
-					</td>
-				</tr>
-				<tr>
-					<td align="left">Email 5 :</td>
-					<td align="left">
-						<input type="text" name="email5" id="email10" value="" style="width:99%" tabindex="5" onfocus="this.select()"/>
-					</td>
-				</tr>				
 				<tr>
 					<td colspan="4" align="center" height="50px">
 						<input onclick="doSend2()" value="Gửi Thư Mời" type="button" tabindex="6">
@@ -186,7 +162,7 @@
 			url : url("/admin/sendMailFreelancer&"),
 			data: dataString,
 			success: function(data){
-				
+				//alert(data);return;
 				unblock("#tabs-2");	
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/admin/login");
@@ -201,11 +177,7 @@
 						result+=jsonObj[i].email+" : <font color='red'>"+jsonObj[i].result+"</font><br/>";
 				}
 				//alert(result);
-				byId("email6").value = "";
-				byId("email7").value = "";
-				byId("email8").value = "";
-				byId("email9").value = "";
-				byId("email10").value = "";
+				$("#emails").html();
 				$("#tabs_2_result").html(result);
 			},
 			error: function(data){ unblock("#tabs-2");alert (data);}	
