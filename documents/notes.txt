@@ -16,3 +16,8 @@ The home page for this website should have an H1 heading.
 
 
 http://www.sctv.com.vn/showpage.aspx?pid=2&lid=1&eid=385
+http://kiemviec.com/vi/ung-vien/web-application-developer.35A69F63.html
+http://ungvien.com.vn/employee/job/66978/Ky-Su-Phan-Mem-Java.html
+http://ungvien.com.vn/employee/job/68079/Java-Web-Developer---Lap-Trinh-Vien.html
+http://www.careerlink.vn/index.php?language=vn&panel=jobseeker&module=job&content=add_job&action=view&cid=19&pid=80334
+http://www.careerlink.vn/index.php?language=vn&panel=jobseeker&module=job&content=add_job&action=view&cid=19&pid=87389
