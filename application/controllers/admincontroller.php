@@ -97,6 +97,10 @@ class AdminController extends VanillaController {
 		$this->checkAdmin(false);
 		$this->_template->renderAdminPage(); 
 	}
+	function mailinglist() {
+		$this->checkAdmin(false);
+		$this->_template->renderAdminPage(); 
+	}
 	function settings() {
 		$this->checkAdmin(false);
 		global $cache;
@@ -115,8 +119,46 @@ class AdminController extends VanillaController {
 				$fileTypes = $fileTypes.$type.",";
 			}
 		}
+		$arrEmail = $cache->get("senders");
+		$priSender = array("email"=>'','password'=>'','smtp'=>'','port'=>'');
+		$secSender = array("email"=>'','password'=>'','smtp'=>'','port'=>'');
+		if($arrEmail!=null) {
+			$priSender = $arrEmail['priSender'];
+			$secSender = $arrEmail['secSender'];
+		}
 		$this->set("fileTypes",$fileTypes);
+		$this->set("priSender",$priSender);
+		$this->set("secSender",$secSender);
 		$this->_template->renderAdminPage(); 
+	}
+	function saveMailSender(){
+		try {
+			$validate = new Validate();
+			if($validate->check_submit(1,array("primary_email","primary_passsword","primary_smtp","primary_port","second_email","second_passsword","second_smtp","second_port"))==false)
+				die('ERROR_SYSTEM');
+			$primary_email = $_POST['primary_email'];
+			$primary_passsword = $_POST['primary_passsword'];
+			$primary_smtp = $_POST['primary_smtp'];
+			$primary_port = $_POST['primary_port'];
+			$second_email = $_POST['second_email'];
+			$second_passsword = $_POST['second_passsword'];
+			$second_smtp = $_POST['second_smtp'];
+			$second_port = $_POST['second_port'];
+			global $cache;
+			$priSender = array("email"=>'','password'=>'');
+			$secSender = array("email"=>'','password'=>'');
+			if($primary_email!=null) {
+				$priSender = array("email"=>$primary_email,'password'=>$primary_passsword,'smtp'=>$primary_smtp,'port'=>$primary_port);
+			}
+			if($second_email!=null) {
+				$secSender = array("email"=>$second_email,'password'=>$second_passsword,'smtp'=>$second_smtp,'port'=>$second_port);
+			}
+			$arrEmail = array("priSender"=>$priSender,"secSender"=>$secSender);
+			$cache->set('senders',$arrEmail);
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
 	}
 	function saveSettings() {
 		try {
@@ -291,6 +333,7 @@ class AdminController extends VanillaController {
 						$this->sendmail->to = $email;
 						$this->sendmail->subject = 'Mời Bạn Đăng Tin Tuyển Dụng Miễn Phí Trên JobBid.vn!!!';
 						$this->sendmail->content = $content;
+						$this->sendmail->isprior = 0;
 						$this->sendmail->insert();
 					} catch (Exception $e) {
 						$result = 'Error';
@@ -353,6 +396,7 @@ class AdminController extends VanillaController {
 					$this->sendmail->to = $email;
 					$this->sendmail->subject = 'Rất Nhiều Công Việc Bán Thời Gian Đang Chờ Bạn!!!';
 					$this->sendmail->content = $content;
+					$this->sendmail->isprior = 0;
 					$this->sendmail->insert();
 					$this->setModel('email');
 				}

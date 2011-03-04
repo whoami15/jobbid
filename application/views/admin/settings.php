@@ -13,20 +13,16 @@
 		margin-bottom:5px;
 	}
 </style>
+<div id="msg" style="width:99%"></div>
 <div id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Upload File Types</a></li>
 		<li><a href="#tabs-2">Mail Template</a></li>
+		<li><a href="#tabs-3">Sender Email</a></li>
 	</ul>
 	<div id="tabs-1">
 		<form id="formSettings">
 		<table class="center" width="100%">
-			<thead>
-				<tr>
-					<td colspan="4" id="msg1">
-					</td>
-				</tr>
-			</thead>
 			<tbody>
 				<tr>
 					<td width="110px" align="left">Image Types :</td>
@@ -56,10 +52,6 @@
 			<form id="formMailTemplate">
 			<table width="99%">
 				<thead>
-					<tr>
-						<td id="msg2">
-						</td>
-					</tr>
 					<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:30px;text-align:center;">
 						<td>
 							<select id="mail_type" name="mail_type" onchange="selectMailtype(this.value)">
@@ -95,29 +87,47 @@
 		</div>
 	</fieldset>
 	</div>
+	<div id="tabs-3">
+		<form id="formSender">
+		<fieldset>
+		<legend><strong>Primary Sender</strong></legend>
+		<div style="width:80px">Email:</div> 
+		<input type="text" name="primary_email" id="primary_email" value="<?php echo $priSender['email']?>" style="width:200px"/><br/>
+		<div style="width:80px">Password:</div>
+		<input type="password" name="primary_passsword" id="primary_passsword" value="<?php echo $priSender['password']?>" style="width:200px"/><br/>
+		<div style="width:80px">SMTP:</div>
+		<input type="text" name="primary_smtp" id="primary_smtp" value="<?php echo $priSender['smtp']?>" style="width:200px"/><br/>
+		<div style="width:80px">Port:</div>
+		<input type="text" name="primary_port" id="primary_port" value="<?php echo $priSender['port']?>" style="width:200px"/><br/>
+		</fieldset>
+		<fieldset>
+		<legend><strong>Second Sender</strong></legend>
+		<div style="width:80px">Email:</div> 
+		<input type="text" name="second_email" id="second_email" value="<?php echo $secSender['email']?>" style="width:200px"/><br/>
+		<div style="width:80px">Password:</div>
+		<input type="password" name="second_passsword" id="second_passsword" value="<?php echo $secSender['password']?>" style="width:200px"/><br/>
+		<div style="width:80px">SMTP:</div>
+		<input type="text" name="second_smtp" id="second_smtp" value="<?php echo $secSender['smtp']?>" style="width:200px"/><br/>
+		<div style="width:80px">Port:</div>
+		<input type="text" name="second_port" id="second_port" value="<?php echo $secSender['port']?>" style="width:200px"/><br/>
+		</fieldset>
+		<input onclick="saveSenderEmail()" value="Lưu" type="button">
+		</form>
+	</div>
 </div>
 <script type="text/javascript">
 	var objediting; //Object luu lai row dang chinh sua
-	function message1(msg,type) {
+	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
 			byId("msg").innerHTML = str;
 		} else if(type == 0) { //Thong diep bao loi
 			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
 			byId("msg").innerHTML = str;
-		}
-	}
-	function message2(msg,type) {
-		if(type==1) { //Thong diep thong bao
-			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
-			byId("msg2").innerHTML = str;
-		} else if(type == 0) { //Thong diep bao loi
-			str = "<div class='negative'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
-			byId("msg2").innerHTML = str;
 		}
 	}
 	function selectMailtype(id) {
-		byId("msg2").innerHTML="";
+		byId("msg").innerHTML="";
 		block("#tabs-2");	
 		$.ajax({
 			type: "GET",
@@ -130,7 +140,7 @@
 					return;
 				}
 				if(data == 'ERROR_SYSTEM') {
-					message2('Thao tác không thành công!',0);
+					message('Thao tác không thành công!',0);
 				} else {
 					$("#mail_content").html(data);										
 				}
@@ -140,7 +150,7 @@
 	}
 	function saveMailTemplate() {
 		dataString = $("#formMailTemplate").serialize();
-		byId("msg2").innerHTML="";
+		byId("msg").innerHTML="";
 		block("#tabs-2");	
 		$.ajax({
 			type: "POST",
@@ -155,9 +165,9 @@
 				}
 				if(data == AJAX_DONE) {
 					//Load luoi du lieu	
-					message2("Lưu cấu hình thành công!",1);
+					message("Lưu mail template thành công!",1);
 				} else {
-					message2('Lưu cấu hình không thành công!',0);										
+					message('Lưu mail template không thành công!',0);										
 				}
 			},
 			error: function(data){ unblock("#tabs-2");alert (data);}	
@@ -165,7 +175,7 @@
 	}
 	function save() {
 		dataString = $("#formSettings").serialize();
-		byId("msg1").innerHTML="";
+		byId("msg").innerHTML="";
 		block("#tabs-1");	
 		$.ajax({
 			type: "POST",
@@ -180,12 +190,44 @@
 				}
 				if(data == AJAX_DONE) {
 					//Load luoi du lieu	
-					message1("Lưu cấu hình thành công!",1);
+					message("Lưu file type thành công!",1);
 				} else {
-					message1('Lưu cấu hình không thành công!',0);										
+					message('Lưu file type không thành công!',0);										
 				}
 			},
 			error: function(data){ unblock("#tabs-1");alert (data);}	
+		});
+	}
+	function saveSenderEmail() {
+		checkValidate=true;
+		if(byId("primary_email").value!='')
+			validate(['email'],'primary_email',['Email không hợp lệ!']);
+		if(byId("second_email").value!='')
+			validate(['email'],'second_email',['Email không hợp lệ!']);
+		if(checkValidate == false)
+			return;
+		dataString = $("#formSender").serialize();
+		byId("msg").innerHTML="";
+		block("#tabs-3");	
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url : url("/admin/saveMailSender&"),
+			data: dataString,
+			success: function(data){
+				unblock("#tabs-3");	
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				if(data == AJAX_DONE) {
+					//Load luoi du lieu	
+					message("Lưu mail sender thành công!",1);
+				} else {
+					message('Lưu mail sender không thành công!',0);										
+				}
+			},
+			error: function(data){ unblock("#tabs-3");alert (data);}	
 		});
 	}
 	$(document).ready(function(){				

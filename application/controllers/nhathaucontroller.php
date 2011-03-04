@@ -606,9 +606,11 @@ class NhathauController extends VanillaController {
 			$this->moithau->hadread = 0;
 			$this->moithau->insert();
 			//Gui mail_moithau
+			$senders = $cache->get('senders');
+			$sender = $senders['priSender'];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($email,'Bạn Được Mời Thầu 1 Dự Án Trên JobBid.vn!',$content);
+			$mail->send($email,'Bạn Được Mời Thầu 1 Dự Án Trên JobBid.vn!',$content,$sender);
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';

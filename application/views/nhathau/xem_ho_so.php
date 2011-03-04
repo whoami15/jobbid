@@ -89,7 +89,7 @@
 				<td align="left">
 				<b>Mời ứng viên này tham gia thầu dự án của bạn trên JobBid:</b><br/>
 				<ul style='padding-left:15px;margin-left:15px' id="ul_myactivityproject">
-					Hiện bạn chưa có dự án nào trên JobBid.vn, click chuột <a href="javascript:location.href=url('/duan/add')" class="link">vào đây</a> để tạo dự án mới cho bạn (<span style="color:red">hoàn toàn miễn phí</span>)
+					Hiện bạn chưa có dự án nào trên JobBid.vn, click chuột <a href="javascript:location.href=url('/duan/tao_du_an_buoc_1')" class="link">vào đây</a> để tạo dự án mới cho bạn (<span style="color:red">hoàn toàn miễn phí</span>)
 				</ul>
 				</td>
 			</tr>

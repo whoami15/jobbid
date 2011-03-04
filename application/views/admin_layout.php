@@ -104,7 +104,7 @@
           <td width="130" class="navigation"><a href="<?php echo BASE_PATH ?>/admin/index" >Quản Trị Widget</a></td>
         </tr>
         <tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/articles.png" alt="articles" width="16" height="13" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/menu.png" alt="menu" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewAdminMenu" >Quản Trị Menu</a></td> 
         </tr>
         <tr>
@@ -112,11 +112,11 @@
           <td class="navigation" ><a href="#" onclick="showImagesPanel()"  >Thư Viện Hình Ảnh</a></td>
         </tr>
         <tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/calendar.png" alt="calendar" width="15" height="15" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/pages.png" alt="pages" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewAdminPage" >Quản Lý Trang</a></td>
         </tr>
 		<tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/articles.png" alt="articles" width="15" height="15" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/articles.png" alt="articles" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewAdminArticle" >Quản Lý Tin Tức</a></td>
         </tr>
         <tr>
@@ -124,11 +124,11 @@
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewAdminAccount">Quản Lý Account</a></td>
         </tr>
 		<tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/linhvuc.png" alt="linhvuc" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyLinhvuc">Quản Lý Lĩnh Vực</a></td>
         </tr>
 		<tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/skills.png" alt="skills" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlySkill">Quản Lý Skill</a></td>
         </tr>
 		<tr>
@@ -136,24 +136,24 @@
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyNhathau">Quản Lý Nhà Thầu</a></td>
         </tr>
 		<tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/projects.png" alt="projects" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyDuan">Quản Lý Dự Án</a></td>
         </tr>
 		<tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/documents.png" alt="documents" width="16"/></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyHosothau">Quản Lý Hồ Sơ Thầu</a></td>
         </tr>
 		<tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/users.png" alt="users" width="16" height="18" /></td>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/PRs.png" alt="PRs" width="16" /></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewCongcuPR">Công Cụ PR</a></td>
         </tr>
         <tr>
-          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/statistics.png" alt="statistics" width="14" height="16" /></td>
-          <td class="navigation"><a href="#">Statistics</a></td> <!--// Statistics -->
-        </tr>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/emails.png" alt="emails" width="16"/></td>
+          <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/mailinglist">Quản Lý Mailing List</a></td>
+		</tr>
         <tr>
           <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/settings.png" alt="settings" width="14" height="14" /></td>
-          <td class="navigation"><a href="#">Settings</a></td> <!--// Settings -->
+          <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/settings">Settings</a></td> <!--// Settings -->
         </tr>
         <tr>
           <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/support.png" alt="support" width="16" height="16" /></td>

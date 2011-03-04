@@ -438,9 +438,11 @@ class DuanController extends VanillaController {
 				$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 				$replace = array($linkactive, $active_code, $email);
 				$content = str_replace($search, $replace, $content);
+				$senders = $cache->get('senders');
+				$sender = $senders['priSender'];
 				include (ROOT.DS.'library'.DS.'sendmail.php');
 				$mail = new sendmail();
-				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content);
+				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
 			}
 			$this->setModel('data');
 			$sIndex = "$tenduan ".strip_tags($thongtinchitiet);

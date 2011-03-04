@@ -13,7 +13,7 @@
 	<br/><br/>
 	<center>
 	<input id="btsubmit" type="button" value="Tạo Hồ Sơ Thầu" onclick="location.href=url('/nhathau/add')"/>
-	<input id="btsubmit" type="button" value="Tạo Dự Án" onclick="location.href=url('/duan/add')"/>
+	<input id="btsubmit" type="button" value="Tạo Dự Án" onclick="location.href=url('/duan/tao_du_an_buoc_1')"/>
 	</center>
 </div>
 <script>

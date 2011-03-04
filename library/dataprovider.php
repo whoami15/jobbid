@@ -43,6 +43,32 @@ class DataProvider
 		}
 		return $arr;
 	}
+	function get10NewProject() {
+		$query = "SELECT * FROM `duans` as `duan` WHERE '1'='1' and active = 1 and nhathau_id is null and ngayketthuc>now() ORDER BY duan.id desc LIMIT 10 OFFSET 0";
+		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
+		if($result == null || mysql_num_rows($result)==0) {
+			return;
+		}
+		$duannew = '';
+		while($a_row=mysql_fetch_object($result)) {
+			$duannew.='<a href="'.BASE_PATH.'/duan/view/'.$a_row->id.'/'.$a_row->alias.'">'.$a_row->tenduan.'</a><br>';
+		}
+		$content = $this->get_cache('mail_spam');
+		$search  = array('#DUAN#');
+		$replace = array($duannew);
+		$content = str_replace($search, $replace, $content);
+		return $content;
+	}
+	function spamMail() {
+		$query = "SELECT * FROM emails";
+		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
+		if($result == null || mysql_num_rows($result)==0) {
+			return;
+		}
+		while($a_row=mysql_fetch_object($result)) {
+			$duannew.='<a href="'.BASE_PATH.'/duan/view/'.$a_row->id.'/'.$a_row->alias.'">'.$a_row->tenduan.'</a><br>';
+		}
+	}
 	function hadSend($arr) {
 		$lstId = '';
 		$i=0;

@@ -206,9 +206,11 @@ class AccountController extends VanillaController {
 			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 			$replace = array($linkactive, $active_code, $username);
 			$content = str_replace($search, $replace, $content);
+			$senders = $cache->get('senders');
+			$sender = $senders['priSender'];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content);
+			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -318,9 +320,11 @@ class AccountController extends VanillaController {
 			$search  = array('#RESETPASSLINK#');
 			$replace = array($linkresetpass);
 			$content = str_replace($search, $replace, $content);
+			$senders = $cache->get('senders');
+			$sender = $senders['priSender'];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'JobBid.vn - Mail Xác Nhận Khôi Phục Mật Khẩu Đăng Nhập!',$content);
+			$mail->send($username,'JobBid.vn - Mail Xác Nhận Khôi Phục Mật Khẩu Đăng Nhập!',$content,$sender);
 			$_SESSION['sendresetpass'] = $_SESSION['sendresetpass'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {

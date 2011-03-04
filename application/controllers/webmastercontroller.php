@@ -105,6 +105,15 @@ class WebmasterController extends VanillaController {
 				$account = $this->account->search();
 				$_SESSION['account'] = $account['account'];
 			}
+			$this->setModel('email');
+			$email = $_SESSION['account']['username'];
+			$this->email->where(" and email = '$email'");
+			$data = $this->email->search();
+			if(empty($data)) {
+				$this->email->id = null;
+				$this->email->email = $email;
+				$this->email->insert();
+			}
 			$this->setModel('duan');
 			$this->duan->active = 1;
 			$this->duan->update(' active=-1 and account_id='.$account_id);
@@ -141,9 +150,11 @@ class WebmasterController extends VanillaController {
 			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 			$replace = array($linkactive, $active_code, $username);
 			$content = str_replace($search, $replace, $content);
+			$senders = $cache->get('senders');
+			$sender = $senders['priSender'];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
-			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content);
+			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
 			$_SESSION['sendactivecode'] = $_SESSION['sendactivecode'] + 1;
 			echo 'DONE';
 		} catch (Exception $e) {

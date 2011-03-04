@@ -1,6 +1,6 @@
 <?php
 class sendmail {
-	function send($to, $subject, $content) {
+	function send($to, $subject, $content, $sender) {
 		//echo 'sendmail!!';
 		require_once ROOT . DS . 'library' . DS .'class.phpmailer.php';
 		$mail             = new PHPMailer();
@@ -11,11 +11,11 @@ class sendmail {
 		$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
 		//$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
 		//$mail->Port       = 465;                   // set the SMTP port for the GMAIL server
-		$mail->Host       = SMTP_HOST;
-		$mail->Port       = SMTP_PORT;
-		$mail->Username   = mUser;  // GMAIL username
-		$mail->Password   = mPass;            // GMAIL password
-		$from = mUser;
+		$mail->Host       = $sender['smtp'];
+		$mail->Port       = $sender['port'];
+		$mail->Username   = $sender['email'];  // GMAIL username
+		$mail->Password   = $sender['password'];            // GMAIL password
+		$from = $sender['email'];
 		$mail->AddReplyTo($from, "Jobbid.vn Support");
 		$mail->From       = $from;
 		$mail->FromName   = "Jobbid.vn Support";
@@ -31,6 +31,12 @@ class sendmail {
 		} 
 		return true;
 	}
+	function send2($to, $subject, $content, $sender) {
+		//echo 'sendmail!!';
+		echo ";sender:".$sender['email'];
+		return true;
+	}
+	
 }
 	
 

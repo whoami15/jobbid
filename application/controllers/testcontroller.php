@@ -17,16 +17,22 @@ class TestController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
+		$this->setModel("duan");
+		$this->duan->orderBy('duan.id','desc');
+		$this->duan->setPage(1);
+		$this->duan->setLimit(PAGINATE_LIMIT);
+		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
+		$this->duan->search('*',true);
 		//$this->test->query("select InsertPage() as newid");
 		//sendMail("nclong87@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
 		//die("done");
 		//$cache_expire = session_cache_expire();
 		//echo "The cached session pages expire after $cache_expire minutes"; 
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
 		//include (ROOT.DS.'library'.DS.'sendmail.php');
 		$conn=new DataProvider();
 		$conn->updateNewArticle();
-		echo 'DONE';
+		echo 'DONE'; */
 		/* $mail=new sendmail();
 		$conn->lstNewProject();
 		$data = $conn->getListSendmail();
