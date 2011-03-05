@@ -22,7 +22,7 @@
 					echo "<a class='link' href='$linktmp/$pagesindex'>$pagesindex</a>";
 				}
 				if($pagesnext<$pageend)
-					echo "<a class='link' style='padding-right:5px' href='$linktmp.'/'.$pageend'>... $pageend</a>";
+					echo "<a class='link' style='padding-right:5px' href='$linktmp/$pageend'>... $pageend</a>";
 				?>
 			</td>
 		</tr>

@@ -333,7 +333,7 @@ class AdminController extends VanillaController {
 						$this->sendmail->to = $email;
 						$this->sendmail->subject = 'Mời Bạn Đăng Tin Tuyển Dụng Miễn Phí Trên JobBid.vn!!!';
 						$this->sendmail->content = $content;
-						$this->sendmail->isprior = 0;
+						$this->sendmail->isprior = '0';
 						$this->sendmail->insert();
 					} catch (Exception $e) {
 						$result = 'Error';
@@ -396,7 +396,7 @@ class AdminController extends VanillaController {
 					$this->sendmail->to = $email;
 					$this->sendmail->subject = 'Rất Nhiều Công Việc Bán Thời Gian Đang Chờ Bạn!!!';
 					$this->sendmail->content = $content;
-					$this->sendmail->isprior = 0;
+					$this->sendmail->isprior = '0';
 					$this->sendmail->insert();
 					$this->setModel('email');
 				}
