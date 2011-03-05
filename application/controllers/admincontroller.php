@@ -412,6 +412,46 @@ class AdminController extends VanillaController {
 		$jsonResult = $jsonResult."}";
 		print($jsonResult);
 	}
+	function sendTestPrimary() {
+		try {
+			$validate = new Validate();
+			if($validate->check_submit(1,array("primary_email","primary_passsword","primary_smtp","primary_port"))==false)
+				die('ERROR_SYSTEM');
+			$primary_email = $_POST['primary_email'];
+			$primary_passsword = $_POST['primary_passsword'];
+			$primary_smtp = $_POST['primary_smtp'];
+			$primary_port = $_POST['primary_port'];
+			if($validate->check_null(array($primary_email,$primary_passsword,$primary_smtp,$primary_port))==false)
+				die('ERROR_SYSTEM');
+			$priSender = array("email"=>$primary_email,'password'=>$primary_passsword,'smtp'=>$primary_smtp,'port'=>$primary_port);
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send(EMAIL_TEST,'JobBid.vn - Mail Thử Nghiệm!','Xin chào bạn, chúng tôi là mạng freelancer!',$priSender);
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function sendTestSecond() {
+		try {
+			$validate = new Validate();
+			if($validate->check_submit(1,array("second_email","second_passsword","second_smtp","second_port"))==false)
+				die('ERROR_SYSTEM');
+			$second_email = $_POST['second_email'];
+			$second_passsword = $_POST['second_passsword'];
+			$second_smtp = $_POST['second_smtp'];
+			$second_port = $_POST['second_port'];
+			if($validate->check_null(array($second_email,$second_passsword,$second_smtp,$second_port))==false)
+				die('ERROR_SYSTEM');
+			$sender = array("email"=>$second_email,'password'=>$second_passsword,'smtp'=>$second_smtp,'port'=>$second_port);
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send(EMAIL_TEST,'JobBid.vn - Mail Thử Nghiệm!','Xin chào bạn, chúng tôi là mạng freelancer!',$sender);
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
 	function afterAction() {
 
 	}

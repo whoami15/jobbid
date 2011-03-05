@@ -91,6 +91,7 @@
 	</div>
 	<div id="tabs-3">
 		<form id="formSender">
+		<div id="msg_email"></div>
 		<fieldset>
 		<legend><strong>Primary Sender</strong></legend>
 		<table>
@@ -98,6 +99,9 @@
 			<td><div style="width:80px">Email:</div><input type="text" name="primary_email" id="primary_email" value="<?php echo $priSender['email']?>" style="width:200px"/><br/></td>
 			<td><div style="width:80px">Password:</div>
 		<input type="password" name="primary_passsword" id="primary_passsword" value="<?php echo $priSender['password']?>" style="width:200px"/><br/></td>
+			<td rowspan="2" valign="center">
+			<input id="btSendTestPrimary" type="button" value="Send Test" onclick="sendTestPrimary()"/>
+			</td>
 		</tr>	
 		<tr>
 			<td><div style="width:80px">SMTP:</div>
@@ -115,6 +119,9 @@
 		<input type="text" name="second_email" id="second_email" value="<?php echo $secSender['email']?>" style="width:200px"/><br/></td>
 			<td><div style="width:80px">Password:</div>
 		<input type="password" name="second_passsword" id="second_passsword" value="<?php echo $secSender['password']?>" style="width:200px"/><br/></td>
+		<td rowspan="2" valign="center">
+			<input id="btSendTestSecond" type="button" value="Send Test" onclick="sendTestSecond()"/>
+			</td>
 		</tr>	
 		<tr>
 			<td><div style="width:80px">SMTP:</div>
@@ -241,6 +248,64 @@
 				}
 			},
 			error: function(data){ unblock("#tabs-3");alert (data);}	
+		});
+	}
+	function sendTestPrimary() {
+		checkValidate=true;
+		validate(['require','email'],'primary_email',['Vui lòng nhập địa chỉ Email','Email không hợp lệ!']);
+		if(checkValidate == false)
+			return;
+		dataString = $("#formSender").serialize();
+		$('#btSendTestPrimary').attr('disabled','disabled');
+		byId("msg_email").innerHTML="Sending...";
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url : url("/admin/sendTestPrimary&"),
+			data: dataString,
+			success: function(data){
+				$('#btSendTestPrimary').removeAttr('disabled');
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				if(data == AJAX_DONE) {
+					//Load luoi du lieu	
+					byId("msg_email").innerHTML="<font color='green'>Test primary sender thành công!</font>";
+				} else {
+					byId("msg_email").innerHTML="<font color='red'>Test primary sender  không thành công!</font>";									
+				}
+			},
+			error: function(data){ $('#btSendTestPrimary').removeAttr('disabled');alert (data);}	
+		});
+	}
+	function sendTestSecond() {
+		checkValidate=true;
+		validate(['require','email'],'primary_email',['Vui lòng nhập địa chỉ Email','Email không hợp lệ!']);
+		if(checkValidate == false)
+			return;
+		dataString = $("#formSender").serialize();
+		$('#btSendTestSecond').attr('disabled','disabled');
+		byId("msg_email").innerHTML="Sending...";
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url : url("/admin/sendTestSecond&"),
+			data: dataString,
+			success: function(data){
+				$('#btSendTestSecond').removeAttr('disabled');
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				if(data == AJAX_DONE) {
+					//Load luoi du lieu	
+					byId("msg_email").innerHTML="<font color='green'>Test second sender thành công!</font>";
+				} else {
+					byId("msg_email").innerHTML="<font color='red'>Test second sender không thành công!</font>";									
+				}
+			},
+			error: function(data){ $('#btSendTestSecond').removeAttr('disabled');alert (data);}	
 		});
 	}
 	$(document).ready(function(){				
