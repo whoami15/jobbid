@@ -59,15 +59,20 @@ class DataProvider
 		$content = str_replace($search, $replace, $content);
 		return $content;
 	}
-	function spamMail() {
-		$query = "SELECT * FROM emails";
+	function getEmailSpam() {
+		$query='select * from emails limit 0,10';
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
-			return;
+			return null;
 		}
-		while($a_row=mysql_fetch_object($result)) {
-			$duannew.='<a href="'.BASE_PATH.'/duan/view/'.$a_row->id.'/'.$a_row->alias.'">'.$a_row->tenduan.'</a><br>';
+    	$i=0;
+		$arr = array();
+		while($a_row=mysql_fetch_object($result))
+		{
+			array_push($arr,$a_row);
+            $i++;
 		}
+		return $arr;
 	}
 	function hadSend($arr) {
 		$lstId = '';
@@ -111,18 +116,6 @@ class DataProvider
 		$result = mysql_query('select count(*) as total from nhathaus where `status`>=0',$this->link) or die("Error:".mysql_error());
 		$statistics['tFreelancers'] = mysql_fetch_object($result)->total;
 		$this->set_cache('statistics',$statistics);
-	}
-	function updateNewArticle() {
-		$query = "SELECT id,title,alias FROM `articles` as `article` WHERE active=1 order by datemodified desc LIMIT 5 OFFSET 0";
-		$result = mysql_query($query);
-		$data = array();
-		while($a_row=mysql_fetch_object($result))
-		{
-			$article = array('id'=>$a_row->id,'title'=>$a_row->title,'alias'=>$a_row->alias);
-			array_push($data,$article);
-		}
-		//print_r($data);
-		$this->set_cache('lastnews',$data);
 	}
 	function lstNewProject() {
 		$query="SELECT id,alias,tenduan,costmin,costmax,ngayketthuc,linhvuc_id from duans where isnew=1 and active=1 and nhathau_id is null and ngayketthuc>now()";

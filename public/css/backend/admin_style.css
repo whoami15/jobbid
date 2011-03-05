@@ -190,14 +190,10 @@ margin-right:auto;
 	max-width:200px;
 }
 #layout_bottom {
-	width:100%;
-	position:relative;
-	float:left;
-	-moz-border-radius:5px;
-	border:1px solid #4EC2C2;
-	height:30px;
-	padding-top:10px;
-	margin-top:1px;
+    float: left;
+    margin-top: 1px;
+    position: relative;
+    width: 100%;
 }
 .layout_widget {
 	border:1px solid;

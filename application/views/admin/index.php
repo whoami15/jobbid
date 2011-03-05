@@ -401,7 +401,7 @@
 					}
 					var bottom = $("#layout_bottom").children();
 					for(i=0;i<bottom.length;i++) {
-						dataString += "&id[]="+bottom[i].id+"&position[]=bottom&order[]="+i;
+						dataString += "&id[]="+bottom[i].id+"&position[]=footer&order[]="+i;
 					}
 					//jsdebug(top);
 					//alert(dataString);
@@ -470,6 +470,7 @@
 			theme_advanced_resizing : true,
 			relative_urls : false,
 			convert_urls : false,
+			cleanup : false,
 			// Example content CSS (should be your site CSS)
 			content_css : "css/content.css"
 		});

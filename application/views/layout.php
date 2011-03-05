@@ -88,18 +88,20 @@
 			}
 			?>	
 		</div>	
-		<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="width: 100%;margin:0;padding:0; height: auto; position: relative; float: left;margin-bottom:5px">
-			<a target="_blank" href="http://hoalyly.net/" title="http://hoalyly.net/" style="margin: 0pt; padding: 0pt ! important; border: medium none; color: white ! important;"><img height="110" width="200" alt="http://hoalyly.net/" src="http://www.jobbid.vn/upload/images/1296545147_hoalyly_goc.jpg" title="http://hoalyly.net/" style="border: medium none; margin-left: auto; margin-right: auto;"></a>
-			<a target="_blank" href="http://marketingonlinevn.info/" title="http://marketingonlinevn.info/" style="margin: 0pt; padding: 0pt ! important; border: medium none; color: white ! important;"><img height="97" width="192" alt="http://marketingonlinevn.info/" src="http://www.jobbid.vn/upload/images/1297831697_advright_top_s204.jpg" title="http://marketingonlinevn.info/" style="border: medium none; margin-left: auto; margin-right: auto;"></a>
-			<a target="_blank" href="http://phuongtuyen.vn" style="margin: 0pt; padding: 0pt ! important; border: medium none; color: white ! important;"><img height="100" width="200" alt="phuongtuyen.vn" src="http://phuongtuyen.vn/ads/bnex.gif" title="phuongtuyen.vn" style="border: medium none; margin-left: auto; margin-right: auto;"></a>
-			<a target="_blank" href="http://hoadepbonmua.com/" style="margin: 0pt; padding: 0pt ! important; border: medium none; color: white ! important;"><img height="100" width="200" alt="hoadepbonmua.com" src="http://www.jobbid.vn/upload/images/1295417762_mochaheader3031.jpg" title="hoadepbonmua.com" style="border: medium none; margin-left: auto; margin-right: auto;"></a>
-		</div>
-		<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="width: 100%;margin:0;padding:0; height: auto; position: relative; float: left;margin-bottom:5px">
-				<?php 
-				if(isset($footer)) {
-					echo $footer['widget']['content'];
-				}
-				?>
+		<div id="bottom">
+		<?php
+			foreach($footer as $widget) {
+				echo '<div class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="width: 100%;margin:0;padding:0; height: auto; position: relative; float: left;margin-bottom:5px">';
+				if($widget['widget']['showtitle']==1)
+					echo '<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left:5px">'.$widget['widget']['name'].'</div>';				
+				if($widget['widget']['iscomponent']==1) {
+					include (ROOT . DS . 'public' . DS . $widget['widget']['content']);
+				} else {
+					echo $widget['widget']['content'];
+				}		
+				echo '</div>';
+			}
+		?>	
 		</div>
 	</div>
 </div>

@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tiny_mce/jquery.tinymce.js"></script>
+<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/tiny_mce/jquery.tinymce.js"></script>
 <style type="text/css"> 	
 	.input {
 		width:86%;
@@ -66,6 +67,7 @@
 								<option value="mail_moithau">Mời thầu</option>
 								<option value="mail_moinhatuyendung">Mời nhà tuyển dụng</option>
 								<option value="mail_moiungvien">Mời ứng viên</option>
+								<option value="mail_spam">Spam Mail</option>
 							</select>
 						</td>
 					</tr>
@@ -91,25 +93,36 @@
 		<form id="formSender">
 		<fieldset>
 		<legend><strong>Primary Sender</strong></legend>
-		<div style="width:80px">Email:</div> 
-		<input type="text" name="primary_email" id="primary_email" value="<?php echo $priSender['email']?>" style="width:200px"/><br/>
-		<div style="width:80px">Password:</div>
-		<input type="password" name="primary_passsword" id="primary_passsword" value="<?php echo $priSender['password']?>" style="width:200px"/><br/>
-		<div style="width:80px">SMTP:</div>
-		<input type="text" name="primary_smtp" id="primary_smtp" value="<?php echo $priSender['smtp']?>" style="width:200px"/><br/>
-		<div style="width:80px">Port:</div>
-		<input type="text" name="primary_port" id="primary_port" value="<?php echo $priSender['port']?>" style="width:200px"/><br/>
+		<table>
+		<tr>
+			<td><div style="width:80px">Email:</div><input type="text" name="primary_email" id="primary_email" value="<?php echo $priSender['email']?>" style="width:200px"/><br/></td>
+			<td><div style="width:80px">Password:</div>
+		<input type="password" name="primary_passsword" id="primary_passsword" value="<?php echo $priSender['password']?>" style="width:200px"/><br/></td>
+		</tr>	
+		<tr>
+			<td><div style="width:80px">SMTP:</div>
+		<input type="text" name="primary_smtp" id="primary_smtp" value="<?php echo $priSender['smtp']?>" style="width:200px"/><br/></td>
+			<td><div style="width:80px">Port:</div>
+		<input type="text" name="primary_port" id="primary_port" value="<?php echo $priSender['port']?>" style="width:200px"/><br/></td>
+		</tr>
+		</table>
 		</fieldset>
 		<fieldset>
 		<legend><strong>Second Sender</strong></legend>
-		<div style="width:80px">Email:</div> 
-		<input type="text" name="second_email" id="second_email" value="<?php echo $secSender['email']?>" style="width:200px"/><br/>
-		<div style="width:80px">Password:</div>
-		<input type="password" name="second_passsword" id="second_passsword" value="<?php echo $secSender['password']?>" style="width:200px"/><br/>
-		<div style="width:80px">SMTP:</div>
-		<input type="text" name="second_smtp" id="second_smtp" value="<?php echo $secSender['smtp']?>" style="width:200px"/><br/>
-		<div style="width:80px">Port:</div>
-		<input type="text" name="second_port" id="second_port" value="<?php echo $secSender['port']?>" style="width:200px"/><br/>
+		<table>
+		<tr>
+			<td><div style="width:80px">Email:</div> 
+		<input type="text" name="second_email" id="second_email" value="<?php echo $secSender['email']?>" style="width:200px"/><br/></td>
+			<td><div style="width:80px">Password:</div>
+		<input type="password" name="second_passsword" id="second_passsword" value="<?php echo $secSender['password']?>" style="width:200px"/><br/></td>
+		</tr>	
+		<tr>
+			<td><div style="width:80px">SMTP:</div>
+		<input type="text" name="second_smtp" id="second_smtp" value="<?php echo $secSender['smtp']?>" style="width:200px"/><br/></td>
+			<td><div style="width:80px">Port:</div>
+		<input type="text" name="second_port" id="second_port" value="<?php echo $secSender['port']?>" style="width:200px"/><br/></td>
+		</tr>
+		</table>
 		</fieldset>
 		<input onclick="saveSenderEmail()" value="Lưu" type="button">
 		</form>

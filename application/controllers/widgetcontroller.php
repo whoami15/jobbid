@@ -98,7 +98,7 @@ class WidgetController extends VanillaController {
 		$this->widget->orderBy('`order`','ASC');
 		$data = $this->widget->search();
 		if(!empty($data))
-			$cache->set("footer",$data[0]);
+			$cache->set("footer",$data);
 		// $this->widget->where(" AND position='leftcol' AND active=1");
 		// $this->widget->orderBy('`order`','ASC');
 		// $data = $this->widget->search();
@@ -163,7 +163,7 @@ class WidgetController extends VanillaController {
 		if($id!=0) {
 			$this->setModel("widget");
 			$this->widget->id = $id;
-			$this->widget->active = 0;
+			$this->widget->active = '0';
 			$this->widget->update();
 			$this->cacheWidgets(false);
 			echo "DONE";

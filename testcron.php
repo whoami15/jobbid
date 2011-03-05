@@ -4,19 +4,15 @@
 	include (ROOT.DS.'library'.DS.'sendmail.php');
 	$conn=new DataProvider();
 	$senders = $conn->get_cache('senders');
+	$content = $conn->get10NewProject();
 	$mail=new sendmail();
-	$conn->lstNewProject();
-	$data = $conn->getListSendmail();
+	$data = $conn->getEmailSpam();
 	if(!empty($data)){
-		$arr = array();
 		foreach($data as $e) {
 			try {
 				$sender = $senders['secSender'];
-				if($e->isprior == 1)
-					$sender = $senders['priSender'];
-				$mail->send2($e->to, $e->subject, $e->content,$sender);echo "<br>";
+				$mail->send($e->email, 'Jbobbid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$sender);
 				sleep(3);
-				array_push($arr,$e->id);
 			} catch (Exception $e) {
 			}
 		}

@@ -16,8 +16,8 @@
 	</div>
 	<div id="layout_bottom">
 		<?php
-		if(isset($footer)) {
-			echo $footer["widget"]["name"];
+		foreach($footer as $widget) {
+			echo "<div id='".$widget["widget"]["id"]."' class='layout_widget'>".$widget["widget"]["name"]."</div>";
 		}
 		?>
 	</div>
