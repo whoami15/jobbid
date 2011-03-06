@@ -72,8 +72,6 @@
 	</form>
 </div>
 <script type="text/javascript">
-	var STR_MIN_GIATHAU = FormatMoney(<?php echo MIN_GIATHAU?>);
-	var STR_MAX_GIATHAU = FormatMoney(<?php echo MAX_GIATHAU?>);
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'>"+msg+"</span></div>";
@@ -129,7 +127,7 @@
 					return;
 				}
 				if(data == "ERROR_GIATHAU") {
-					message('Lỗi! Giá thầu phải nằm trong khoảng từ '+STR_MIN_GIATHAU+' đến '+STR_MAX_GIATHAU+' (VNĐ)!',0);
+					message('Lỗi! Giá thầu phải nằm trong khoảng từ <?php echo MIN_GIATHAU?> đến <?php echo MAX_GIATHAU?> (VNĐ)!',0);
 					return;
 				}
 				if(data == "ERROR_NOTACTIVE") {
