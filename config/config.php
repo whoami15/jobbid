@@ -19,6 +19,8 @@ define('MAX_SENDRESETPASS',3);
 define('MAX_SUBMIT_LOGIN_TIMES',5);
 define('MAX_TIMESRESETPASS',3);
 define('MAX_SKILL',10);
+define('MAX_GIATHAU',50000000);
+define('MIN_GIATHAU',50000);
 
 define('PAGINATE_LIMIT', 6);
 define('INT_PAGE_SUPPORT', 4);

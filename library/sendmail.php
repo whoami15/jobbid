@@ -16,7 +16,8 @@ class sendmail {
 		$mail->Username   = $sender['email'];  // GMAIL username
 		$mail->Password   = $sender['password'];            // GMAIL password
 		$from = $sender['email'];
-		$mail->AddReplyTo($from, "Jobbid.vn Support");
+		
+		$mail->AddReplyTo('sale@jobbid.vn', "Jobbid.vn Support");
 		$mail->From       = $from;
 		$mail->FromName   = "Jobbid.vn Support";
 		$mail->Sender = $from;
@@ -24,7 +25,11 @@ class sendmail {
 		//$mail->AltBody    = "Xin chao"; // optional, comment out and test
 		//$mail->WordWrap   = 50; // set word wrap
 		$mail->MsgHTML($content);
-		$mail->AddAddress($to);
+		if(is_array($to))
+			foreach($to as $email)
+				$mail->addBCC($email);
+		else
+			$mail->AddAddress($to);
 		$mail->IsHTML(true); // send as HTML
 		if(!$mail->Send()) {
 			return false;

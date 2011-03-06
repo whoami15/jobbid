@@ -17,12 +17,34 @@ class TestController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
-		$this->setModel("duan");
+		include (ROOT.DS.'library'.DS.'sendmail.php');
+		global $cache;
+		$senders = $cache->get('senders');
+		$sender = $senders['secSender'];
+		$mail=new sendmail($sender);
+		$mail->send2('nclong87@gmail.com','hello','test');
+		$mail->send2('nclong870@gmail.com','hello2','test2');
+		echo 'DONE';
+		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
+		$conn=new DataProvider();
+		//$conn->onSpam();
+		
+		$data = $conn->getEmailSpam();
+		foreach($data as $e) {
+			echo $e->email;echo '<br>';
+		}
+		$conn->close(); */
+		/* $mail=new sendmail();
+		$conn->lstNewProject();
+		$data = $conn->getListSendmail();
+		$arr = array();
+		
+		/* $this->setModel("duan");
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage(1);
 		$this->duan->setLimit(PAGINATE_LIMIT);
 		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
-		$this->duan->search('*',true);
+		$this->duan->search('*',true); */
 		//$this->test->query("select InsertPage() as newid");
 		//sendMail("nclong87@gmail.com", "Xin chao", "Xin chào <b>Nguyễn Chí Long</b>");
 		//die("done");
@@ -30,21 +52,7 @@ class TestController extends VanillaController {
 		//echo "The cached session pages expire after $cache_expire minutes"; 
 		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
 		//include (ROOT.DS.'library'.DS.'sendmail.php');
-		$conn=new DataProvider();
-		$conn->updateNewArticle();
-		echo 'DONE'; */
-		/* $mail=new sendmail();
-		$conn->lstNewProject();
-		$data = $conn->getListSendmail();
-		$arr = array();
-		foreach($data as $e) {
-			try {
-				$mail->send($e->to, $e->subject, $e->content);
-				sleep(3);
-				array_push($arr,$e->id);
-			} catch (Exception $e) {
-			}
-		}
+		
 		$conn->hadSend($arr);
 		$conn->updateStatistics();
 		$conn->close(); */

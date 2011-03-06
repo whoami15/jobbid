@@ -8,17 +8,20 @@
 	$content = $conn->get10NewProject();
 	$mail=new sendmail();
 	$data = $conn->getEmailSpam();
+	$arrTo = array();
 	if(!empty($data)){
 		foreach($data as $e) {
-			try {
-				$sender = $senders['secSender'];
-				$mail->send($e->email, 'Jbobbid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$sender);
-				sleep(3);
-			} catch (Exception $e) {
-			}
+			array_push($arrTo,$e->email);
 		}
-	}
-	$conn->close();
-	echo 'DONE';
-	
+		try {
+			$sender = $senders['secSender'];
+			$mail->send($arrTo, 'Jbobbid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$sender);
+			$conn->close();
+			echo 'Send Mail Success';
+		} catch (Exception $e) {
+			$conn->close();
+			echo 'Send Mail Error';
+		}
+	} else
+		echo 'No Email To Send';
 ?>

@@ -59,19 +59,30 @@ class DataProvider
 		$content = str_replace($search, $replace, $content);
 		return $content;
 	}
+	function onSpam() {
+		$this->set_cache('spamOffset',0);
+	}
 	function getEmailSpam() {
-		$query='select * from emails limit 0,10';
+		$spamOffset = $this->get_cache('spamOffset');
+		if($spamOffset==null) {
+			$spamOffset = 0;
+		}
+		$arr = array();
+		if($spamOffset == -1)
+			return $arr;
+		$query="select * from emails limit $spamOffset,10";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
-			return null;
+			return $arr;
 		}
-    	$i=0;
-		$arr = array();
-		while($a_row=mysql_fetch_object($result))
-		{
+		while($a_row=mysql_fetch_object($result)) {
 			array_push($arr,$a_row);
-            $i++;
 		}
+		if(isset($arr[9]))
+			$spamOffset+=10;
+		else
+			$spamOffset=-1; //Off Spam
+		$this->set_cache('spamOffset',$spamOffset);
 		return $arr;
 	}
 	function hadSend($arr) {

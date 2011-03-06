@@ -203,6 +203,8 @@ class HosothauController extends VanillaController {
 				die('ERROR_SYSTEM');
 			if($validate->check_number($giathau) == false)
 				die('ERROR_SYSTEM');
+			if($giathau>MAX_GIATHAU || $giathau<MIN_GIATHAU)
+				die('ERROR_GIATHAU');
 			if($validate->check_number($thoigian) == false)
 				die('ERROR_SYSTEM');
 			$duan_id = mysql_real_escape_string($duan_id);
