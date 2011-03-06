@@ -4,12 +4,12 @@
 	include (ROOT.DS.'library'.DS.'dataprovider.php');
 	include (ROOT.DS.'library'.DS.'sendmail.php');
 	$conn=new DataProvider();
-	$senders = $conn->get_cache('senders');
-	$content = $conn->get10NewProject();
-	$mail=new sendmail();
 	$data = $conn->getEmailSpam();
-	$arrTo = array();
 	if(!empty($data)){
+		$mail=new sendmail();
+		$senders = $conn->get_cache('senders');
+		$content = $conn->get10NewProject();
+		$arrTo = array();
 		foreach($data as $e) {
 			array_push($arrTo,$e->email);
 		}

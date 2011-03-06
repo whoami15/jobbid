@@ -5,12 +5,12 @@
 	include (ROOT.DS.'library'.DS.'dataprovider.php');
 	include (ROOT.DS.'library'.DS.'sendmail.php');
 	$conn=new DataProvider();
-	$senders = $conn->get_cache('senders');
-	$mail=new sendmail();
-	$conn->lstNewProject();
 	$data = $conn->getListSendmail();
 	if(!empty($data)){
+		$mail=new sendmail();
 		$arr = array();
+		$senders = $conn->get_cache('senders');
+		$conn->lstNewProject();
 		foreach($data as $e) {
 			try {
 				echo 'Send mail to <b>'.$e->to.'</b><br/>';
@@ -24,8 +24,9 @@
 			}
 		}
 		$conn->hadSend($arr);
-	}
+	} else
+		echo 'No Email To Send';
 	$conn->close();
-	echo 'DONE';
+	
 	
 ?>
