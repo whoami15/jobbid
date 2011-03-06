@@ -147,6 +147,7 @@
 	</div>
 	<fieldset>
 		<legend>Danh Sách Nhà Thầu</legend>
+		<input type="text" style="width:400px;height:30px" name="nhathau_keyword" id="nhathau_keyword" value=""/><input type="button" style="margin-left:10px" value="Tìm Kiếm" onclick="doSearch()"/>
 		<div id="datagrid">
 			<table width="99%">
 				<thead>
@@ -183,7 +184,7 @@
 		byId("nhathau_id").focus();
 	}
 	function selectpage(page) {
-		loadListNhathaus(page);
+		loadListNhathaus(byId("nhathau_keyword").value,page);
 	};
 	function fillFormValues(cells) { 		
 		byId("nhathau_id").value = $.trim($(cells.td_id).text());
@@ -255,12 +256,14 @@
 		$("#formNhathau :input").css('border-color','');
 		byId("msg").innerHTML="";
 	}
-	function loadListNhathaus(page) {
+	function loadListNhathaus(keyword,page) {
+		dataPost = 'keyword='+keyword;
 		block("#datagrid");
 		$.ajax({
-			type : "GET",
+			type : "POST",
 			cache: false,
-			url: url("/nhathau/listNhathaus/"+page),
+			url: url("/nhathau/listNhathaus/"+page+"&"),
+			data: dataPost,
 			success : function(data){	
 				//alert(data);
 				unblock("#datagrid");
@@ -347,7 +350,7 @@
 								if(data == AJAX_DONE) {
 									//Load luoi du lieu	
 									message("Lưu dữ liệu thành công!",1);
-									loadListNhathaus(1);													
+									loadListNhathaus('',1);													
 								} else if (data == AJAX_ERROR_NOTEXIST){
 									message('Username này không tồn tại!',0);
 									byId("nhathau_id").focus();
@@ -365,6 +368,10 @@
 				error: function(data){ unblock("#dialogNhathau #dialog");alert (data);}	
 			});
 		}
+	}
+	function doSearch() {
+		byId("msg").innerHTML="";
+		selectpage(1);
 	}
 	function showLinhvucquantam(nhathau_id) {
 		$("#dialog_panel").html("");
@@ -413,6 +420,6 @@
 				return;
 			initTimer();
 		});
-		loadListNhathaus(1);
+		loadListNhathaus('',1);
 	});
 </script>

@@ -23,6 +23,13 @@ class NhathauController extends VanillaController {
 		$this->nhathau->orderBy('nhathau.id','desc');
 		$this->nhathau->setPage($ipageindex);
 		$this->nhathau->setLimit(PAGINATE_LIMIT);
+		$strWhere = '';
+		if(isset($_POST['keyword'])) {
+			$keyword = $_POST['keyword'];
+			if($keyword!=null)
+				$strWhere.=" and displayname like '%$keyword%'";
+		}
+		$this->nhathau->where($strWhere);
 		$lstNhathau = $this->nhathau->search("nhathau.id,account.id,displayname,gpkd_cmnd,username,diemdanhgia,nhanemail,type");
 		$totalPages = $this->nhathau->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
