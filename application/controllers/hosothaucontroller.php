@@ -208,11 +208,11 @@ class HosothauController extends VanillaController {
 			if($validate->check_number($thoigian) == false)
 				die('ERROR_SYSTEM');
 			$duan_id = mysql_real_escape_string($duan_id);
-			$this->setModel("duan");
+			$this->setModel('duan');
 			$this->duan->showHasOne(array('account'));
 			$this->duan->id = $duan_id;
 			$this->duan->where(" and duan.active=1 and nhathau_id is null");
-			$data = $this->duan->search('duan.id,tenduan,alias,account_id,duan_email,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau');
+			$data = $this->duan->search('duan.id,tenduan,alias,account_id,username,duan_email,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau');
 			if(empty($data))
 				die("ERROR_SYSTEM");
 			if($data[""]["lefttime"] <= 0)
@@ -223,6 +223,14 @@ class HosothauController extends VanillaController {
 			if($data["duan"]["lastbid_nhathau"] == $nhathau_id)
 				die("ERROR_DUPLICATE");
 			$employerMail =  $data["duan"]["duan_email"];
+			$editcode = '';
+			if($employerMail != $data["account"]['username']) {
+				$this->setModel('editcode');
+				$this->editcode->where(" and duan_id=$duan_id");
+				$dtEditcode = $this->editcode->search();
+				if(!empty($dtEditcode))
+					$editcode = $dtEditcode[0]['editcode']['editcode'];
+			}
 			//Insert ho so thau
 			$this->setModel("hosothau");
 			$this->hosothau->id = null;
@@ -240,10 +248,11 @@ class HosothauController extends VanillaController {
 			$this->hosothau->hosothau_sodienthoai = $hosothau_sodienthoai;
 			$hosothau_id = $this->hosothau->insert(true);
 			//Send mail cho chu du an
+			
 			$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"];
 			$tenduan = $data["duan"]["tenduan"];
 			$linkduan = "<a href='$linkduan'>$tenduan</a>";
-			$linknhathau = BASE_PATH."/hosothau/xem_ho_so/$hosothau_id/$duan_id";
+			$linknhathau = BASE_PATH."/hosothau/xem_ho_so/$hosothau_id/$duan_id/$editcode";
 			$linknhathau = "<a href='$linknhathau'>$linknhathau</a>";
 			global $cache;
 			$content = $cache->get('mail_newbid');
@@ -351,11 +360,23 @@ class HosothauController extends VanillaController {
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
 	}
-	function xem_ho_so($hosothau_id,$duan_id) {
+	function xem_ho_so($hosothau_id,$duan_id,$editcode=null) {
 		if(isset($hosothau_id) && isset($duan_id)) {
-			$_SESSION['redirect_url'] = getUrl();
-			$this->checkLogin();
-			$account_id = $_SESSION['account']['id'];
+			if(!isset($_SESSION['edit_duan']) || $_SESSION['edit_duan']!=$duan_id) {
+				if($editcode!=null) {
+					$this->setModel('editcode');
+					$this->editcode->where(" and duan_id=$duan_id and editcode = '$editcode'");
+					$dtEditcode = $this->editcode->search();
+					if(empty($dtEditcode))
+						error('Liên kết không hợp lệ!');
+					else
+						$_SESSION['edit_duan'] = $duan_id;
+				} else {
+					$_SESSION['redirect_url'] = getUrl();
+					$this->checkLogin();
+					$account_id = $_SESSION['account']['id'];
+				}
+			}
 			$nhathau_id = isset($_SESSION['nhathau'])?$_SESSION['nhathau']['id']:-1;
 			$hosothau_id = mysql_real_escape_string($hosothau_id);
 			$duan_id = mysql_real_escape_string($duan_id);
@@ -374,14 +395,17 @@ class HosothauController extends VanillaController {
 			$data = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,hosothau_email,content,hosothau_sodienthoai,ngaygui,nhathau.id,nhathau.displayname,nhathau_alias');
 			if(empty($data))
 				error("Server đang quá tải, vui lòng thử lại sau!");
-			if($account_id != $employerId && $nhathau_id != $data['nhathau']['id'])
-				error('Chỉ có chủ dự án mới xem được hồ sơ thầu này!');
+			if(isset($_SESSION['edit_duan'])==false) {
+				if($account_id != $employerId && $nhathau_id != $data['nhathau']['id'])
+					error('Chỉ có chủ dự án mới xem được hồ sơ thầu này!');
+			}
 			$flag = true;
 			if(($hosotrungthau ==null || $hosotrungthau !=$hosothau_id) && $nhathau_id != $data['nhathau']['id']) {
 				$data['hosothau']['hosothau_email'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
 				$data['hosothau']['hosothau_sodienthoai'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
 				$flag = false;
-			}
+			} else 
+				$_SESSION['edit_duan'] = null;
 			$this->set('flag',$flag);
 			$this->set('data',$data);
 			$this->set('duan_id',$duan_id);
@@ -391,64 +415,66 @@ class HosothauController extends VanillaController {
 	}
 	function chonhoso() {
 		try {
-			$this->checkLogin(true);
-			$this->checkActive(true);
-			$this->checkLock(true);
-			$account_id = $_SESSION["account"]["id"];
 			$duan_id = $_GET["duan_id"];
-			$hosothau_id = $_GET["hosothau_id"];
-			if(isset($duan_id) && isset($hosothau_id)) {
-				$hosothau_id = mysql_real_escape_string($hosothau_id);
-				$duan_id = mysql_real_escape_string($duan_id);
-				$this->hosothau->id = $hosothau_id;
-				$data = $this->hosothau->search("nhathau_id,hosothau_email");
-				if(empty($data))
-					die("ERROR_SYSTEM");
-				$nhathau_id = $data["hosothau"]["nhathau_id"];
-				$freelancerMail = $data["hosothau"]["hosothau_email"];
-				$this->hosothau->id = $hosothau_id;
-				$this->hosothau->trangthai = 2;
-				$this->hosothau->update();
-				$this->setModel("duan");
-				$this->duan->id = $duan_id;
-				$this->duan->where(" and duan.account_id = $account_id");
-				$data = $this->duan->search("id,tenduan,alias,linhvuc_id,duan_email,duan_sodienthoai");
-				if(empty($data))
-					die("ERROR_SYSTEM");
-				$this->duan->id = $duan_id;
-				$this->duan->nhathau_id = $nhathau_id;
-				$this->duan->hosothau_id = $hosothau_id;
-				$this->duan->timeupdate = GetDateSQL();
-				$this->duan->update();
-				//Send mail cho nha thau trung thau
-				$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"];
-				$tenduan = $data["duan"]["tenduan"];
-				$linktenduan = "<a href='$linkduan'>$tenduan</a>";
-				$linkduan = "<a href='$linkduan'>$linkduan</a>";
-				global $cache;
-				$content = $cache->get('mail_win');
-				$search  = array('#LINKTENDUAN#', '#EMAIL#', '#SODIENTHOAI#', '#LINKDUAN#');
-				$replace = array($linktenduan,$data['duan']['duan_email'],$data['duan']['duan_sodienthoai'],$linkduan);
-				$content = str_replace($search, $replace, $content);
-				$this->setModel('sendmail');
-				$this->sendmail->id = null;
-				$this->sendmail->to = $freelancerMail;
-				$this->sendmail->subject = 'JobBid.vn - Chúc Mừng Bạn Đã Thắng Thầu!!!';
-				$this->sendmail->content = $content;
-				$this->sendmail->isprior = 1;
-				$this->sendmail->insert();
-				//Cap nhat so du an cua linh vuc
-				$linhvuc_id = $data["duan"]["linhvuc_id"];
-				$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
-				$data = $this->duan->search("count(*) as soduan");
-				$this->setModel("linhvuc");
-				$this->linhvuc->id = $linhvuc_id;
-				$this->linhvuc->soduan = $data[0][""]["soduan"];
-				$this->linhvuc->update();
-				echo "DONE";
-			} else {
-				die("ERROR_SYSTEM");
+			$strWhere = '';
+			if(isset($_SESSION['edit_duan']) == false || $_SESSION['edit_duan']!=$duan_id) {
+				$this->checkLogin(true);
+				$this->checkActive(true);
+				$this->checkLock(true);
+				$account_id = $_SESSION["account"]["id"];
+				$strWhere = " and duan.account_id = $account_id";
 			}
+			$hosothau_id = $_GET["hosothau_id"];
+			if($duan_id == null || $hosothau_id==null)
+				die('ERROR_SYSTEM');
+			$hosothau_id = mysql_real_escape_string($hosothau_id);
+			$duan_id = mysql_real_escape_string($duan_id);
+			$this->hosothau->id = $hosothau_id;
+			$data = $this->hosothau->search("nhathau_id,hosothau_email");
+			if(empty($data))
+				die("ERROR_SYSTEM");
+			$nhathau_id = $data["hosothau"]["nhathau_id"];
+			$freelancerMail = $data["hosothau"]["hosothau_email"];
+			$this->hosothau->id = $hosothau_id;
+			$this->hosothau->trangthai = 2;
+			$this->hosothau->update();
+			$this->setModel("duan");
+			$this->duan->id = $duan_id;
+			$this->duan->where($strWhere);
+			$data = $this->duan->search("id,tenduan,alias,linhvuc_id,duan_email,duan_sodienthoai");
+			if(empty($data))
+				die("ERROR_SYSTEM");
+			$this->duan->id = $duan_id;
+			$this->duan->nhathau_id = $nhathau_id;
+			$this->duan->hosothau_id = $hosothau_id;
+			$this->duan->timeupdate = GetDateSQL();
+			$this->duan->update();
+			//Send mail cho ung vien trung thau
+			$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"];
+			$tenduan = $data["duan"]["tenduan"];
+			$linktenduan = "<a href='$linkduan'>$tenduan</a>";
+			$linkduan = "<a href='$linkduan'>$linkduan</a>";
+			global $cache;
+			$content = $cache->get('mail_win');
+			$search  = array('#LINKTENDUAN#', '#EMAIL#', '#SODIENTHOAI#', '#LINKDUAN#');
+			$replace = array($linktenduan,$data['duan']['duan_email'],$data['duan']['duan_sodienthoai'],$linkduan);
+			$content = str_replace($search, $replace, $content);
+			$this->setModel('sendmail');
+			$this->sendmail->id = null;
+			$this->sendmail->to = $freelancerMail;
+			$this->sendmail->subject = 'JobBid.vn - Chúc Mừng Bạn Đã Thắng Thầu!!!';
+			$this->sendmail->content = $content;
+			$this->sendmail->isprior = 1;
+			$this->sendmail->insert();
+			//Cap nhat so du an cua linh vuc
+			$linhvuc_id = $data["duan"]["linhvuc_id"];
+			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$data = $this->duan->search("count(*) as soduan");
+			$this->setModel("linhvuc");
+			$this->linhvuc->id = $linhvuc_id;
+			$this->linhvuc->soduan = $data[0][""]["soduan"];
+			$this->linhvuc->update();
+			echo "DONE";
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}

@@ -72,7 +72,7 @@ class DuanController extends VanillaController {
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage($ipageindex);
 		$this->duan->setLimit(PAGINATE_LIMIT);
-		$lstDuan = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc,nhathau_id');
+		$lstDuan = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc,nhathau_id,isbid');
 		$totalPages = $this->duan->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -98,6 +98,7 @@ class DuanController extends VanillaController {
 			$tinh_id = $_POST['duan_tinh_id'];
 			$ngayketthuc = $_POST['duan_ngayketthuc'];
 			$prior = $_POST['duan_prior'];
+			$isbid = $_POST['duan_isbid'];
 			$costmin = $_POST['duan_costmin'];
 			$costmax = $_POST['duan_costmax'];
 			$thongtinchitiet = $_POST['duan_thongtinchitiet'];
@@ -137,6 +138,7 @@ class DuanController extends VanillaController {
 				$this->duan->linhvuc_id = $linhvuc_id;
 				$this->duan->tinh_id = $tinh_id;
 				$this->duan->prior = $prior;
+				$this->duan->isbid = $isbid;
 				if($costmin!=0 && $costmax!=0) {
 					$this->duan->costmin = $costmin;
 					$this->duan->costmax = $costmax;
@@ -295,6 +297,8 @@ class DuanController extends VanillaController {
 			if(isset($isbid)) {
 				$this->duan->id = null;
 				$this->duan->isbid = $isbid;
+				$currentDate = GetDateSQL();
+				$this->duan->ngaypost = $currentDate;
 				$this->duan->active = -1;
 				$duan_id = $this->duan->insert(true);
 			}
@@ -390,10 +394,11 @@ class DuanController extends VanillaController {
 			$duan_id = $_POST['duan_id'];
 			$this->duan->id = $duan_id;
 			$this->duan->where(' and active=-1');
-			$data = $this->duan->search('id,tenduan');
+			$data = $this->duan->search('id,tenduan,alias');
 			if(empty($data))
 				die('ERROR_SYSTEM');
 			$tenduan = $data['duan']['tenduan'];
+			$alias = $data['duan']['alias'];
 			$email = $_POST['duan_email'];
 			$sodienthoai = $_POST['duan_sodienthoai'];
 			$thongtinchitiet = $_POST['duan_thongtinchitiet'];
@@ -406,9 +411,35 @@ class DuanController extends VanillaController {
 			if(!$validate->check_email($email))
 				die('ERROR_SYSTEM');
 			$account_id = null;
-			if(isset($_SESSION['account']))
+			if(isset($_SESSION['account'])) {
 				$account_id = $_SESSION['account']['id'];
-			else {
+				if($email != $_SESSION['account']['username'] ) { //Post du an dum nguoi khac
+					$editcode = genString(15);
+					$this->setModel('editcode');
+					$this->editcode->id = null;
+					$this->editcode->duan_id = $duan_id;
+					$this->editcode->editcode = $editcode;
+					$this->editcode->insert();
+					$linkview = BASE_PATH."/duan/view/$duan_id/$alias";
+					$linkview = "<a href='$linkview'>XEM CHI TIẾT</a>";
+					$linkedit = BASE_PATH."/duan/edit/$duan_id/$editcode";
+					$linkedit = "<a href='$linkedit'>CHỈNH SỬA</a>";
+					$linkremove = BASE_PATH."/duan/doRemove/$duan_id/$editcode";
+					$linkremove = "<a href='$linkremove'>XÓA DỰ ÁN</a>";
+					global $cache;
+					$content = $cache->get('mail_manageproject');
+					$search  = array('#TENDUAN#','#LINKVIEW#', '#LINKEDIT#', '#LINKDEL#');
+					$replace = array($tenduan, $linkview, $linkedit, $linkremove);
+					$content = str_replace($search, $replace, $content);
+					$this->setModel('sendmail');
+					$this->sendmail->id = null;
+					$this->sendmail->to = $email;
+					$this->sendmail->subject = "DỰ ÁN : $tenduan !!!";
+					$this->sendmail->content = $content;
+					$this->sendmail->isprior = 1;
+					$this->sendmail->insert();
+				}
+			} else {
 				$this->setModel('account');
 				$strWhere = "AND username='".mysql_real_escape_string($email)."'";
 				$this->account->where($strWhere);
@@ -460,7 +491,6 @@ class DuanController extends VanillaController {
 			$this->duan->account_id = $account_id;
 			$this->duan->prior = '0';
 			$currentDate = GetDateSQL();
-			$this->duan->ngaypost = $currentDate;
 			$this->duan->timeupdate = $currentDate;
 			$this->duan->views = '0';
 			$this->duan->bidcount = '0';
@@ -686,55 +716,67 @@ class DuanController extends VanillaController {
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
 	}
-	function edit() {
+	function edit($duan_id=null,$editcode=null) {
+		$_SESSION['edit_duan'] = null;
+		if($duan_id==null)
+			error('Liên kết không hợp lệ!');
 		$_SESSION['redirect_url'] = getUrl();
-		$this->checkLogin();
-		$this->checkActive();
-		$this->checkLock();
-		$duan_id = $_GET['duan_id'];
 		$duan_id = mysql_real_escape_string($duan_id);
-		$account_id = $_SESSION['account']['id'];
-		if(isset($duan_id)) {
-			$this->duan->showHasOne(array('file'));
-			$this->duan->id = $duan_id;
-			$data = $this->duan->search('duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid,duan_email,duan_sodienthoai');
-			if(empty($data))
-				error('Server too busy!');
+		$this->duan->showHasOne(array('file'));
+		$this->duan->id = $duan_id;
+		$data = $this->duan->search('duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid,duan_email,duan_sodienthoai');
+		if(empty($data))
+			error('Server too busy!');
+		if($editcode==null) {
+			$this->checkLogin();
+			$this->checkActive();
+			$this->checkLock();
+			$account_id = $_SESSION['account']['id'];
 			if($data['duan']['account_id']!=$account_id)
 				error('Bạn không thể chỉnh sửa thông tin dự án của người khác!');
-			$this->set('dataDuan',$data['duan']);
-			$this->set('lefttime',$data['']['lefttime']);
-			if($data['file']['filename']!='')
-				$this->set('dataFile',$data['file']);
-			
-			$this->setModel('skill');
-			$this->skill->where(" and linhvuc_id = '".$data['duan']['linhvuc_id']."'");
-			$data = $this->skill->search('id,skillname');
-			$this->set('lstSkillByLinhvuc',$data);
-				
-			$this->setModel('duanskill');
-			$this->duanskill->showHasOne(array('skill'));
-			$this->duanskill->where(" and duan_id = $duan_id");
-			$data = $this->duanskill->search('skill.id,skillname');
-			$this->set('lstSkill',$data);
-			
-			$this->setModel('linhvuc');
-			$data = $this->linhvuc->search();
-			$this->set('lstLinhvuc',$data);
-			
-			$this->setModel('tinh');
-			$data = $this->tinh->search();
-			$this->set('lstTinh',$data);
-			$this->set('title','Jobbid.vn - Chỉnh Sửa Dự Án');
-			$this->_template->render();	
+		} else {
+			//Edit code
+			$this->setModel('editcode');
+			$this->editcode->where(" and duan_id=$duan_id and editcode = '$editcode'");
+			$dtEditcode = $this->editcode->search();
+			if(empty($dtEditcode))
+				error('Liên kết không hợp lệ!');
+			else
+				$_SESSION['edit_duan'] = $duan_id;
 		}
+		$this->set('dataDuan',$data['duan']);
+		$this->set('lefttime',$data['']['lefttime']);
+		if($data['file']['filename']!='')
+			$this->set('dataFile',$data['file']);
+			
+		$this->setModel('skill');
+		$this->skill->where(" and linhvuc_id = '".$data['duan']['linhvuc_id']."'");
+		$data = $this->skill->search('id,skillname');
+		$this->set('lstSkillByLinhvuc',$data);
+			
+		$this->setModel('duanskill');
+		$this->duanskill->showHasOne(array('skill'));
+		$this->duanskill->where(" and duan_id = $duan_id");
+		$data = $this->duanskill->search('skill.id,skillname');
+		$this->set('lstSkill',$data);
+		
+		$this->setModel('linhvuc');
+		$data = $this->linhvuc->search();
+		$this->set('lstLinhvuc',$data);
+		
+		$this->setModel('tinh');
+		$data = $this->tinh->search();
+		$this->set('lstTinh',$data);
+		$this->set('title','Jobbid.vn - Chỉnh Sửa Dự Án');
+		$this->_template->render();	
 	}
 	function doEdit() {
 		try {
-			$this->checkLogin(true);
-			$this->checkActive(true);
-			$this->checkLock(true);
-			$account_id = $_SESSION['account']['id'];
+			if(!isset($_SESSION['edit_duan'])) {
+				$this->checkLogin(true);
+				$this->checkActive(true);
+				$this->checkLock(true);
+			}
 			$duan_id = mysql_real_escape_string($_POST['duan_id']);
 			$tenduan = $_POST['duan_tenduan'];
 			$alias = $_POST['duan_alias'];
@@ -759,8 +801,16 @@ class DuanController extends VanillaController {
 				die('ERROR_SYSTEM');
 			$ngayketthuc = SQLDate($ngayketthuc);
 			//End validate
-			$this->duan->id = $duan_id;
-			$this->duan->where(" and id = $duan_id and account_id = $account_id");
+			$strWhere = " and id=$duan_id";
+			if(isset($_SESSION['edit_duan']) && $_SESSION['edit_duan']==$duan_id) {
+				$this->duan->id = $duan_id;
+			} else {
+				if(isset($_SESSION['account'])==false)
+					die('ERROR_NOTLOGIN');
+				$account_id = $_SESSION['account']['id'];
+				$this->duan->id = $duan_id;
+				$this->duan->where(" and account_id = $account_id");
+			}
 			$data = $this->duan->search('id,ngaypost,ngayketthuc,data_id');
 			if(empty($data))
 				die('ERROR_SYSTEM');
@@ -846,9 +896,28 @@ class DuanController extends VanillaController {
 					$this->duanskill->insert();
 				}
 			}
+			$_SESSION['edit_duan'] = null;
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
+		}
+	}
+	function doRemove($duan_id=null,$editcode=null) {
+		if($duan_id == null || $editcode==null)
+			error('Liên kết không hợp lệ!');
+		$this->setModel('editcode');
+		$this->editcode->where(" and duan_id=$duan_id and editcode = '$editcode'");
+		$dtEditcode = $this->editcode->search();
+		if(empty($dtEditcode))
+			error('Liên kết không hợp lệ!');
+		else {
+			$this->setModel('duan');
+			$this->duan->id = $duan_id;
+			if($this->duan->delete()==-1) {
+				error('Thao tác bị lỗi, vui lòng thử lại sau!');
+			} else {
+				success('Xóa dự án của bạn thành công!');
+			}
 		}
 	}
 	function changeStatusProject($active=null) {

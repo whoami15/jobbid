@@ -80,8 +80,12 @@
 								<option value="">---Chọn chi phí---</option>
 							</select> (VNĐ)
 						</td>	
-						<td align="right"></td>
+						<td align="right">Loại dự án</td>
 						<td align="left" >
+							<select id="duan_isbid" name="duan_isbid" tabindex=7>
+								<option value="0">Liên hệ trực tiếp</option>
+								<option value="1">Đấu thầu tự do</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -126,14 +130,13 @@
 			<table width="99%">
 				<thead>
 					<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-						<td width="20px">#</td>
 						<td>ID</td>
 						<td>Tên dự án</td>
 						<td>Lĩnh vực</td>
 						<td>Khoảng chi phí</td>
 						<td>Người post</td>
 						<td>Prior</td>
-						<td>Xem</td>
+						<td>Ngày Post</td>
 						<td>Status</td>
 						<td width="40px">Xử lý</td>
 					</tr>
@@ -174,6 +177,7 @@
 		byId("duan_tinh_id").value = $.trim($(cells.td_tinh_id).text());
 		byId("duan_ngayketthuc").value = $.trim($(cells.td_ngayketthuc).text());
 		byId("duan_prior").value = $.trim($(cells.td_prior).text());
+		byId("duan_isbid").value = $.trim($(cells.td_isbid).text());
 	}
 	function setRowValues(cells) {
 		$(cells.td_id).text(byId("duan_id").value);
@@ -185,6 +189,7 @@
 		$(cells.td_tinh_id).text(byId("duan_tinh_id").value);
 		$(cells.td_ngayketthuc).text(byId("duan_ngayketthuc").value);
 		$(cells.td_prior).text(byId("duan_prior").value);
+		$(cells.td_isbid).text(byId("duan_isbid").value);
 		var value = byId("duan_cost").value;
 		if(value!="") {
 			var tmp = byId("duan_cost");

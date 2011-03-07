@@ -20,14 +20,13 @@
 			</td>
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
-			<td width="20px">#</td>
 			<td>ID</td>
 			<td>Tên dự án</td>
 			<td>Lĩnh vực</td>
 			<td>Khoảng chi phí</td>
 			<td>Người post</td>
 			<td>Prior</td>
-			<td>Xem</td>
+			<td>Ngày Post</td>
 			<td>Status</td>
 			<td width="40px">Xử lý</td>
 		</tr>
@@ -45,7 +44,6 @@
 			else 
 				echo "<tr class='normalRow'>";
 			?>
-				<td align="center"><?php echo $i?></td>
 				<td id="td_id" align="center"><?php echo $duan["duan"]["id"]?></td>
 				<td id="td_tenduan" align="left"><?php echo $duan["duan"]["tenduan"]?></td>
 				<td id="td_linhvuc_id" style="display:none"><?php echo $duan["duan"]["linhvuc_id"]?></td>
@@ -54,10 +52,12 @@
 				<td id="td_account_id" style="display:none"><?php echo $duan["duan"]["account_id"]?></td>
 				<td id="td_account_display" align="center"><?php echo $duan["account"]["username"]?></td>
 				<td id="td_prior" align="center"><?php echo $duan["duan"]["prior"]?></td>
-				<td id="td_views" align="center"><?php echo $duan["duan"]["views"]?></td>
+				<td id="td_views" style="display:none"><?php echo $duan["duan"]["views"]?></td>
+				<td id="td_ngaypost" align="left"><?php echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i:s') ?></td>
 				<td id="td_ngayketthuc" style="display:none"><?php echo $html->format_date($duan["duan"]["ngayketthuc"],'d/m/Y') ?></td>
 				<td id="td_alias" style="display:none"><?php echo $duan["duan"]["alias"]?></td>
 				<td id="td_tinh_id" style="display:none"><?php echo $duan["duan"]["tinh_id"]?></td>
+				<td id="td_isbid" style="display:none"><?php echo $duan["duan"]["isbid"]?></td>
 				<td id="td_active" align="center">
 					<?php 
 					if($duan["duan"]["active"]==0) {

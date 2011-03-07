@@ -17,14 +17,19 @@ class TestController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
-		include (ROOT.DS.'library'.DS.'sendmail.php');
+		$_SESSION['test'] = null;
+		if(isset($_SESSION['test'])==false)
+			echo '1';
+		else
+			echo '2';
+		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;
 		$senders = $cache->get('senders');
 		$sender = $senders['secSender'];
 		$mail=new sendmail($sender);
 		$mail->send2('nclong87@gmail.com','hello','test');
 		$mail->send2('nclong870@gmail.com','hello2','test2');
-		echo 'DONE';
+		echo 'DONE'; */
 		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
 		$conn=new DataProvider();
 		//$conn->onSpam();

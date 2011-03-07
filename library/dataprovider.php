@@ -157,7 +157,7 @@ class DataProvider
 			$newcontent = str_replace($search, $replace, $content);
 			while($a_row2=mysql_fetch_object($result2)) {
 				$email = $a_row2->username;
-				$query = "insert into sendmails values (null,'$email','Du An Moi Tren JobBid!!!','$newcontent')";
+				$query = "insert into sendmails values (null,'$email','$tenduan','$newcontent')";
 				mysql_query($query,$this->link) or die("Error:".mysql_error());
 			}
 		}

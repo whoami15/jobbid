@@ -305,7 +305,7 @@
 	function editMyProject(duan_id) {
 		if(duan_id==null) 
 			return;
-		location.href = url('/duan/edit&duan_id='+duan_id);
+		location.href = url('/duan/edit/'+duan_id);
 	}
 	function showinfo(_this) {
 		var cells = _this.parentNode.parentNode.cells;
