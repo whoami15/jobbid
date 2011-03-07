@@ -128,7 +128,7 @@ class DataProvider
 		$statistics['tFreelancers'] = mysql_fetch_object($result)->total;
 		$this->set_cache('statistics',$statistics);
 	}
-	function lstNewProject() {
+	function updateNewProject() {
 		$query="SELECT id,alias,tenduan,costmin,costmax,ngayketthuc,linhvuc_id from duans where isnew=1 and active=1 and nhathau_id is null and ngayketthuc>now()";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {

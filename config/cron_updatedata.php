@@ -4,6 +4,7 @@
 	include ('/home/jobbid/public_html/config/cronconfig.php');
 	include (ROOT.DS.'library'.DS.'dataprovider.php');
 	$conn=new DataProvider();
+	$conn->updateNewProject();
 	$conn->updateSoduan();
 	$conn->updateStatistics();
 	$conn->close();

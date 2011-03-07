@@ -2,6 +2,7 @@
 	//include ('/home/jobbid/public_html/library/dataprovider.php');
 	//include ('/home/jobbid/public_html/library/sendmail.php');
 	include ('/home/jobbid/public_html/config/cronconfig.php');
+	//include (dirname(dirname(__FILE__)).'/config/cronconfig.php');
 	include (ROOT.DS.'library'.DS.'dataprovider.php');
 	include (ROOT.DS.'library'.DS.'sendmail.php');
 	$conn=new DataProvider();
@@ -10,7 +11,6 @@
 		$mail=new sendmail();
 		$arr = array();
 		$senders = $conn->get_cache('senders');
-		$conn->lstNewProject();
 		foreach($data as $e) {
 			try {
 				echo 'Send mail to <b>'.$e->to.'</b><br/>';

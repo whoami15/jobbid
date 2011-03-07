@@ -654,7 +654,8 @@ class NhathauController extends VanillaController {
 		$ipageindex = $_POST["pageindex"];
 		if(!isset($ipageindex))
 			$ipageindex = 1;
-		$strWhere = " and nhathau.`status` = 1";
+		$strWhere = " and nhathau.`status` = 1 and account.active=1";
+		$this->nhathau->showHasOne(array('account'));
 		if(isset($_POST["linhvuc_id"])) {
 			$cond_linhvuc = $_POST["linhvuc_id"];
 			if(!empty($cond_linhvuc)) {
