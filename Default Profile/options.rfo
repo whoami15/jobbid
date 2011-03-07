@@ -1,0 +1,39 @@
+[STDBAR ITEMS]
+ComLogoff=0
+ComEditPass=0
+ComClearFields=0
+ComEditNote=0
+ComPasswordGenerator=0
+ComOptions=0
+ComSetFields=0
+ComTaskBarIcon=0
+ComSavePass=1
+ComShowToolbar=1
+ComCustomizeIEMenu=0
+ComEditIdent=0
+ComResetFields=0
+ComFillForms=1
+[LANGUAGE]
+LocalizationFile=en-english
+[CONTEXT MENU ITEMS]
+ComLogoff=0
+ComEditPass=0
+ComClearFields=0
+ComEditNote=0
+ComPasswordGenerator=0
+ComOptions=0
+ComSetFields=0
+ComTaskBarIcon=0
+ComSavePass=1
+ComShowToolbar=1
+ComCustomizeIEMenu=1
+ComEditIdent=0
+ComResetFields=0
+ComFillForms=1
+[OPTIONS]
+AutoSaveListItems=3
+AutoSaveWidthL=271
+[CHECKED RUN MESSAGES]
+MsgBoxDuplicateFieldsFilled=1
+MsgBoxAutoSaveFewFieldsWarn=1
+MsgBoxNewAccountWarn=1
