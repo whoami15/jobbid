@@ -1,0 +1,153 @@
+#tdl-wrap
+{
+	width:100%;
+}
+.map
+{
+	background-image:url(../images/bar_inbount.jpg);
+	clear:both;
+	color:red;
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	line-height:40px;
+	margin-bottom:20px;
+	padding-left:0;
+	text-transform:uppercase;
+	padding-left:65px;
+}
+.map a
+{
+	color:blue
+}
+.map a:visited
+{
+	color:blue
+}
+.map a:hover
+{
+	color:#A10F15
+}
+.tourlist
+{
+	clear:both;
+	margin:10px auto;
+	width:99%;
+}
+.tourlist .tourname
+{
+	background-image:url(../images/topictitle.png);
+	border-bottom:1px solid orange;
+	clear:both;
+	color:red;
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	line-height:15px;
+	margin-bottom:15px;
+	padding-left:0;
+	text-transform:uppercase;
+}
+.tourlist .tourcat
+{
+	background-image:url(../images/bar_inbount.jpg);
+	clear:both;
+	color:red;
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	line-height:40px;
+	margin-bottom:15px;
+	padding-left:0;
+	text-transform:uppercase;
+	padding-left:65px;
+}
+.tour-item
+{
+	float:left;
+	width:50%;
+}
+.tour-item .hinh
+{
+	float:left;
+	height:120px;
+	margin-right:10px;
+	width:102px;
+	
+}
+.tourlist .foot
+{
+	width:100%;
+	float:left;
+	text-align:right !important;
+}
+.tour-item .hinh .tourimg {
+	border:1px solid #C0C2C1;
+	display:block;
+	height:75px;
+	margin:0 auto 5px;
+	padding:1px;
+	width:100px;
+}
+.tour-item .hinh .imgchitiet {
+	clear:both;
+	display:block;
+	height:23px;
+	margin:0 auto;
+	width:82px;
+}
+.tour-item span
+{
+	color:Black;
+	display:block;
+	line-height:16px;
+}
+.tourdetail
+{
+	clear:both;
+	margin:10px auto;
+	width:99%;
+}
+.tourdetail .tourname
+{
+	background-image:url(../images/topictitle.png);
+	border-bottom:1px solid orange;
+	clear:both;
+	color:red;
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	line-height:15px;
+	margin-bottom:15px;
+	padding-left:0;
+	text-transform:uppercase;
+}
+.tourdetail .info
+{
+	width:100%;
+	text-align:left;
+	float:left;
+}
+.tourdetail .intro
+{
+	width:100%;
+	text-align:left;
+	float:left;
+}
+.tourdetail .content_title
+{
+	float:left;
+	font-size:11pt;
+	font-weight:bold;
+	padding-bottom:10px;
+	padding-top:10px;
+	width:100%;
+}
+.tourdetail .content
+{
+	background-color:#F7F7F7;
+	float:left;
+	padding-bottom:15px;
+	text-align:left;
+	width:100%;
+}
