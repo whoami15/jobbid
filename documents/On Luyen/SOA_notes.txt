@@ -1,0 +1,2 @@
+ + ESB : tach biet Client voi cac dich vu, client chi viec giao tiep voi ESB, con ESB giao tiep voi cac dich vu
+ + P2P -> Hub and Spoke -> BUS -> ESB 

@@ -14,14 +14,18 @@
 			array_push($arrTo,$e->email);
 		}
 		try {
-			$sender = $senders['secSender'];
-			$mail->send($arrTo, 'Jbobbid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$sender);
-			$conn->close();
-			echo 'Send Mail Success';
+			$secSender = $senders['secSender'];
+			if($mail->send($arrTo, 'JobBid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$secSender)==false) {
+				$priSender = $senders['priSender'];
+				$mail->send('admin@jobbid.vn', 'SMTP Error!!!', 'SMTP Error!!!',$priSender);
+				$arrEmail = array("priSender"=>$priSender,"secSender"=>$priSender);
+				$conn->set_cache('senders',$arrEmail);
+			} else
+				echo 'Send Mail Success';
 		} catch (Exception $e) {
-			$conn->close();
 			echo 'Send Mail Error';
 		}
 	} else
 		echo 'No Email To Send';
+	$conn->close();
 ?>

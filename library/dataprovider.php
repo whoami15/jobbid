@@ -73,6 +73,7 @@ class DataProvider
 		$query="select * from emails limit $spamOffset,10";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
+			$this->set_cache('spamOffset',-1);
 			return $arr;
 		}
 		while($a_row=mysql_fetch_object($result)) {
