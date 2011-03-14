@@ -273,6 +273,7 @@ class HosothauController extends VanillaController {
 			$this->duan->bidcount = $data[0][""]["bidcount"];
 			$this->duan->averagecost = round($data[0][""]["total"] / $data[0][""]["bidcount"]);
 			$this->duan->lastbid_nhathau = $nhathau_id;
+			$this->duan->timeupdate = GetDateSQL();
 			$this->duan->update();
 			
 			echo "DONE";
