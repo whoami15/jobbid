@@ -17,10 +17,17 @@ class TestController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
-		$conn=new DataProvider();
-		$conn->expiredProjects();
-		$conn->close();
+		
+		
+		$i=0;
+		$this->setModel('duan');
+		while($i<=105) {
+			$editcode = genString(20);
+			$this->duan->id = $i;
+			$this->duan->editcode=$editcode;
+			$this->duan->update();
+			$i++;
+		}
 		echo 'DONE';
 		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;

@@ -550,6 +550,7 @@ class DuanController extends VanillaController {
 			$this->duan->showHasOne(array('linhvuc','tinh','file','nhathau'));
 			$this->duan->id=$id;
             $data=$this->duan->search('duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,duan_email,duan_sodienthoai,editcode');
+			print_r($data);
 			if(empty($data)==false) {
 				$myprojects = array();
 				if(isset($_SESSION['myprojects']))
