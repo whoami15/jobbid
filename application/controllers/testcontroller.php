@@ -17,11 +17,11 @@ class TestController extends VanillaController {
 		 $this->$model =& new $model;
 	}
 	function index() {
-		$_SESSION['test'] = null;
-		if(isset($_SESSION['test'])==false)
-			echo '1';
-		else
-			echo '2';
+		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		$conn=new DataProvider();
+		$conn->expiredProjects();
+		$conn->close();
+		echo 'DONE';
 		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;
 		$senders = $cache->get('senders');

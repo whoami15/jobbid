@@ -212,7 +212,7 @@ class HosothauController extends VanillaController {
 			$this->duan->showHasOne(array('account'));
 			$this->duan->id = $duan_id;
 			$this->duan->where(" and duan.active=1 and nhathau_id is null");
-			$data = $this->duan->search('duan.id,tenduan,alias,account_id,username,duan_email,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau');
+			$data = $this->duan->search('duan.id,tenduan,alias,account_id,username,duan_email,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau,editcode');
 			if(empty($data))
 				die("ERROR_SYSTEM");
 			if($data[""]["lefttime"] <= 0)
@@ -223,14 +223,7 @@ class HosothauController extends VanillaController {
 			if($data["duan"]["lastbid_nhathau"] == $nhathau_id)
 				die("ERROR_DUPLICATE");
 			$employerMail =  $data["duan"]["duan_email"];
-			$editcode = '';
-			if($employerMail != $data["account"]['username']) {
-				$this->setModel('editcode');
-				$this->editcode->where(" and duan_id=$duan_id");
-				$dtEditcode = $this->editcode->search();
-				if(!empty($dtEditcode))
-					$editcode = $dtEditcode[0]['editcode']['editcode'];
-			}
+			$editcode =  $data["duan"]["editcode"];
 			//Insert ho so thau
 			$this->setModel("hosothau");
 			$this->hosothau->id = null;
@@ -249,7 +242,7 @@ class HosothauController extends VanillaController {
 			$hosothau_id = $this->hosothau->insert(true);
 			//Send mail cho chu du an
 			
-			$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"];
+			$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"]."&editcode=$editcode";
 			$tenduan = $data["duan"]["tenduan"];
 			$linkduan = "<a href='$linkduan'>$tenduan</a>";
 			$linknhathau = BASE_PATH."/hosothau/xem_ho_so/$hosothau_id/$duan_id/$editcode";
@@ -363,30 +356,32 @@ class HosothauController extends VanillaController {
 	}
 	function xem_ho_so($hosothau_id,$duan_id,$editcode=null) {
 		if(isset($hosothau_id) && isset($duan_id)) {
-			if(!isset($_SESSION['edit_duan']) || $_SESSION['edit_duan']!=$duan_id) {
-				if($editcode!=null) {
-					$this->setModel('editcode');
-					$this->editcode->where(" and duan_id=$duan_id and editcode = '$editcode'");
-					$dtEditcode = $this->editcode->search();
-					if(empty($dtEditcode))
-						error('Liên kết không hợp lệ!');
-					else
-						$_SESSION['edit_duan'] = $duan_id;
-				} else {
-					$_SESSION['redirect_url'] = getUrl();
-					$this->checkLogin();
-					$account_id = $_SESSION['account']['id'];
-				}
-			}
 			$nhathau_id = isset($_SESSION['nhathau'])?$_SESSION['nhathau']['id']:-1;
 			$hosothau_id = mysql_real_escape_string($hosothau_id);
 			$duan_id = mysql_real_escape_string($duan_id);
 			$this->setModel('duan');
 			$this->duan->id = $duan_id;
 			$this->duan->where(' and active=1');
-			$data = $this->duan->search('account_id,hosothau_id');
+			$data = $this->duan->search('account_id,hosothau_id,editcode');
 			if(empty($data))
 				error('Server đang quá tải, vui lòng thử lại sau!');
+			$myprojects = array();
+			if(isset($_SESSION['myprojects']))
+				$myprojects = $_SESSION['myprojects'];
+			if(in_array($duan_id,$myprojects)==false) {
+				if($editcode!=null) {
+					if($editcode != $data['duan']['editcode'])
+						error('Liên kết không hợp lệ!');
+					else {
+						array_push($myprojects,$duan_id);
+						$_SESSION['myprojects'] = $myprojects;
+					}
+				} else {
+					$_SESSION['redirect_url'] = getUrl();
+					$this->checkLogin();
+					$account_id = $_SESSION['account']['id'];
+				}
+			}
 			$employerId = $data['duan']['account_id'];
 			$hosotrungthau = $data['duan']['hosothau_id'];
 			$this->setModel('hosothau');
@@ -396,7 +391,7 @@ class HosothauController extends VanillaController {
 			$data = $this->hosothau->search('hosothau.id,giathau,milestone,thoigian,hosothau_email,content,hosothau_sodienthoai,ngaygui,nhathau.id,nhathau.displayname,nhathau_alias');
 			if(empty($data))
 				error("Server đang quá tải, vui lòng thử lại sau!");
-			if(isset($_SESSION['edit_duan'])==false) {
+			if(in_array($duan_id,$myprojects)==false) {
 				if($account_id != $employerId && $nhathau_id != $data['nhathau']['id'])
 					error('Chỉ có chủ dự án mới xem được hồ sơ thầu này!');
 			}
@@ -405,8 +400,7 @@ class HosothauController extends VanillaController {
 				$data['hosothau']['hosothau_email'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
 				$data['hosothau']['hosothau_sodienthoai'] = '(Chỉ hiển thị khi bạn chọn hồ sơ này)';
 				$flag = false;
-			} else 
-				$_SESSION['edit_duan'] = null;
+			} 
 			$this->set('flag',$flag);
 			$this->set('data',$data);
 			$this->set('duan_id',$duan_id);
@@ -418,7 +412,10 @@ class HosothauController extends VanillaController {
 		try {
 			$duan_id = $_GET["duan_id"];
 			$strWhere = '';
-			if(isset($_SESSION['edit_duan']) == false || $_SESSION['edit_duan']!=$duan_id) {
+			$myprojects = array();
+			if(isset($_SESSION['myprojects']))
+				$myprojects = $_SESSION['myprojects'];
+			if(in_array($duan_id,$myprojects)==false) {
 				$this->checkLogin(true);
 				$this->checkActive(true);
 				$this->checkLock(true);

@@ -167,6 +167,13 @@ class AccountController extends VanillaController {
 				$nhathau = $this->nhathau->search('id,displayname,account_id,diemdanhgia,nhathau_alias');
 				if(!empty($nhathau))
 					$_SESSION['nhathau'] = $nhathau[0]['nhathau'];
+				$this->setModel('duan');
+				$this->duan->where(' and account_id='.$account[0]['account']['id']);
+				$data = $this->duan->search('id');
+				$myprojects = array();
+				foreach($data as $duan)
+					array_push($myprojects,$duan['duan']['id']);
+				$_SESSION['myprojects'] = $myprojects;	
 				redirect($url);
 			}
 		}
@@ -223,6 +230,8 @@ class AccountController extends VanillaController {
 			$_SESSION['nhathau'] = null;
 		if(isset($_SESSION['redirect_url']))
 			$_SESSION['redirect_url'] = null;
+		if(isset($_SESSION['myprojects']))
+			$_SESSION['myprojects'] = null;
 		redirect(BASE_PATH."/$type/login");
 	}
 	function getSuggestionAccount() {

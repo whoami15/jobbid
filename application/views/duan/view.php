@@ -132,7 +132,7 @@
 				<tr style="height:30px">
 					<td align="center" colspan="2">
 					<?php
-					if(isset($_SESSION["account"]) && $dataDuan["duan"]["account_id"]==$_SESSION["account"]["id"]) {
+					if($isEmployer == true) {
 						?>
 						<input type="button" value="Sửa dự án này" onclick="editMyProject(<?php echo $dataDuan["duan"]["id"] ?>)"/>
 						<?php

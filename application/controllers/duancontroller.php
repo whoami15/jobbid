@@ -411,34 +411,12 @@ class DuanController extends VanillaController {
 			if(!$validate->check_email($email))
 				die('ERROR_SYSTEM');
 			$account_id = null;
+			$flagSendmail = 1;
+			global $cache;
 			if(isset($_SESSION['account'])) {
 				$account_id = $_SESSION['account']['id'];
-				if($email != $_SESSION['account']['username'] ) { //Post du an dum nguoi khac
-					$editcode = genString(15);
-					$this->setModel('editcode');
-					$this->editcode->id = null;
-					$this->editcode->duan_id = $duan_id;
-					$this->editcode->editcode = $editcode;
-					$this->editcode->insert();
-					$linkview = BASE_PATH."/duan/view/$duan_id/$alias";
-					$linkview = "<a href='$linkview'>XEM CHI TIẾT</a>";
-					$linkedit = BASE_PATH."/duan/edit/$duan_id/$editcode";
-					$linkedit = "<a href='$linkedit'>CHỈNH SỬA</a>";
-					$linkremove = BASE_PATH."/duan/doRemove/$duan_id/$editcode";
-					$linkremove = "<a href='$linkremove'>XÓA DỰ ÁN</a>";
-					global $cache;
-					$content = $cache->get('mail_manageproject');
-					$search  = array('#TENDUAN#','#LINKVIEW#', '#LINKEDIT#', '#LINKDEL#');
-					$replace = array($tenduan, $linkview, $linkedit, $linkremove);
-					$content = str_replace($search, $replace, $content);
-					$this->setModel('sendmail');
-					$this->sendmail->id = null;
-					$this->sendmail->to = $email;
-					$this->sendmail->subject = "DỰ ÁN : $tenduan !!!";
-					$this->sendmail->content = $content;
-					$this->sendmail->isprior = 1;
-					$this->sendmail->insert();
-				}
+				if($email != $_SESSION['account']['username']) //Post du an dum nguoi khac
+					$flagSendmail = 2;
 			} else {
 				$this->setModel('account');
 				$strWhere = "AND username='".mysql_real_escape_string($email)."'";
@@ -464,7 +442,6 @@ class DuanController extends VanillaController {
 				//Send active code
 				$linkactive = BASE_PATH."/webmaster/doActive/true&account_id=$account_id&active_code=$active_code";
 				$linkactive = "<a href='$linkactive'>$linkactive</a>";
-				global $cache;
 				$content = $cache->get('mail_verify');
 				$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 				$replace = array($linkactive, $active_code, $email);
@@ -497,11 +474,44 @@ class DuanController extends VanillaController {
 			$this->duan->averagecost = '0';
 			$this->duan->isnew = 1;
 			$this->duan->data_id = $data_id;
+			$editcode = genString(20);
+			$this->duan->editcode = $editcode;
 			if(isset($_SESSION['account']) && $_SESSION['account']['active']==1) {
 				$this->duan->active = 1;
 			}
 			//die($email);
 			$this->duan->update();
+			$content = '';
+			if($flagSendmail==1) {
+				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
+				$linkview = "<a href='$linkview'>$tenduan</a>";
+				$content = $cache->get('mail_postproject');
+				$search  = array('#LINKVIEW#');
+				$replace = array($linkview);
+				$content = str_replace($search, $replace, $content);
+			} else {
+				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
+				$linkview = "<a href='$linkview'>XEM CHI TIẾT</a>";
+				$linkremove = BASE_PATH."/duan/doRemove/$duan_id/$editcode";
+				$linkremove = "<a href='$linkremove'>XÓA DỰ ÁN</a>";
+				$content = $cache->get('mail_manageproject');
+				$search  = array('#TENDUAN#','#LINKVIEW#', '#LINKDEL#');
+				$replace = array($tenduan, $linkview, $linkremove);
+				$content = str_replace($search, $replace, $content);
+				
+			}
+			$myprojects = array();
+			if(isset($_SESSION['myprojects']))
+				$myprojects = $_SESSION['myprojects'];
+			array_push($myprojects,$duan_id);
+			$_SESSION['myprojects'] = $myprojects;
+			$this->setModel('sendmail');
+			$this->sendmail->id = null;
+			$this->sendmail->to = $email;
+			$this->sendmail->subject = "Đã đăng dự án $tenduan lên JobBid.vn!!!";
+			$this->sendmail->content = $content;
+			$this->sendmail->isprior = 1;
+			$this->sendmail->insert();
 			if(isset($_SESSION['account'])) {
 				if($_SESSION['account']['active']==1)
 					echo 'OK';
@@ -539,8 +549,23 @@ class DuanController extends VanillaController {
 			$_SESSION['redirect_url'] = getUrl();
 			$this->duan->showHasOne(array('linhvuc','tinh','file','nhathau'));
 			$this->duan->id=$id;
-            $data=$this->duan->search('duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,duan_email,duan_sodienthoai');
-			if(isset($data)) {
+            $data=$this->duan->search('duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,duan_email,duan_sodienthoai,editcode');
+			if(empty($data)==false) {
+				$myprojects = array();
+				if(isset($_SESSION['myprojects']))
+					$myprojects = $_SESSION['myprojects'];
+				$isEmployer = false;
+				if(in_array($id,$myprojects)==false) {
+					$editcode= '';
+					if(isset($_GET['editcode']))
+						$editcode = $_GET['editcode'];
+					if($editcode!=null && $editcode == $data['duan']['editcode']) {
+						array_push($myprojects,$id);
+						$_SESSION['myprojects'] = $myprojects;
+						$isEmployer = true;
+					}
+				} else 
+					$isEmployer = true;
 				$viewcount = $data['duan']['views'];
 				$this->duan->id=$id;
 				$this->duan->views=$viewcount+1;
@@ -572,8 +597,10 @@ class DuanController extends VanillaController {
 					$data = $this->duanskill->search('duan.id,alias,tenduan,count(*) n');
 					$this->set('relatedProjects',$data);
 				}
+				$this->set('isEmployer',$isEmployer);
 				$this->_template->render();
-			}
+			} else
+				error('Liên kết không tồn tại!');
 		}
 	}
 	function doMarkDuan() {
@@ -716,34 +743,42 @@ class DuanController extends VanillaController {
 		$this->set('pageend',$totalPages);
 		$this->_template->renderPage();
 	}
-	function edit($duan_id=null,$editcode=null) {
-		$_SESSION['edit_duan'] = null;
+	function edit($duan_id=null) {
 		if($duan_id==null)
 			error('Liên kết không hợp lệ!');
 		$_SESSION['redirect_url'] = getUrl();
 		$duan_id = mysql_real_escape_string($duan_id);
 		$this->duan->showHasOne(array('file'));
 		$this->duan->id = $duan_id;
-		$data = $this->duan->search('duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid,duan_email,duan_sodienthoai');
+		$data = $this->duan->search('duan.id,tenduan,linhvuc_id,tinh_id,costmax,costmin,thongtinchitiet,file.id,filename,duan.account_id,active,ngayketthuc,nhathau_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,isbid,duan_email,duan_sodienthoai,editcode');
 		if(empty($data))
-			error('Server too busy!');
-		if($editcode==null) {
-			$this->checkLogin();
-			$this->checkActive();
-			$this->checkLock();
-			$account_id = $_SESSION['account']['id'];
-			if($data['duan']['account_id']!=$account_id)
+			error('Liên kết không hợp lệ!');
+		$myprojects = array();
+		if(isset($_SESSION['myprojects']))
+			$myprojects = $_SESSION['myprojects'];
+		if(in_array($duan_id,$myprojects)==false) {
+			$editcode= '';
+			$isEmployer = false;
+			if(isset($_GET['editcode']))
+				$editcode = $_GET['editcode'];
+			if($editcode!=null && $editcode == $data['duan']['editcode']) {
+				$isEmployer = true;
+			} else {
+				$this->checkLogin();
+				$this->checkActive();
+				$this->checkLock();
+				$account_id = $_SESSION['account']['id'];
+				if($data['duan']['account_id']==$account_id)
+					$isEmployer = true;
+			}
+			if($isEmployer == true) {
+				array_push($myprojects,$duan_id);
+				$_SESSION['myprojects'] = $myprojects;
+			} else 
 				error('Bạn không thể chỉnh sửa thông tin dự án của người khác!');
-		} else {
-			//Edit code
-			$this->setModel('editcode');
-			$this->editcode->where(" and duan_id=$duan_id and editcode = '$editcode'");
-			$dtEditcode = $this->editcode->search();
-			if(empty($dtEditcode))
-				error('Liên kết không hợp lệ!');
-			else
-				$_SESSION['edit_duan'] = $duan_id;
+			
 		}
+		
 		$this->set('dataDuan',$data['duan']);
 		$this->set('lefttime',$data['']['lefttime']);
 		if($data['file']['filename']!='')
@@ -772,12 +807,18 @@ class DuanController extends VanillaController {
 	}
 	function doEdit() {
 		try {
-			if(!isset($_SESSION['edit_duan'])) {
+			$duan_id = mysql_real_escape_string($_POST['duan_id']);
+			if($duan_id==null)
+				die('ERROR_SYSTEM');
+			$myprojects = array();
+			if(isset($_SESSION['myprojects']))
+				$myprojects = $_SESSION['myprojects'];
+			if(in_array($duan_id,$myprojects)==false) {
 				$this->checkLogin(true);
 				$this->checkActive(true);
 				$this->checkLock(true);
+				die('ERROR_SYSTEM');
 			}
-			$duan_id = mysql_real_escape_string($_POST['duan_id']);
 			$tenduan = $_POST['duan_tenduan'];
 			$alias = $_POST['duan_alias'];
 			$linhvuc_id = $_POST['duan_linhvuc_id'];
@@ -801,16 +842,7 @@ class DuanController extends VanillaController {
 				die('ERROR_SYSTEM');
 			$ngayketthuc = SQLDate($ngayketthuc);
 			//End validate
-			$strWhere = " and id=$duan_id";
-			if(isset($_SESSION['edit_duan']) && $_SESSION['edit_duan']==$duan_id) {
-				$this->duan->id = $duan_id;
-			} else {
-				if(isset($_SESSION['account'])==false)
-					die('ERROR_NOTLOGIN');
-				$account_id = $_SESSION['account']['id'];
-				$this->duan->id = $duan_id;
-				$this->duan->where(" and account_id = $account_id");
-			}
+			$this->duan->id = $duan_id;
 			$data = $this->duan->search('id,ngaypost,ngayketthuc,data_id');
 			if(empty($data))
 				die('ERROR_SYSTEM');
@@ -896,7 +928,6 @@ class DuanController extends VanillaController {
 					$this->duanskill->insert();
 				}
 			}
-			$_SESSION['edit_duan'] = null;
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -905,13 +936,12 @@ class DuanController extends VanillaController {
 	function doRemove($duan_id=null,$editcode=null) {
 		if($duan_id == null || $editcode==null)
 			error('Liên kết không hợp lệ!');
-		$this->setModel('editcode');
-		$this->editcode->where(" and duan_id=$duan_id and editcode = '$editcode'");
-		$dtEditcode = $this->editcode->search();
-		if(empty($dtEditcode))
+		$this->duan->id = $duan_id;
+		$this->duan->where(" and editcode = '$editcode'");
+		$data = $this->duan->search('id');
+		if(empty($data))
 			error('Liên kết không hợp lệ!');
 		else {
-			$this->setModel('duan');
 			$this->duan->id = $duan_id;
 			if($this->duan->delete()==-1) {
 				error('Thao tác bị lỗi, vui lòng thử lại sau!');

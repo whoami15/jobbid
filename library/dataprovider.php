@@ -163,6 +163,37 @@ class DataProvider
 			}
 		}
 	}
+	function expiredProjects() {
+		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost from duans where isbid=1 and active = 1 and nhathau_id is null and ngayketthuc<now()";
+		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
+		if($result == null || mysql_num_rows($result)==0) {
+			return;
+		}
+		$contentsrc = $this->get_cache('mail_expiredproject');
+		while($a_row=mysql_fetch_object($result)) {
+			//print_r($a_row);die();
+			$id = $a_row->id;
+			$tenduan = $a_row->tenduan;
+			$alias = $a_row->alias;
+			$email = $a_row->duan_email;
+			$editcode = $a_row->editcode;
+			$views = $a_row->views;
+			$bidcount = $a_row->bidcount;
+			$averagecost = $a_row->averagecost;
+			$linkviewname = "<a href='http://www.jobbid.vn/duan/view/$id/$alias&editcode=$editcode'>$tenduan</a>";
+			$linkviewname = mysql_real_escape_string($linkviewname);
+			$linkview = "<a href='http://www.jobbid.vn/duan/view/$id/$alias&editcode=$editcode'>http://www.jobbid.vn/duan/view/$id/$alias</a>";
+			$linkview = mysql_real_escape_string($linkview);
+			$linkedit = "<a href='http://www.jobbid.vn/duan/edit/$id&editcode=$editcode'>http://www.jobbid.vn/duan/edit/$id</a>";
+			$linkedit = mysql_real_escape_string($linkedit);
+			$search  = array('#LINKVIEWNAME#','#VIEWS#','#SOHOSO#','#GIATHAUTB#','#LINKVIEW#','#LINKEDIT#');
+			$replace = array($linkviewname, $views, $bidcount, $averagecost, $linkview, $linkedit);
+			$newcontent = str_replace($search, $replace, $contentsrc);
+			$query = "insert into sendmails values (null,'$email','[THÔNG BÁO] Dự án : $tenduan đã hết hạn đấu thầu!!!','$newcontent',0)";
+			mysql_query($query,$this->link) or die("Error:".mysql_error());
+		}
+		
+	}
 	function close() {
 		mysql_close($this->link);
 	}
