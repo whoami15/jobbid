@@ -60,7 +60,34 @@ class IndexController extends VanillaController {
 		$this->set("lstLinhvuc",$data);
 		$this->_template->render();
 	}
-        
+    function viewmore($page=2) {
+		$this->setModel("duan");
+		$this->duan->showHasOne(array('linhvuc'));
+		$this->duan->orderBy('duan.timeupdate','desc');
+		$this->duan->setPage($page);
+		$this->duan->setLimit(15);
+		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active");
+		$jsonResult = "{";
+		$i=0;
+		$len = count($data);
+		while($i<$len) {
+			$linkduan = BASE_PATH."/duan/view/".$data[$i]["duan"]["id"]."/".$data[$i]["duan"]["alias"];
+			$linkduan = mysql_real_escape_string($linkduan);
+			$tenduan = mysql_real_escape_string($data[$i]['duan']['tenduan']);
+			$tenlinhvuc = mysql_real_escape_string($data[$i]['linhvuc']['tenlinhvuc']);
+			$averagecost = formatMoney($data[$i]['duan']['averagecost']);
+			$views = $data[$i]['duan']['views'];
+			$bidcount = $data[$i]['duan']['bidcount'];
+			$lefttime = getDaysFromSecond($data[$i]["duan"]["active"]==1?$data[$i][""]["timeleft"]:0);
+			$jsonResult = $jsonResult."$i:{'views':$views,'bidcount':$bidcount,'linkduan':'$linkduan','tenduan':'$tenduan','tenlinhvuc':'$tenlinhvuc','averagecost':'$averagecost','lefttime':'$lefttime'},";
+			$i++;
+		}
+		$jsonResult = substr($jsonResult,0,-1);
+		$jsonResult = $jsonResult."}";
+		print($jsonResult);
+		//$this->set("lstData1",$data);
+	}
 	function afterAction() {
 
 	}

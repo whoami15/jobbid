@@ -66,7 +66,12 @@
 					<td style="width:100px">Còn</td>
 				</tr>
 			</thead>
-			<tbody>
+			<tfoot>
+				<tr>
+					<td colspan="6" align="center" id="tfoot_viewmore"><span class="link" style="cursor:pointer" onclick="viewmore()">Xem thêm...</span></td>
+				</tr>
+			</tfoot>
+			<tbody id="tbody_newprojects">
 				<?php
 				$i=0;
 				foreach($lstData1 as $duan) {
@@ -82,7 +87,7 @@
 						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
 						<td align="center"><?php  echo $duan["duan"]["views"] ?></td>
-						<td align="center"><?php echo $html->getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>
+						<td align="center"><?php echo getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>
 					</tr>
 					<?php
 				}
@@ -100,6 +105,43 @@
 	</div>
 </div>
 <script type="text/javascript">
+	var more=2;
+	function viewmore() {
+		//alert('aa');
+		class_name = byId("tbody_newprojects").lastChild.className;
+		$("#tfoot_viewmore").html("<img src='<?php echo BASE_PATH?>/public/images/icons/loading.gif'/>");
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url : url("/index/viewmore/"+more),
+			success: function(data){
+				//alert(data);return;
+				if(data.length<2) {
+					$("#tfoot_viewmore").html('');
+					return;
+				}
+				var jsonObj = eval( "(" + data + ")" );
+				var result = "";
+				i=0;
+				for(i;jsonObj[i]!=null;i++) {
+					if(class_name=="normalRow")
+						class_name="alternateRow";
+					else
+						class_name="normalRow";
+					tr='<tr class="'+class_name+'" style="display: none;"><td align="left"><a class="link" href="'+jsonObj[i].linkduan+'">'+jsonObj[i].tenduan+'</a></td><td align="center">'+jsonObj[i].averagecost+'</td><td align="center">'+jsonObj[i].bidcount+'</td><td align="center">'+jsonObj[i].tenlinhvuc+'</td><td align="center">'+jsonObj[i].views+'</td><td align="center">'+jsonObj[i].lefttime+'</td></tr>';
+					$("#tbody_newprojects").append($(tr).fadeIn(2000));
+				}
+				if(i==15) {
+					$("#tfoot_viewmore").html('<span class="link" style="cursor:pointer" onclick="viewmore()">Xem thêm...</span>');
+					more++;
+				}
+				else
+					$("#tfoot_viewmore").html('');
+				//alert(result);
+			},
+			error: function(data){ $("#tfoot_viewmore").html('<span class="link" style="cursor:pointer" onclick="viewmore()">Xem thêm...</span>');alert (data);}	
+		});
+	}
 	$(document).ready(function() {
 		menuid = '#home';
 		$("#menu "+menuid).addClass("current");

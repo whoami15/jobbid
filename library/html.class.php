@@ -54,24 +54,33 @@ class HTML {
 			$d = (int)($second/86400);
 			$second = $second%86400;
 			$h = (int)($second/3600);
+			$str = '';
 			if($d>0) {
 				if($h==0)
-					return "$d ngày";
+					$str = "$d ngày";
 				else
-					return "$d ngày $h giờ";
+					$str = "$d ngày $h giờ";
+				if($d<3)
+					$str = "<span style='color:red'>$str</span>";
+				return $str;
 			}
 			$second = $second%3600;
 			$m = (int)($second/60);
 			if($h>0) {
 				if($m==0)
-					return "$h giờ";
+					$str = "$h giờ";
 				else
-					return "$h giờ $m phút";
+					$str = "$h giờ $m phút";
+				$str = "<span style='color:red'>$str</span>";
+				return $str;
 			}
 			$second = $second%60;
 			if($m==0)
-				return "<span style='color:red'>$second giây</span>";
-			return "<span style='color:red'>$m phút $second giây</span>";
+				$str = "$second giây";
+			else
+				$str = "$m phút $second giây";
+			$str = "<span style='color:red'>$str</span>";
+			return $str;
         }
 		function getTimeFromSecond($second)
         {

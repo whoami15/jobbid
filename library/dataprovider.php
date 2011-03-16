@@ -123,10 +123,14 @@ class DataProvider
 		$statistics = $this->get_cache('statistics');
 		$result = mysql_query('select count(*) as total from duans where active=1',$this->link) or die("Error:".mysql_error());
 		$statistics['tProjects'] = mysql_fetch_object($result)->total;
-		$result = mysql_query('select count(*) as total from accounts where active>=0',$this->link) or die("Error:".mysql_error());
+		/* $result = mysql_query('select count(*) as total from accounts where active>=0',$this->link) or die("Error:".mysql_error());
 		$statistics['tAccounts'] = mysql_fetch_object($result)->total;
 		$result = mysql_query('select count(*) as total from nhathaus where `status`>=0',$this->link) or die("Error:".mysql_error());
-		$statistics['tFreelancers'] = mysql_fetch_object($result)->total;
+		$statistics['tFreelancers'] = mysql_fetch_object($result)->total; */
+		$result = mysql_query('select count(*) as total from duans where active=1 and nhathau_id is not null',$this->link) or die("Error:".mysql_error());
+		$statistics['tFinishProjects'] = mysql_fetch_object($result)->total;
+		$result = mysql_query('select count(*) as total from duans where active = 1 and nhathau_id is null and ngayketthuc>now()',$this->link) or die("Error:".mysql_error());
+		$statistics['tLiveProjects'] = mysql_fetch_object($result)->total;
 		$this->set_cache('statistics',$statistics);
 	}
 	function updateNewProject() {

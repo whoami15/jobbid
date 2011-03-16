@@ -64,8 +64,12 @@ class NhathauController extends VanillaController {
 			$nhathau_alias = $_POST["nhathau_alias"];
 			$password = $_POST['account_password'];
 			if($id==null) {
-				$username = $_POST['account_username'];
 				$this->setModel('account');
+				$username = $_POST['account_username'];
+				$this->account->where(" and username='$username'");
+				$data = $this->account->search('id');
+				if(empty($data)==false)
+					die('ERROR_EXIST');
 				$this->account->id = null;
 				$this->account->username = $username;
 				$this->account->password = md5($password);

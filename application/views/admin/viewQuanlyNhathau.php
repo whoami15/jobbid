@@ -284,7 +284,7 @@
 	var isUpdate = false;
 	function saveNhathau() {
 		checkValidate=true;
-		validate(['require'],'account_username',["Vui lòng nhập username nhà thầu!"]);
+		validate(['require','email'],'account_username',["Vui lòng nhập username nhà thầu!","Username phải là địa chỉ email!"]);
 		validate(['number'],'nhathau_diemdanhgia',["Vui lòng nhập kiểu số!"]);
 		if(checkValidate == false)
 			return;
@@ -307,6 +307,11 @@
 						location.href = url("/admin/login");
 						return;
 					}
+					if (data == "ERROR_EXIST"){
+						message('Username này đã tồn tại!',0);
+						byId("account_username").focus();
+						return;
+					}
 					if(data == AJAX_DONE) {
 						//Load luoi du lieu	
 						message("Lưu dữ liệu thành công!",1);
@@ -314,7 +319,7 @@
 						setRowValues(cells);														
 					} else if (data == AJAX_ERROR_NOTEXIST){
 						message('Username này không tồn tại!',0);
-						byId("nhathau_id").focus();
+						byId("account_username").focus();
 					} else {
 						message('Lưu dữ liệu không thành công!',0);										
 					}
@@ -345,6 +350,11 @@
 								unblock("#dialogNhathau #dialog");	
 								if(data == AJAX_ERROR_NOTLOGIN) {
 									location.href = url("/admin/login");
+									return;
+								}
+								if (data == "ERROR_EXIST"){
+									message('Username này đã tồn tại!',0);
+									byId("account_username").focus();
 									return;
 								}
 								if(data == AJAX_DONE) {
