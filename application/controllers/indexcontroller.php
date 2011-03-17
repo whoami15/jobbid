@@ -79,7 +79,7 @@ class IndexController extends VanillaController {
 			$averagecost = formatMoney($data[$i]['duan']['averagecost']);
 			$views = $data[$i]['duan']['views'];
 			$bidcount = $data[$i]['duan']['bidcount'];
-			$lefttime = getDaysFromSecond($data[$i]["duan"]["active"]==1?$data[$i][""]["timeleft"]:0);
+			$lefttime = mysql_real_escape_string(getDaysFromSecond($data[$i]["duan"]["active"]==1?$data[$i][""]["timeleft"]:0));
 			$jsonResult = $jsonResult."$i:{'views':$views,'bidcount':$bidcount,'linkduan':'$linkduan','tenduan':'$tenduan','tenlinhvuc':'$tenlinhvuc','averagecost':'$averagecost','lefttime':'$lefttime'},";
 			$i++;
 		}
