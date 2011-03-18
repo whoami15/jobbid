@@ -83,8 +83,15 @@
 					?>
 						<td style="display:none"><?php echo $duan["duan"]["id"]?></td>
 						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
+						<?php
+						if($duan['duan']['isbid']==1) {
+						?>
 						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
 						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
+						<?php
+						} else
+							echo '<td align="center" colspan="2" ><font color="green">Liên hệ trực tiếp</font></td>';
+						?>
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
 						<td align="center"><?php  echo $duan["duan"]["views"] ?></td>
 						<td align="center"><?php echo getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>

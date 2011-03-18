@@ -46,7 +46,7 @@ class IndexController extends VanillaController {
 		$this->duan->setPage(1);
 		$this->duan->setLimit(15);
 		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
-		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,isbid");
 		$this->set("lstData1",$data);
 		$this->duan->showHasOne(array('nhathau','hosothau'));
 		$this->duan->orderBy('timeupdate','desc');
