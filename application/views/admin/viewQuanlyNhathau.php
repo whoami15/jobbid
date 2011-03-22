@@ -155,7 +155,7 @@
 						<td width="20px">#</td>
 						<td>Username</td>
 						<td>Tên hiển thị</td>
-						<td>GPKD(CMND)</td>
+						<td>Điện thoại</td>
 						<td>Point</td>
 						<td>Nhận Email</td>
 						<td>Lĩnh vực</td>

@@ -30,7 +30,7 @@ class NhathauController extends VanillaController {
 				$strWhere.=" and displayname like '%$keyword%'";
 		}
 		$this->nhathau->where($strWhere);
-		$lstNhathau = $this->nhathau->search("nhathau.id,account.id,displayname,gpkd_cmnd,username,diemdanhgia,nhanemail,type");
+		$lstNhathau = $this->nhathau->search("nhathau.id,account.id,displayname,gpkd_cmnd,username,sodienthoai,diemdanhgia,nhanemail,type");
 		$totalPages = $this->nhathau->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)

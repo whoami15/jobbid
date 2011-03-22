@@ -68,7 +68,7 @@
 								<option value="mail_moinhatuyendung">Mời nhà tuyển dụng</option>
 								<option value="mail_moiungvien">Mời ứng viên</option>
 								<option value="mail_spam">Spam Mail</option>
-								<option value="mail_manageproject">Mail Quản Trị Dự Án</option>
+								<option value="mail_permission">Mail Xin Đăng Dự Án</option>
 								<option value="mail_postproject">Mail Đăng Dự Án</option>
 								<option value="mail_expiredproject">Mail Dự Án Hết Hạn</option>
 							</select>

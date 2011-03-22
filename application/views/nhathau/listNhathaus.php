@@ -23,7 +23,7 @@
 			<td style="width:20px">#</td>
 			<td>Username</td>
 			<td>Tên hiển thị</td>
-			<td>GPKD(CMND)</td>
+			<td>Điện thoại</td>
 			<td style="width:50px">Point</td>
 			<td style="width:85px">Nhận Email</td>
 			<td style="width:85px">Lĩnh vực</td>
@@ -49,7 +49,8 @@
 				<td id="td_type" style="display:none"><?php echo $nhathau["nhathau"]["type"]?></td>
 				<td id="td_username" align="center"><?php echo $nhathau["account"]["username"]?></td>
 				<td id="td_displayname" align="left"><?php echo $nhathau["nhathau"]["displayname"]?></td>
-				<td id="td_gpkd_cmnd" align="center"><?php echo $nhathau["nhathau"]["gpkd_cmnd"]?></td>
+				<td id="td_dienthoai" align="center"><?php echo $nhathau["account"]["sodienthoai"]?></td>
+				<td id="td_gpkd_cmnd" style="display:none"><?php echo $nhathau["nhathau"]["gpkd_cmnd"]?></td>
 				<td id="td_diemdanhgia" align="center"><?php echo $nhathau["nhathau"]["diemdanhgia"]?></td>
 				<td id="td_nhanemail" align="center"><?php echo $nhathau["nhathau"]["nhanemail"]==1?"Y":"N"?></td>
 				<td align="center">
