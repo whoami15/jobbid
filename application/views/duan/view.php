@@ -218,7 +218,7 @@
 					return;
 				}
 				if(data == "ERROR_MAKEPROFILE") {
-					message("Đang chuyển đến trang tạo hồ sơ, vui lòng đợi...",1);
+					message("Bạn chưa tạo hồ sơ ứng viên, đang chuyển đến trang tạo hồ sơ...",0);
 					setTimeout("redirectMakeProfile()",redirect_time);
 					return;
 				}

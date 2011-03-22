@@ -524,7 +524,7 @@ class NhathauController extends VanillaController {
 	function doChecknhathau() {
 		$this->checkLogin(true);
 		$this->checkActive(true);
-		//$this->checkNhathau(true);
+		$this->checkNhathau(true);
 		$this->checkLock(true);
 		$duan_id = $_GET['duan_id'];
 		if($duan_id == null)
