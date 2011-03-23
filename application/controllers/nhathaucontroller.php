@@ -412,6 +412,7 @@ class NhathauController extends VanillaController {
 			if($validate->check_submit(1,array("nhathau_id","nhathau_birthyear","nhathau_diachilienhe","account_sodienthoai","nhathau_motachitiet","nhathau_displayname","nhathau_gpkd_cmnd","nhathau_type"))==false)
 				die('ERROR_SYSTEM');
 			$id = $_POST["nhathau_id"];
+			$id = mysql_real_escape_string($id);
 			$sodienthoai = $_POST["account_sodienthoai"];
 			$motachitiet = $_POST["nhathau_motachitiet"];
 			$displayname = $_POST["nhathau_displayname"];
@@ -495,7 +496,7 @@ class NhathauController extends VanillaController {
 				$_SESSION["account"]["sodienthoai"] = $sodienthoai;
 			}
 			$this->setModel("nhathaulinhvuc");
-			$this->nhathaulinhvuc->custom("delete from nhathaulinhvucs where nhathau_id='$id'");
+			$this->nhathaulinhvuc->custom("delete from nhathaulinhvucs where nhathau_id=$id");
 			if(isset($_POST["nhathau_linhvuc"])) {
 				$lstLinhvuc = $_POST["nhathau_linhvuc"];
 				foreach($lstLinhvuc as $linhvuc_id) {

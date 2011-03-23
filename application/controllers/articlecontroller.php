@@ -203,6 +203,7 @@ class ArticleController extends VanillaController {
 		if($article_id==null)
 			die();
 		$this->setModel('comment');
+		$article_id = mysql_real_escape_string($article_id);
 		$this->comment->orderBy('ngaypost','desc');
 		$this->comment->setPage($pageindex);
 		$this->comment->setLimit(7);

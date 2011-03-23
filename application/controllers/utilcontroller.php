@@ -46,12 +46,6 @@ class UtilController extends VanillaController {
 		$arrType = array("jpg","png","bmp","jpeg","gif","JPG","PNG","BMP","JPEG","GIF");
 		$cache->set("uploadtype",$arrType);
 	}
-	function test() {
-		$this->setModel("data");
-		$this->data->where(" and data like '%Xây%'");
-		$data = $this->data->search("*",true);
-		print_r($data);
-	}
 	function resetCache() {
 		$this->checkAdmin(true);
 		global $cache;

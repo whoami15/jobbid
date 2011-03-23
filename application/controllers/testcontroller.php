@@ -16,12 +16,20 @@ class TestController extends VanillaController {
 	function setModel($model) {
 		 $this->$model =& new $model;
 	}
-	function index() {
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
-		$conn=new DataProvider();
-		$conn->updateStatistics();
-		$conn->close();
+	function doLogin() {
+		$username = $_POST['username'];
+		$password = $_POST['password'];
+		//die($username);
+		$this->setModel('account');
+		$password = mysql_real_escape_string($password);
+		$this->account->where(" and username='$username' and password='$password'");
+		$data = $this->account->search('*');
+		print_r($data);
 		echo 'DONE';
+	}
+	function index($username,$password) {
+		//die('aa');
+		$this->_template->render();
 		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;
 		$senders = $cache->get('senders');

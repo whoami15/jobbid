@@ -235,6 +235,7 @@ class AccountController extends VanillaController {
 		redirect(BASE_PATH."/$type/login");
 	}
 	function getSuggestionAccount() {
+		$this->checkAdmin(true);
 		$key = $_POST['keyword'];
 		if(isset($key)) {
 			$sql = "select username from `accounts` as `account` where active>=0 and username like '$key%' LIMIT 8 OFFSET 0";

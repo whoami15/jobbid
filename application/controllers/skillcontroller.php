@@ -169,6 +169,7 @@ class SkillController extends VanillaController {
 	function getSkillsByLinhvuc() {
 		//$this->checkLogin(true);
 		$linhvuc_id = $_GET["linhvuc_id"];
+		$linhvuc_id = mysql_real_escape_string($linhvuc_id);
 		if($linhvuc_id==null)
 			die("ERROR_SYSTEM");
 		$data = $this->skill->custom("select * from skills as skill where linhvuc_id='$linhvuc_id' order by skillname");

@@ -95,6 +95,7 @@ class DuanController extends VanillaController {
 			$tenduan = $_POST['duan_tenduan'];
 			$alias = $_POST['duan_alias'];
 			$linhvuc_id = $_POST['duan_linhvuc_id'];
+			$linhvuc_id = mysql_real_escape_string($linhvuc_id);
 			$tinh_id = $_POST['duan_tinh_id'];
 			$ngayketthuc = $_POST['duan_ngayketthuc'];
 			$prior = $_POST['duan_prior'];
@@ -289,6 +290,7 @@ class DuanController extends VanillaController {
 				$this->duan->update();
 			}
 			$this->setModel('duanskill');
+			$duan_id = mysql_real_escape_string($duan_id);
 			$this->duanskill->showHasOne(array('skill'));
 			$this->duanskill->where(" and duan_id = $duan_id");
 			$data = $this->duanskill->search('skill.id,skillname');
@@ -357,6 +359,7 @@ class DuanController extends VanillaController {
 			$this->duan->ngayketthuc = $ngayketthuc;
 			$this->duan->update();
 			$this->setModel('duanskill');
+			$duan_id = mysql_real_escape_string($duan_id);
 			$this->duanskill->custom("delete from duanskills where duan_id = $duan_id");
 			if(isset($_POST['duan_skills'])) {
 				$lstSkill= $_POST['duan_skills'];
@@ -531,6 +534,7 @@ class DuanController extends VanillaController {
 	function permission($id=null,$editcode=null) {
 		if($id==null || $editcode==null)
 			error('Liên kết không hợp lệ!');
+		$editcode = mysql_real_escape_string($editcode);
 		$this->duan->id = $id;
 		$this->duan->where(" and editcode='$editcode'");
 		$data = $this->duan->search('id,tenduan,alias,duan_email,active');
@@ -661,7 +665,7 @@ class DuanController extends VanillaController {
 				die('ERROR_SYSTEM');
 			$this->setModel('duanmark');
 			$account_id = $_SESSION['account']['id'];
-			$data = $this->duanmark->custom("select id from duanmarks as duanmark where account_id=$account_id and duan_id=".mysql_real_escape_string($duan_id));
+			$data = $this->duanmark->custom("select id from duanmarks as duanmark where account_id=$account_id and duan_id=$duan_id");
 			if(!empty($data))
 				die('ERROR_EXIST');
 			$this->duanmark->id = null;
@@ -985,6 +989,7 @@ class DuanController extends VanillaController {
 	function doRemove($duan_id=null,$editcode=null) {
 		if($duan_id == null || $editcode==null)
 			error('Liên kết không hợp lệ!');
+		$editcode = mysql_real_escape_string($editcode);
 		$this->duan->id = $duan_id;
 		$this->duan->where(" and editcode = '$editcode'");
 		$data = $this->duan->search('id');
@@ -1063,7 +1068,6 @@ class DuanController extends VanillaController {
 		$ipagesnext = $ipageindex + INT_PAGE_SUPPORT;
 		if ($ipagesnext > $totalPages)
 			$ipagesnext = $totalPages;
-		//print_r($lstDuan);die();
 		$this->set('lstDuan',$lstDuan);
 		$this->set('pagesindex',$ipageindex);
 		$this->set('pagesbefore',$ipagesbefore);

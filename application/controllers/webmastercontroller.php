@@ -166,6 +166,7 @@ class WebmasterController extends VanillaController {
 			error('Lỗi! Liên kết không hợp lệ!');
 		$this->updateStatistics();
 		$this->setModel('resetpassword');
+		$account_id = mysql_real_escape_string($account_id);
 		$rs_verify = mysql_real_escape_string($rs_verify);
 		$this->resetpassword->where(" and account_id=$account_id and verify='$rs_verify'");
 		$data = $this->resetpassword->search('id,account_id');
