@@ -23,8 +23,8 @@
 			<td>ID</td>
 			<td>Tên dự án</td>
 			<td>Lĩnh vực</td>
-			<td>Khoảng chi phí</td>
 			<td>Người post</td>
+			<td>Chủ dự án</td>
 			<td>Prior</td>
 			<td>Ngày Post</td>
 			<td>Status</td>
@@ -48,9 +48,10 @@
 				<td id="td_tenduan" align="left"><?php echo $duan["duan"]["tenduan"]?></td>
 				<td id="td_linhvuc_id" style="display:none"><?php echo $duan["duan"]["linhvuc_id"]?></td>
 				<td id="td_linhvuc_display" align="left"><?php echo $duan["linhvuc"]["tenlinhvuc"]?></td>
-				<td id="td_costtype" align="left"><?php  echo $html->FormatMoney($duan["duan"]["costmin"])?> &#8250 <?php  echo $html->FormatMoney($duan["duan"]["costmax"])?></td>
+				<td id="td_costtype" style="display:none"><?php  echo $html->FormatMoney($duan["duan"]["costmin"])?> &#8250 <?php  echo $html->FormatMoney($duan["duan"]["costmax"])?></td>
 				<td id="td_account_id" style="display:none"><?php echo $duan["duan"]["account_id"]?></td>
 				<td id="td_account_display" align="center"><?php echo $duan["account"]["username"]?></td>
+				<td id="td_employer" align="center"><?php echo $duan["duan"]["duan_email"]?></td>
 				<td id="td_prior" align="center"><?php echo $duan["duan"]["prior"]?></td>
 				<td id="td_views" style="display:none"><?php echo $duan["duan"]["views"]?></td>
 				<td id="td_ngaypost" align="left"><?php echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i:s') ?></td>

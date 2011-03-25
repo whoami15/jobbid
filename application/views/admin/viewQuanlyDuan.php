@@ -133,8 +133,8 @@
 						<td>ID</td>
 						<td>Tên dự án</td>
 						<td>Lĩnh vực</td>
-						<td>Khoảng chi phí</td>
 						<td>Người post</td>
+						<td>Chủ dự án</td>
 						<td>Prior</td>
 						<td>Ngày Post</td>
 						<td>Status</td>

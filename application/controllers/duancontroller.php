@@ -72,7 +72,7 @@ class DuanController extends VanillaController {
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage($ipageindex);
 		$this->duan->setLimit(PAGINATE_LIMIT);
-		$lstDuan = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc,nhathau_id,isbid');
+		$lstDuan = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc,nhathau_id,isbid,duan_email');
 		$totalPages = $this->duan->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
