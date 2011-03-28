@@ -55,7 +55,7 @@
 					</td>
 				</tr>
 				<tr style="height:30px">
-					<td align="left" style="padding-left:50px">
+					<td align="left" style="padding-left:50px" class="viewcontent">
 					<?php echo $nhathau["nhathau"]["motachitiet"] ?>
 					</td>
 				</tr>

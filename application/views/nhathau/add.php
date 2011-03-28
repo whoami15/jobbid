@@ -195,8 +195,7 @@
 		$("#nhathau_motachitiet").css("width","98%");
 		$("#nhathau_motachitiet").htmlarea({
 				toolbar: [
-					["html"], ["bold", "italic", "underline"],
-					["increasefontsize", "decreasefontsize", "forecolor"],
+					["html"], ["bold", "italic", "underline", "forecolor"],
 					["orderedlist", "unorderedlist"],
 					["indent", "outdent"],
 					["justifyleft", "justifycenter", "justifyright"],

@@ -96,7 +96,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="left" colspan="2" style="padding-left:50px">
+					<td align="left" colspan="2" style="padding-left:50px" class="viewcontent">
 					<?php echo $dataDuan["duan"]["thongtinchitiet"] ?>
 					</td>
 				</tr>

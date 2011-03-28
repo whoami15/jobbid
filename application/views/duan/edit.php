@@ -283,8 +283,7 @@
 		$("#duan_thongtinchitiet").css("width","100%");
 		$("#duan_thongtinchitiet").htmlarea({
 				toolbar: [
-					["html"], ["bold", "italic", "underline"],
-					["increasefontsize", "decreasefontsize", "forecolor"],
+					["html"], ["bold", "italic", "underline", "forecolor"],
 					["orderedlist", "unorderedlist"],
 					["indent", "outdent"],
 					["justifyleft", "justifycenter", "justifyright"],

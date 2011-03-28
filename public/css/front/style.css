@@ -479,3 +479,8 @@ span.chosen {
     padding-left: 5px;
     padding-right: 5px;
 }
+.viewcontent {
+	font-size: 13px !important;
+	text-align:justify;
+	font-family: Verdana,Arial,sans-serif !important;
+}

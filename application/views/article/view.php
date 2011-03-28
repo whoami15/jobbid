@@ -8,7 +8,7 @@
 		width:500px;
 	}
 </style>
-<div id="content" style="width:100%;">
+<div id="content" style="width:100%">
 	<div class="ui-widget-header ui-helper-clearfix ui-corner-top" style="border:none;padding-left: 5px" id="content_title">Trao đổi - Chia Sẻ - Thảo Luận</div>
 	<div style="width: 99%; padding: 5px; text-align: left;">
 	<h1>
@@ -19,7 +19,7 @@
 	?>
 	</h1>
 	</div>
-	<div style="width: 98%; padding: 5px">
+	<div style="width: 98%; padding: 5px" class="viewcontent">
 	<?php
 	if(isset($article)) {
 		echo $article["article"]["content"];
