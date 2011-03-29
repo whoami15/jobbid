@@ -167,6 +167,72 @@ class DataProvider
 			}
 		}
 	}
+	function getDaysFromSecond($second) {
+		if($second<=0) {
+			return "Đã hết hạn.";
+		} 
+		$d = (int)($second/86400);
+		$second = $second%86400;
+		$h = (int)($second/3600);
+		$str = '';
+		if($d>0) {
+			if($h==0)
+				$str = "$d ngày";
+			else
+				$str = "$d ngày $h giờ";
+			return $str;
+		}
+		$second = $second%3600;
+		$m = (int)($second/60);
+		if($h>0) {
+			if($m==0)
+				$str = "$h giờ";
+			else
+				$str = "$h giờ $m phút";
+			return $str;
+		}
+		$second = $second%60;
+		if($m==0)
+			$str = "$second giây";
+		else
+			$str = "$m phút $second giây";
+		return $str;
+	}
+	function preexpiredProjects() {
+		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft from duans where isbid=1 and active = 1 and nhathau_id is null and ((UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) ) BETWEEN 0 AND 259200)";
+		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
+		if($result == null || mysql_num_rows($result)==0) {
+			return;
+		}
+		$contentsrc = $this->get_cache('mail_expiredproject');
+		while($a_row=mysql_fetch_object($result)) {
+			//print_r($a_row);die();
+			$id = $a_row->id;
+			$tenduan = $a_row->tenduan;
+			$alias = $a_row->alias;
+			$email = $a_row->duan_email;
+			$editcode = $a_row->editcode;
+			$views = $a_row->views;
+			$bidcount = $a_row->bidcount;
+			$averagecost = $a_row->averagecost;
+			$timeleft = $a_row->timeleft;
+			$time = $this->getDaysFromSecond($timeleft);
+			if($timeleft>0)
+				$stime = "còn <font color='red'>$time</font> là";
+			$stime = mysql_real_escape_string($stime);
+			$linkviewname = "<a href='http://www.jobbid.vn/duan/view/$id/$alias&editcode=$editcode'>$tenduan</a>";
+			$linkviewname = mysql_real_escape_string($linkviewname);
+			$linkview = "<a href='http://www.jobbid.vn/duan/view/$id/$alias&editcode=$editcode'>http://www.jobbid.vn/duan/view/$id/$alias</a>";
+			$linkview = mysql_real_escape_string($linkview);
+			$linkedit = "<a href='http://www.jobbid.vn/duan/edit/$id&editcode=$editcode'>http://www.jobbid.vn/duan/edit/$id</a>";
+			$linkedit = mysql_real_escape_string($linkedit);
+			$search  = array('#LINKVIEWNAME#','#TIME#','#VIEWS#','#SOHOSO#','#GIATHAUTB#','#LINKVIEW#','#LINKEDIT#');
+			$replace = array($linkviewname, $stime, $views, $bidcount, $averagecost, $linkview, $linkedit);
+			$newcontent = str_replace($search, $replace, $contentsrc);
+			$query = "insert into sendmails values (null,'$email','Công việc [$tenduan] của bạn còn $time là hết hạn đấu thầu!!!','$newcontent',0)";
+			mysql_query($query,$this->link) or die("Error:".mysql_error());
+		}
+	}
 	function expiredProjects() {
 		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost from duans where isbid=1 and active = 1 and nhathau_id is null and ngayketthuc<now()";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
@@ -190,13 +256,12 @@ class DataProvider
 			$linkview = mysql_real_escape_string($linkview);
 			$linkedit = "<a href='http://www.jobbid.vn/duan/edit/$id&editcode=$editcode'>http://www.jobbid.vn/duan/edit/$id</a>";
 			$linkedit = mysql_real_escape_string($linkedit);
-			$search  = array('#LINKVIEWNAME#','#VIEWS#','#SOHOSO#','#GIATHAUTB#','#LINKVIEW#','#LINKEDIT#');
-			$replace = array($linkviewname, $views, $bidcount, $averagecost, $linkview, $linkedit);
+			$search  = array('#LINKVIEWNAME#','#TIME#','#VIEWS#','#SOHOSO#','#GIATHAUTB#','#LINKVIEW#','#LINKEDIT#');
+			$replace = array($linkviewname,'đã', $views, $bidcount, $averagecost, $linkview, $linkedit);
 			$newcontent = str_replace($search, $replace, $contentsrc);
-			$query = "insert into sendmails values (null,'$email','[THÔNG BÁO] Dự án : $tenduan đã hết hạn đấu thầu!!!','$newcontent',0)";
+			$query = "insert into sendmails values (null,'$email','Công việc [$tenduan] của bạn đã hết hạn đấu thầu!!!','$newcontent',0)";
 			mysql_query($query,$this->link) or die("Error:".mysql_error());
 		}
-		
 	}
 	function close() {
 		mysql_close($this->link);

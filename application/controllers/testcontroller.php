@@ -27,9 +27,13 @@ class TestController extends VanillaController {
 		print_r($data);
 		echo 'DONE';
 	}
-	function index($username,$password) {
+	function index() {
 		//die('aa');
-		$this->_template->render();
+		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		$conn=new DataProvider();
+		$conn->preexpiredProjects();
+		$conn->close();
+		echo 'DONE';
 		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;
 		$senders = $cache->get('senders');

@@ -173,11 +173,10 @@
 	}
 	$(document).ready(function() {
 		//document.title = "Tạo Dự Án - "+document.title;
-		/* $("#duan_thongtinchitiet").css("width","100%");
+		$("#duan_thongtinchitiet").css("width","100%");
 		$("#duan_thongtinchitiet").htmlarea({
 				toolbar: [
-					["html"], ["bold", "italic", "underline"],
-					["increasefontsize", "decreasefontsize", "forecolor"],
+					["html"], ["bold", "italic", "underline", "forecolor"],
 					["orderedlist", "unorderedlist"],
 					["indent", "outdent"],
 					["justifyleft", "justifycenter", "justifyright"],
@@ -200,7 +199,7 @@
 					$(document.body).css('background-color', color);
 				}
 			});
-		}); */
+		}); 
 		$('#formUpload').ajaxForm({ 
 			url:        url("/file/upload"), 
 			type:      "post",

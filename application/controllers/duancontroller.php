@@ -498,13 +498,17 @@ class DuanController extends VanillaController {
 				$content = str_replace($search, $replace, $content);
 				$subject = "Đã đăng dự án [$tenduan] lên JobBid.vn!!!";
 			} else {
-				$linkxacnhan = BASE_PATH."/duan/permission/$duan_id/$editcode";
-				$linkxacnhan = "<a href='$linkxacnhan'>$linkxacnhan</a>";
+				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
+				$linkview = "<a href='$linkview'>$tenduan</a>";
+				$linkdongy = BASE_PATH."/duan/permission/$duan_id/$editcode/1";
+				$linkdongy = "<a href='$linkdongy'><font color='green'>ĐỒNG Ý</font></a>";
+				$linkodongy = BASE_PATH."/duan/permission/$duan_id/$editcode/0";
+				$linkodongy = "<a href='$linkodongy'><font color='red'>KHÔNG ĐỒNG Ý</font></a>";
 				$content = $cache->get('mail_permission');
-				$search  = array('#TENDUAN#','#LINKXACNHAN#');
-				$replace = array($tenduan, $linkxacnhan);
+				$search  = array('#LINKDUAN#','#DONGY#','#KHONGDONGY#');
+				$replace = array($linkview, $linkdongy, $linkodongy);
 				$content = str_replace($search, $replace, $content);
-				$subject = "[EMAIL XIN PHÉP] Đăng dự án [$tenduan] lên JobBid.vn!!!";
+				$subject = "[EMAIL XIN PHÉP] Đăng công việc [$tenduan] lên JobBid.vn!!!";
 				
 			}
 			$myprojects = array();
@@ -531,7 +535,7 @@ class DuanController extends VanillaController {
 			echo 'ERROR_SYSTEM';
 		}
 	}
-	function permission($id=null,$editcode=null) {
+	function permission($id=null,$editcode=null,$answer=0) {
 		if($id==null || $editcode==null)
 			error('Liên kết không hợp lệ!');
 		$editcode = mysql_real_escape_string($editcode);
@@ -539,42 +543,48 @@ class DuanController extends VanillaController {
 		$this->duan->where(" and editcode='$editcode'");
 		$data = $this->duan->search('id,tenduan,alias,duan_email,active');
 		if(empty($data))
-			error('Mã xác nhận không đúng!');
-		if($data['duan']['active']==1)
-			error('Dự án này đã được xác nhận rồi!');
-		$email = $data['duan']['duan_email'];
-		$tenduan = $data['duan']['tenduan'];
-		$alias = $data['duan']['alias'];
-		$this->duan->id = $id;
-		$currentDate = GetDateSQL();
-		$this->duan->timeupdate = $currentDate;
-		$this->duan->active = 1;
-		$this->duan->update();
-		$myprojects = array();
-		if(isset($_SESSION['myprojects']))
-			$myprojects = $_SESSION['myprojects'];
-		if(in_array($id,$myprojects)==false) {
-			array_push($myprojects,$id);
-			$_SESSION['myprojects'] = $myprojects;
+			error('Liên kết không hợp lệ!');
+		if($answer == 0) {
+			$this->duan->id = $id;
+			$this->duan->delete();
+			success('Đã xóa thông tin công việc này, xin lỗi vì đã làm phiền bạn!');
+		} else {
+			if($data['duan']['active']==1)
+				error('Công việc này đã được xác nhận rồi!');
+			$email = $data['duan']['duan_email'];
+			$tenduan = $data['duan']['tenduan'];
+			$alias = $data['duan']['alias'];
+			$this->duan->id = $id;
+			$currentDate = GetDateSQL();
+			$this->duan->timeupdate = $currentDate;
+			$this->duan->active = 1;
+			$this->duan->update();
+			$myprojects = array();
+			if(isset($_SESSION['myprojects']))
+				$myprojects = $_SESSION['myprojects'];
+			if(in_array($id,$myprojects)==false) {
+				array_push($myprojects,$id);
+				$_SESSION['myprojects'] = $myprojects;
+			}
+			global $cache;
+			$linkview = BASE_PATH."/duan/view/$id/$alias&editcode=$editcode";
+			$linkview = "<a href='$linkview'>$tenduan</a>";
+			$content = $cache->get('mail_postproject');
+			$search  = array('#LINKVIEW#');
+			$replace = array($linkview);
+			$content = str_replace($search, $replace, $content);
+			$this->setModel('sendmail');
+			$this->sendmail->id = null;
+			$this->sendmail->to = $email;
+			$this->sendmail->subject = "Đã đăng công việc [$tenduan] lên JobBid.vn!!!";
+			$this->sendmail->content = $content;
+			$this->sendmail->isprior = 1;
+			$this->sendmail->insert();
+			$linkview = BASE_PATH."/duan/view/$id/$alias";
+			$this->set('linkview',$linkview);
+			$this->set('title',"Bạn đã xác nhận đồng ý đăng công việc lên JobBid.vn!");
+			$this->_template->render();
 		}
-		global $cache;
-		$linkview = BASE_PATH."/duan/view/$id/$alias&editcode=$editcode";
-		$linkview = "<a href='$linkview'>$tenduan</a>";
-		$content = $cache->get('mail_postproject');
-		$search  = array('#LINKVIEW#');
-		$replace = array($linkview);
-		$content = str_replace($search, $replace, $content);
-		$this->setModel('sendmail');
-		$this->sendmail->id = null;
-		$this->sendmail->to = $email;
-		$this->sendmail->subject = "Đã đăng dự án [$tenduan] lên JobBid.vn!!!";
-		$this->sendmail->content = $content;
-		$this->sendmail->isprior = 1;
-		$this->sendmail->insert();
-		$linkview = BASE_PATH."/duan/view/$id/$alias";
-		$this->set('linkview',$linkview);
-		$this->set('title',"Bạn đã xác nhận đồng ý đăng dự án lên JobBid.vn!");
-		$this->_template->render();
 	}
 	function search() {
 		$_SESSION['redirect_url'] = getUrl();
@@ -624,7 +634,10 @@ class DuanController extends VanillaController {
 				$this->duan->views=$viewcount+1;
 				$this->duan->save();
 				if($data['duan']['active'] != 1 || isset($data['nhathau']['id']) || $data['']['timeleft']<0) {
-					$this->set('status','Đã đóng');
+					if($data['duan']['active'] == null)
+						$this->set('status','Chưa xác nhận');
+					else
+						$this->set('status','Đã đóng');
 					$data['']['lefttime'] = -1;
 				} else 
 					$this->set('status','Đang mở');
