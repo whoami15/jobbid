@@ -5,7 +5,9 @@
 	include (ROOT.DS.'library'.DS.'dataprovider.php');
 	$conn=new DataProvider();
 	echo 'updateEmailToEmployers;';
-	$conn->expiredProjects();
+	$conn->preexpiredProjects();
+	if(date("l")=='Monday')
+		$conn->expiredProjects();
 	$conn->close();
 	echo 'DONE';
 	

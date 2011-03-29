@@ -29,11 +29,10 @@ class TestController extends VanillaController {
 	}
 	function index() {
 		//die('aa');
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
-		$conn=new DataProvider();
-		$conn->preexpiredProjects();
-		$conn->close();
-		echo 'DONE';
+		if(date("l")=='Tuesday')
+			echo 'Thu 3';
+		else
+			echo 'Ko phai thu 3';
 		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;
 		$senders = $cache->get('senders');
