@@ -90,6 +90,7 @@
 			success : function(data){	
 				//alert(data);return;
 				if(data=="OK" || data == "REGISTER") {
+					$('#duan_thongtinchitiet').htmlarea("updateTextArea"); 
 					dataString = $("#formDuan").serialize();
 					//alert(dataString);return;
 					$.ajax({
