@@ -73,7 +73,7 @@
 					return;
 				}
 				if(data == "OK") {
-					byId("loginbox_msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Post dự án...</span></div>";
+					byId("loginbox_msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang lưu dữ liệu nhập...</span></div>";
 					timer1=setTimeout("doSubmit()",redirect_time);
 				} else {
 					loginbox_msg("Có lỗi xảy ra, vui lòng thử lại!",0);

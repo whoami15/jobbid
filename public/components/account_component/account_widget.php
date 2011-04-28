@@ -17,6 +17,7 @@
 			<li><a id="ds_thu_moi_thau" class="link" href="<?php echo BASE_PATH ?>/moithau/viewMyLetters">Danh sách thư mời thầu</a></li>
 			<li><a id="ds_du_an_quan_tam" class="link" href="<?php echo BASE_PATH ?>/duan/viewmarks">Các dự án quan tâm</a></li>
 			<li><a id="ds_du_an_cua_toi" class="link" href="<?php echo BASE_PATH ?>/duan/viewMyprojects">Các dự án của tôi</a></li>
+			<li><a id="quan_ly_tin_rao_vat" class="link" href="<?php echo BASE_PATH ?>/raovat/quan_ly_tin_rao_vat">Quản lý tin rao vặt</a></li>
 			<li><a class="link" href="<?php echo BASE_PATH ?>/account/doLogout/account">Thoát</a></li>
 		</ul>
 		<?php

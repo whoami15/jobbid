@@ -149,7 +149,6 @@ class RaovatController extends VanillaController {
 			$email = $_SESSION['account']['username'];
 			$sodienthoai = $_SESSION['account']['sodienthoai'];
 		}
-		$this->set('raovat_id',$raovat_id);
 		$this->set('email',$email);
 		$this->set('sodienthoai',$sodienthoai);
 		$this->set('title','Jobbid.vn - Đăng tin rao vặt');
@@ -157,8 +156,6 @@ class RaovatController extends VanillaController {
 	}
 	function submit_dang_tin_rao_vat() {
 		try {
-			$tieude = $data['raovat']['tieude'];
-			$alias = $data['raovat']['alias'];
 			$tieude = $_POST['raovat_tieude'];
 			$alias = $_POST['raovat_alias'];
 			$email = $_POST['raovat_email'];
@@ -213,7 +210,7 @@ class RaovatController extends VanillaController {
 				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
 			}
 			$this->setModel('raovat');
-			$this->raovat->id = $raovat_id;
+			$this->raovat->id = null;
 			$this->raovat->raovat_email = $email;
 			$this->raovat->raovat_sodienthoai = $sodienthoai;
 			$this->raovat->noidung = $noidung;
@@ -267,11 +264,11 @@ class RaovatController extends VanillaController {
 		$_SESSION['redirect_url'] = getUrl();
 		$this->checkLogin();
 		$account_id = $_SESSION['account']['id'];
-		$this->raovat->orderBy('raovat.id','desc');
+		$this->raovat->orderBy('raovat.ngayupdate','desc');
 		$this->raovat->setPage(1);
 		$this->raovat->setLimit(PAGINATE_LIMIT);
 		$this->raovat->where(" and raovat.account_id = $account_id");
-		$data = $this->raovat->search('raovat.id,tieude,alias,ngayupdate,views,,raovat.status');
+		$data = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,raovat_email,raovat.status');
 		$totalPages = $this->raovat->totalPages();
 		$ipagesbefore = 1 - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -292,11 +289,11 @@ class RaovatController extends VanillaController {
 		$this->checkLogin();
 		$ipageindex = mysql_real_escape_string($ipageindex);
 		$account_id = $_SESSION['account']['id'];
-		$this->raovat->orderBy('raovat.id','desc');
+		$this->raovat->orderBy('raovat.ngayupdate','desc');
 		$this->raovat->setPage($ipageindex);
 		$this->raovat->setLimit(PAGINATE_LIMIT);
 		$this->raovat->where(" and raovat.account_id = $account_id");
-		$data = $this->raovat->search('raovat.id,tieude,alias,ngayupdate,views,,raovat.status');
+		$data = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,raovat_email,raovat.status');
 		$totalPages = $this->raovat->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -390,6 +387,23 @@ class RaovatController extends VanillaController {
 			} else {
 				success('Xóa tin rao của bạn thành công!');
 			}
+		}
+	}
+	function changeStatus($active=null) {
+		if($active == null || ($active!=0 && $active!=1))
+			die('ERROR_SYSTEM');
+		try {
+			$this->checkLogin(true);
+			$this->checkActive(true);
+			$this->checkLock(true);
+			$account_id = $_SESSION['account']['id'];
+			$raovat_id = mysql_real_escape_string($_GET['raovat_id']);
+			$this->raovat->status = $active;
+			$this->raovat->ngayupdate = GetDateSQL();
+			$this->raovat->update(" id = $raovat_id and account_id = $account_id");
+			echo 'DONE';	
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
 		}
 	}
 	function active_account() {
