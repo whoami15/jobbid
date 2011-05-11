@@ -344,6 +344,17 @@ function genString($length = 10) {
     }
     return $string;
 } 
+function HTML2Text($html) {
+	require_once(ROOT . DS . 'library' . DS .'class.html2text.inc');
+	$h2t =& new html2text($html);
+	// the HTML to the plain text. Store it into the variable.
+	return $h2t->get_text();
+}
+function trimString($str,$maxlen=30) {
+	if(strlen($str)<=$maxlen)
+		return $str;
+	return substr($str,0,$maxlen)."...";
+}
 if ( strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') == 0 ) {
 	//echo 'aaa';
 	gzipOutput() || ob_start("ob_gzhandler");

@@ -30,13 +30,13 @@
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 			<div class="td tdInput">
-			<input type="text"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $email ?>"/>
+			<input type="text" maxlength="100"  name="duan_email" id="duan_email" tabindex=7 value="<?php echo $email ?>"/>
 			</div>
 		</div>
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 			<div class="td tdInput">
-			<input type="text"  name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $sodienthoai ?>"/>
+			<input type="text" maxlength="20" name="duan_sodienthoai" id="duan_sodienthoai" tabindex=7 value="<?php echo $sodienthoai ?>"/>
 			</div>
 		</div>
 		<div class="tr" style="border:none;text-align:left">

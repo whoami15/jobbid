@@ -68,6 +68,7 @@
 					<tr>
 						<td colspan="4" align="center" height="50px">
 							<input onclick="saveAccount()" value="Lưu" type="button">
+							<input onclick="deleteAccount()" value="Xóa" type="button">
 							<input onclick="doReset()" value="Reset" type="button">
 						</td>
 					</tr>
@@ -79,6 +80,22 @@
 	<div id="mask"></div>
 </div>
 <div style="padding-top:10px;font-size:14px" >
+	<fieldset>
+		<legend>Lọc kết quả</legend>
+		<table>
+		<tbody>
+			<tr height="30px">
+				<td width="80px">Email :</td>
+				<td><input type="text" id="cond_email" style="width:400px" /></td>
+			</tr>
+			<tr height="30px">
+			<td colspan="2" align="center">
+				<input onclick="doFilter()" value="Tìm Kiếm" type="button">
+			</td>
+			</tr>
+		</tbody>
+		</table>
+	</fieldset>
 	<fieldset>
 		<legend>Danh Sách Tài Khoản</legend>
 		<div id="datagrid">
@@ -100,6 +117,8 @@
 </div>
 <script type="text/javascript">
 	var objediting; //Object luu lai row dang chinh sua
+	var searchString = "&";
+	var nPage = 1;
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
@@ -114,7 +133,8 @@
 		showDialog('#dialogAccount',600);
 	}
 	function selectpage(page) {
-		loadListAccounts(page);
+		nPage = page;
+		loadListAccounts(page+searchString);
 	};
 	function fillFormValues(cells) { //Lấy giá trị từ row được chọn đưa lên form (click vào nút "Chọn")		
 		byId("account_id").value = $.trim($(cells.td_id).text());
@@ -174,12 +194,12 @@
 		$("#formAccount :input").css('border-color','');
 		byId("msg").innerHTML="";
 	}
-	function loadListAccounts(page) {
+	function loadListAccounts(dataString) {
 		block("#datagrid");
 		$.ajax({
 			type : "GET",
 			cache: false,
-			url: url("/account/listAccounts/"+page),
+			url: url("/account/listAccounts/"+dataString),
 			success : function(data){	
 				//alert(data);
 				unblock("#datagrid");
@@ -239,7 +259,7 @@
 						var cells = objediting.cells;
 						setRowValues(cells);
 					} else {
-						loadListAccounts(1);
+						loadListAccounts('1'+searchString);
 					}														
 				} else if (data == AJAX_ERROR_EXIST) {
 					message('Username này đã tồn tại!',0);	
@@ -254,9 +274,42 @@
 			error: function(data){ unblock("#dialogAccount #dialog");alert (data);}	
 		});
 	}
-	
+	function deleteAccount() {
+		account_id = byId("account_id").value;
+		if(account_id=="")
+			return;
+		if(!confirm("Bạn muốn xóa tài khoản này?"))
+			return;
+		byId("msg").innerHTML="";
+		block("#dialogAccount #dialog");
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url : url("/account/delete&account_id="+account_id),
+			success: function(data){
+				unblock("#dialogAccount #dialog");	
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				if(data == "DONE") {
+					//Load luoi du lieu	
+					loadListAccounts(nPage+searchString);
+					byId("account_id").value = "";
+					message("Xóa tài khoản thành công!",1);	
+				} else {
+					message('Xóa tài khoản không thành công!',0);					
+				}
+			},
+			error: function(data){ unblock("#dialogAccount #dialog");alert (data);}	
+		});
+	}
+	function doFilter() {	
+		searchString = "&cond_email="+byId("cond_email").value;
+		loadListAccounts('1'+searchString);
+	}
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Tài Khoản");
-		loadListAccounts(1);
+		loadListAccounts('1'+searchString);
 	});
 </script>

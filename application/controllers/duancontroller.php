@@ -62,12 +62,27 @@ class DuanController extends VanillaController {
 	}
     function listDuans($ipageindex) {
 		$this->checkAdmin(true);
+		$cond_keyword = isset($_GET['cond_keyword'])?$_GET['cond_keyword']:null;
+		$cond_account = isset($_GET['cond_account'])?$_GET['cond_account']:null;
 		$cond_exprired = $_GET['cond_exprired'];
 		$strWhere = '';
-		if($cond_exprired!=null && $cond_exprired=='true' ) {
-			$strWhere.=' and ngayketthuc < now()';
+		$arrJoin = array('linhvuc','account','tinh');
+		if(isset($cond_keyword) && $cond_keyword!='' ) {
+			$cond_keyword = mysql_real_escape_string($cond_keyword);
+			$cond_keyword = strtolower(remove_accents($cond_keyword));
+			$strWhere.=" and data like '%$cond_keyword%'";
+			array_push($arrJoin,'data');
 		}
-		$this->duan->showHasOne(array('linhvuc','account','tinh'));
+		if(isset($cond_account) && $cond_account!='' ) {
+			$cond_account = mysql_real_escape_string($cond_account);
+			$cond_account = strtolower(remove_accents($cond_account));
+			$strWhere.=" and username = '$cond_account'";
+		}
+		if($cond_exprired!=null && $cond_exprired=='true' ) {
+			$strWhere.=' and ngayketthuc < now() and nhathau_id is null';
+		}
+		
+		$this->duan->showHasOne($arrJoin);
 		$this->duan->where($strWhere);
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage($ipageindex);
@@ -345,6 +360,8 @@ class DuanController extends VanillaController {
 			}
 			$validate = new Validate();
 			if($validate->check_null(array($tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax))==false)
+				die('ERROR_SYSTEM');
+			if($validate->check_length($tenduan,101))
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');
@@ -903,6 +920,8 @@ class DuanController extends VanillaController {
 			}
 			$validate = new Validate();
 			if($validate->check_null(array($duan_id,$tenduan,$alias,$linhvuc_id,$tinh_id,$ngayketthuc,$costmin,$costmax,$thongtinchitiet,$isbid,$duan_email,$duan_sodienthoai))==false)
+				die('ERROR_SYSTEM');
+			if($validate->check_length($tenduan,101))
 				die('ERROR_SYSTEM');
 			if($validate->check_date($ngayketthuc)==false)
 				die('ERROR_SYSTEM');

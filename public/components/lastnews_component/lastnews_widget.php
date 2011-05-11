@@ -9,7 +9,7 @@
 	$lastnews = $cache->get('lastnews');
 	foreach($lastnews as $article) {
 		$link = BASE_PATH.'/article/view/'.$article['id']."/".$article['alias'];
-		echo '<li><a class="link" href="'.$link.'" title="'.$article['title'].'">'.$article['title'].'</a></li>';
+		echo '<li><a class="link" href="'.$link.'" title=\''.$article['title'].'\'>'.$article['title'].'</a></li>';
 	}
 ?>
 </ul>

@@ -117,6 +117,16 @@ class WebmasterController extends VanillaController {
 			$this->setModel('duan');
 			$this->duan->active = 1;
 			$this->duan->update(' active=-1 and account_id='.$account_id);
+			$this->setModel('raovat');
+			$this->raovat->status = 1;
+			$this->raovat->update(' status=0 and account_id='.$account_id);
+			$result = $this->raovat->custom("SELECT id,tieude,alias FROM `raovats` as `raovat` WHERE status=1 order by ngayupdate desc LIMIT 7 OFFSET 0");
+			global $cache;
+			$data = array();
+			foreach($result as $raovat) {
+				array_push($data,array('id'=>$raovat['raovat']['id'],'tieude'=>$raovat['raovat']['tieude'],'alias'=>$raovat['raovat']['alias']));
+			}
+			$cache->set('raovats',$data);
 			if($isAjax) {
 				redirect(BASE_PATH.'/account/updateinfo');
 			} else

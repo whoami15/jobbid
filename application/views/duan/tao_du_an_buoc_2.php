@@ -25,7 +25,7 @@
 			<div class="tr" style="border:none">
 				<div class="td tdLabel" style="text-align:right;">Tên dự án <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 				<div class="td tdInput">
-				<input type="text" name="duan_tenduan" style="width:90%" id="duan_tenduan" value="<?php echo $tenduan ?>" tabindex=1/>
+				<input type="text" maxlength="100" name="duan_tenduan" style="width:90%" id="duan_tenduan" value="<?php echo $tenduan ?>" tabindex=1/>
 				</div>
 			</div>
 			<div class="tr" style="border:none">

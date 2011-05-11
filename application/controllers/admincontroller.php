@@ -82,6 +82,10 @@ class AdminController extends VanillaController {
 		$this->set("lstTinh",$data);
 		$this->_template->renderAdminPage(); 
 	}
+	function viewQuanlyRaovat() {
+		$this->checkAdmin(false);
+		$this->_template->renderAdminPage(); 
+	}
 	function viewQuanlySkill() {
 		$this->checkAdmin(false);
 		$this->setModel("linhvuc");

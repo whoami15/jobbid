@@ -98,6 +98,7 @@
 						<td colspan="4" align="center" height="50px">
 							<input onclick="saveDuan()" value="Lưu" type="button" tabindex=9>
 							<input onclick="deleteDuan()" value="Xóa" type="button" tabindex=9>
+							<input onclick="convertRaovat()" value="Chuyển rao vặt" type="button" tabindex=9>
 							<input onclick="doReset()" value="Reset" type="button" tabindex=10>
 						</td>
 					</tr>
@@ -113,12 +114,18 @@
 		<legend>Lọc kết quả</legend>
 		<table>
 		<tbody>
-			<tr>
-			<td>
-				<input type="checkbox" id="cond_exprired" /> Dự án hết hạn đấu giá<br/>
-			</td>
-			<td>
-				<input onclick="doFilter()" value="OK" type="button">
+			<tr height="30px">
+				<td width="80px">Từ khóa :</td>
+				<td><input type="text" id="cond_keyword" style="width:200px" /></td>
+				<td width="95px">Người đăng :</td>
+				<td><input type="text" id="cond_account" style="width:200px" /></td>
+				<td>
+					<input type="checkbox" id="cond_exprired" /> Dự án hết hạn đấu giá<br/>
+				</td>
+			</tr>
+			<tr height="30px">
+			<td colspan="5" align="center">
+				<input onclick="doFilter()" value="Tìm Kiếm" type="button">
 			</td>
 			</tr>
 		</tbody>
@@ -148,7 +155,7 @@
 <script type="text/javascript">
 	var objediting; //Object luu lai row dang chinh sua
 	var searchString;
-
+	var nPage = 1;
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
@@ -167,6 +174,7 @@
 		showDialog('#dialogDuan',700);
 	}
 	function selectpage(page) {
+		nPage = page;
 		loadListDuans(page+searchString);
 	};
 	function fillFormValues(cells) { 		
@@ -276,8 +284,9 @@
 					return;
 				}
 				if(data == "DONE") {
-					//Load luoi du lieu		
-					loadListDuans('1'+searchString);
+					//Load luoi du lieu	
+					
+					loadListDuans(nPage+searchString);
 					byId("duan_id").value = "";
 					message("Xóa dự án thành công!",1);	
 				} else {
@@ -387,8 +396,42 @@
 		});
 	}
 	function doFilter() {	
-		searchString = "&cond_exprired="+byId("cond_exprired").checked;
+		searchString = "&cond_exprired="+byId("cond_exprired").checked+"&cond_keyword="+byId("cond_keyword").value+"&cond_account="+byId("cond_account").value;
 		loadListDuans('1'+searchString);
+	}
+	function convertRaovat() {
+		duan_id = byId("duan_id").value;
+		if(duan_id==null)
+			return;
+		if(!confirm("Bạn muốn chuyển dự án này sang mục tin rao vặt?"))
+			return;
+		byId("msg").innerHTML="";
+		block("#dialogDuan #dialog");
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url : url("/raovat/duan2raovat/"+duan_id),
+			success: function(data){
+				unblock("#dialogDuan #dialog");	
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				if(data == "DONE") {
+					//Load luoi du lieu		
+					if(isUpdate == true) {
+						var cells = objediting.cells;
+						setRowValues(cells);
+					} else {
+						loadListDuans(nPage+searchString);
+					}
+					message("Chuyển dự án sang rao vặt thành công!",1);	
+				} else {
+					message('Thao tác không thành công!',0);					
+				}
+			},
+			error: function(data){ unblock("#dialogDuan #dialog");alert (data);}	
+		});
 	}
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Dự Án");

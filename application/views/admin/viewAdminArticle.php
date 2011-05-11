@@ -106,6 +106,7 @@
 </div>
 <script type="text/javascript">
 	var objediting; //Object luu lai row dang chinh sua
+	var nPage = 1;
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
@@ -124,6 +125,7 @@
 		showDialog('#dialogArticle');
 	}
 	function selectpage(page) {
+		nPage = page;
 		loadListArticles(page);
 	};
 	function fillFormValues(cells) { //Lấy giá trị từ row được chọn đưa lên form (click vào nút "Chọn")		
@@ -271,7 +273,7 @@
 					message('Thao tác bị lỗi!',0);	
 				} else {
 					closeDialog('#dialogArticle');
-					loadListArticles(1);
+					loadListArticles(nPage);
 					message("Xóa tin thành công!",1);					
 				}
 			},

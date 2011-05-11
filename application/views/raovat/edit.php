@@ -1,7 +1,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea-0.7.0.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
-<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery.form.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.ColorPickerMenu.css" rel="stylesheet" type="text/css" />
@@ -51,7 +50,7 @@
 			</div>
 			<div class="tr" style="border:none">
 				<div class="td">
-				<input id="btsubmit" type="submit" value="Sửa Tin"  tabindex=9>
+				<input id="btsubmit" type="button" value="Cập Nhật" onclick="doUpdate()"  tabindex=9>
 				<?php
 				if($dataRaovat["status"]==1) {
 					?>
@@ -79,19 +78,57 @@
 			byId("msg").innerHTML = str;
 		}
 	}	
-	function validateFormRaovat(formData, jqForm, options) {
+	function doUpdate() {
+		$("#dialogIntro").dialog("close");
 		location.href = "#top";
 		checkValidate=true;
 		validate(['require'],'raovat_tieude',["Vui lòng nhập tiêu đề!"]);
 		validate(['require','email'],'raovat_email',["Vui lòng nhập email người đăng tin!","Email sai định dạng!"]);
 		validate(['require'],'raovat_sodienthoai',["Vui lòng nhập số điện thoại người đăng tin!"]);
 		if(checkValidate==false) {
-			return false;
+			return;
 		}
-		byId("raovat_alias").value = remove_space(remove_accents(byId("raovat_tieude").value));
 		$('#btsubmit').attr('disabled','disabled');
-		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Kiểm tra dữ liệu nhập...</span></div>";
-		return true;
+		byId("msg").innerHTML="<div class='loading'><span class='bodytext' style='padding-left:30px;'>Đang lưu dữ liệu nhập...</span></div>";
+		$('#raovat_noidung').htmlarea("updateTextArea"); 
+		byId("raovat_alias").value = remove_space(remove_accents(byId("raovat_tieude").value));
+		dataString = $("#formRaovat").serialize();
+		//alert(dataString);return;
+		$.ajax({
+			type : "POST",
+			cache: false,
+			url : url("/raovat/doEdit&"),
+			data: dataString,
+			success : function(data){	
+				//alert(data);return;
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/account/login");
+					return;
+				}
+				if(data == "ERROR_NOTACTIVE") {
+					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
+					$('#btsubmit').removeAttr('disabled');
+					return;
+				}
+				if(data == "ERROR_LOCKED") {
+					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
+					$('#btsubmit').removeAttr('disabled');
+					return;
+				}
+				if(data == AJAX_DONE) {
+					message("Cập nhật tin rao thành công! Đang chuyển trang...",1);
+					setTimeout("redirectPage()",redirect_time);
+				} else {
+					message("Cập nhật tin rao không thành công!",0);
+					$('#btsubmit').removeAttr('disabled');
+				}
+				
+			},
+			error: function(data){ 
+				$('#btsubmit').removeAttr('disabled');
+				alert (data);
+			}			
+		});
 	}
 	
 	function changeStatus(raovat_id,active) {
@@ -162,41 +199,7 @@
 				}
 			});
 		});
-		var options = { 
-			beforeSubmit: validateFormRaovat,
-			async: false,
-			url:        url("/raovat/doEdit"), 
-			type:      "post",
-			dataType: "xml",
-			success:    function(data) { 
-				$('#btsubmit').removeAttr('disabled');
-				data = data.body.childNodes[0].data;	
-				if(data == AJAX_ERROR_NOTLOGIN) {
-					location.href = url("/account/login");
-					return;
-				}
-				if(data == "ERROR_NOTACTIVE") {
-					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
-					return;
-				}
-				if(data == "ERROR_LOCKED") {
-					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
-					return;
-				}
-				if(data == AJAX_DONE) {
-					message("Cập nhật tin rao thành công! Đang chuyển trang...",1);
-					setTimeout("redirectPage()",redirect_time);
-				} else {
-					message("Cập nhật tin rao không thành công!",0);
-				}
-			},
-			error : function(data) {
-				$('#btsubmit').removeAttr('disabled');
-				alert('Error'+data);
-			} 
-		}; 
 		// pass options to ajaxForm 
-		$('#formRaovat').ajaxForm(options);
 		$("input:submit, input:button", "body").button();
 	});
 </script>

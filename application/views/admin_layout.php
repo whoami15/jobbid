@@ -140,6 +140,10 @@
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyDuan">Quản Lý Dự Án</a></td>
         </tr>
 		<tr>
+          <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/projects.png" alt="projects" width="16" /></td>
+          <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyRaovat">Quản Lý Rao Vặt</a></td>
+        </tr>
+		<tr>
           <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/documents.png" alt="documents" width="16"/></td>
           <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/viewQuanlyHosothau">Quản Lý Hồ Sơ Thầu</a></td>
         </tr>

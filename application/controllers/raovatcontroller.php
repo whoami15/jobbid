@@ -63,11 +63,12 @@ class RaovatController extends VanillaController {
     function listRaovat($ipageindex) {
 		$this->checkAdmin(true);
 		$this->raovat->showHasOne(array('account'));
+		$strWhere = '';
 		$this->raovat->where($strWhere);
 		$this->raovat->orderBy('raovat.id','desc');
 		$this->raovat->setPage($ipageindex);
 		$this->raovat->setLimit(PAGINATE_LIMIT);
-		$lstRaovat = $this->raovat->search('raovat.id,tieude,ngaypost,ngayupdate,views,username,status');
+		$lstRaovat = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,username,status,raovat_email,raovat_sodienthoai');
 		$totalPages = $this->raovat->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -89,6 +90,8 @@ class RaovatController extends VanillaController {
 			$id = $_POST['raovat_id'];
 			$tieude = $_POST['raovat_tieude'];
 			$alias = $_POST['raovat_alias'];
+			$email = $_POST['raovat_email'];
+			$sodienthoai = $_POST['raovat_sodienthoai'];
 			$noidung = $_POST['raovat_noidung'];
 			if($id==null) { //insert
 				die('ERROR_SYSTEM');
@@ -96,14 +99,56 @@ class RaovatController extends VanillaController {
 				$this->raovat->id = $id;
 				$this->raovat->tieude = $tieude;
 				$this->raovat->alias = $alias;
+				$this->raovat->raovat_email = $email;
+				$this->raovat->raovat_sodienthoai = $sodienthoai;
 				$this->raovat->noidung = $noidung;
 			}
 			$this->raovat->save();
+			$this->updatecache();
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}
 	}   
+	function duan2raovat($duan_id=null) {
+		$this->checkAdmin(true);
+		if($duan_id==null)
+			die('ERROR_SYSTEM');
+		try {
+			$this->setModel('duan');
+			$this->duan->id = $duan_id;
+			$data = $this->duan->search('tenduan,alias,duan_email,duan_sodienthoai,thongtinchitiet,ngaypost,account_id,linhvuc_id,views');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			$linhvuc_id = $data['duan']['linhvuc_id'];
+			$this->duan->id = $duan_id;
+			$this->duan->delete();
+			$linhvuc_id = $data['duan']['linhvuc_id'];
+			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$data2 = $this->duan->search('count(*) as soduan');
+			$this->setModel('linhvuc');
+			$this->linhvuc->id = $linhvuc_id;
+			$this->linhvuc->soduan = $data2[0]['']['soduan'];
+			$this->linhvuc->update();
+			$this->setModel('raovat');
+			$this->raovat->id = null;
+			$this->raovat->tieude = $data['duan']['tenduan'];
+			$this->raovat->alias = $data['duan']['alias'];
+			$this->raovat->raovat_email = $data['duan']['duan_email'];
+			$this->raovat->raovat_sodienthoai = $data['duan']['duan_sodienthoai'];
+			$this->raovat->noidung = $data['duan']['thongtinchitiet'];
+			$this->raovat->ngaypost = $data['duan']['ngaypost'];
+			$this->raovat->account_id = $data['duan']['account_id'];
+			$this->raovat->views = $data['duan']['views'];
+			$this->raovat->ngayupdate = GetDateSQL();
+			$this->raovat->status = 1;
+			$this->raovat->insert();
+			$this->updatecache();
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
 	function getnoidungById($id=null) {	
 		if($id != null) {
 			$id = mysql_real_escape_string($id);
@@ -116,8 +161,9 @@ class RaovatController extends VanillaController {
 		$this->checkAdmin(true);
 		if($id!=0) {
 			$this->raovat->id = $id;
-			$this->raovat->active = 1;
+			$this->raovat->status = 1;
 			$this->raovat->save();
+			$this->updatecache();
 			echo 'DONE';
 		}
 	}
@@ -127,6 +173,7 @@ class RaovatController extends VanillaController {
 		if(isset($id)) {
 			$this->raovat->id = $id;
 			$this->raovat->delete();
+			$this->updatecache();
 			echo 'DONE';
 		} else {
 			echo 'ERROR_SYSTEM';
@@ -136,8 +183,9 @@ class RaovatController extends VanillaController {
 		$this->checkAdmin(true);
 		if($id!=0) {
 			$this->raovat->id = $id;
-			$this->raovat->active = 0;
+			$this->raovat->status = 0;
 			$this->raovat->save();
+			$this->updatecache();
 			echo 'DONE';
 		}
 	}
@@ -165,6 +213,8 @@ class RaovatController extends VanillaController {
 			if($validate->check_submit(1,array('raovat_email','raovat_sodienthoai','raovat_tieude','raovat_alias','raovat_noidung'))==false)
 				die('ERROR_SYSTEM');
 			if($validate->check_null(array($email,$sodienthoai,$tieude,$noidung))==false)
+				die('ERROR_SYSTEM');
+			if($validate->check_length($tieude,101))
 				die('ERROR_SYSTEM');
 			if(!$validate->check_email($email))
 				die('ERROR_SYSTEM');
@@ -223,6 +273,7 @@ class RaovatController extends VanillaController {
 			$this->raovat->account_id = $account_id;
 			$this->raovat->status = $status;
 			$this->raovat->insert();
+			$this->updatecache();
 			if(isset($_SESSION['account'])) {
 				if($_SESSION['account']['active']==1)
 					echo 'OK';
@@ -252,8 +303,12 @@ class RaovatController extends VanillaController {
 				$this->raovat->id=$id;
 				$this->raovat->views=$viewcount+1;
 				$this->raovat->save();
+				$status = 'Đang rao';
+				if($data['raovat']['status']!=1)
+					$status = 'Đã ngưng rao';
 				$this->set('title','Jobbid.vn - '.$data['raovat']['tieude']);
 				$this->set('dataRaovat',$data);
+				$this->set('status',$status);
 				$this->set('isEmployer',$isEmployer);
 				$this->_template->render();
 			} else
@@ -353,6 +408,8 @@ class RaovatController extends VanillaController {
 				die('ERROR_SYSTEM');
 			if($validate->check_null(array($email,$sodienthoai,$tieude,$noidung))==false)
 				die('ERROR_SYSTEM');
+			if($validate->check_length($tieude,101))
+				die('ERROR_SYSTEM');
 			if(!$validate->check_email($email))
 				die('ERROR_SYSTEM');
 			//End validate
@@ -365,6 +422,7 @@ class RaovatController extends VanillaController {
 			$this->raovat->alias = $alias;
 			$this->raovat->ngayupdate = GetDateSQL();
 			$this->raovat->update();
+			$this->updatecache();
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -385,6 +443,7 @@ class RaovatController extends VanillaController {
 			if($this->raovat->delete()==-1) {
 				error('Thao tác bị lỗi, vui lòng thử lại sau!');
 			} else {
+				$this->updatecache();
 				success('Xóa tin rao của bạn thành công!');
 			}
 		}
@@ -401,6 +460,7 @@ class RaovatController extends VanillaController {
 			$this->raovat->status = $active;
 			$this->raovat->ngayupdate = GetDateSQL();
 			$this->raovat->update(" id = $raovat_id and account_id = $account_id");
+			$this->updatecache();
 			echo 'DONE';	
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
@@ -410,8 +470,60 @@ class RaovatController extends VanillaController {
 		$this->set('title','Vui lòng kiểm tra email để xác nhận tài khoản của bạn');
 		$this->_template->render();  
 	}
+	function upraovat($raovat_id=null){
+		$this->checkLogin(true);
+		$this->checkActive(true);
+		$this->checkLock(true);
+		if($raovat_id==null)
+			die('ERROR_SYSTEM');
+		$raovat_id = mysql_real_escape_string($raovat_id);
+		$this->raovat->id = $raovat_id;
+		$data = $this->raovat->search('account_id');
+		if(empty($data))
+			die('ERROR_SYSTEM');
+		if($_SESSION['account']['id'] != $data['raovat']['account_id'])
+			die('ERROR_DENIED');
+		$this->raovat->id = $raovat_id;
+		$this->raovat->ngayupdate = GetDateSQL();
+		$this->raovat->update();
+		$this->updatecache();
+		echo 'DONE';
+			
+	}
+	function updatecache() {
+		$result = $this->raovat->custom("SELECT id,tieude,alias FROM `raovats` as `raovat` WHERE status=1 order by ngayupdate desc LIMIT 7 OFFSET 0");
+		global $cache;
+		$data = array();
+		foreach($result as $raovat) {
+			array_push($data,array('id'=>$raovat['raovat']['id'],'tieude'=>$raovat['raovat']['tieude'],'alias'=>$raovat['raovat']['alias']));
+		}
+		$cache->set('raovats',$data);
+	}
+	function danhsachraovat($pageindex=1) {
+		$_SESSION['redirect_url'] = getUrl();
+		$this->raovat->orderBy('ngayupdate','desc');
+		$this->raovat->setPage($pageindex);
+		$this->raovat->setLimit(PAGINATE_LIMIT);
+		$this->raovat->where(' and `status`=1');
+		$data = $this->raovat->search('id,alias,tieude,noidung');
+		$totalPages = $this->raovat->totalPages();
+		$ipagesbefore = $pageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $pageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		$this->set("lstRaovat",$data);
+		$this->set('pagesindex',$pageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->set('title','Jobbid.vn - Danh sách tin rao vặt');
+		$this->_template->render();
+	}
+	
 	function afterAction() {
 
 	}
-
+	
 }

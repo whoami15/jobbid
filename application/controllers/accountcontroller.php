@@ -57,7 +57,15 @@ class AccountController extends VanillaController {
 	}
     function listAccounts($ipageindex) {
 		$this->checkAdmin();
+		$cond_email = isset($_GET['cond_email'])?$_GET['cond_email']:null;
+		$strWhere = '';
+		if(isset($cond_email) && $cond_email!='' ) {
+			$cond_email = mysql_real_escape_string($cond_email);
+			$cond_email = strtolower(remove_accents($cond_email));
+			$strWhere.=" and username like '%$cond_email%'";
+		}
 		$this->account->orderBy('id','desc');
+		$this->account->where($strWhere);
 		$this->account->setPage($ipageindex);
 		$this->account->setLimit(PAGINATE_LIMIT);
 		$lstAccounts = $this->account->search();
@@ -112,7 +120,21 @@ class AccountController extends VanillaController {
 		}
 		echo 'DONE';
 	}  
-	
+	function delete() {
+		$this->checkAdmin(true);
+		$id = $_GET['account_id'];
+		if(isset($id)) {
+			$this->account->id = $id;
+			$data = $this->account->search('id');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			$this->account->id = $id;
+			$this->account->delete();
+			echo 'DONE';
+		} else {
+			echo 'ERROR_SYSTEM';
+		}
+	}
 	//Functions of User
 	function existUsername($username=null) {
 		if($username!=null) {

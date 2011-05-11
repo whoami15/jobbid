@@ -1,7 +1,6 @@
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/validator.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea-0.7.0.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
-<script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/jquery.form.js"></script>
 <script type="text/javascript" src="<?php echo BASE_PATH ?>/public/js/utils.js"></script>
 
 <link href="<?php echo BASE_PATH ?>/public/css/front/jHtmlArea.css" rel="stylesheet" type="text/css" />
@@ -28,19 +27,19 @@
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Tiêu đề <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 			<div class="td tdInput">
-			<input type="text" name="raovat_tieude" style="width:90%" id="raovat_tieude" value="" tabindex=1/>
+			<input type="text" maxlength="2" name="raovat_tieude" style="width:90%" id="raovat_tieude" value="" tabindex=1/>
 			</div>
 		</div>
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Email <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 			<div class="td tdInput">
-			<input type="text"  name="raovat_email" id="raovat_email" tabindex=2 value="<?php echo $email ?>"/>
+			<input type="text" maxlength="100"  name="raovat_email" id="raovat_email" tabindex=2 value="<?php echo $email ?>"/>
 			</div>
 		</div>
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Số điện thoại <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 			<div class="td tdInput">
-			<input type="text"  name="raovat_sodienthoai" id="raovat_sodienthoai" tabindex=3 value="<?php echo $sodienthoai ?>"/>
+			<input type="text" maxlength="20"  name="raovat_sodienthoai" id="raovat_sodienthoai" tabindex=3 value="<?php echo $sodienthoai ?>"/>
 			</div>
 		</div>
 		<div class="tr" style="border:none;text-align:left">
