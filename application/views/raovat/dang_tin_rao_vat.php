@@ -27,7 +27,7 @@
 		<div class="tr" style="border:none">
 			<div class="td tdLabel" style="text-align:right;">Tiêu đề <span style="color:red;font-weight:bold;cursor:pointer;" title="Bắt buộc nhập dữ liệu">*</span> :</div>
 			<div class="td tdInput">
-			<input type="text" maxlength="2" name="raovat_tieude" style="width:90%" id="raovat_tieude" value="" tabindex=1/>
+			<input type="text" maxlength="100" name="raovat_tieude" style="width:90%" id="raovat_tieude" value="" tabindex=1/>
 			</div>
 		</div>
 		<div class="tr" style="border:none">

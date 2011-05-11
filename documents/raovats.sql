@@ -34,9 +34,7 @@ CREATE TABLE `raovats` (
   PRIMARY KEY  (`id`),
   KEY `FK_raovats_account` (`account_id`),
   CONSTRAINT `FK_raovats_account` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `raovats` */
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
