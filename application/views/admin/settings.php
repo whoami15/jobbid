@@ -69,8 +69,10 @@
 								<option value="mail_moiungvien">Mời ứng viên</option>
 								<option value="mail_spam">Spam Mail</option>
 								<option value="mail_permission">Mail Xin Đăng Dự Án</option>
-								<option value="mail_postproject">Mail Đăng Dự Án</option>
 								<option value="mail_expiredproject">Mail Dự Án Hết Hạn</option>
+								<option value="mail_approve">Mail Duyệt Dự Án</option>
+								<option value="mail_postproject">Mail Thông Báo Đăng Dự Án</option>
+								<option value="mail_rejectpostproject">Mail Thông Báo Từ Chối Đăng Dự Án</option>
 							</select>
 						</td>
 					</tr>
@@ -93,48 +95,91 @@
 	</fieldset>
 	</div>
 	<div id="tabs-3">
-		<form id="formSender">
+		<form id="formPriSender">
 		<div id="msg_email"></div>
 		<fieldset>
 		<legend><strong>Primary Sender</strong></legend>
-		<table>
+		<table width="99%">
 		<tr>
-			<td><div style="width:80px">Email:</div><input type="text" name="primary_email" id="primary_email" value="<?php echo $priSender['email']?>" style="width:200px"/><br/></td>
+			<input type="hidden" name="primary_id" id="primary_id" value="" />
+			<td><div style="width:80px">Email:</div><input type="text" name="primary_email" id="primary_email" value="" style="width:200px"/><br/></td>
 			<td><div style="width:80px">Password:</div>
-		<input type="password" name="primary_passsword" id="primary_passsword" value="<?php echo $priSender['password']?>" style="width:200px"/><br/></td>
-			<td rowspan="2" valign="center">
-			<input id="btSendTestPrimary" type="button" value="Send Test" onclick="sendTestPrimary()"/>
-			</td>
+		<input type="password" name="primary_password" id="primary_password" value="" style="width:200px"/><br/></td>
+			<td><div style="width:80px">SMTP:</div>
+			<input type="text" name="primary_smtp" id="primary_smtp" value="" style="width:200px"/><br/></td>
+				<td><div style="width:80px">Port:</div>
+			<input type="text" name="primary_port" id="primary_port" value="" style="width:200px"/><br/></td>
 		</tr>	
 		<tr>
-			<td><div style="width:80px">SMTP:</div>
-		<input type="text" name="primary_smtp" id="primary_smtp" value="<?php echo $priSender['smtp']?>" style="width:200px"/><br/></td>
-			<td><div style="width:80px">Port:</div>
-		<input type="text" name="primary_port" id="primary_port" value="<?php echo $priSender['port']?>" style="width:200px"/><br/></td>
+			<td colspan="4" align="center">
+			<input id="btSavePrimary" type="button" value="Lưu" onclick="saveEmail(1)"/>
+			<input id="btSendTestPrimary" type="button" value="Send Test" onclick="sendTest(1)"/>
+			<input type="button" value="Reset" onclick="doResetEmail(1)"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<div id="datagridPreSenders">
+				<table width="99%">
+					<thead>
+						<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
+							<td width="10px">ID</td>
+							<td>Email</td>
+							<td>Password</td>
+							<td>SMTP</td>
+							<td width="40px">Port</td>
+							<td width="40px">Xử lý</td>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			</td>
 		</tr>
 		</table>
 		</fieldset>
+		</form>
+		<form id="formSecSender">
 		<fieldset>
 		<legend><strong>Second Sender</strong></legend>
-		<table>
+		<table width="99%">
 		<tr>
+			<input type="hidden" name="second_id" id="second_id" value="" />
 			<td><div style="width:80px">Email:</div> 
-		<input type="text" name="second_email" id="second_email" value="<?php echo $secSender['email']?>" style="width:200px"/><br/></td>
+			<input type="text" name="second_email" id="second_email" value="" style="width:200px"/><br/></td>
 			<td><div style="width:80px">Password:</div>
-		<input type="password" name="second_passsword" id="second_passsword" value="<?php echo $secSender['password']?>" style="width:200px"/><br/></td>
-		<td rowspan="2" valign="center">
-			<input id="btSendTestSecond" type="button" value="Send Test" onclick="sendTestSecond()"/>
-			</td>
+			<input type="password" name="second_password" id="second_password" value="" style="width:200px"/><br/></td>
+			<td><div style="width:80px">SMTP:</div>
+			<input type="text" name="second_smtp" id="second_smtp" value="" style="width:200px"/><br/></td>
+				<td><div style="width:80px">Port:</div>
+			<input type="text" name="second_port" id="second_port" value="" style="width:200px"/><br/></td>
 		</tr>	
 		<tr>
-			<td><div style="width:80px">SMTP:</div>
-		<input type="text" name="second_smtp" id="second_smtp" value="<?php echo $secSender['smtp']?>" style="width:200px"/><br/></td>
-			<td><div style="width:80px">Port:</div>
-		<input type="text" name="second_port" id="second_port" value="<?php echo $secSender['port']?>" style="width:200px"/><br/></td>
+			<td colspan="4" align="center">
+			<input id="btSaveSecond" type="button" value="Lưu" onclick="saveEmail(0)"/>
+			<input id="btSendTestSecond" type="button" value="Send Test" onclick="sendTest(0)"/>
+			<input type="button" value="Reset" onclick="doResetEmail(0)"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<div id="datagridSecSenders">
+				<table width="99%">
+					<thead>
+						<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
+							<td width="10px">ID</td>
+							<td>Email</td>
+							<td>Password</td>
+							<td>SMTP</td>
+							<td width="40px">Port</td>
+							<td width="40px">Xử lý</td>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			</td>
 		</tr>
 		</table>
 		</fieldset>
-		<input onclick="saveSenderEmail()" value="Lưu" type="button">
 		</form>
 	</div>
 </div>
@@ -221,21 +266,75 @@
 			error: function(data){ unblock("#tabs-1");alert (data);}	
 		});
 	}
-	function saveSenderEmail() {
+	function sendTest(isPre) {
 		checkValidate=true;
-		if(byId("primary_email").value!='')
-			validate(['email'],'primary_email',['Email không hợp lệ!']);
-		if(byId("second_email").value!='')
-			validate(['email'],'second_email',['Email không hợp lệ!']);
+		if(isPre==1) //Luu email primary
+			if(byId("primary_email").value!='')
+				validate(['email'],'primary_email',['Email không hợp lệ!']);
+		else {
+			if(byId("second_email").value!='')
+				validate(['email'],'second_email',['Email không hợp lệ!']);
+		}
 		if(checkValidate == false)
 			return;
-		dataString = $("#formSender").serialize();
+		idBtSendTest = "#btSendTestPrimary";
+		if(isPre) {
+			dataString = $("#formPriSender").serialize();
+		} else {
+			dataString = $("#formSecSender").serialize();
+			idBtSendTest = "#btSendTestSecond";
+		}
+		$(idBtSendTest).attr('disabled','disabled');
+		byId("msg_email").innerHTML="Sending...";
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url : url("/admin/sendTest/"+isPre+"&"),
+			data: dataString,
+			success: function(data){
+				$(idBtSendTest).removeAttr('disabled');
+				if(data == AJAX_ERROR_NOTLOGIN) {
+					location.href = url("/admin/login");
+					return;
+				}
+				if(data == AJAX_DONE) {
+					//Load luoi du lieu	
+					byId("msg_email").innerHTML="<font color='green'>Test gửi email thành công!</font>";
+				} else {
+					byId("msg_email").innerHTML="<font color='red'>Test gửi email không thành công!</font>";									
+				}
+			},
+			error: function(data){ $(idBtSendTest).removeAttr('disabled');alert (data);}	
+		});
+	}
+	function doResetEmail(isPre) {
+		if(isPre == 1) {
+			$("#formPriSender")[0].reset();
+			byId("primary_id").value = '';
+		} else {
+			$("#formSecSender")[0].reset();
+			byId("second_id").value = '';
+		}
+	}
+	function saveEmail(isPre) {
+		checkValidate=true;
+		if(isPre==1) //Luu email primary
+			validate(['email'],'primary_email',['Email không hợp lệ!']);
+		else {
+			validate(['email'],'second_email',['Email không hợp lệ!']);
+		}
+		if(checkValidate == false)
+			return;
+		if(isPre)
+			dataString = $("#formPriSender").serialize();
+		else
+			dataString = $("#formSecSender").serialize();
 		byId("msg").innerHTML="";
 		block("#tabs-3");	
 		$.ajax({
 			type: "POST",
 			cache: false,
-			url : url("/admin/saveMailSender&"),
+			url : url("/admin/saveEmail/"+isPre+"&"),
 			data: dataString,
 			success: function(data){
 				unblock("#tabs-3");	
@@ -245,6 +344,15 @@
 				}
 				if(data == AJAX_DONE) {
 					//Load luoi du lieu	
+					if(isPre==1) {
+						loadEmailSenders(1);
+						if(byId("primary_id").value!='')
+							doResetEmail(1);
+					} else {
+						loadEmailSenders(0);
+						if(byId("second_id").value!='')
+							doResetEmail(0);
+					}
 					message("Lưu mail sender thành công!",1);
 				} else {
 					message('Lưu mail sender không thành công!',0);										
@@ -253,67 +361,98 @@
 			error: function(data){ unblock("#tabs-3");alert (data);}	
 		});
 	}
-	function sendTestPrimary() {
-		checkValidate=true;
-		validate(['require','email'],'primary_email',['Vui lòng nhập địa chỉ Email','Email không hợp lệ!']);
-		if(checkValidate == false)
-			return;
-		dataString = $("#formSender").serialize();
-		$('#btSendTestPrimary').attr('disabled','disabled');
-		byId("msg_email").innerHTML="Sending...";
+	function loadEmailSenders(isPre) {
+		var idblock = "#datagridSecSenders";
+		if(isPre==1)
+			idblock = "#datagridPreSenders";
+		block(idblock);
 		$.ajax({
-			type: "POST",
+			type : "GET",
 			cache: false,
-			url : url("/admin/sendTestPrimary&"),
-			data: dataString,
-			success: function(data){
-				$('#btSendTestPrimary').removeAttr('disabled');
+			url: url("/admin/listEmail/"+isPre),
+			success : function(data){	
+				//alert(data);
+				unblock(idblock);
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/admin/login");
-					return;
-				}
-				if(data == AJAX_DONE) {
-					//Load luoi du lieu	
-					byId("msg_email").innerHTML="<font color='green'>Test primary sender thành công!</font>";
 				} else {
-					byId("msg_email").innerHTML="<font color='red'>Test primary sender  không thành công!</font>";									
+					if(isPre==1)
+						$(idblock).html(data);
+					else
+						$(idblock).html(data);
 				}
+				
 			},
-			error: function(data){ $('#btSendTestPrimary').removeAttr('disabled');alert (data);}	
+			error: function(data){ 
+				unblock(idblock);
+				alert (data);
+			}			
 		});
 	}
-	function sendTestSecond() {
-		checkValidate=true;
-		validate(['require','email'],'primary_email',['Vui lòng nhập địa chỉ Email','Email không hợp lệ!']);
-		if(checkValidate == false)
+	function selectSender(isPre,_this) {
+		//jsdebug(_this);
+		if(objediting)
+			objediting.style.backgroundColor = '';
+		var tr = _this.parentNode.parentNode;
+		var cells = tr.cells;
+		tr.style.backgroundColor = CONST_ROWSELECTED_COLOR;	
+		objediting = tr;	
+		if(isPre == 1) {
+			byId("primary_id").value = $.trim($(cells.td_id).text());
+			byId("primary_email").value = $.trim($(cells.td_email).text());
+			byId("primary_password").value = $.trim($(cells.td_password).text());
+			byId("primary_smtp").value = $.trim($(cells.td_smtp).text());
+			byId("primary_port").value = $.trim($(cells.td_port).text());
+		} else {
+			byId("second_id").value = $.trim($(cells.td_id).text());
+			byId("second_email").value = $.trim($(cells.td_email).text());
+			byId("second_password").value = $.trim($(cells.td_password).text());
+			byId("second_smtp").value = $.trim($(cells.td_smtp).text());
+			byId("second_port").value = $.trim($(cells.td_port).text());
+		}
+	}
+	function removeEmail(isPre,id) {
+		if(!confirm("Bạn muốn xóa email này?"))
 			return;
-		dataString = $("#formSender").serialize();
-		$('#btSendTestSecond').attr('disabled','disabled');
-		byId("msg_email").innerHTML="Sending...";
+		block("#tabs-3");
 		$.ajax({
-			type: "POST",
+			type : "GET",
 			cache: false,
-			url : url("/admin/sendTestSecond&"),
-			data: dataString,
-			success: function(data){
-				$('#btSendTestSecond').removeAttr('disabled');
+			url: url("/admin/removeEmail/"+isPre+"&id="+id),
+			success : function(data){	
+				//alert(data);
+				unblock("#tabs-3");
 				if(data == AJAX_ERROR_NOTLOGIN) {
 					location.href = url("/admin/login");
-					return;
-				}
-				if(data == AJAX_DONE) {
+				} else if(data == AJAX_DONE) {
 					//Load luoi du lieu	
-					byId("msg_email").innerHTML="<font color='green'>Test second sender thành công!</font>";
+					if(isPre==1)
+						loadEmailSenders(1);
+					else
+						loadEmailSenders(0);
+					message("Thao tác thành công!",1);
 				} else {
-					byId("msg_email").innerHTML="<font color='red'>Test second sender không thành công!</font>";									
+					message('Thao tác không thành công!',0);										
 				}
+				
 			},
-			error: function(data){ $('#btSendTestSecond').removeAttr('disabled');alert (data);}	
+			error: function(data){ 
+				unblock("#tabs-3");
+				alert (data);
+			}			
 		});
+		
 	}
 	$(document).ready(function(){				
 		$("#title_page").text("Cấu hình hệ thống");
-		$("#tabs").tabs();
+		$("#tabs").tabs({
+			select: function(e, ui) {
+				if(ui.tab.hash == "#tabs-3") {
+					loadEmailSenders(1);
+					loadEmailSenders(0);
+				}
+			}
+		});
 		$('#mail_content').tinymce({
 			script_url : url_base+'/public/js/tiny_mce/tiny_mce.js',
 			theme : "advanced",

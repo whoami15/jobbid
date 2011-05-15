@@ -63,20 +63,26 @@ class DuanController extends VanillaController {
     function listDuans($ipageindex) {
 		$this->checkAdmin(true);
 		$cond_keyword = isset($_GET['cond_keyword'])?$_GET['cond_keyword']:null;
+		$cond_id = isset($_GET['cond_id'])?$_GET['cond_id']:null;
 		$cond_account = isset($_GET['cond_account'])?$_GET['cond_account']:null;
 		$cond_exprired = $_GET['cond_exprired'];
 		$strWhere = '';
-		$arrJoin = array('linhvuc','account','tinh');
+		$arrJoin = array('account','tinh');
 		if(isset($cond_keyword) && $cond_keyword!='' ) {
 			$cond_keyword = mysql_real_escape_string($cond_keyword);
 			$cond_keyword = strtolower(remove_accents($cond_keyword));
 			$strWhere.=" and data like '%$cond_keyword%'";
 			array_push($arrJoin,'data');
 		}
+		if(isset($cond_id) && $cond_id!='' ) {
+			$cond_id = mysql_real_escape_string($cond_id);
+			$cond_id = strtolower(remove_accents($cond_id));
+			$strWhere.=" and duan.id = $cond_id ";
+		}
 		if(isset($cond_account) && $cond_account!='' ) {
 			$cond_account = mysql_real_escape_string($cond_account);
 			$cond_account = strtolower(remove_accents($cond_account));
-			$strWhere.=" and username = '$cond_account'";
+			$strWhere.=" and username like '%$cond_account%'";
 		}
 		if($cond_exprired!=null && $cond_exprired=='true' ) {
 			$strWhere.=' and ngayketthuc < now() and nhathau_id is null';
@@ -87,7 +93,7 @@ class DuanController extends VanillaController {
 		$this->duan->orderBy('duan.id','desc');
 		$this->duan->setPage($ipageindex);
 		$this->duan->setLimit(PAGINATE_LIMIT);
-		$lstDuan = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,tenlinhvuc,username,ngayketthuc,nhathau_id,isbid,duan_email');
+		$lstDuan = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,duan.account_id,tinh_id,tentinh,costmin,costmax,ngaypost,prior,views,duan.active,approve,username,ngayketthuc,nhathau_id,isbid,duan_email');
 		$totalPages = $this->duan->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -166,7 +172,7 @@ class DuanController extends VanillaController {
 				$this->duan->data_id = $data_id;
 			}
 			$this->duan->save();
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search('count(*) as soduan');
 			$this->setModel('linhvuc');
 			$this->linhvuc->id = $linhvuc_id;
@@ -177,6 +183,26 @@ class DuanController extends VanillaController {
 			echo 'ERROR_SYSTEM';
 		}
 	}   
+	function refeshCache() {
+		$this->checkAdmin(true);
+		global $cache;
+		$this->duan->showHasOne(array('linhvuc'));
+		$this->duan->orderBy('prior','desc');
+		$this->duan->setPage(1);
+		$this->duan->setLimit(10);
+		$this->duan->where(" and prior>0 and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,isbid");
+		$cache->set('vipProjects',$data);
+		
+		$this->duan->showHasOne(array('nhathau','hosothau'));
+		$this->duan->orderBy('timeupdate','desc');
+		$this->duan->setPage(1);
+		$this->duan->setLimit(7);
+		$this->duan->where(" and duan.active = 1 and approve = 1 and duan.nhathau_id is not null");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias");
+		$cache->set('finishedProjects',$data);
+		echo 'DONE';
+	}
 	function exist($id=null){
 		$this->checkAdmin(true);
 		if($id==null)
@@ -208,7 +234,7 @@ class DuanController extends VanillaController {
 			$this->duan->active = 1;
 			$this->duan->save();
 			$linhvuc_id = $data['duan']['linhvuc_id'];
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search('count(*) as soduan');
 			$this->setModel('linhvuc');
 			$this->linhvuc->id = $linhvuc_id;
@@ -228,7 +254,7 @@ class DuanController extends VanillaController {
 			$this->duan->id = $id;
 			$this->duan->delete();
 			$linhvuc_id = $data['duan']['linhvuc_id'];
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search('count(*) as soduan');
 			$this->setModel('linhvuc');
 			$this->linhvuc->id = $linhvuc_id;
@@ -250,7 +276,7 @@ class DuanController extends VanillaController {
 			$this->duan->active = 0;
 			$this->duan->save();
 			$linhvuc_id = $data['duan']['linhvuc_id'];
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search('count(*) as soduan');
 			$this->setModel('linhvuc');
 			$this->linhvuc->id = $linhvuc_id;
@@ -316,7 +342,7 @@ class DuanController extends VanillaController {
 				$this->duan->isbid = $isbid;
 				$currentDate = GetDateSQL();
 				$this->duan->ngaypost = $currentDate;
-				$this->duan->active = -1;
+				$this->duan->active = '-1';
 				$duan_id = $this->duan->insert(true);
 			}
 		}
@@ -466,8 +492,8 @@ class DuanController extends VanillaController {
 				$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 				$replace = array($linkactive, $active_code, $email);
 				$content = str_replace($search, $replace, $content);
-				$senders = $cache->get('senders');
-				$sender = $senders['priSender'];
+				$priSenders = $cache->get('priSenders');
+				$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
 				include (ROOT.DS.'library'.DS.'sendmail.php');
 				$mail = new sendmail();
 				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
@@ -494,27 +520,41 @@ class DuanController extends VanillaController {
 			$this->duan->averagecost = '0';
 			$this->duan->isnew = 1;
 			$this->duan->data_id = $data_id;
+			$this->duan->approve = '0';
 			$editcode = genString(20);
 			$this->duan->editcode = $editcode;
 			if(isset($_SESSION['account']) && $_SESSION['account']['active']==1) {
 				if($flagSendmail==1)
 					$this->duan->active = 1;
 				else
-					$this->duan->active = 0;
+					$this->duan->active = '0';
 			}
 			//die($email);
 			$this->duan->update();
-			$content = '';
-			$subject = '';
-			if($flagSendmail==1) {
-				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
-				$linkview = "<a href='$linkview'>$tenduan</a>";
-				$content = $cache->get('mail_postproject');
-				$search  = array('#LINKVIEW#');
-				$replace = array($linkview);
-				$content = str_replace($search, $replace, $content);
-				$subject = "Đã đăng dự án [$tenduan] lên JobBid.vn!!!";
-			} else {
+			//Send approve mail to admin
+			$linkview = BASE_PATH."/duan/view/$duan_id/$alias";
+			$linkview = "<a href='$linkview'>$linkview</a>";
+			$linkdongy = BASE_PATH."/duan/approve/$duan_id/$editcode/1";
+			$linkdongy = "<a href='$linkdongy'><font color='green'>ĐỒNG Ý</font></a>";
+			$linkodongy = BASE_PATH."/duan/approve/$duan_id/$editcode/0";
+			$linkodongy = "<a href='$linkodongy'><font color='red'>KHÔNG ĐỒNG Ý</font></a>";
+			$content = $cache->get('mail_approve');
+			$search  = array('#TENDUAN#', '#EMAIL#', '#SDT#', '#THONGTINCHITIET#', '#LINK#', '#DONGY#', '#KHONGDONGY#');
+			$replace = array($tenduan, $email, $sodienthoai, $thongtinchitiet, $linkview, $linkdongy, $linkodongy);
+			$content = str_replace($search, $replace, $content);
+			$priSenders = $cache->get('priSenders');
+			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$mail = new sendmail();
+			$mail->send(GLOBAL_EMAIL,'Hệ Thống - Email Approve Dự Án Mới!',$content,$sender);
+			/* $this->setModel('sendmail');
+			$this->sendmail->id = null;
+			$this->sendmail->to = ADMIN_EMAIL;
+			$this->sendmail->subject = 'Hệ Thống - Email Approve Dự Án Mới!';
+			$this->sendmail->content = $content;
+			$this->sendmail->isprior = 1;
+			$this->sendmail->insert(); */
+			if($flagSendmail==2) {
 				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
 				$linkview = "<a href='$linkview'>$tenduan</a>";
 				$linkdongy = BASE_PATH."/duan/permission/$duan_id/$editcode/1";
@@ -526,20 +566,19 @@ class DuanController extends VanillaController {
 				$replace = array($linkview, $linkdongy, $linkodongy);
 				$content = str_replace($search, $replace, $content);
 				$subject = "[EMAIL XIN PHÉP] Đăng công việc [$tenduan] lên JobBid.vn!!!";
-				
+				$this->setModel('sendmail');
+				$this->sendmail->id = null;
+				$this->sendmail->to = $email;
+				$this->sendmail->subject = $subject;;
+				$this->sendmail->content = $content;
+				$this->sendmail->isprior = 1;
+				$this->sendmail->insert();
 			}
 			$myprojects = array();
 			if(isset($_SESSION['myprojects']))
 				$myprojects = $_SESSION['myprojects'];
 			array_push($myprojects,$duan_id);
 			$_SESSION['myprojects'] = $myprojects;
-			$this->setModel('sendmail');
-			$this->sendmail->id = null;
-			$this->sendmail->to = $email;
-			$this->sendmail->subject = $subject;;
-			$this->sendmail->content = $content;
-			$this->sendmail->isprior = 1;
-			$this->sendmail->insert();
 			if(isset($_SESSION['account'])) {
 				if($_SESSION['account']['active']==1)
 					echo 'OK';
@@ -583,23 +622,89 @@ class DuanController extends VanillaController {
 				array_push($myprojects,$id);
 				$_SESSION['myprojects'] = $myprojects;
 			}
-			global $cache;
-			$linkview = BASE_PATH."/duan/view/$id/$alias&editcode=$editcode";
-			$linkview = "<a href='$linkview'>$tenduan</a>";
-			$content = $cache->get('mail_postproject');
-			$search  = array('#LINKVIEW#');
-			$replace = array($linkview);
+			// global $cache;
+			// $linkview = BASE_PATH."/duan/view/$id/$alias&editcode=$editcode";
+			// $linkview = "<a href='$linkview'>$tenduan</a>";
+			// $content = $cache->get('mail_confirm');
+			// $search  = array('#LINKVIEW#');
+			// $replace = array($linkview);
+			// $content = str_replace($search, $replace, $content);
+			// $this->setModel('sendmail');
+			// $this->sendmail->id = null;
+			// $this->sendmail->to = $email;
+			// $this->sendmail->subject = "Đã xác nhận đăng công việc [$tenduan] lên JobBid.vn!!!";
+			// $this->sendmail->content = $content;
+			// $this->sendmail->isprior = 1;
+			// $this->sendmail->insert();
+			$linkview = BASE_PATH."/duan/view/$id/$alias";
+			$this->set('linkview',$linkview);
+			$this->set('title',"Bạn đã xác nhận đồng ý đăng công việc lên JobBid.vn!");
+			$this->_template->render();
+		}
+	}
+	function approve($id=null,$editcode=null,$answer=0) {
+		if($id==null || $editcode==null)
+			error('Liên kết không hợp lệ!');
+		$editcode = mysql_real_escape_string($editcode);
+		$this->duan->id = $id;
+		$this->duan->where(" and editcode='$editcode'");
+		$data = $this->duan->search('id,tenduan,alias,duan_email,active,approve');
+		if(empty($data))
+			error('Liên kết không hợp lệ!');
+		if($data['duan']['active']!=1)
+			error('Dự án này chưa được chủ dự án đồng ý đăng!');
+		if($data['duan']['approve']==1)
+			error('Dự án này đã được xét duyệt rồi!');
+		$tenduan = $data['duan']['tenduan'];
+		$alias = $data['duan']['alias'];
+		$duan_email = $data['duan']['duan_email'];
+		$linkten = BASE_PATH."/duan/view/$id/$alias";
+		$linkten = "<a href='$linkten'>$tenduan</a>";
+		global $cache;
+		if($answer == 0) {
+			$content = $cache->get('mail_rejectpostproject');
+			$search  = array('#LINKTEN#');
+			$replace = array($linkten);
 			$content = str_replace($search, $replace, $content);
+			$subject = "Từ chối đăng công việc [$tenduan] lên JobBid.vn!!!";
 			$this->setModel('sendmail');
 			$this->sendmail->id = null;
-			$this->sendmail->to = $email;
-			$this->sendmail->subject = "Đã đăng công việc [$tenduan] lên JobBid.vn!!!";
+			$this->sendmail->to = $duan_email;
+			$this->sendmail->subject = $subject;;
+			$this->sendmail->content = $content;
+			$this->sendmail->isprior = 1;
+			$this->sendmail->insert();
+			success('Không duyệt đăng dự án này, đã gửi email từ chối đến người đăng!');
+		} else {
+			$linkview = BASE_PATH."/duan/view/$id/$alias&editcode=$editcode";
+			$linkview = "<a href='$linkview'>$linkview</a>";
+			$this->duan->id = $id;
+			$currentDate = GetDateSQL();
+			$this->duan->timeupdate = $currentDate;
+			$this->duan->approve = 1;
+			$this->duan->update();
+			$myprojects = array();
+			if(isset($_SESSION['myprojects']))
+				$myprojects = $_SESSION['myprojects'];
+			if(in_array($id,$myprojects)==false) {
+				array_push($myprojects,$id);
+				$_SESSION['myprojects'] = $myprojects;
+			}
+			$content = $cache->get('mail_postproject');
+			$search  = array('#LINKTEN#','#LINKVIEW#');
+			$replace = array($linkten,$linkview);
+			$content = str_replace($search, $replace, $content);
+			$subject = "Đã đăng công việc [$tenduan] lên JobBid.vn!!!";
+			$this->setModel('sendmail');
+			$this->sendmail->id = null;
+			$this->sendmail->to = $duan_email;
+			$this->sendmail->subject = $subject;;
 			$this->sendmail->content = $content;
 			$this->sendmail->isprior = 1;
 			$this->sendmail->insert();
 			$linkview = BASE_PATH."/duan/view/$id/$alias";
 			$this->set('linkview',$linkview);
-			$this->set('title',"Bạn đã xác nhận đồng ý đăng công việc lên JobBid.vn!");
+			$this->set('title',"Xét duyệt đăng công việc lên JobBid.vn thành công!");
 			$this->_template->render();
 		}
 	}
@@ -615,7 +720,7 @@ class DuanController extends VanillaController {
 		$this->duanskill->showHasOne();
 		$this->duanskill->hasJoin(array('skill'),array('linhvuc'));
 		$this->duanskill->groupBy('tenlinhvuc,skillname');
-		$this->duanskill->where(' and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now()');
+		$this->duanskill->where(' and duan.active=1 and approve = 1 and duan.nhathau_id is null and ngayketthuc>now()');
 		$data = $this->duanskill->search('linhvuc.id,tenlinhvuc,skill.id,skillname,count(*) as soduan');
 		$this->set('lstData2',$data);
 		$keyword = isset($_POST['keyword'])?' - Từ khóa : '.$_POST['keyword']:'';
@@ -628,7 +733,7 @@ class DuanController extends VanillaController {
 			$_SESSION['redirect_url'] = getUrl();
 			$this->duan->showHasOne(array('linhvuc','tinh','file','nhathau'));
 			$this->duan->id=$id;
-            $data=$this->duan->search('duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau.id,displayname,hosothau_id,isbid,duan_email,duan_sodienthoai,editcode');
+            $data=$this->duan->search('duan.id,tenduan,linhvuc_id,tenlinhvuc,tentinh,costmin,costmax,thongtinchitiet,filename,file.id,ngaypost,duan.account_id,views,bidcount,averagecost,ngayketthuc,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,approve,nhathau.id,displayname,hosothau_id,isbid,duan_email,duan_sodienthoai,editcode');
 			//print_r($data);
 			if(empty($data)==false) {
 				$myprojects = array();
@@ -650,14 +755,19 @@ class DuanController extends VanillaController {
 				$this->duan->id=$id;
 				$this->duan->views=$viewcount+1;
 				$this->duan->save();
-				if($data['duan']['active'] != 1 || isset($data['nhathau']['id']) || $data['']['timeleft']<0) {
-					if($data['duan']['active'] == null)
-						$this->set('status','Chưa xác nhận');
-					else
-						$this->set('status','Đã đóng');
+				if($data['duan']['approve'] != 1) {
+					$this->set('status','Đang chờ duyệt');
 					$data['']['lefttime'] = -1;
-				} else 
-					$this->set('status','Đang mở');
+				} else {
+					if($data['duan']['active'] != 1 || isset($data['nhathau']['id']) || $data['']['timeleft']<0) {
+						if($data['duan']['active'] == null)
+							$this->set('status','Chưa xác nhận');
+						else
+							$this->set('status','Đã đóng');
+						$data['']['lefttime'] = -1;
+					} else 
+						$this->set('status','Đang mở');
+				}
 				$this->set('title','Jobbid.vn - '.$data['duan']['tenduan']);
 				$this->set('dataDuan',$data);
 				$this->setModel('duanskill');
@@ -676,7 +786,7 @@ class DuanController extends VanillaController {
 					$this->duanskill->groupBy('duan_id');
 					$this->duanskill->setPage(1);
 					$this->duanskill->setLimit(5);
-					$this->duanskill->where(" and ($strWhere) and duan_id<>$id and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now()");
+					$this->duanskill->where(" and ($strWhere) and duan_id<>$id and duan.active=1 and approve = 1 and duan.nhathau_id is null and ngayketthuc>now()");
 					$data = $this->duanskill->search('duan.id,alias,tenduan,count(*) n');
 					$this->set('relatedProjects',$data);
 				}
@@ -784,7 +894,7 @@ class DuanController extends VanillaController {
 		$this->duan->setPage(1);
 		$this->duan->setLimit(PAGINATE_LIMIT);
 		$this->duan->where(" and duan.account_id = $account_id");
-		$data = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id');
+		$data = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,approve,nhathau_id');
 		$totalPages = $this->duan->totalPages();
 		$ipagesbefore = 1 - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -810,7 +920,7 @@ class DuanController extends VanillaController {
 		$this->duan->setPage($ipageindex);
 		$this->duan->setLimit(PAGINATE_LIMIT);
 		$this->duan->where(" and duan.account_id = $account_id");
-		$data = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,nhathau_id');
+		$data = $this->duan->search('duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,approve,nhathau_id');
 		$totalPages = $this->duan->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -1054,7 +1164,7 @@ class DuanController extends VanillaController {
 				$this->duan->nhathau_id = '';
 			$this->duan->update(" id = $duan_id and account_id = $account_id");
 			$linhvuc_id = $data['duan']['linhvuc_id'];
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search('count(*) as soduan');
 			$this->setModel('linhvuc');
 			$this->linhvuc->id = $linhvuc_id;
@@ -1073,7 +1183,7 @@ class DuanController extends VanillaController {
 		$ipageindex = $_POST['pageindex'];
 		if(!isset($ipageindex))
 			$ipageindex = 1;
-		$strWhere = ' and active = 1';
+		$strWhere = ' and active = 1 and approve = 1';
 		if(isset($cond_keyword) && $cond_keyword!='' ) {
 			$cond_keyword = mysql_real_escape_string($cond_keyword);
 			$cond_keyword = strtolower(remove_accents($cond_keyword));
@@ -1112,7 +1222,7 @@ class DuanController extends VanillaController {
 		$this->checkActive(true);
 		$this->checkLock(true);
 		$account_id = $_SESSION['account']['id'];
-		$this->duan->where(" and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$account_id");
+		$this->duan->where(" and duan.active=1 and approve = 1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$account_id");
 		$data = $this->duan->search('id,tenduan,alias');
 		if(empty($data))
 			die('NO_PROJECT');
@@ -1125,6 +1235,10 @@ class DuanController extends VanillaController {
 	}
 	function active_account() {
 		$this->set('title','Vui lòng kiểm tra email để xác nhận tài khoản của bạn');
+		$this->_template->render();  
+	}
+	function success() {
+		$this->set('title','Tạo dự án thành công!');
 		$this->_template->render();  
 	}
 	function afterAction() {

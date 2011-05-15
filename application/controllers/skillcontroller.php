@@ -107,7 +107,7 @@ class SkillController extends VanillaController {
 			$this->duanskill->showHasOne();
 			$id = mysql_real_escape_string($id);
 			$_SESSION['redirect_url'] = getUrl();
-			$this->duanskill->where(" and skill_id=$id and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duanskill->where(" and skill_id=$id and duan.active=1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
 			$this->duanskill->orderBy('duan.id','desc');
 			$this->duanskill->setPage(1);
 			$this->duanskill->setLimit(PAGINATE_LIMIT);
@@ -145,7 +145,7 @@ class SkillController extends VanillaController {
 			$this->duanskill->showHasOne();
 			$id = mysql_real_escape_string($id);
 			$_SESSION['redirect_url'] = getUrl();
-			$this->duanskill->where(" and skill_id=$id and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duanskill->where(" and skill_id=$id and duan.active=1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
 			$this->duanskill->orderBy('duan.id','desc');
 			$this->duanskill->setPage($ipageindex);
 			$this->duanskill->setLimit(PAGINATE_LIMIT);

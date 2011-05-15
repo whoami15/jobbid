@@ -1,7 +1,7 @@
 <ul id="menu" style="padding-bottom:5px">
 <?php
 foreach($menuList as $menu) {
-	echo "<li><a id='".$menu["menu"]["id"]."' class='menulink' href='".$menu["menu"]["url"]."'>".$menu["menu"]["name"]."</a></li>";
+	echo "<li id='".$menu["menu"]["id"]."'><a class='menulink' href='".$menu["menu"]["url"]."'>".$menu["menu"]["name"]."</a></li>";
 }
 ?>	
 	<li style="float: right; margin-right: 5px;border:none">

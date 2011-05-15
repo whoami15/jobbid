@@ -102,8 +102,7 @@
 							//alert(data);return;
 							$('#btsubmit').removeAttr('disabled');
 							if(data == "OK") {
-								message("Tạo mới dự án thành công! Đang chuyển đến trang chủ...",1);
-								setTimeout("redirectPage()",redirect_time);
+								location.href = "<?php echo BASE_PATH?>/duan/success";
 							} else if(data == "NOT_ACTIVE") {
 								location.href = url("/duan/active_account&email="+byId("duan_email").value);
 							} else {

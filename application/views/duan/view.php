@@ -169,6 +169,7 @@
 	</fieldset>
 	<fieldset style="margin-bottom: 10px; margin-top: 10px; text-align: center;">
 		<legend><span style="font-weight:bold;">Danh sách nhà thầu tham gia đấu giá :</span></legend>
+		(Nhấn vào <a href="#" class="link">Xem chi tiết</a> để xem thông tin liên hệ của nhà thầu)
 		<div id="datagrid" style="padding-top:10px;padding-bottom:10px;">
 		<table width="100%">
 			<thead>

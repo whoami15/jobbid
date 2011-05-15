@@ -65,7 +65,9 @@
 						<td align="left"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
 						<td align="center">
 							<?php 
-							if($duan["duan"]["nhathau_id"]!=null)
+							if($duan["duan"]["approve"]!=1)
+								echo "Đang chờ duyệt";
+							else if($duan["duan"]["nhathau_id"]!=null)
 								echo "Đã đóng";
 							else
 								echo $html->getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)

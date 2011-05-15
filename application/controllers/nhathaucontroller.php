@@ -535,7 +535,7 @@ class NhathauController extends VanillaController {
 		$duan_id = mysql_real_escape_string($duan_id);
 		$this->setModel("duan");
 		$this->duan->id = $duan_id;
-		$this->duan->where(" and active=1 and nhathau_id is null");
+		$this->duan->where(" and active=1 and approve = 1 and nhathau_id is null");
 		$data = $this->duan->search("id,account_id,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau");
 		if(empty($data))
 			die("ERROR_SYSTEM");
@@ -593,7 +593,7 @@ class NhathauController extends VanillaController {
 			$this->setModel('duan');
 			$this->duan->showHasOne(array('linhvuc'));
 			$this->duan->id = $duan_id;
-			$this->duan->where(" and duan.active=1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$employer_id");
+			$this->duan->where(" and duan.active=1 and approve = 1 and duan.nhathau_id is null and ngayketthuc>now() and account_id=$employer_id");
 			$data = $this->duan->search('duan.id,tenduan,costmax,costmin,tenlinhvuc');
 			if(empty($data))
 				die('ERROR_SYSTEM');
@@ -618,8 +618,8 @@ class NhathauController extends VanillaController {
 			$this->moithau->hadread = 0;
 			$this->moithau->insert();
 			//Gui mail_moithau
-			$senders = $cache->get('senders');
-			$sender = $senders['priSender'];
+			$priSenders = $cache->get('priSenders');
+			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
 			$mail->send($email,'Bạn Được Mời Thầu 1 Dự Án Trên JobBid.vn!',$content,$sender);

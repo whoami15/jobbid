@@ -161,7 +161,7 @@
         </tr>
         <tr>
           <td align="center"><img src="<?php echo BASE_PATH ?>/public/images/icons/support.png" alt="support" width="16" height="16" /></td>
-          <td class="navigation"><a href="3.html">Help &amp; Support</a></td> <!--// Support -->
+          <td class="navigation"><a href="<?php echo BASE_PATH ?>/admin/manageCaches">Quản lý Cache</a></td>
         </tr>
       </table>
       <br />

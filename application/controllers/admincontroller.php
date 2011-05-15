@@ -105,6 +105,10 @@ class AdminController extends VanillaController {
 		$this->checkAdmin(false);
 		$this->_template->renderAdminPage(); 
 	}
+	function manageCaches() {
+		$this->checkAdmin(false);
+		$this->_template->renderAdminPage(); 
+	}
 	function settings() {
 		$this->checkAdmin(false);
 		global $cache;
@@ -123,46 +127,26 @@ class AdminController extends VanillaController {
 				$fileTypes = $fileTypes.$type.",";
 			}
 		}
-		$arrEmail = $cache->get("senders");
-		$priSender = array("email"=>'','password'=>'','smtp'=>'','port'=>'');
-		$secSender = array("email"=>'','password'=>'','smtp'=>'','port'=>'');
-		if($arrEmail!=null) {
-			$priSender = $arrEmail['priSender'];
-			$secSender = $arrEmail['secSender'];
-		}
 		$this->set("fileTypes",$fileTypes);
-		$this->set("priSender",$priSender);
-		$this->set("secSender",$secSender);
 		$this->_template->renderAdminPage(); 
 	}
-	function saveMailSender(){
-		try {
-			$validate = new Validate();
-			if($validate->check_submit(1,array("primary_email","primary_passsword","primary_smtp","primary_port","second_email","second_passsword","second_smtp","second_port"))==false)
-				die('ERROR_SYSTEM');
-			$primary_email = $_POST['primary_email'];
-			$primary_passsword = $_POST['primary_passsword'];
-			$primary_smtp = $_POST['primary_smtp'];
-			$primary_port = $_POST['primary_port'];
-			$second_email = $_POST['second_email'];
-			$second_passsword = $_POST['second_passsword'];
-			$second_smtp = $_POST['second_smtp'];
-			$second_port = $_POST['second_port'];
-			global $cache;
-			$priSender = array("email"=>'','password'=>'');
-			$secSender = array("email"=>'','password'=>'');
-			if($primary_email!=null) {
-				$priSender = array("email"=>$primary_email,'password'=>$primary_passsword,'smtp'=>$primary_smtp,'port'=>$primary_port);
-			}
-			if($second_email!=null) {
-				$secSender = array("email"=>$second_email,'password'=>$second_passsword,'smtp'=>$second_smtp,'port'=>$second_port);
-			}
-			$arrEmail = array("priSender"=>$priSender,"secSender"=>$secSender);
-			$cache->set('senders',$arrEmail);
-			echo 'DONE';
-		} catch (Exception $e) {
-			echo 'ERROR_SYSTEM';
+	function listEmail($isPre=0) {
+		global $cache;
+		if($isPre==1) {
+			$priSenders = $cache->get("priSenders");
+			if($priSenders == null)
+				$priSenders = array();
+			$priSenders = array_sort($priSenders,'id','asc');
+			$this->set("senders",$priSenders);
+		} else {
+			$secSenders = $cache->get("secSenders");
+			if($secSenders == null)
+				$secSenders = array();
+			$secSenders = array_sort($secSenders,'id','asc');
+			$this->set("senders",$secSenders);
 		}
+		$this->set("isPre",$isPre);
+		$this->_template->renderPage();
 	}
 	function saveSettings() {
 		try {
@@ -416,38 +400,30 @@ class AdminController extends VanillaController {
 		$jsonResult = $jsonResult."}";
 		print($jsonResult);
 	}
-	function sendTestPrimary() {
+	function sendTest($isPre = 0) {
+		$this->checkAdmin(true);
 		try {
 			$validate = new Validate();
-			if($validate->check_submit(1,array("primary_email","primary_passsword","primary_smtp","primary_port"))==false)
-				die('ERROR_SYSTEM');
-			$primary_email = $_POST['primary_email'];
-			$primary_passsword = $_POST['primary_passsword'];
-			$primary_smtp = $_POST['primary_smtp'];
-			$primary_port = $_POST['primary_port'];
-			if($validate->check_null(array($primary_email,$primary_passsword,$primary_smtp,$primary_port))==false)
-				die('ERROR_SYSTEM');
-			$priSender = array("email"=>$primary_email,'password'=>$primary_passsword,'smtp'=>$primary_smtp,'port'=>$primary_port);
-			include (ROOT.DS.'library'.DS.'sendmail.php');
-			$mail = new sendmail();
-			$mail->send(EMAIL_TEST,'JobBid.vn - Mail Thử Nghiệm!','Xin chào bạn, chúng tôi là mạng freelancer!',$priSender);
-			echo 'DONE';
-		} catch (Exception $e) {
-			echo 'ERROR_SYSTEM';
-		}
-	}
-	function sendTestSecond() {
-		try {
-			$validate = new Validate();
-			if($validate->check_submit(1,array("second_email","second_passsword","second_smtp","second_port"))==false)
-				die('ERROR_SYSTEM');
-			$second_email = $_POST['second_email'];
-			$second_passsword = $_POST['second_passsword'];
-			$second_smtp = $_POST['second_smtp'];
-			$second_port = $_POST['second_port'];
-			if($validate->check_null(array($second_email,$second_passsword,$second_smtp,$second_port))==false)
-				die('ERROR_SYSTEM');
-			$sender = array("email"=>$second_email,'password'=>$second_passsword,'smtp'=>$second_smtp,'port'=>$second_port);
+			$email = '';
+			$password = '';
+			$smtp = '';
+			$port = '';
+			if($isPre==1) {
+				if($validate->check_submit(1,array("primary_email","primary_password","primary_smtp","primary_port"))==false)
+					die('ERROR_SYSTEM');
+				$email = $_POST['primary_email'];
+				$password = $_POST['primary_password'];
+				$smtp = $_POST['primary_smtp'];
+				$port = $_POST['primary_port'];
+			} else {
+				if($validate->check_submit(1,array("second_email","second_password","second_smtp","second_port"))==false)
+					die('ERROR_SYSTEM');
+				$email = $_POST['second_email'];
+				$password = $_POST['second_password'];
+				$smtp = $_POST['second_smtp'];
+				$port = $_POST['second_port'];
+			}
+			$sender = array("email"=>$email,'password'=>$password,'smtp'=>$smtp,'port'=>$port);
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
 			$mail->send(EMAIL_TEST,'JobBid.vn - Mail Thử Nghiệm!','Xin chào bạn, chúng tôi là mạng freelancer!',$sender);
@@ -455,6 +431,144 @@ class AdminController extends VanillaController {
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}
+	}
+	function saveEmail($isPre=0) {
+		$this->checkAdmin(true);
+		try {
+			$validate = new Validate();
+			global $cache;
+			if($isPre==1) {
+				if($validate->check_submit(1,array("primary_id","primary_email","primary_password","primary_smtp","primary_port"))==false)
+					die('ERROR_SYSTEM');
+				$primary_id = isset($_POST['primary_id'])?$_POST['primary_id']:null;
+				$primary_email = $_POST['primary_email'];
+				$primary_password = $_POST['primary_password'];
+				$primary_smtp = $_POST['primary_smtp'];
+				$primary_port = $_POST['primary_port'];
+				if($validate->check_null(array($primary_email,$primary_password,$primary_smtp,$primary_port))==false)
+					die('ERROR_SYSTEM');
+				$priSenders = $cache->get('priSenders');
+				if($priSenders == null)
+					$priSenders = array();
+				if($primary_id == null) { //insert new
+					$i = 0;
+					$len = count($priSenders);
+					while($i<$len) {
+						$inPreSenders = false;
+						foreach($priSenders as $sender) {
+							if($sender['id']==$i) {
+								$inPreSenders = true;
+							}
+						}
+						if($inPreSenders == false)
+							break;
+						$i++;
+					}
+					$newPriSender = array("id"=>$i,"email"=>$primary_email,'password'=>$primary_password,'smtp'=>$primary_smtp,'port'=>$primary_port);
+					array_push($priSenders,$newPriSender);
+					$cache->set('priSenders',$priSenders);
+				} else { //update
+					$i = 0;
+					$len = count($priSenders);
+					while($i<$len) {
+						if($priSenders[$i]['id']==$primary_id) {
+							$priSenders[$i]['email'] = $primary_email;
+							$priSenders[$i]['password'] = $primary_password;
+							$priSenders[$i]['smtp'] = $primary_smtp;
+							$priSenders[$i]['port'] = $primary_port;
+							break;
+						}
+						$i++;
+					}
+					$cache->set('priSenders',$priSenders);
+				}
+			} else {
+				if($validate->check_submit(1,array("second_id","second_email","second_password","second_smtp","second_port"))==false)
+					die('ERROR_SYSTEM');
+				$second_id = $_POST['second_id'];
+				$second_email = $_POST['second_email'];
+				$second_password = $_POST['second_password'];
+				$second_smtp = $_POST['second_smtp'];
+				$second_port = $_POST['second_port'];
+				if($validate->check_null(array($second_email,$second_password,$second_smtp,$second_port))==false)
+					die('ERROR_SYSTEM');
+				$secSenders = $cache->get('secSenders');
+				if($secSenders == null)
+					$secSenders = array();
+				if($second_id == null) { //insert new
+					$i = 0;
+					$len = count($secSenders);
+					while($i<$len) {
+						$inSecSenders = false;
+						foreach($secSenders as $sender) {
+							if($sender['id']==$i) {
+								$inSecSenders = true;
+							}
+						}
+						if($inSecSenders == false)
+							break;
+						$i++;
+					}
+					$newSecSender = array("id"=>$i,"email"=>$second_email,'password'=>$second_password,'smtp'=>$second_smtp,'port'=>$second_port);
+					array_push($secSenders,$newSecSender);
+					$cache->set('secSenders',$secSenders);
+				} else { //update
+					$i = 0;
+					$len = count($secSenders);
+					while($i<$len) {
+						if($secSenders[$i]['id']==$second_id) {
+							$secSenders[$i]['email'] = $second_email;
+							$secSenders[$i]['password'] = $second_password;
+							$secSenders[$i]['smtp'] = $second_smtp;
+							$secSenders[$i]['port'] = $second_port;
+							break;
+						}
+						$i++;
+					}
+					$cache->set('secSenders',$secSenders);
+				}
+			}
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function removeEmail($isPri=0) {
+		$id = $_GET['id'];
+		global $cache;
+		if($isPri == 1) {
+			$priSenders = $cache->get('priSenders');
+			if($priSenders == null)
+				$priSenders = array();
+			$len = count($priSenders);
+			$i=0;
+			//print_r($priSenders);die();
+			while($i<$len) {
+				if($priSenders[$i]['id'] == $id) {
+					unset($priSenders[$i]);
+					break;
+				}
+				$i++;
+			}
+			$priSenders = array_values($priSenders);
+			$cache->set('priSenders',$priSenders);
+		} else {
+			$secSenders = $cache->get('secSenders');
+			if($secSenders == null)
+				$secSenders = array();
+			$len = count($secSenders);
+			$i=0;
+			while($i<$len) {
+				if($secSenders[$i]['id'] == $id) {
+					unset($secSenders[$i]);
+					break;
+				}
+				$i++;
+			}
+			$secSenders = array_values($secSenders);
+			$cache->set('secSenders',$secSenders);
+		}
+		echo 'DONE';
 	}
 	function afterAction() {
 

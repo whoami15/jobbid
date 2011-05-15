@@ -50,6 +50,19 @@
 						</td>
 					</tr>
 					<tr>
+						<td align="right">VIP :</td>
+						<td align="left">
+							<select id="raovat_isvip" name="raovat_isvip">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+						</td>	
+						<td align="right">Ngày hết vip :</td>
+						<td align="left">
+							<input  type="text" style="width:90%" name="raovat_expirevip" id="raovat_expirevip" />
+						</td>
+					</tr>
+					<tr>
 						<td align="left" colspan="4">
 							Nội dung :(<a href="#" onclick="showImagesPanel()">Mở Gallery</a>)<br/>
 							<textarea name="raovat_noidung" id="raovat_noidung" class="tinymce" tabindex=8></textarea>
@@ -71,6 +84,22 @@
 </div>
 <div style="padding-top:10px;font-size:14px" >
 	<fieldset>
+		<legend>Lọc kết quả</legend>
+		<table>
+		<tbody>
+			<tr height="30px">
+				<td width="40px">ID :</td>
+				<td><input type="text" id="cond_id" style="width:200px" /></td>
+				<td width="95px">Người đăng :</td>
+				<td><input type="text" id="cond_account" style="width:200px" /></td>
+				<td align="left">
+				<input onclick="doFilter()" value="Tìm Kiếm" type="button">
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</fieldset>
+	<fieldset>
 		<legend>Danh Sách Rao Vặt</legend>
 		<div id="datagrid">
 			<table width="99%">
@@ -82,6 +111,7 @@
 						<td>Email</td>
 						<td>Số ĐT</td>
 						<td>Status</td>
+						<td>VIP</td>
 						<td width="40px">Xử lý</td>
 					</tr>
 				</thead>
@@ -120,6 +150,11 @@
 		byId("raovat_alias").value = $.trim($(cells.td_alias).text());
 		byId("raovat_email").value = $.trim($(cells.td_email).text());
 		byId("raovat_sodienthoai").value = $.trim($(cells.td_sodienthoai).text());
+		if($.trim($(cells.td_isvip).text())=="Y")
+			byId("raovat_isvip").value = '1';
+		else
+			byId("raovat_isvip").value = '0';
+		byId("raovat_expirevip").value = $.trim($(cells.td_expirevip).text());
 	}
 	function setRowValues(cells) {
 		$(cells.td_id).text(byId("raovat_id").value);
@@ -127,6 +162,11 @@
 		$(cells.td_alias).text(byId("raovat_alias").value);
 		$(cells.td_email).text(byId("raovat_email").value);
 		$(cells.td_sodienthoai).text(byId("raovat_sodienthoai").value);
+		if(byId("raovat_isvip").value == '1')
+			$(cells.td_isvip).text("Y");
+		else
+			$(cells.td_isvip).text("N");
+		$(cells.td_expirevip).text(byId("raovat_expirevip").value);
 	}
 	function select_row(_this) {
 		//jsdebug(_this);
@@ -304,11 +344,16 @@
 		});
 	}
 	function doFilter() {	
-		searchString = "&cond_exprired="+byId("cond_exprired").checked;
+		searchString = "&cond_id="+byId("cond_id").value+"&cond_account="+byId("cond_account").value;
 		loadListRaovat('1'+searchString);
 	}
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Tin Rao Vặt");
+		$('#raovat_expirevip').datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+			changeYear: true
+		});
 		$('#raovat_noidung').tinymce({
 			script_url : url_base+'/public/js/tiny_mce/tiny_mce.js',
 			theme : "advanced",

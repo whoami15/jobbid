@@ -40,21 +40,25 @@ class IndexController extends VanillaController {
 	function index() {
 		//error('Test');
 		//print_r(session_cache_expire());die();
+		global $cache;
 		$this->setModel("duan");
 		$this->duan->showHasOne(array('linhvuc'));
 		$this->duan->orderBy('duan.timeupdate','desc');
 		$this->duan->setPage(1);
 		$this->duan->setLimit(15);
-		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
+		$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
 		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,isbid");
 		$this->set("lstData1",$data);
-		$this->duan->showHasOne(array('nhathau','hosothau'));
+		$data = $cache->get('finishedProjects');
+		/* $this->duan->showHasOne(array('nhathau','hosothau'));
 		$this->duan->orderBy('timeupdate','desc');
 		$this->duan->setPage(1);
 		$this->duan->setLimit(7);
-		$this->duan->where(" and duan.active = 1 and duan.nhathau_id is not null");
-		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias");
+		$this->duan->where(" and duan.active = 1 and approve = 1 and duan.nhathau_id is not null");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias"); */
 		$this->set("lstData2",$data);
+		$data = $cache->get('vipProjects');
+		$this->set("lstVipPrejects",$data);
 		$this->setModel("linhvuc");
 		$data = $this->linhvuc->search();
 		$this->set("lstLinhvuc",$data);
@@ -66,7 +70,7 @@ class IndexController extends VanillaController {
 		$this->duan->orderBy('duan.timeupdate','desc');
 		$this->duan->setPage($page);
 		$this->duan->setLimit(15);
-		$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc>now()");
+		$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
 		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active");
 		$jsonResult = "{";
 		$i=0;
@@ -79,7 +83,7 @@ class IndexController extends VanillaController {
 			$averagecost = formatMoney($data[$i]['duan']['averagecost']);
 			$views = $data[$i]['duan']['views'];
 			$bidcount = $data[$i]['duan']['bidcount'];
-			$lefttime = mysql_real_escape_string(getDaysFromSecond($data[$i]["duan"]["active"]==1?$data[$i][""]["timeleft"]:0));
+			$lefttime = mysql_real_escape_string(getDaysFromSecond(($data[$i]["duan"]["active"]==1 && $data[$i]["duan"]["approve"]==1)?$data[$i][""]["timeleft"]:0));
 			$jsonResult = $jsonResult."$i:{'views':$views,'bidcount':$bidcount,'linkduan':'$linkduan','tenduan':'$tenduan','tenlinhvuc':'$tenlinhvuc','averagecost':'$averagecost','lefttime':'$lefttime'},";
 			$i++;
 		}

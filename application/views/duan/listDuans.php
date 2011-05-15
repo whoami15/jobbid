@@ -28,6 +28,7 @@
 			<td>Prior</td>
 			<td>Ngày Post</td>
 			<td>Status</td>
+			<td>Approve</td>
 			<td width="40px">Xử lý</td>
 		</tr>
 	</thead>
@@ -46,8 +47,7 @@
 			?>
 				<td id="td_id" align="center"><?php echo $duan["duan"]["id"]?></td>
 				<td id="td_tenduan" align="left"><?php echo $duan["duan"]["tenduan"]?></td>
-				<td id="td_linhvuc_id" style="display:none"><?php echo $duan["duan"]["linhvuc_id"]?></td>
-				<td id="td_linhvuc_display" align="left"><?php echo $duan["linhvuc"]["tenlinhvuc"]?></td>
+				<td id="td_linhvuc_id" align="left"><?php echo $duan["duan"]["linhvuc_id"]?></td>
 				<td id="td_costtype" style="display:none"><?php  echo $html->FormatMoney($duan["duan"]["costmin"])?> &#8250 <?php  echo $html->FormatMoney($duan["duan"]["costmax"])?></td>
 				<td id="td_account_id" style="display:none"><?php echo $duan["duan"]["account_id"]?></td>
 				<td id="td_account_display" align="center"><?php echo $duan["account"]["username"]?></td>
@@ -70,6 +70,7 @@
 					}
 					?>
 				</td>
+				<td id="td_approve" align="center"><?php echo $duan["duan"]["approve"]==1?'Y':'N'?></td>
 				<td align="center">
 					<img style="cursor:pointer" onclick="select_row(this)" title="Chỉnh sửa" alt="edit" src="<?php echo BASE_PATH ?>/public/images/icons/edit.png"/>
 				</td>

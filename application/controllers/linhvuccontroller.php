@@ -114,7 +114,7 @@ class LinhvucController extends VanillaController {
 			$data = $this->linhvuc->search();
 			$this->set("dataLinhvuc",$data);
 			$this->setModel("duan");
-			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
 			$this->duan->orderBy('duan.id','desc');
 			$this->duan->setPage(1);
 			$this->duan->setLimit(PAGINATE_LIMIT);
@@ -141,7 +141,7 @@ class LinhvucController extends VanillaController {
 		if($id!=null) {
 			$this->setModel("duan");
 			$id = mysql_real_escape_string($id);
-			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and nhathau_id is null and ngayketthuc>now()");
+			$this->duan->where(" and linhvuc_id='$id' and duan.active=1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
 			$this->duan->orderBy('duan.id','desc');
 			$this->duan->setPage($ipageindex);
 			$this->duan->setLimit(PAGINATE_LIMIT);

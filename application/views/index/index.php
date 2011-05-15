@@ -16,22 +16,23 @@
 		<li><span style="color:red">Hoàn toàn miễn phí.</span></li>
 	</ul>
 	</div>
-	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px">các dự án vừa kết thúc</div>
-	<div id="datagrid2" style="padding-bottom:10px;">
+	<div id="vipproject" class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 180px;margin-top:5px;"><span style="float: left;" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span><span style="float: left;" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span><span style="float: left;" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span><span style="float: left;padding-right:5px;padding-left:5px">Các dự án được tài trợ</span>&nbsp;<span style="float: left;" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span><span style="float: left;" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span><span style="float: left;" class="ratingStar filledRatingStar" id="ctl00_SampleContent_ThaiRating_Star_1">&nbsp;</span> </div>
+	<div style="padding-bottom:10px;">
 		<table width="100%">
 			<thead>
 				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 					<td>Tên dự án</td>
-					<td style="width:100px">Giá thầu</td>
+					<td style="width:100px">Giá thầu TB</td>
 					<td>Bid</td>
 					<td>Lĩnh vực</td>
-					<td style="width:200px">Trúng thầu</td>
+					<td style="width:50px">Xem</td>
+					<td style="width:100px">Còn</td>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody style="font-weight:bold">
 				<?php
 				$i=0;
-				foreach($lstData2 as $duan) {
+				foreach($lstVipPrejects as $duan) {
 					$i++;
 					if($i%2==0)
 						echo "<tr class='alternateRow' >";
@@ -40,12 +41,18 @@
 					?>
 						<td style="display:none"><?php echo $duan["duan"]["id"]?></td>
 						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
-						<td align="center" ><?php echo $html->FormatMoney($duan["hosothau"]["giathau"])?></td>
+						<?php
+						if($duan['duan']['isbid']==1) {
+						?>
+						<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
 						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
+						<?php
+						} else
+							echo '<td align="center" colspan="2" ><font color="green">Liên hệ trực tiếp</font></td>';
+						?>
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
-						<td align="left">
-						<a class='link' title="<?php echo $duan["nhathau"]["displayname"]?>" href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $duan["duan"]["nhathau_id"].'/'.$duan["nhathau"]['nhathau_alias'] ?>'><?php echo $html->trimString($duan["nhathau"]["displayname"])?></a>
-						</td>
+						<td align="center"><?php  echo $duan["duan"]["views"] ?></td>
+						<td align="center"><?php echo getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>
 					</tr>
 					<?php
 				}
@@ -53,7 +60,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px">Các dự án mới nhất</div>
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px;margin-top:5px">Các dự án đang trên sàn giao dịch</div>
 	<div id="datagrid1" style="padding-bottom:10px;">
 		<table width="100%">
 			<thead>
@@ -95,6 +102,43 @@
 						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
 						<td align="center"><?php  echo $duan["duan"]["views"] ?></td>
 						<td align="center"><?php echo getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)?></td>
+					</tr>
+					<?php
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+	<div  class="ui-widget-header ui-helper-clearfix" style="border:none;padding-left: 5px">các dự án vừa kết thúc</div>
+	<div id="datagrid2" style="padding-bottom:10px;">
+		<table width="100%">
+			<thead>
+				<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
+					<td>Tên dự án</td>
+					<td style="width:100px">Giá thầu</td>
+					<td>Bid</td>
+					<td>Lĩnh vực</td>
+					<td style="width:200px">Trúng thầu</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				$i=0;
+				foreach($lstData2 as $duan) {
+					$i++;
+					if($i%2==0)
+						echo "<tr class='alternateRow' >";
+					else 
+						echo "<tr class='normalRow'>";
+					?>
+						<td style="display:none"><?php echo $duan["duan"]["id"]?></td>
+						<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
+						<td align="center" ><?php echo $html->FormatMoney($duan["hosothau"]["giathau"])?></td>
+						<td align="center" ><?php echo $duan["duan"]["bidcount"] ?></td>
+						<td align="center"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
+						<td align="left">
+						<a class='link' title="<?php echo $duan["nhathau"]["displayname"]?>" href='<?php echo BASE_PATH ?>/nhathau/xem_ho_so/<?php echo $duan["duan"]["nhathau_id"].'/'.$duan["nhathau"]['nhathau_alias'] ?>'><?php echo $html->trimString($duan["nhathau"]["displayname"])?></a>
+						</td>
 					</tr>
 					<?php
 				}

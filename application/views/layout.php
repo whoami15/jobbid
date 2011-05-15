@@ -66,6 +66,8 @@
 			}
 			?>
 		</div>
+		<div style="font-weight: bold;width: 100%; text-align: center; float: left; font-size: 20px; height: 30px;" id="showvip">
+		</div>
 		<div id="leftcol" >
 			<div class='ui-tabs ui-widget ui-widget-content ui-corner-all' style="padding:0">
 			<?php
@@ -204,6 +206,22 @@
 				}
 			);
 		}
+	}
+	var quotations = new Array();
+	var lenQuotations = 0;
+	var iShow = 0;
+	var timerVip;
+	function display() {
+		if(lenQuotations>0) {
+			document.getElementById('showvip').innerHTML=quotations[iShow];
+			$("#showvip").show('clip',1000);
+			if(iShow==lenQuotations-1)
+				iShow = 0;
+			else
+				iShow++;
+			timerVip = setTimeout("display()",4000);
+		}
+		//a=Math.floor(Math.random()*quotations.length);
 		
 	}
 	//Config
@@ -231,6 +249,34 @@
 				}
 			}
 		});	
+		$("#showvip").hover(
+			function(){
+				clearTimeout(timerVip);
+			},
+			function() {
+				timerVip = setTimeout("display()",4000);
+			}
+		);
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url: url("/raovat/getvips"),
+			success: function(data){
+				var vips = $.parseJSON(data);
+				i=0;
+				while(i<vips.length) {
+					vip = vips[i];
+					if(vip!=null) {
+						htmlvip = '<a style="color:red" href="'+url('/raovat/view/'+vip.id+'/'+vip.alias)+'" title="'+vip.tieude+'">'+vip.tieude+'</a>';
+						quotations[lenQuotations]= htmlvip;
+						lenQuotations++;
+					}
+					i++;
+				}
+				display();
+			},
+			error: function(data){ alert (data);}	
+		});
 		//wleftcol = ($("#leftcol").height()==0)?0:$("#leftcol").width();
 		//wrightcol = 250;
 		//alert(wrightcol);

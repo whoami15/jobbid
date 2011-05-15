@@ -17,7 +17,7 @@ float: left;
 border-right:1px solid #ffffff; 
 }
 ul#menu li a{ 
-height: 40px; 
+height: 30px; 
 color:#ffffff;
 text-decoration: none; 
 display: block; 
@@ -28,7 +28,7 @@ cursor:pointer;
 text-transform:uppercase;
 font-weight:bold;
 }
-ul#menu li a.current{ 
+ul#menu li.current{ 
 color: #FFF; 
 background:transparent url("images/black.jpg") repeat-x top left;	
 }

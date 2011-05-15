@@ -44,7 +44,7 @@ class DataProvider
 		return $arr;
 	}
 	function get10NewProject() {
-		$query = "SELECT * FROM `duans` as `duan` WHERE '1'='1' and active = 1 and nhathau_id is null and ngayketthuc>now() ORDER BY duan.id desc LIMIT 10 OFFSET 0";
+		$query = "SELECT * FROM `duans` as `duan` WHERE '1'='1' and active = 1 and approve=1 and nhathau_id is null and ngayketthuc>now() ORDER BY duan.id desc LIMIT 10 OFFSET 0";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
 			return;
@@ -121,20 +121,20 @@ class DataProvider
 	}
 	function updateStatistics() {
 		$statistics = $this->get_cache('statistics');
-		$result = mysql_query('select count(*) as total from duans where active=1',$this->link) or die("Error:".mysql_error());
+		$result = mysql_query('select count(*) as total from duans where active=1 and approve=1',$this->link) or die("Error:".mysql_error());
 		$statistics['tProjects'] = mysql_fetch_object($result)->total;
 		/* $result = mysql_query('select count(*) as total from accounts where active>=0',$this->link) or die("Error:".mysql_error());
 		$statistics['tAccounts'] = mysql_fetch_object($result)->total;
 		$result = mysql_query('select count(*) as total from nhathaus where `status`>=0',$this->link) or die("Error:".mysql_error());
 		$statistics['tFreelancers'] = mysql_fetch_object($result)->total; */
-		$result = mysql_query('select count(*) as total from duans where active=1 and nhathau_id is not null',$this->link) or die("Error:".mysql_error());
+		$result = mysql_query('select count(*) as total from duans where active=1 and approve=1 and nhathau_id is not null',$this->link) or die("Error:".mysql_error());
 		$statistics['tFinishProjects'] = mysql_fetch_object($result)->total;
-		$result = mysql_query('select count(*) as total from duans where active = 1 and nhathau_id is null and ngayketthuc>now()',$this->link) or die("Error:".mysql_error());
+		$result = mysql_query('select count(*) as total from duans where active = 1 and approve=1 and nhathau_id is null and ngayketthuc>now()',$this->link) or die("Error:".mysql_error());
 		$statistics['tLiveProjects'] = mysql_fetch_object($result)->total;
 		$this->set_cache('statistics',$statistics);
 	}
 	function updateNewProject() {
-		$query="SELECT id,alias,tenduan,costmin,costmax,ngayketthuc,linhvuc_id from duans where isnew=1 and active=1 and nhathau_id is null and ngayketthuc>now()";
+		$query="SELECT id,alias,tenduan,costmin,costmax,ngayketthuc,linhvuc_id from duans where isnew=1 and active=1 and approve=1 and nhathau_id is null and ngayketthuc>now()";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
 			return;
@@ -162,7 +162,7 @@ class DataProvider
 			$newcontent = str_replace($search, $replace, $content);
 			while($a_row2=mysql_fetch_object($result2)) {
 				$email = $a_row2->username;
-				$query = "insert into sendmails values (null,'$email','$tenduan','$newcontent',1)";
+				$query = "insert into sendmails values (null,'$email','$tenduan','$newcontent',0)";
 				mysql_query($query,$this->link) or die("Error:".mysql_error());
 			}
 		}
@@ -199,7 +199,7 @@ class DataProvider
 		return $str;
 	}
 	function preexpiredProjects() {
-		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft from duans where isbid=1 and active = 1 and nhathau_id is null and ((UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) ) BETWEEN 0 AND 259200)";
+		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft from duans where isbid=1 and active = 1 and approve=1 and nhathau_id is null and ((UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) ) BETWEEN 0 AND 259200)";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
 			return;
@@ -234,7 +234,7 @@ class DataProvider
 		}
 	}
 	function expiredProjects() {
-		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost from duans where isbid=1 and active = 1 and nhathau_id is null and ngayketthuc<now()";
+		$query="select id,tenduan,duan_email,alias,editcode,views,bidcount,averagecost from duans where isbid=1 and active = 1 and approve=1 and nhathau_id is null and ngayketthuc<now()";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
 			return;
@@ -262,6 +262,48 @@ class DataProvider
 			$query = "insert into sendmails values (null,'$email','Công việc [$tenduan] của bạn đã hết hạn đấu thầu!!!','$newcontent',0)";
 			mysql_query($query,$this->link) or die("Error:".mysql_error());
 		}
+	}
+	function query($query) {
+		$result = mysql_query($query);
+		$data = array();
+		$tempResults = array();
+		$table = array();
+		$field = array();
+		$numOfFields = mysql_num_fields($result); //or die("Loi:".mysql_error().$this->_query);
+		for ($i = 0; $i < $numOfFields; ++$i) {
+		    array_push($table,mysql_field_table($result, $i));
+		    array_push($field,mysql_field_name($result, $i));
+		}
+		if (mysql_num_rows($result) > 0 ) {
+			while ($row = mysql_fetch_row($result)) {
+				for ($i = 0;$i < $numOfFields; ++$i) {
+					$tempResults[$table[$i]][$field[$i]] = $row[$i];
+				}
+				array_push($data,$tempResults);
+			}
+			if (mysql_num_rows($result) == 1 && $this->id != null) {
+				mysql_free_result($result);
+				return($data[0]);
+			} else {
+				mysql_free_result($result);
+				return($data);
+			}
+		} else {
+			return $data;
+		}
+	}
+	function updateCache() {
+		$data = $this->query("SELECT duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,isbid FROM `duans` as `duan` LEFT JOIN `linhvucs` as `linhvuc` ON `duan`.`linhvuc_id` = `linhvuc`.`id` WHERE '1'='1' and prior>0 and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc>now() ORDER BY prior desc LIMIT 10 OFFSET 0");
+		$this->set_cache('vipProjects',$data);
+		$data = $this->query("SELECT duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias FROM `duans` as `duan` LEFT JOIN `linhvucs` as `linhvuc` ON `duan`.`linhvuc_id` = `linhvuc`.`id` LEFT JOIN `nhathaus` as `nhathau` ON `duan`.`nhathau_id` = `nhathau`.`id` LEFT JOIN `hosothaus` as `hosothau` ON `duan`.`hosothau_id` = `hosothau`.`id` WHERE '1'='1' and duan.active = 1 and approve = 1 and duan.nhathau_id is not null ORDER BY timeupdate desc LIMIT 7 OFFSET 0");
+		$this->set_cache('finishedProjects',$data);
+		$result = $this->query("SELECT id,tieude,alias FROM `raovats` as `raovat` WHERE status=1 and isvip=1 and expirevip > now() order by ngayupdate desc LIMIT 7 OFFSET 0");
+		$data = array();
+		foreach($result as $raovat) {
+			array_push($data,array('id'=>$raovat['raovat']['id'],'tieude'=>$raovat['raovat']['tieude'],'alias'=>$raovat['raovat']['alias']));
+		}
+		$this->set_cache('vips',$data);
+		
 	}
 	function close() {
 		mysql_close($this->link);

@@ -211,7 +211,7 @@ class HosothauController extends VanillaController {
 			$this->setModel('duan');
 			$this->duan->showHasOne(array('account'));
 			$this->duan->id = $duan_id;
-			$this->duan->where(" and duan.active=1 and nhathau_id is null");
+			$this->duan->where(" and duan.active=1 and approve = 1 and nhathau_id is null");
 			$data = $this->duan->search('duan.id,tenduan,alias,account_id,username,duan_email,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as lefttime,lastbid_nhathau,editcode');
 			if(empty($data))
 				die("ERROR_SYSTEM");
@@ -361,7 +361,7 @@ class HosothauController extends VanillaController {
 			$duan_id = mysql_real_escape_string($duan_id);
 			$this->setModel('duan');
 			$this->duan->id = $duan_id;
-			$this->duan->where(' and active=1');
+			$this->duan->where(' and active=1 and approve = 1');
 			$data = $this->duan->search('account_id,hosothau_id,editcode');
 			if(empty($data))
 				error('Server đang quá tải, vui lòng thử lại sau!');
@@ -447,12 +447,19 @@ class HosothauController extends VanillaController {
 			$this->duan->hosothau_id = $hosothau_id;
 			$this->duan->timeupdate = GetDateSQL();
 			$this->duan->update();
+			$this->duan->showHasOne(array('nhathau','hosothau','linhvuc'));
+			$this->duan->orderBy('timeupdate','desc');
+			$this->duan->setPage(1);
+			$this->duan->setLimit(7);
+			$this->duan->where(" and duan.active = 1 and approve = 1 and duan.nhathau_id is not null");
+			$finishedProjects = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias");
+			global $cache;
+			$cache->set('finishedProjects',$finishedProjects);
 			//Send mail cho ung vien trung thau
 			$linkduan = BASE_PATH.'/duan/view/'.$data["duan"]["id"].'/'.$data["duan"]["alias"];
 			$tenduan = $data["duan"]["tenduan"];
 			$linktenduan = "<a href='$linkduan'>$tenduan</a>";
 			$linkduan = "<a href='$linkduan'>$linkduan</a>";
-			global $cache;
 			$content = $cache->get('mail_win');
 			$search  = array('#LINKTENDUAN#', '#EMAIL#', '#SODIENTHOAI#', '#LINKDUAN#');
 			$replace = array($linktenduan,$data['duan']['duan_email'],$data['duan']['duan_sodienthoai'],$linkduan);
@@ -466,7 +473,7 @@ class HosothauController extends VanillaController {
 			$this->sendmail->insert();
 			//Cap nhat so du an cua linh vuc
 			$linhvuc_id = $data["duan"]["linhvuc_id"];
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data = $this->duan->search("count(*) as soduan");
 			$this->setModel("linhvuc");
 			$this->linhvuc->id = $linhvuc_id;

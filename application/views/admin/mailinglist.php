@@ -24,6 +24,9 @@
 	</fieldset>
 	<fieldset>
 		<legend>Danh Sách Email</legend>
+		<p align="left">
+			<img style="cursor:pointer" src="<?php echo BASE_PATH ?>/public/images/icons/export.png" alt="export txt file" title="Export Mail List" onclick="doExport()"/>
+		</p>
 		<div id="datagrid">
 			<table width="99%">
 				<thead>
@@ -144,6 +147,13 @@
 			},
 			error: function(data){ unblock("#dialogSkill #dialog");alert (data);}	
 		});
+	}
+	function doExport() {
+		block("#content");
+		byId("msg").innerHTML="Exporting....";
+		location.href = url("/email/doExport");
+		message("Export email thành công!",1);
+		unblock("#content");
 	}
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Mailing List");

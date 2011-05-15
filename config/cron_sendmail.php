@@ -9,21 +9,45 @@
 	if(!empty($data)){
 		$mail=new sendmail();
 		$arr = array();
-		$senders = $conn->get_cache('senders');
+		$priSenders = $conn->get_cache('priSenders');
+		$secSenders = $conn->get_cache('secSenders');
+		$lenPriSenders = count($priSenders);
+		$lenSecSenders = count($secSenders);
+		$emailGlobal = array('email'=>GLOBAL_EMAIL,'password'=>GLOBAL_PASS,'smtp'=>GLOBAL_SMTP,'port'=>GLOBAL_PORT);
 		foreach($data as $e) {
 			try {
-				
-				$sender = $senders['secSender'];
-				if($e->isprior == 1)
-					$sender = $senders['priSender'];
-				if($mail->send($e->to, $e->subject, $e->content,$sender)==false) {
-					$priSender = $senders['priSender'];
-					$mail->send($e->to, $e->subject, $e->content,$priSender);
-					$mail->send('admin@jobbid.vn', 'SMTP Error!!!', 'SMTP Error!!!',$priSender);
-					$arrEmail = array("priSender"=>$priSender,"secSender"=>$priSender);
-					$conn->set_cache('senders',$arrEmail);
-				} else
-					echo 'Send mail to <b>'.$e->to.'</b><br/>';
+				$flag = true;
+				while($flag) {
+					$rand = mt_rand(0, $lenPriSenders-1);
+					$sender = $priSenders[$rand];
+					if($e->isprior != 1) {
+						$rand = mt_rand(0, $lenSecSenders-1);
+						$sender = $secSenders[$rand];
+					}
+					if($sender == null) {
+						$mail->send(ADMIN_EMAIL, 'SMTP Error!!!', 'No email sender',$emailGlobal);
+						$flag = false;
+					} else {
+						if($mail->send($e->to, $e->subject, $e->content,$sender)==false) {
+							if($e->isprior != 1) {
+								unset($secSenders[$rand]);
+								$secSenders = array_values($secSenders);
+								$lenSecSenders--;
+								$conn->set_cache('secSenders',$secSenders);
+							} else {
+								unset($priSenders[$rand]);
+								$priSenders = array_values($priSenders);
+								$lenPriSenders--;
+								$conn->set_cache('priSenders',$priSenders);
+							}
+							$msgError = 'Email '.$sender['email'].' cannot send!';
+							$mail->send(ADMIN_EMAIL, 'SMTP Error!!!', $msgError,$emailGlobal);
+						} else {
+							$flag = false;
+							echo 'Send mail to <b>'.$e->to.'</b><br/>';
+						}
+					}
+				}
 				sleep(3);
 				array_push($arr,$e->id);
 			} catch (Exception $e) {

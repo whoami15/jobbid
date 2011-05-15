@@ -83,6 +83,14 @@ class EmailController extends VanillaController {
 			echo "DONE";
 		}
 	}
+	function doExport() {
+		header('Content-type: text/plain');
+		header('Content-Disposition: attachment; filename="emails.txt"');
+		$this->checkAdmin(true);
+		$data = $this->email->search('email');
+		foreach($data as $email)
+			echo $email['email']['email'].';';
+	}
 	function afterAction() {
 
 	}

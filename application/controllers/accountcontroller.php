@@ -235,8 +235,8 @@ class AccountController extends VanillaController {
 			$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 			$replace = array($linkactive, $active_code, $username);
 			$content = str_replace($search, $replace, $content);
-			$senders = $cache->get('senders');
-			$sender = $senders['priSender'];
+			$priSenders = $cache->get('priSenders');
+			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
 			$mail->send($username,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
@@ -352,8 +352,8 @@ class AccountController extends VanillaController {
 			$search  = array('#RESETPASSLINK#');
 			$replace = array($linkresetpass);
 			$content = str_replace($search, $replace, $content);
-			$senders = $cache->get('senders');
-			$sender = $senders['priSender'];
+			$priSenders = $cache->get('priSenders');
+			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
 			$mail->send($username,'JobBid.vn - Mail Xác Nhận Khôi Phục Mật Khẩu Đăng Nhập!',$content,$sender);

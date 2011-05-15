@@ -29,3 +29,8 @@ define('YAHOO2', 'nclong87');
 define('YAHOO3', 'nclong87');
 define('NUM_NEWS','5');
 define('EMAIL_TEST','nclong87@gmail.com');
+define('GLOBAL_EMAIL','global@jobbid.vn');
+define('ADMIN_EMAIL','admin@jobbid.vn');
+define('GLOBAL_PASS','74198788');
+define('GLOBAL_SMTP','mail.jobbid.vn');
+define('GLOBAL_PORT',465);

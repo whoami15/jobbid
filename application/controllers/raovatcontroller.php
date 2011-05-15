@@ -62,13 +62,25 @@ class RaovatController extends VanillaController {
 	}
     function listRaovat($ipageindex) {
 		$this->checkAdmin(true);
-		$this->raovat->showHasOne(array('account'));
+		$cond_id = isset($_GET['cond_id'])?$_GET['cond_id']:null;
+		$cond_account = isset($_GET['cond_account'])?$_GET['cond_account']:null;
 		$strWhere = '';
+		if(isset($cond_id) && $cond_id!='' ) {
+			$cond_id = mysql_real_escape_string($cond_id);
+			$cond_id = strtolower(remove_accents($cond_id));
+			$strWhere.=" and raovat.id = $cond_id ";
+		}
+		if(isset($cond_account) && $cond_account!='' ) {
+			$cond_account = mysql_real_escape_string($cond_account);
+			$cond_account = strtolower(remove_accents($cond_account));
+			$strWhere.=" and username like '%$cond_account%'";
+		}
+		$this->raovat->showHasOne(array('account'));
 		$this->raovat->where($strWhere);
 		$this->raovat->orderBy('raovat.id','desc');
 		$this->raovat->setPage($ipageindex);
 		$this->raovat->setLimit(PAGINATE_LIMIT);
-		$lstRaovat = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,username,status,raovat_email,raovat_sodienthoai');
+		$lstRaovat = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,username,status,raovat_email,raovat_sodienthoai,isvip,expirevip');
 		$totalPages = $this->raovat->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -93,6 +105,9 @@ class RaovatController extends VanillaController {
 			$email = $_POST['raovat_email'];
 			$sodienthoai = $_POST['raovat_sodienthoai'];
 			$noidung = $_POST['raovat_noidung'];
+			$isvip = $_POST['raovat_isvip'];
+			$expirevip = $_POST['raovat_expirevip'];
+			$expirevip = SQLDate($expirevip);
 			if($id==null) { //insert
 				die('ERROR_SYSTEM');
 			} else { //update
@@ -102,14 +117,28 @@ class RaovatController extends VanillaController {
 				$this->raovat->raovat_email = $email;
 				$this->raovat->raovat_sodienthoai = $sodienthoai;
 				$this->raovat->noidung = $noidung;
+				$this->raovat->isvip = $isvip;
+				$this->raovat->expirevip = $expirevip;
 			}
 			$this->raovat->save();
-			$this->updatecache();
+			
 			echo 'DONE';
 		} catch (Exception $e) {
 			echo 'ERROR_SYSTEM';
 		}
 	}   
+	function refeshCache() {
+		$this->checkAdmin(true);
+		global $cache;
+		$this->updatecache();
+		$result = $this->raovat->custom("SELECT id,tieude,alias FROM `raovats` as `raovat` WHERE status=1 and isvip=1 and expirevip > now() order by ngayupdate desc LIMIT 7 OFFSET 0");
+		$data = array();
+		foreach($result as $raovat) {
+			array_push($data,array('id'=>$raovat['raovat']['id'],'tieude'=>$raovat['raovat']['tieude'],'alias'=>$raovat['raovat']['alias']));
+		}
+		$cache->set('vips',$data);
+		echo 'DONE';
+	} 
 	function duan2raovat($duan_id=null) {
 		$this->checkAdmin(true);
 		if($duan_id==null)
@@ -124,7 +153,7 @@ class RaovatController extends VanillaController {
 			$this->duan->id = $duan_id;
 			$this->duan->delete();
 			$linhvuc_id = $data['duan']['linhvuc_id'];
-			$this->duan->where(" and active = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
+			$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc > now() and linhvuc_id = '$linhvuc_id'");
 			$data2 = $this->duan->search('count(*) as soduan');
 			$this->setModel('linhvuc');
 			$this->linhvuc->id = $linhvuc_id;
@@ -253,8 +282,8 @@ class RaovatController extends VanillaController {
 				$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 				$replace = array($linkactive, $active_code, $email);
 				$content = str_replace($search, $replace, $content);
-				$senders = $cache->get('senders');
-				$sender = $senders['priSender'];
+				$priSenders = $cache->get('priSenders');
+				$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
 				include (ROOT.DS.'library'.DS.'sendmail.php');
 				$mail = new sendmail();
 				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
@@ -310,6 +339,15 @@ class RaovatController extends VanillaController {
 				$this->set('dataRaovat',$data);
 				$this->set('status',$status);
 				$this->set('isEmployer',$isEmployer);
+				$raovatcomment_ten = '';
+				$raovatcomment_url = '';
+				if(isset($_SESSION['nhathau'])) {
+					$raovatcomment_ten = $_SESSION['nhathau']['displayname'];
+					$raovatcomment_url = BASE_PATH.'/nhathau/xem_ho_so/'.$_SESSION['nhathau']['id'].'/'.$_SESSION['nhathau']['nhathau_alias'];
+				}
+				$this->set('title','Jobbid.vn - '.$data["raovat"]["tieude"]);
+				$this->set('raovatcomment_ten',$raovatcomment_ten);
+				$this->set('raovatcomment_url',$raovatcomment_url);
 				$this->_template->render();
 			} else
 				error('Liên kết không tồn tại!');
@@ -521,7 +559,88 @@ class RaovatController extends VanillaController {
 		$this->set('title','Jobbid.vn - Danh sách tin rao vặt');
 		$this->_template->render();
 	}
-	
+	function getvips() {
+		global $cache;
+		$vips = $cache->get('vips');
+		echo json_encode($vips);
+	}
+	function comments($raovat_id=null,$pageindex=1) {
+		if($raovat_id==null)
+			die();
+		$this->setModel('raovatcomment');
+		$raovat_id = mysql_real_escape_string($raovat_id);
+		$this->raovatcomment->orderBy('ngaypost','desc');
+		$this->raovatcomment->setPage($pageindex);
+		$this->raovatcomment->setLimit(7);
+		$this->raovatcomment->where(" and raovat_id=$raovat_id");
+		$data = $this->raovatcomment->search('id,ten,url,noidung,UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(ngaypost) as timeofpost');
+		$totalPages = $this->raovatcomment->totalPages();
+		$ipagesbefore = $pageindex - INT_PAGE_SUPPORT;
+		if ($ipagesbefore < 1)
+			$ipagesbefore = 1;
+		$ipagesnext = $pageindex + INT_PAGE_SUPPORT;
+		if ($ipagesnext > $totalPages)
+			$ipagesnext = $totalPages;
+		//print_r($lstDuan);die();
+		$this->set("lstComment",$data);
+		$this->set('pagesindex',$pageindex);
+		$this->set('pagesbefore',$ipagesbefore);
+		$this->set('pagesnext',$ipagesnext);
+		$this->set('pageend',$totalPages);
+		$this->_template->renderPage();
+	}
+	function doSaveComment() {
+		try {
+			if( $_SESSION['security_code'] == $_POST['security_code'] && !empty($_SESSION['security_code'] ) ) {
+				unset($_SESSION['security_code']);
+			} else {
+				die("ERROR_SECURITY_CODE");
+			}
+			$validate = new Validate();
+			if($validate->check_submit(1,array("raovat_id","raovatcomment_ten","raovatcomment_url","raovatcomment_noidung"))==false)
+				die('ERROR_SYSTEM');
+			$raovat_id = $_POST["raovat_id"];
+			$ten = $_POST["raovatcomment_ten"];
+			$url = $_POST["raovatcomment_url"];
+			if($url==null)
+				$url = '#';
+			$noidung = $_POST["raovatcomment_noidung"];
+			if($validate->check_null(array($raovat_id,$ten,$noidung))==false)
+				die('ERROR_SYSTEM');
+			$this->raovat->id = $raovat_id;
+			$data = $this->raovat->search('id');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			$this->raovat->id = $raovat_id;
+			$this->raovat->ngayupdate = GetDateSQL();
+			$this->raovat->update();
+			$this->updatecache();
+			$this->setModel('raovatcomment');
+			$this->raovatcomment->id = null;
+			$this->raovatcomment->ten = $ten;
+			$this->raovatcomment->url = $url;
+			$this->raovatcomment->raovat_id = $raovat_id;
+			$this->raovatcomment->noidung = $noidung;
+			$this->raovatcomment->ngaypost = GetDateSQL();
+			$this->raovatcomment->insert();
+			echo 'DONE';
+		} catch (Exception $e) {
+			echo 'ERROR_SYSTEM';
+		}
+	}
+	function doDeleteComment() {
+		$this->checkAdmin(true);
+		if(!isset($_GET["comment_id"]))
+			die("ERROR_SYSTEM");
+		$id = $_GET["comment_id"];
+		$this->setModel('raovatcomment');
+		$this->raovatcomment->id=$id;
+		if($this->raovatcomment->delete()==-1) {
+			echo "ERROR_SYSTEM";
+		} else {
+			echo "DONE";
+		}
+	}
 	function afterAction() {
 
 	}

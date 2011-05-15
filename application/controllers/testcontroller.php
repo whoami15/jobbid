@@ -29,10 +29,11 @@ class TestController extends VanillaController {
 	}
 	function index() {
 		//die('aa');
-		if(date("l")=='Tuesday')
+		/* if(date("l")=='Tuesday')
 			echo 'Thu 3';
 		else
-			echo 'Ko phai thu 3';
+			echo 'Ko phai thu 3'; */
+		//echo mt_rand(0, 1);
 		/* include (ROOT.DS.'library'.DS.'sendmail.php');
 		global $cache;
 		$senders = $cache->get('senders');
@@ -41,15 +42,13 @@ class TestController extends VanillaController {
 		$mail->send2('nclong87@gmail.com','hello','test');
 		$mail->send2('nclong870@gmail.com','hello2','test2');
 		echo 'DONE'; */
-		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
+		include (ROOT.DS.'library'.DS.'dataprovider.php');
 		$conn=new DataProvider();
 		//$conn->onSpam();
 		
-		$data = $conn->getEmailSpam();
-		foreach($data as $e) {
-			echo $e->email;echo '<br>';
-		}
-		$conn->close(); */
+		$conn->updateCache();
+		$conn->close(); 
+		echo 'DONE';
 		/* $mail=new sendmail();
 		$conn->lstNewProject();
 		$data = $conn->getListSendmail();

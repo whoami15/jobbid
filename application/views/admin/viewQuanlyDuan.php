@@ -115,16 +115,18 @@
 		<table>
 		<tbody>
 			<tr height="30px">
+				<td width="40px">ID :</td>
+				<td><input type="text" id="cond_id" style="width:50px" /></td>
 				<td width="80px">Từ khóa :</td>
 				<td><input type="text" id="cond_keyword" style="width:200px" /></td>
 				<td width="95px">Người đăng :</td>
 				<td><input type="text" id="cond_account" style="width:200px" /></td>
 				<td>
-					<input type="checkbox" id="cond_exprired" /> Dự án hết hạn đấu giá<br/>
+					<input type="checkbox" id="cond_exprired" /> Hết hạn đấu giá
 				</td>
 			</tr>
 			<tr height="30px">
-			<td colspan="5" align="center">
+			<td colspan="7" align="center">
 				<input onclick="doFilter()" value="Tìm Kiếm" type="button">
 			</td>
 			</tr>
@@ -192,8 +194,8 @@
 		$(cells.td_tenduan).text(byId("duan_tenduan").value);
 		$(cells.td_alias).text(byId("duan_alias").value);
 		$(cells.td_linhvuc_id).text(byId("duan_linhvuc_id").value);
-		var tmp = byId("duan_linhvuc_id");
-		$(cells.td_linhvuc_display).text(tmp[tmp.selectedIndex].textContent);
+		//var tmp = byId("duan_linhvuc_id");
+		//$(cells.td_linhvuc_display).text(tmp[tmp.selectedIndex].textContent);
 		$(cells.td_tinh_id).text(byId("duan_tinh_id").value);
 		$(cells.td_ngayketthuc).text(byId("duan_ngayketthuc").value);
 		$(cells.td_prior).text(byId("duan_prior").value);
@@ -396,7 +398,7 @@
 		});
 	}
 	function doFilter() {	
-		searchString = "&cond_exprired="+byId("cond_exprired").checked+"&cond_keyword="+byId("cond_keyword").value+"&cond_account="+byId("cond_account").value;
+		searchString = "&cond_exprired="+byId("cond_exprired").checked+"&cond_keyword="+byId("cond_keyword").value+"&cond_account="+byId("cond_account").value+"&cond_id="+byId("cond_id").value;
 		loadListDuans('1'+searchString);
 	}
 	function convertRaovat() {
