@@ -7,21 +7,35 @@
 	$data = $conn->getEmailSpam();
 	if(!empty($data)){
 		$mail=new sendmail();
-		$senders = $conn->get_cache('senders');
+		$secSenders = $conn->get_cache('secSenders');
+		$lenSecSenders = count($secSenders);
 		$content = $conn->get10NewProject();
 		$arrTo = array();
 		foreach($data as $e) {
 			array_push($arrTo,$e->email);
 		}
 		try {
-			$secSender = $senders['secSender'];
-			if($mail->send($arrTo, 'JobBid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$secSender)==false) {
-				$priSender = $senders['priSender'];
-				$mail->send('admin@jobbid.vn', 'SMTP Error!!!', 'SMTP Error!!!',$priSender);
-				$arrEmail = array("priSender"=>$priSender,"secSender"=>$priSender);
-				$conn->set_cache('senders',$arrEmail);
-			} else
-				echo 'Send Mail Success';
+			$flag = true;
+			while($flag) {
+				$rand = mt_rand(0, $lenSecSenders-1);
+				$sender = $secSenders[$rand];
+				if($sender == null) {
+					$mail->send(ADMIN_EMAIL, 'SMTP Error!!!', 'No email sender',$emailGlobal);
+					$flag = false;
+				} else {
+					if($mail->send($arrTo, 'JobBid.vn - Danh Sách Công Việc Bán Thời Gian Mới!!!', $content,$sender)==false) {
+						unset($secSenders[$rand]);
+						$secSenders = array_values($secSenders);
+						$lenSecSenders--;
+						$conn->set_cache('secSenders',$secSenders);
+						$msgError = 'Email '.$sender['email'].' cannot send!';
+						$mail->send(ADMIN_EMAIL, 'SMTP Error!!!', $msgError,$emailGlobal);
+					} else {
+						$flag = false;
+						echo 'Send Mail Success';
+					}
+				}
+			}
 		} catch (Exception $e) {
 			echo 'Send Mail Error';
 		}

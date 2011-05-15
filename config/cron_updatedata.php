@@ -10,6 +10,8 @@
 	$conn->updateSoduan();
 	echo 'updateStatistics;';
 	$conn->updateStatistics();
+	echo 'updateCache;';
+	$conn->updateCache();
 	$conn->close();
 	echo 'DONE';
 	

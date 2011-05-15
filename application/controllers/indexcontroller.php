@@ -71,7 +71,7 @@ class IndexController extends VanillaController {
 		$this->duan->setPage($page);
 		$this->duan->setLimit(15);
 		$this->duan->where(" and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc>now()");
-		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active");
+		$data = $this->duan->search("duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,approve");
 		$jsonResult = "{";
 		$i=0;
 		$len = count($data);

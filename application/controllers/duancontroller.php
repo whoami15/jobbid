@@ -529,7 +529,6 @@ class DuanController extends VanillaController {
 				else
 					$this->duan->active = '0';
 			}
-			//die($email);
 			$this->duan->update();
 			//Send approve mail to admin
 			$linkview = BASE_PATH."/duan/view/$duan_id/$alias";
@@ -547,13 +546,6 @@ class DuanController extends VanillaController {
 			include (ROOT.DS.'library'.DS.'sendmail.php');
 			$mail = new sendmail();
 			$mail->send(GLOBAL_EMAIL,'Hệ Thống - Email Approve Dự Án Mới!',$content,$sender);
-			/* $this->setModel('sendmail');
-			$this->sendmail->id = null;
-			$this->sendmail->to = ADMIN_EMAIL;
-			$this->sendmail->subject = 'Hệ Thống - Email Approve Dự Án Mới!';
-			$this->sendmail->content = $content;
-			$this->sendmail->isprior = 1;
-			$this->sendmail->insert(); */
 			if($flagSendmail==2) {
 				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
 				$linkview = "<a href='$linkview'>$tenduan</a>";
@@ -566,13 +558,7 @@ class DuanController extends VanillaController {
 				$replace = array($linkview, $linkdongy, $linkodongy);
 				$content = str_replace($search, $replace, $content);
 				$subject = "[EMAIL XIN PHÉP] Đăng công việc [$tenduan] lên JobBid.vn!!!";
-				$this->setModel('sendmail');
-				$this->sendmail->id = null;
-				$this->sendmail->to = $email;
-				$this->sendmail->subject = $subject;;
-				$this->sendmail->content = $content;
-				$this->sendmail->isprior = 1;
-				$this->sendmail->insert();
+				$mail->send($email,$subject,$content,$sender);
 			}
 			$myprojects = array();
 			if(isset($_SESSION['myprojects']))

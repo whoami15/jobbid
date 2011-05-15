@@ -28,6 +28,14 @@ class TestController extends VanillaController {
 		echo 'DONE';
 	}
 	function index() {
+		$this->setModel('sendmail');
+		$this->sendmail->id = null;
+		$this->sendmail->to = 'aaa';
+		$this->sendmail->subject = 'ddd';
+		$this->sendmail->content = 'dsdat';
+		$this->sendmail->isprior = 1;
+		$this->sendmail->insert();
+		echo 'DONE';
 		//die('aa');
 		/* if(date("l")=='Tuesday')
 			echo 'Thu 3';
@@ -42,13 +50,13 @@ class TestController extends VanillaController {
 		$mail->send2('nclong87@gmail.com','hello','test');
 		$mail->send2('nclong870@gmail.com','hello2','test2');
 		echo 'DONE'; */
-		include (ROOT.DS.'library'.DS.'dataprovider.php');
+		/* include (ROOT.DS.'library'.DS.'dataprovider.php');
 		$conn=new DataProvider();
 		//$conn->onSpam();
 		
 		$conn->updateCache();
 		$conn->close(); 
-		echo 'DONE';
+		echo 'DONE'; */
 		/* $mail=new sendmail();
 		$conn->lstNewProject();
 		$data = $conn->getListSendmail();
