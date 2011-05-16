@@ -39,10 +39,10 @@
 			</tr>
 			<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 				<td>Tên dự án</td>
-				<td>Giá thầu TB</td>
-				<td>Bid</td>
-				<td>Ngày post</td>
-				<td>Còn</td>
+				<td style="width:100px">Giá thầu TB</td>
+				<td style="width:50px">Bid</td>
+				<td style="width:120px">Ngày post</td>
+				<td style="width:110px">Còn</td>
 			</tr>
 		</thead>
 		<tfoot>
@@ -59,10 +59,10 @@
 					echo "<tr class='normalRow'>";
 				?>
 					<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
-					<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
-					<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
-					<td align="left"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i:s')?></td>
-					<td align="center"><?php echo $html->getDaysFromSecond($duan[""]["timeleft"])?></td>
+					<td align="center" style="width:100px"><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
+					<td align="center"style="width:50px" ><?php echo $duan["duan"]["bidcount"]?></td>
+					<td align="left" style="width:120px"><?php  echo $html->format_date($duan["duan"]["ngaypost"],'d/m/Y H:i')?></td>
+					<td align="center" style="width:110px"><?php echo $html->getDaysFromSecond($duan[""]["timeleft"])?></td>
 				</tr>
 				<?php
 			}

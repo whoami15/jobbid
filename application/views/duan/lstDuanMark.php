@@ -23,11 +23,11 @@
 		</tr>
 		<tr class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" style="font-weight:bold;height:20px;text-align:center;">
 			<td>Tên dự án</td>
-			<td>Giá thầu TB</td>
-			<td>Bid</td>
-			<td>Lĩnh vực</td>
-			<td>Còn</td>
-			<td>Xóa</td>
+			<td style="width:100px">Giá thầu TB</td>
+			<td style="width:50px">Bid</td>
+			<td style="width:120px">Lĩnh vực</td>
+			<td style="width:110px">Còn</td>
+			<td style="width:40px">Xóa</td>
 		</tr>
 	</thead>
 	<tfoot>
@@ -45,18 +45,18 @@
 			?>
 				<td id="td_id" style="display:none"><?php echo $duan["duan"]["id"]?></td>
 				<td align="left"><a class='link' href='<?php echo BASE_PATH."/duan/view/".$duan["duan"]["id"]."/".$duan["duan"]["alias"] ?>'><?php echo $duan["duan"]["tenduan"]?></a></td>
-				<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
-				<td align="center" ><?php echo $html->FormatMoney($duan["duan"]["bidcount"])?></td>
-				<td align="left"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
-				<td align="center">
-					<?php 
-					if($duan["duan"]["nhathau_id"]!=null)
-						echo "Đã đóng";
-					else
-						echo $html->getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)
-					?>
+				<td align="center" style="width:100px" ><?php echo $html->FormatMoney($duan["duan"]["averagecost"])?></td>
+				<td align="center" style="width:50px"><?php echo $duan["duan"]["bidcount"]?></td>
+				<td align="left" style="width:120px"><?php  echo $duan["linhvuc"]["tenlinhvuc"] ?></td>
+				<td align="center" style="width:110px">
+				<?php 
+				if($duan["duan"]["nhathau_id"]!=null)
+					echo "Đã đóng";
+				else
+					echo $html->getDaysFromSecond($duan["duan"]["active"]==1?$duan[""]["timeleft"]:0)
+				?>
 				</td>
-				<td align="center">
+				<td align="center" style="width:40px">
 					<img style="cursor:pointer" onclick="deleteDuanmark(this)" title="Xóa" alt="remove" src="<?php echo BASE_PATH ?>/public/images/icons/remove.png"/> 
 				</td>
 			</tr>
