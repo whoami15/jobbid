@@ -34,6 +34,7 @@ class sendmail {
 		if(!$mail->Send()) {
 			return false;
 		} 
+		$mail->SmtpClose();
 		return true;
 	}
 	function send2($to, $subject, $content, $sender) {

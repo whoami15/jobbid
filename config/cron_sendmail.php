@@ -13,16 +13,18 @@
 		$secSenders = $conn->get_cache('secSenders');
 		$lenPriSenders = count($priSenders);
 		$lenSecSenders = count($secSenders);
+		$rand = mt_rand(0, $lenPriSenders-1);
+		$sender1 = $priSenders[$rand];
+		$rand = mt_rand(0, $lenSecSenders-1);
+		$sender2 = $secSenders[$rand];
 		$emailGlobal = array('email'=>GLOBAL_EMAIL,'password'=>GLOBAL_PASS,'smtp'=>GLOBAL_SMTP,'port'=>GLOBAL_PORT);
 		foreach($data as $e) {
 			try {
 				$flag = true;
 				while($flag) {
-					$rand = mt_rand(0, $lenPriSenders-1);
-					$sender = $priSenders[$rand];
+					$sender = $sender1;
 					if($e->isprior != 1) {
-						$rand = mt_rand(0, $lenSecSenders-1);
-						$sender = $secSenders[$rand];
+						$sender = $sender2;
 					}
 					if($sender == null) {
 						$mail->send(ADMIN_EMAIL, 'SMTP Error!!!', 'No email sender',$emailGlobal);
@@ -40,6 +42,10 @@
 								$lenPriSenders--;
 								$conn->set_cache('priSenders',$priSenders);
 							}
+							$rand = mt_rand(0, $lenPriSenders-1);
+							$sender1 = $priSenders[$rand];
+							$rand = mt_rand(0, $lenSecSenders-1);
+							$sender2 = $secSenders[$rand];
 							$msgError = 'Email '.$sender['email'].' cannot send!';
 							$mail->send(ADMIN_EMAIL, 'SMTP Error!!!', $msgError,$emailGlobal);
 						} else {

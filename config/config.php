@@ -34,3 +34,4 @@ define('ADMIN_EMAIL','admin@jobbid.vn');
 define('GLOBAL_PASS','74198788');
 define('GLOBAL_SMTP','mail.jobbid.vn');
 define('GLOBAL_PORT',465);
+define("PHPMAILER",1);
