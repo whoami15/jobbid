@@ -21,6 +21,7 @@ define('MAX_TIMESRESETPASS',3);
 define('MAX_SKILL',10);
 define('MAX_GIATHAU',50000000);
 define('MIN_GIATHAU',50000);
+define('MAX_RAOVAT',3);
 
 define('PAGINATE_LIMIT', 3);
 define('INT_PAGE_SUPPORT', 4);

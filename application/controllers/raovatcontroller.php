@@ -233,6 +233,10 @@ class RaovatController extends VanillaController {
 	}
 	function submit_dang_tin_rao_vat() {
 		try {
+			$max_raovat = isset($_SESSION['MAX_RAOVAT'])?$_SESSION['MAX_RAOVAT']:0;
+			if($max_raovat >= MAX_RAOVAT) {
+				die('MAX_RAOVAT');
+			} 
 			$tieude = $_POST['raovat_tieude'];
 			$alias = $_POST['raovat_alias'];
 			$email = $_POST['raovat_email'];
@@ -303,6 +307,8 @@ class RaovatController extends VanillaController {
 			$this->raovat->status = $status;
 			$this->raovat->insert();
 			$this->updatecache();
+			$max_raovat++;
+			$_SESSION['MAX_RAOVAT'] = $max_raovat;
 			if(isset($_SESSION['account'])) {
 				if($_SESSION['account']['active']==1)
 					echo 'OK';

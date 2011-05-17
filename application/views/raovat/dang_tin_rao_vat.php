@@ -91,6 +91,10 @@
 						success : function(data){	
 							//alert(data);return;
 							$('#btsubmit').removeAttr('disabled');
+							if(data == "MAX_RAOVAT") {
+								message("Bạn đã đăng số lượng tin vượt giới hạn cho phép!",0);
+								return;
+							}
 							if(data == "OK") {
 								message("Đăng tin rao vặt thành công! Đang chuyển đến trang chủ...",1);
 								setTimeout("redirectPage()",redirect_time);
