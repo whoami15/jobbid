@@ -429,7 +429,7 @@ class AdminController extends VanillaController {
 			$mail->send(EMAIL_TEST,'JobBid.vn - Mail Thử Nghiệm!','Xin chào bạn, chúng tôi là mạng freelancer!',$sender);
 			echo 'DONE';
 		} catch (Exception $e) {
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
+			//echo 'Caught exception: ',  $e->getMessage(), "\n";
 			echo 'ERROR_SYSTEM';
 		}
 	}

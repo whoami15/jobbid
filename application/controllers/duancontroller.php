@@ -459,6 +459,9 @@ class DuanController extends VanillaController {
 			$account_id = null;
 			$flagSendmail = 1;
 			global $cache;
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$priSenders = $cache->get('priSenders');
+			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
 			if(isset($_SESSION['account'])) {
 				$account_id = $_SESSION['account']['id'];
 				if($email != $_SESSION['account']['username']) //Post du an dum nguoi khac
@@ -492,9 +495,6 @@ class DuanController extends VanillaController {
 				$search  = array('#LINKACTIVE#', '#ACTIVECODE#', '#USERNAME#');
 				$replace = array($linkactive, $active_code, $email);
 				$content = str_replace($search, $replace, $content);
-				$priSenders = $cache->get('priSenders');
-				$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
-				include (ROOT.DS.'library'.DS.'sendmail.php');
 				$mail = new sendmail();
 				$mail->send($email,'JobBid.vn - Mail Xác Nhận Đăng Ký Tài Khoản!',$content,$sender);
 			}
@@ -530,23 +530,8 @@ class DuanController extends VanillaController {
 					$this->duan->active = '0';
 			}
 			$this->duan->update();
-			//Send approve mail to admin
-			$linkview = BASE_PATH."/duan/view/$duan_id/$alias";
-			$linkview = "<a href='$linkview'>$linkview</a>";
-			$linkdongy = BASE_PATH."/duan/approve/$duan_id/$editcode/1";
-			$linkdongy = "<a href='$linkdongy'><font color='green'>ĐỒNG Ý</font></a>";
-			$linkodongy = BASE_PATH."/duan/approve/$duan_id/$editcode/0";
-			$linkodongy = "<a href='$linkodongy'><font color='red'>KHÔNG ĐỒNG Ý</font></a>";
-			$content = $cache->get('mail_approve');
-			$search  = array('#TENDUAN#', '#EMAIL#', '#SDT#', '#THONGTINCHITIET#', '#LINK#', '#DONGY#', '#KHONGDONGY#');
-			$replace = array($tenduan, $email, $sodienthoai, $thongtinchitiet, $linkview, $linkdongy, $linkodongy);
-			$content = str_replace($search, $replace, $content);
-			$priSenders = $cache->get('priSenders');
-			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
-			include (ROOT.DS.'library'.DS.'sendmail.php');
-			$mail = new sendmail();
-			$mail->send(GLOBAL_EMAIL,'Hệ Thống - Email Approve Dự Án Mới!',$content,$sender);
 			if($flagSendmail==2) {
+				//Send approve email to employer
 				$linkview = BASE_PATH."/duan/view/$duan_id/$alias&editcode=$editcode";
 				$linkview = "<a href='$linkview'>$tenduan</a>";
 				$linkdongy = BASE_PATH."/duan/permission/$duan_id/$editcode/1";
@@ -558,7 +543,22 @@ class DuanController extends VanillaController {
 				$replace = array($linkview, $linkdongy, $linkodongy);
 				$content = str_replace($search, $replace, $content);
 				$subject = "[EMAIL XIN PHÉP] Đăng công việc [$tenduan] lên JobBid.vn!!!";
+				$mail = new sendmail();
 				$mail->send($email,$subject,$content,$sender);
+			} else {
+				//Send approve email to admin
+				$linkview = BASE_PATH."/duan/view/$duan_id/$alias";
+				$linkview = "<a href='$linkview'>$linkview</a>";
+				$linkdongy = BASE_PATH."/duan/approve/$duan_id/$editcode/1";
+				$linkdongy = "<a href='$linkdongy'><font color='green'>ĐỒNG Ý</font></a>";
+				$linkodongy = BASE_PATH."/duan/approve/$duan_id/$editcode/0";
+				$linkodongy = "<a href='$linkodongy'><font color='red'>KHÔNG ĐỒNG Ý</font></a>";
+				$content = $cache->get('mail_approve');
+				$search  = array('#TENDUAN#', '#EMAIL1#', '#EMAIL#', '#SDT#', '#THONGTINCHITIET#', '#LINK#', '#DONGY#', '#KHONGDONGY#');
+				$replace = array($tenduan, $email, $email, $sodienthoai, $thongtinchitiet, $linkview, $linkdongy, $linkodongy);
+				$content = str_replace($search, $replace, $content);
+				$mail = new sendmail();
+				$mail->send(GLOBAL_EMAIL,'Hệ Thống - Email Approve Dự Án Mới!',$content,$sender);
 			}
 			$myprojects = array();
 			if(isset($_SESSION['myprojects']))
@@ -581,9 +581,10 @@ class DuanController extends VanillaController {
 		if($id==null || $editcode==null)
 			error('Liên kết không hợp lệ!');
 		$editcode = mysql_real_escape_string($editcode);
+		$this->duan->showHasOne(array('account'));
 		$this->duan->id = $id;
 		$this->duan->where(" and editcode='$editcode'");
-		$data = $this->duan->search('id,tenduan,alias,duan_email,active');
+		$data = $this->duan->search('tenduan,alias,duan_email,duan.active,duan_sodienthoai,username,thongtinchitiet');
 		if(empty($data))
 			error('Liên kết không hợp lệ!');
 		if($answer == 0) {
@@ -593,9 +594,12 @@ class DuanController extends VanillaController {
 		} else {
 			if($data['duan']['active']==1)
 				error('Công việc này đã được xác nhận rồi!');
-			$email = $data['duan']['duan_email'];
+			$emailEmployer = $data['duan']['duan_email'];
+			$email = $data['account']['username'];
 			$tenduan = $data['duan']['tenduan'];
 			$alias = $data['duan']['alias'];
+			$sodienthoai = $data['duan']['duan_sodienthoai'];
+			$thongtinchitiet = $data['duan']['thongtinchitiet'];
 			$this->duan->id = $id;
 			$currentDate = GetDateSQL();
 			$this->duan->timeupdate = $currentDate;
@@ -608,21 +612,23 @@ class DuanController extends VanillaController {
 				array_push($myprojects,$id);
 				$_SESSION['myprojects'] = $myprojects;
 			}
-			// global $cache;
-			// $linkview = BASE_PATH."/duan/view/$id/$alias&editcode=$editcode";
-			// $linkview = "<a href='$linkview'>$tenduan</a>";
-			// $content = $cache->get('mail_confirm');
-			// $search  = array('#LINKVIEW#');
-			// $replace = array($linkview);
-			// $content = str_replace($search, $replace, $content);
-			// $this->setModel('sendmail');
-			// $this->sendmail->id = null;
-			// $this->sendmail->to = $email;
-			// $this->sendmail->subject = "Đã xác nhận đăng công việc [$tenduan] lên JobBid.vn!!!";
-			// $this->sendmail->content = $content;
-			// $this->sendmail->isprior = 1;
-			// $this->sendmail->insert();
+			global $cache;
+			include (ROOT.DS.'library'.DS.'sendmail.php');
+			$priSenders = $cache->get('priSenders');
+			$sender = $priSenders[mt_rand(0, count($priSenders)-1)];
+			//Send approve email to admin
 			$linkview = BASE_PATH."/duan/view/$id/$alias";
+			$linkview = "<a href='$linkview'>$linkview</a>";
+			$linkdongy = BASE_PATH."/duan/approve/$id/$editcode/1";
+			$linkdongy = "<a href='$linkdongy'><font color='green'>ĐỒNG Ý</font></a>";
+			$linkodongy = BASE_PATH."/duan/approve/$id/$editcode/0";
+			$linkodongy = "<a href='$linkodongy'><font color='red'>KHÔNG ĐỒNG Ý</font></a>";
+			$content = $cache->get('mail_approve');
+			$search  = array('#TENDUAN#', '#EMAIL1#', '#EMAIL#', '#SDT#', '#THONGTINCHITIET#', '#LINK#', '#DONGY#', '#KHONGDONGY#');
+				$replace = array($tenduan, $email, $emailEmployer, $sodienthoai, $thongtinchitiet, $linkview, $linkdongy, $linkodongy);
+			$content = str_replace($search, $replace, $content);
+			$mail = new sendmail();
+			$mail->send(GLOBAL_EMAIL,'Hệ Thống - Email Approve Dự Án Mới!',$content,$sender);
 			$this->set('linkview',$linkview);
 			$this->set('title',"Bạn đã xác nhận đồng ý đăng công việc lên JobBid.vn!");
 			$this->_template->render();

@@ -70,7 +70,7 @@ class DataProvider
 		$arr = array();
 		if($spamOffset == -1)
 			return $arr;
-		$query="select * from emails limit $spamOffset,10";
+		$query="select * from emails limit $spamOffset,20";
 		$result = mysql_query($query,$this->link) or die("Error:".mysql_error());
 		if($result == null || mysql_num_rows($result)==0) {
 			$this->set_cache('spamOffset',-1);
