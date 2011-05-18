@@ -146,8 +146,23 @@
 		</div>
 	</div>
 	<fieldset>
+		<legend>Lọc kết quả</legend>
+		<table>
+		<tbody>
+			<tr height="30px">
+				<td width="50px">Email :</td>
+				<td><input type="text" id="cond_email" style="width:200px" /></td>
+				<td width="95px">Tên hiển thị :</td>
+				<td><input type="text" id="cond_tenhienthi" style="width:200px" /></td>
+				<td align="center">
+					<input onclick="doFilter()" value="Tìm Kiếm" type="button">
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</fieldset>
+	<fieldset>
 		<legend>Danh Sách Nhà Thầu</legend>
-		<input type="text" style="width:400px;height:30px" name="nhathau_keyword" id="nhathau_keyword" value=""/><input type="button" style="margin-left:10px" value="Tìm Kiếm" onclick="doSearch()"/>
 		<div id="datagrid">
 			<table width="99%">
 				<thead>
@@ -168,6 +183,8 @@
 </div>
 <script type="text/javascript">
 	var objediting; //Object luu lai row dang chinh sua
+	var searchString;
+	var nPage = 1;
 	function message(msg,type) {
 		if(type==1) { //Thong diep thong bao
 			str = "<div class='positive'><span class='bodytext' style='padding-left:30px;'><strong>"+msg+"</strong></span></div>";
@@ -184,7 +201,8 @@
 		byId("nhathau_id").focus();
 	}
 	function selectpage(page) {
-		loadListNhathaus(byId("nhathau_keyword").value,page);
+		nPage = page;
+		loadListNhathaus(page+searchString);
 	};
 	function fillFormValues(cells) { 		
 		byId("nhathau_id").value = $.trim($(cells.td_id).text());
@@ -256,14 +274,12 @@
 		$("#formNhathau :input").css('border-color','');
 		byId("msg").innerHTML="";
 	}
-	function loadListNhathaus(keyword,page) {
-		dataPost = 'keyword='+keyword;
+	function loadListNhathaus(dataString) {
 		block("#datagrid");
 		$.ajax({
-			type : "POST",
+			type : "GET",
 			cache: false,
-			url: url("/nhathau/listNhathaus/"+page+"&"),
-			data: dataPost,
+			url: url("/nhathau/listNhathaus/"+dataString),
 			success : function(data){	
 				//alert(data);
 				unblock("#datagrid");
@@ -360,7 +376,7 @@
 								if(data == AJAX_DONE) {
 									//Load luoi du lieu	
 									message("Lưu dữ liệu thành công!",1);
-									loadListNhathaus('',1);													
+									loadListNhathaus(nPage+searchString);													
 								} else if (data == AJAX_ERROR_NOTEXIST){
 									message('Username này không tồn tại!',0);
 									byId("nhathau_id").focus();
@@ -379,9 +395,9 @@
 			});
 		}
 	}
-	function doSearch() {
-		byId("msg").innerHTML="";
-		selectpage(1);
+	function doFilter() {	
+		searchString = "&cond_email="+byId("cond_email").value+"&cond_tenhienthi="+byId("cond_tenhienthi").value;
+		loadListNhathaus('1'+searchString);
 	}
 	function showLinhvucquantam(nhathau_id) {
 		$("#dialog_panel").html("");
@@ -430,6 +446,6 @@
 				return;
 			initTimer();
 		});
-		loadListNhathaus('',1);
+		loadListNhathaus('1&'+searchString);
 	});
 </script>

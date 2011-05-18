@@ -19,16 +19,21 @@ class NhathauController extends VanillaController {
     function listNhathaus($ipageindex) {
 		//die("ERROR_NOTLOGIN");
 		$this->checkAdmin();
+		$cond_email = isset($_GET['cond_email'])?$_GET['cond_email']:null;
+		$cond_tenhienthi = isset($_GET['cond_tenhienthi'])?$_GET['cond_tenhienthi']:null;
+		$strWhere = '';
+		if(isset($cond_email) && $cond_email!='' ) {
+			$cond_email = mysql_real_escape_string($cond_email);
+			$strWhere.=" and username like '%$cond_email%'";
+		}
+		if(isset($cond_tenhienthi) && $cond_tenhienthi!='' ) {
+			$cond_tenhienthi = mysql_real_escape_string($cond_tenhienthi);
+			$strWhere.=" and displayname like '%$cond_tenhienthi%'";
+		}
 		$this->nhathau->showHasOne(array("account"));
 		$this->nhathau->orderBy('nhathau.id','desc');
 		$this->nhathau->setPage($ipageindex);
 		$this->nhathau->setLimit(PAGINATE_LIMIT);
-		$strWhere = '';
-		if(isset($_POST['keyword'])) {
-			$keyword = $_POST['keyword'];
-			if($keyword!=null)
-				$strWhere.=" and displayname like '%$keyword%'";
-		}
 		$this->nhathau->where($strWhere);
 		$lstNhathau = $this->nhathau->search("nhathau.id,account.id,displayname,gpkd_cmnd,username,sodienthoai,diemdanhgia,nhanemail,type");
 		$totalPages = $this->nhathau->totalPages();
