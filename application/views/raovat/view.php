@@ -37,7 +37,7 @@
 				</tr>
 				<tr style="height:30px">
 					<td align="left" colspan="2">
-					<b>Nội dung rao :</b>
+					<b>Nội dung rao </b>(tin này đã được xem <font color="red"><b><?php echo $dataRaovat["raovat"]["views"] ?></b></font> lần)
 					</td>
 				</tr>
 				<tr>
