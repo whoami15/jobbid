@@ -80,7 +80,7 @@ class RaovatController extends VanillaController {
 		$this->raovat->orderBy('raovat.id','desc');
 		$this->raovat->setPage($ipageindex);
 		$this->raovat->setLimit(PAGINATE_LIMIT);
-		$lstRaovat = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,username,status,raovat_email,raovat_sodienthoai,isvip,expirevip');
+		$lstRaovat = $this->raovat->search('raovat.id,tieude,alias,ngaypost,ngayupdate,views,username,status,raovat_email,raovat_sodienthoai,isvip,expirevip,expiredate');
 		$totalPages = $this->raovat->totalPages();
 		$ipagesbefore = $ipageindex - INT_PAGE_SUPPORT;
 		if ($ipagesbefore < 1)
@@ -107,7 +107,10 @@ class RaovatController extends VanillaController {
 			$noidung = $_POST['raovat_noidung'];
 			$isvip = $_POST['raovat_isvip'];
 			$expirevip = $_POST['raovat_expirevip'];
-			$expirevip = SQLDate($expirevip);
+			$expiredate = $_POST['raovat_expiredate'];
+			if($isvip == 1)
+				$expirevip = SQLDate($expirevip);
+			$expiredate = SQLDate($expiredate);
 			if($id==null) { //insert
 				die('ERROR_SYSTEM');
 			} else { //update
@@ -118,7 +121,9 @@ class RaovatController extends VanillaController {
 				$this->raovat->raovat_sodienthoai = $sodienthoai;
 				$this->raovat->noidung = $noidung;
 				$this->raovat->isvip = $isvip;
-				$this->raovat->expirevip = $expirevip;
+				if($isvip == 1)
+					$this->raovat->expirevip = $expirevip;
+				$this->raovat->expiredate = $expiredate;
 			}
 			$this->raovat->save();
 			
@@ -501,6 +506,13 @@ class RaovatController extends VanillaController {
 			$this->checkLock(true);
 			$account_id = $_SESSION['account']['id'];
 			$raovat_id = mysql_real_escape_string($_GET['raovat_id']);
+			$this->raovat->id = $raovat_id;
+			$this->raovat->where(" and account_id = $account_id");
+			$data = $this->raovat->search('status');
+			if(empty($data))
+				die('ERROR_SYSTEM');
+			if($data['raovat']['status']==-2)
+				die('ERROR_RAOVAT_LOCKED');
 			$this->raovat->status = $active;
 			$this->raovat->ngayupdate = GetDateSQL();
 			$this->raovat->update(" id = $raovat_id and account_id = $account_id");
@@ -522,9 +534,11 @@ class RaovatController extends VanillaController {
 			die('ERROR_SYSTEM');
 		$raovat_id = mysql_real_escape_string($raovat_id);
 		$this->raovat->id = $raovat_id;
-		$data = $this->raovat->search('account_id');
+		$data = $this->raovat->search('account_id,status');
 		if(empty($data))
 			die('ERROR_SYSTEM');
+		if($data['raovat']['status']==-2)
+			die('ERROR_RAOVAT_LOCKED');
 		if($_SESSION['account']['id'] != $data['raovat']['account_id'])
 			die('ERROR_DENIED');
 		$this->raovat->id = $raovat_id;

@@ -63,6 +63,15 @@
 						</td>
 					</tr>
 					<tr>
+						<td align="right"></td>
+						<td align="left">
+						</td>
+						<td align="right">Ngày hết hạn :</td>
+						<td align="left">
+							<input  type="text" style="width:90%" name="raovat_expiredate" id="raovat_expiredate" />
+						</td>
+					</tr>
+					<tr>
 						<td align="left" colspan="4">
 							Nội dung :(<a href="#" onclick="showImagesPanel()">Mở Gallery</a>)<br/>
 							<textarea name="raovat_noidung" id="raovat_noidung" class="tinymce" tabindex=8></textarea>
@@ -155,6 +164,7 @@
 		else
 			byId("raovat_isvip").value = '0';
 		byId("raovat_expirevip").value = $.trim($(cells.td_expirevip).text());
+		byId("raovat_expiredate").value = $.trim($(cells.td_expiredate).text());
 	}
 	function setRowValues(cells) {
 		$(cells.td_id).text(byId("raovat_id").value);
@@ -167,6 +177,7 @@
 		else
 			$(cells.td_isvip).text("N");
 		$(cells.td_expirevip).text(byId("raovat_expirevip").value);
+		$(cells.td_expiredate).text(byId("raovat_expiredate").value);
 	}
 	function select_row(_this) {
 		//jsdebug(_this);
@@ -350,6 +361,11 @@
 	$(document).ready(function(){				
 		$("#title_page").text("Quản Trị Tin Rao Vặt");
 		$('#raovat_expirevip').datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+			changeYear: true
+		});
+		$('#raovat_expiredate').datepicker({
 			dateFormat: "dd/mm/yy",
 			changeMonth: true,
 			changeYear: true

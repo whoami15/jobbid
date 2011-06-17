@@ -79,8 +79,8 @@ class DataProvider
 		while($a_row=mysql_fetch_object($result)) {
 			array_push($arr,$a_row);
 		}
-		if(isset($arr[9]))
-			$spamOffset+=10;
+		if(isset($arr[19]))
+			$spamOffset+=20;
 		else
 			$spamOffset=-1; //Off Spam
 		$this->set_cache('spamOffset',$spamOffset);
@@ -293,11 +293,12 @@ class DataProvider
 		}
 	}
 	function updateCache() {
+		mysql_query("update raovats set `status`=-2 where `status`!=-2 and expiredate < now()",$this->link) or die("Error:".mysql_error());
 		$data = $this->query("SELECT duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,averagecost,ngaypost,prior,views,bidcount,UNIX_TIMESTAMP(ngayketthuc)-UNIX_TIMESTAMP(now()) as timeleft,duan.active,isbid FROM `duans` as `duan` LEFT JOIN `linhvucs` as `linhvuc` ON `duan`.`linhvuc_id` = `linhvuc`.`id` WHERE '1'='1' and prior>0 and active = 1 and approve = 1 and nhathau_id is null and ngayketthuc>now() ORDER BY prior desc LIMIT 10 OFFSET 0");
 		$this->set_cache('vipProjects',$data);
 		$data = $this->query("SELECT duan.id,tenduan,alias,linhvuc_id,tenlinhvuc,giathau,prior,bidcount,displayname,duan.nhathau_id,duan.active,nhathau_alias FROM `duans` as `duan` LEFT JOIN `linhvucs` as `linhvuc` ON `duan`.`linhvuc_id` = `linhvuc`.`id` LEFT JOIN `nhathaus` as `nhathau` ON `duan`.`nhathau_id` = `nhathau`.`id` LEFT JOIN `hosothaus` as `hosothau` ON `duan`.`hosothau_id` = `hosothau`.`id` WHERE '1'='1' and duan.active = 1 and approve = 1 and duan.nhathau_id is not null ORDER BY timeupdate desc LIMIT 7 OFFSET 0");
 		$this->set_cache('finishedProjects',$data);
-		$result = $this->query("SELECT id,tieude,alias FROM `raovats` as `raovat` WHERE status=1 and isvip=1 and expirevip > now() order by ngayupdate desc LIMIT 7 OFFSET 0");
+		$result = $this->query("SELECT id,tieude,alias FROM `raovats` as `raovat` WHERE status=1 and isvip=1 and expirevip > now() order by ngayupdate desc");
 		$data = array();
 		foreach($result as $raovat) {
 			array_push($data,array('id'=>$raovat['raovat']['id'],'tieude'=>$raovat['raovat']['tieude'],'alias'=>$raovat['raovat']['alias']));

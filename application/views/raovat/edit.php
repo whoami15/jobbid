@@ -154,6 +154,10 @@
 					message("Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn để mở lại!",0);
 					return;
 				}
+				if(data == "ERROR_RAOVAT_LOCKED") {
+					message("Tin rao này đã hết hạn, liên hệ admin@jobbid.vn để biết thêm chi tiết!",0);
+					return;
+				}
 				if(data == AJAX_DONE) {
 					if(active==0)
 						message("Ngưng rao tin thành công! Đang chuyển trang...",1);

@@ -59,6 +59,7 @@
 					?>
 				</td>
 				<td id="td_expirevip" style="display:none"><?php echo $html->format_date($raovat["raovat"]["expirevip"],'d/m/Y') ?></td>
+				<td id="td_expiredate" style="display:none"><?php echo $html->format_date($raovat["raovat"]["expiredate"],'d/m/Y') ?></td>
 				<td id="td_isvip" align="center"><?php echo $raovat["raovat"]["isvip"]==1?"Y":'N' ?></td>
 				<td align="center">
 					<img style="cursor:pointer" onclick="select_row(this)" title="Chỉnh sửa" alt="edit" src="<?php echo BASE_PATH ?>/public/images/icons/edit.png"/>

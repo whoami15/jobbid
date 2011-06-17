@@ -141,6 +141,10 @@
 					location.href = url("/account/login");
 					return;
 				}
+				if(data == "ERROR_RAOVAT_LOCKED") {
+					message("Tin rao này đã hết hạn, liên hệ admin@jobbid.vn để biết thêm chi tiết!",0);
+					return;
+				}
 				if(data == "ERROR_NOTACTIVE") {
 					message('Lỗi! Tài khoản của bạn chưa được active.Vui lòng kiểm tra email để active tài khoản!',0);
 					return;
