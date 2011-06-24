@@ -1,9 +1,0 @@
-[OPTIONS]
-EncryptNewSafenote=1
-AutoSaveWidthL=271
-AutoSaveListItems=1
-AutoForgetTime=120
-EncryptNewIdentity=1
-EncryptNewPasscard=1
-[CHECKED RUN MESSAGES]
-MsgBoxNewAccountWarn=1
