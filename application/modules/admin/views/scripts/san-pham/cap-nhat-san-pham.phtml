@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Cập nhật sản phẩm - Sổ Mua Hàng</title>
+<link rel="stylesheet" href="<?php echo $this->baseUrl()?>/css/form.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $this->baseUrl()?>/css/admin_style1.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $this->baseUrl()?>/css/back/jquery-ui.css" type="text/css" media="screen" />
+<!--Internet Explorer Trancparency fix-->
+<!--[if IE 6]>
+<script src="/<?php echo $this->baseUrl()?>/js/ie6pngfix.js"></script>
+<script>
+  DD_belatedPNG.fix('#head, a, a span, img, .message p, .click_to_close, .ie6fix');
+</script>
+<![endif]--> 
+
+<script type='text/javascript' src='<?php echo $this->baseUrl()?>/js/jquery.js'></script>
+<script type='text/javascript' src='<?php echo $this->baseUrl()?>/js/jquery-ui.js'></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/js/utils.js"></script>
+<script src="<?php echo $this->baseUrl()?>/js/tiny_mce/tiny_mce.js" type="text/javascript" ></script>
+<script src="<?php echo $this->baseUrl()?>/js/jquery.validate.js" type="text/javascript" ></script>
+<script>
+var baseUrl = '<?php echo $this->baseUrl()?>';
+function byId(id) { //Viet tat cua ham document.getElementById
+	return document.getElementById(id);
+}
+tinyMCE.init({
+    theme : "advanced",
+	mode : "textareas",
+	skin : "o2k7",
+	skin_variant : "silver",
+	plugins : "table",
+	theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,tablecontrols,|,outdent,indent,|,undo,redo,|,link,unlink,image,cleanup|preview,|,forecolor,backcolor",
+	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_align : "left",
+	theme_advanced_statusbar_location : "bottom",
+	theme_advanced_resizing : true,
+	content_css : baseUrl+"/css/tinyMCE.css",
+	theme_advanced_buttons3_add : "fullpage"
+
+});
+</script>
+</head>
+<body>
+<fieldset class="form">
+	<legend>CẬP NHẬT SẢN PHẨM</legend>
+	<?php 
+	if($this->flag == 1) {
+	?>
+	<div class="ui-state-highlight ui-corner-all" style=" padding: 0 .7em;">
+		<p style="padding:5px"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+		<strong>Success : </strong> Cập nhật thành công!</p>
+	</div>
+	<?php
+	}
+	?>
+	<form id="form" method="post" enctype="multipart/form-data"  action="<?php echo $this->baseUrl()?>/admin/san-pham/submit-cap-nhat-san-pham">
+	<input type="text" style="display:none" id="id" name="id" value="">
+	<table style="width:100%">
+		<tr>
+			<td class="td_label">Tên sản phẩm <span class="required">*</span> : </td>
+			<td>
+				<input type="text" class="field size2" id="ten_san_pham" name="ten_san_pham" value="">
+				<label for="ten_san_pham" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Danh mục <span class="required">*</span> : </td>
+			<td>
+				<select class="field" id="danhmucgoc_id" name="danhmucgoc_id">
+					<option value="">.:Chọn danh mục gốc:.</option>
+					<?php
+					foreach($this->danhmucgoc as $danhmucgoc)	
+						echo '<option value="'.$danhmucgoc->id.'">'.$danhmucgoc->ten_danh_muc.'</option>';
+					?>
+				</select>
+				<select class="field" name="danhmuccon_id" id="danhmuccon_id" style="display:none"></select>
+				<label for="danhmuccon_id" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Module sản phẩm <span class="required">*</span>: </td>
+			<td>
+				<div id="module_sanpham" style="width:600px">
+					<?php
+					foreach($this->modules as $module) {
+						$checked = '';
+						if(isset($this->sanpham_modules[$module->ma_module])) $checked='checked';
+						echo '<span class="checkbox_module"><input id="chkModuleSanPham_'.$module->ma_module.'" type="checkbox" name="chkModuleSanPham[]" value="'.$module->ma_module.'" '.$checked.' /><label for="chkModuleSanPham_'.$module->ma_module.'">'.$module->ten_module.' </label></span>';
+					}
+					?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Tình trạng : </td>
+			<td>
+				<input type="radio" id="tinh_trang_new" value="1" name="tinh_trang" checked="checked">
+				<label for="tinh_trang_new">Mới 100%</label>
+				<input type="radio" id="tinh_trang_secondhand" value="2" name="tinh_trang">
+				<label for="tinh_trang_secondhand">Đã qua sử dụng</label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Loại giá : </td>
+			<td>
+				<select class="field" name="loai_gia" id="loai_gia" >
+					<option value="1">Bình thường</option>
+					<option value="2">Khuyến mãi</option>
+					<option value="3">Vui lòng gọi</option>
+				</select>
+			</td>
+		</tr>
+		<tr id="tr_gia_san_pham">
+			<td class="td_label">Giá sản phẩm: </td>
+			<td>
+				<input type="text" class="field size1" id="gia_san_pham" name="gia_san_pham">
+				<span class="hint">VNĐ</span>
+			</td>
+		</tr>
+		<tr id="tr_giakhuyenmai">
+			<td class="td_label">Giá khuyến mãi: </td>
+			<td>
+				<input type="text" class="field size1" id="gia_ban" name="gia_ban">
+				<span class="hint">VNĐ</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Nơi bán: </td>
+			<td>
+				<select class="field" id="noi_ban" name="noi_ban">
+					<option value="0">Toàn quốc</option>
+					<?php
+					foreach($this->tinhthanh as $tinhthanh)	
+						echo '<option value="'.$tinhthanh->id.'">'.$tinhthanh->ten_tinh_thanh.'</option>';
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Bảo hành: </td>
+			<td>
+				<input type="text" class="field size2" id="bao_hanh" name="bao_hanh">
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Trạng thái: </td>
+			<td>
+				<input type="radio" id="state_hienthi" value="1" name="trang_thai" checked="checked">
+				<label for="state_hienthi">Hiển thị</label>
+				<input type="radio" id="state_an" value="2" name="trang_thai">
+				<label for="state_an">Ẩn</label>
+				<input type="radio" id="state_hethang" value="3" name="trang_thai">
+				<label for="state_hethang">Hết hàng</label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Ảnh sản phẩm: </td>
+			<td>
+				<input type="file" id="upload_image" name="upload_image" style="display:none"/>
+				<div id="image_zone">
+				<a href="#" class="wraptocenter imglogo">
+					<img src="<?php echo $this->baseUrl().$this->sanpham['path_thumb']?>" />
+				</a>
+				<span id="btChangeImage" class="link">Thay ảnh khác?</span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Chi tiết sản phẩm: </td>
+			<td>
+				<textarea style="width:600px" name="chi_tiet"><?php echo $this->sanpham['chi_tiet']?></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label"></td>
+			<td>
+				<button id="btSave">Lưu</button>
+				<input id="btClose" type="button" onclick="doClose()" value="Thoát"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</fieldset>
+</body>
+</html>
+<script>
+<?php
+foreach($this->sanpham as $field=>$value) {
+	if($field != 'chi_tiet') {
+	?>
+	var <?php echo $field?> = '<?php echo $value?>';
+	$("#<?php echo $field?>").val('<?php echo $value?>');
+	<?php
+	}
+}
+?>
+var flag = '<?php echo $this->flag?>';
+function doClose(){
+if(flag == '1')
+	window.opener.oTable.fnDraw(false);
+window.close();
+}
+$(document).ready(function(){	
+	$('#btSave').button({
+		disabled: null,
+		icons: {
+			primary: "ui-icon-circle-plus"
+		}
+	});
+	$('#btClose').button({
+		disabled: null,
+		icons: {
+			primary: "ui-icon-close"
+		}
+	});
+	$("#form").validate({
+		onkeyup: false,
+		onfocusout:false,
+		rules: {
+			ten_san_pham: {
+				required: true
+			},
+			danhmucgoc_id: {
+				required: true
+			}
+		},
+		messages: {
+			ten_san_pham: "Vui lòng nhập tên sản phẩm!",
+			danhmucgoc_id: "Vui lòng chọn danh mục sản phẩm!"
+		}
+	});
+	$("#btChangeImage").click(function(){
+		$("#image_zone").remove();
+		$("input#upload_image").show();
+	});
+	$("#btSave").click(function(){
+		$(this).button({disabled: true});
+		$("#module_sanpham").css("border","");
+		if(!$("#form").valid()) {
+			alert("Dữ liệu nhập chưa hợp lệ, vui lòng kiểm tra lại!");
+			$(this).button({disabled: null});
+			return false;
+		} else {
+			if($("#module_sanpham input:checkbox:checked").length == 0) {
+				alert('Vui lòng chọn 1 module sản phẩm!');
+				$("#module_sanpham").css("border","1px solid red");
+				$(this).button({disabled: null});
+				return false;
+			}
+			byId("form").submit();
+			return false;
+		}
+	});
+	$("select#danhmucgoc_id").change(function(){
+		var danhmuccon = $("#danhmuccon_id");
+		if(this.value == '') {
+			danhmuccon.hide();
+			return;
+		}
+		$.get(baseUrl+"/admin/ajax/load-danh-muc-con/id/"+this.value, function(data){
+			if(data.rs == 'ERROR') {
+				ajax_error(data.data);
+			} else if( data.rs == 'OK'){
+				danhmuccon.empty();
+				$.each(data.data,function(){
+					danhmuccon.append('<option value="'+this.id+'">'+this.ten_danh_muc+'</option>');
+				});
+				if(danhmuccon_id != null)
+					danhmuccon.val(danhmuccon_id);
+				danhmuccon.show();
+			}
+		});
+	});
+	$("select#loai_gia").change(function(){
+		var value = this.value;
+		if(value == '1') {//gia thuong
+			$("tr#tr_gia_san_pham").show();
+			$("tr#tr_giakhuyenmai").hide();
+		} else if (value == '2') { //gia khuyen mai
+			$("tr#tr_gia_san_pham").show();
+			$("tr#tr_giakhuyenmai").show();
+		} else { //vui long goi
+			$("tr#tr_gia_san_pham").hide();
+			$("tr#tr_giakhuyenmai").hide();
+		}
+	});
+	/* $(document).delegate("span.checkbox_module input","click",function(){
+		var span_sosanpham = $(this).nextAll('.sosanpham');
+		var sosanpham = parseInt(span_sosanpham.text());
+		if(this.checked == true) {
+			span_sosanpham.text(sosanpham+1);
+		} else {
+			span_sosanpham.text(sosanpham - 1);
+		}
+	}); */
+	$('select#loai_gia').trigger('change');
+	$('select#danhmucgoc_id').trigger('change');
+	if(tinh_trang == '1') {
+		byId("tinh_trang_new").checked = true;
+	} else {
+		byId("tinh_trang_secondhand").checked = true;
+	}
+	if(trang_thai == '1') {
+		byId("state_hienthi").checked = true;
+	} else if (trang_thai == '2') {
+		byId("state_an").checked = true;
+	} else {
+		byId("state_hethang").checked = true;
+	}
+});
+</script>

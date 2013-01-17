@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl()?>/css/admin_style1.css" type="text/css" media="screen" />
+<fieldset class="form">
+	<legend>THÊM HÌNH ẢNH</legend>
+	<form id="form" method="post" enctype="multipart/form-data" action="">
+	<table style="width:40%">
+		<tr>
+			<td class="td_label">Chọn ảnh: </td>
+			<td>
+				<input type="file" name="upload_image"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Thứ tự: </td>
+			<td>
+				<select name="stt">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label"></td>
+			<td>
+				<input type="submit" id="btSave" value="Thêm"/>
+				<input id="btReturn" type="button" onclick='location.href="<?php echo $this->baseUrl()?>/admin/slide"' value="Trở về"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</fieldset>
+<script>
+$(document).ready(function(){	
+	$('#btSave').button({
+		disabled: null,
+		icons: {
+			primary: "ui-icon-circle-plus"
+		}
+	});
+	$('#btReturn').button({
+		disabled: null,
+		icons: {
+			primary: "ui-icon-arrowreturnthick-1-w"
+		}
+	});
+});
+</script>

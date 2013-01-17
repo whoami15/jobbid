@@ -1,0 +1,172 @@
+body {
+    background:  #FFF;
+    color: #484848;
+    font-family: Verdana,sans-serif;
+    font-size: 12px;
+    position: relative;
+}
+
+table.input
+{
+background: none repeat scroll 0 0 #F2F2F2;
+border: 1px solid #DDDDDD;
+border-collapse: separate;
+margin: 0 auto;
+padding-top: 10px;
+}
+table.input td
+{
+	padding: 5px;
+}
+table.display
+{
+	border-collapse: collapse;
+	width:100%;
+}
+table.display th
+{
+	background-color: #F2F2F2;
+    border: 1px solid #DDDDDD;
+    padding: 3px;
+}
+table.display td
+{
+	border:1px solid #DDD;
+	padding: 3px;
+}
+.blue {
+color: blue;
+}
+#dataTable_filter{
+display:none
+}
+label {
+
+}
+fieldset.form {
+-moz-border-bottom-colors: none;
+-moz-border-image: none;
+-moz-border-left-colors: none;
+-moz-border-right-colors: none;
+-moz-border-top-colors: none;
+border-color: #FFFFFF #666661 #666661 #FFFFFF;
+border-style: solid;
+border-width: 1px;
+margin-bottom: 36px;
+padding: 10px;
+width: 97%;
+}
+dl {
+  clear: both;
+}
+dt {
+  float: left;
+  line-height: 25px;
+  margin: 0 10px 10px 0;
+  text-align: right;
+}
+dd {
+  float: left;
+  line-height: 25px;
+  margin: 0 0 10px;
+}
+a.ovalbutton{
+background: transparent url('images/oval-blue-left.gif') no-repeat top left;
+display: block;
+float: left;
+font: normal 13px Tahoma; /* Change 13px as desired */
+line-height: 16px; /* This value + 4px + 4px (top and bottom padding of SPAN) must equal height of button background (default is 24px) */
+height: 24px; /* Height of button background height */
+padding-left: 11px; /* Width of left menu image */
+text-decoration: none;
+padding-right: 10px;
+}
+
+a:link.ovalbutton, a:visited.ovalbutton, a:active.ovalbutton{
+color: #494949; /*button text color*/
+}
+
+a.ovalbutton span{
+background: transparent url('images/oval-blue-right.gif') no-repeat top right;
+display: block;
+padding: 4px 11px 4px 0; /*Set 11px below to match value of 'padding-left' value above*/
+}
+
+a.ovalbutton:hover{ /* Hover state CSS */
+background-position: bottom left;
+}
+
+a.ovalbutton:hover span{ /* Hover state CSS */
+background-position: bottom right;
+color: black;
+}
+
+.buttonwrapper{ /* Container you can use to surround a CSS button to clear float */
+overflow: hidden; /*See: http://www.quirksmode.org/css/clearing.html */
+width: 100%;
+}
+.button {
+cursor:pointer;
+}
+select {
+}
+label.error, span.error {
+color:red;
+}
+
+input.error, select.error {
+border: 1px solid red;
+}
+.success {
+	color:green;
+}
+.positive {	  /* Positive message DIV */
+background-color: #C8FFA4;
+background-image: url("images/positive.png");
+background-position: 2px 2px;
+background-repeat: no-repeat;
+border: 1px solid #348300;
+height: 20px;
+left: 0;
+margin-bottom: 2px;
+padding-top: 2px;
+position: fixed;
+top: 0;
+width: 100%;
+z-index: 1;
+display:none;
+}
+
+.negative {	  /* Negative message DIV */
+background-color: #FFA4AA;
+background-image: url("images/negative.png");
+background-position: 2px 1px;
+background-repeat: no-repeat;
+border: 1px solid #800000;
+height: 20px;
+margin-bottom: 2px;
+padding-top: 2px;
+position: fixed;
+width: 100%;
+z-index: 1;
+display:none;
+top: 0;
+left: 0;
+}
+.button {
+cursor: pointer;
+height: 30px;
+}
+a.delete_icon {
+background-image: url("images/delete-icon.png");
+cursor: pointer;
+height: 30px;
+position: absolute;
+right: 0;
+top: 0;
+width: 30px;
+display:block
+}
+a.delete_icon:hover {
+background-position: 0 30px;
+}

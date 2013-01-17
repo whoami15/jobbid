@@ -1,0 +1,227 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/css/demo_table_jui.css" />
+<fieldset class="form">
+	<legend>QUẢN LÝ SẢN PHẨM</legend>
+	<div style="float:right">
+	<div class="admin_icon" title="Tạo mới" onclick='location.href = "<?php echo $this->baseUrl()?>/admin/san-pham/them-san-pham"'>
+		<img alt="Add" src="<?php echo $this->baseUrl()?>/icons/add_32.png"/>
+		<span>Tạo Mới</span>
+	</div>
+	<div class="admin_icon" title="Hết hàng" id="btSoldOut">
+		<img alt="Hết hàng" src="<?php echo $this->baseUrl()?>/icons/sold_out_32.png"/>
+		<span>Hết Hàng</span>
+	</div>
+	<div class="admin_icon" title="Xóa" id="btXoa">
+		<img alt="Xóa" src="<?php echo $this->baseUrl()?>/icons/delete_32.png"/>
+		<span>Xóa</span>
+	</div>
+	</div>
+</fieldset>
+<div style="margin:10px">
+<div id="divSearch" style="width: 100%; text-align: right; padding-bottom: 5px;">
+<form id="formSearch" onsubmit="return false;">
+<input type="text" class="field" name="ten_san_pham" placeholder="Tên sản phẩm..." />
+<select class="field" name="danhmucgoc_id">
+	<option value="">.:Tất cả danh mục:.</option>
+	<?php
+	foreach($this->list_danhmucgoc as $danhmucgoc)	
+		echo '<option value="'.$danhmucgoc->id.'">'.$danhmucgoc->ten_danh_muc.'</option>';
+	?>
+</select>
+<select class="field" name="trang_thai">
+	<option value="">.:Tất cả trạng thái:.</option>
+	<option value="1">Hiện</option>
+	<option value="2">Ẩn</option>
+	<option value="3">Hết hàng</option>
+</select>
+<button id="btSearch" onclick="doSearch()" style="margin-left:5px">Tìm Kiếm</button>
+</form>
+</div>
+<table width="100%" id="dataTable" class="display">
+<thead>
+	<tr>
+		<th width="5%">#</th>
+		<th>id</th>
+		<th>Tên sản phẩm</th>
+		<th>Danh mục</th>
+		<th>Giá bán</th>
+		<th width="100px">Trạng thái</th>
+		<th width="5px">Sửa</th>
+		<th width="5px" align="center"><input type="checkbox" onclick="selectAll(this)"/></th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<td colspan="7" class="dataTables_empty">Đang tải dữ liệu...</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/js/jquery.placeholder.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl()?>/js/jquery.dataTables.min.js"></script>
+<script>
+jQuery.fn.dataTableExt.oApi.fnSetFilteringPressEnter = function (oSettings) {
+    var _that = this;
+    this.each(function (i) {
+        $.fn.dataTableExt.iApiIndex = i;
+        var $this = this;
+        var anControl = $('input', _that.fnSettings().aanFeatures.f);
+        anControl.unbind('keyup').bind('keypress', function (e) {
+            if (e.which == 13) {
+                $.fn.dataTableExt.iApiIndex = i;
+                _that.fnFilter(anControl.val());
+            }
+        });
+        return this;
+    });
+    return this;
+}
+function openWindow(url) {
+	//window.open(url,"Popup Window",'resizable=yes,menubar=no,toolbar=no,status=no,width=1000');
+	window.open(url);
+}
+function selectAll(_this) {
+	$('#dataTable input[type=checkbox]').each(function(){
+		this.checked=_this.checked;
+	});
+}
+var pre_selected = null;
+function doCheck(iDataIndex) {
+	if(pre_selected!=null) {
+		$(pre_selected).toggleClass('selected_row');
+		pre_selected = null;
+	}
+	var tr = oTable.fnGetNodes(iDataIndex);
+	$(tr).toggleClass('selected_row');
+}
+function doSearch() {
+	var frm = $('#formSearch');
+	var dat = stringify(frm.serializeArray());
+	oTable.fnFilter(dat);
+	return false;
+}
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        doSearch();
+    }
+});
+$(document).ready(function(){
+	$("#divSearch input[type=text]").focus(function(){
+		$(this).select();
+	});
+	$('#btSearch').button({
+		disabled: null,
+		icons: {
+			primary: "ui-icon-search"
+		}
+	});
+	$('input[placeholder], textarea[placeholder]').placeholder();
+	$(document).delegate("#btXoa:not(.deactive)","click",function(){
+		dataString = '';
+		$("#dataTable tbody input[type=checkbox]:checked").each(function(){
+			dataString+='&id[]='+this.value;
+		});
+		if(dataString == '') {
+			alert('Bạn chưa chọn sản phẩm cần xóa!');
+			return;
+		}
+		if(!confirm('Bạn muốn xóa những sản phẩm đã chọn?'))
+			return;
+		$("#btXoa").addClass("deactive").find('span').text("Đang xóa...");
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url : baseUrl+'/admin/san-pham/delete',
+			data: dataString,
+			success: function(data){
+				$("#btXoa").removeClass("deactive").find('span').text("Xóa");
+				if(data.rs == 'ERROR') {
+					ajax_error(data.data);
+				} else {
+					oTable.fnDraw(false);
+				}
+			},
+			error: function(data){ alert (data);$("#btXoa").removeClass("deactive").find('span').text("Xóa");}	
+		});	
+	});
+	$(document).delegate("#btSoldOut:not(.deactive)","click",function(){
+		dataString = '';
+		$("#dataTable tbody input[type=checkbox]:checked").each(function(){
+			dataString+='&id[]='+this.value;
+		});
+		if(dataString == '') {
+			alert('Bạn chưa chọn sản phẩm cần cập nhật!');
+			return;
+		}
+		if(!confirm('Bạn muốn cập nhật trạng thái những sản phẩm đã chọn?'))
+			return;
+		$("#btSoldOut").addClass("deactive").find('span').text("Đang xử lý...");
+		$.ajax({
+			type: "GET",
+			cache: false,
+			url : baseUrl+'/admin/san-pham/sold-out',
+			data: dataString,
+			success: function(data){
+				$("#btSoldOut").removeClass("deactive").find('span').text("Hết Hàng");
+				if(data.rs == 'ERROR') {
+					ajax_error(data.data);
+				} else {
+					oTable.fnDraw(false);
+				}
+			},
+			error: function(data){ alert (data);$("#btSoldOut").removeClass("deactive").find('span').text("Hết Hàng");}	
+		});	
+	});
+	oTable = $('#dataTable').dataTable({
+		"bJQueryUI": true,
+		"bProcessing": true,
+		"bScrollCollapse": true,
+		"bServerSide": true,
+		"bAutoWidth": false,
+		"sAjaxSource": baseUrl+'/admin/san-pham/list',
+		"aoColumns": [
+					{ "mDataProp": null,"bSortable": false,"fnRender" : function(oObj) { return oObj.iDataRow+1}},
+					{ "mDataProp": "id","bSortable": false,"sClass":"hidden"},
+					{ "mDataProp": "ten_san_pham","bSortable": false},
+					{ "mDataProp": "danhmucgoc","bSortable": false},
+					{ "mDataProp": "gia_ban","bSortable": false},
+					{ 	"mDataProp": null,"bSortable": false,"sClass": "td_center",
+						"fnRender": function( oObj ) {
+							if(oObj.aData.trang_thai == '1') {
+								return 'Hiện';
+							} else if(oObj.aData.trang_thai == '2') {
+								return 'Ẩn';
+							} else {
+								return "Hết hàng";
+							}
+						}
+					},
+					{ 	"mDataProp": null,"bSortable": false,
+						"fnRender": function( oObj ) {
+							return '<center><a target="_blank" href="'+baseUrl+"/admin/san-pham/cap-nhat-san-pham/id/"+oObj.aData.id+'"><img title="Edit" src="'+baseUrl+'/images/icons/edit.png"/></a></center>'; 
+						}
+					},
+					{ 	"mDataProp": null,"bSortable": false,
+						"fnRender": function( oObj ) {
+							return '<center><input type="checkbox" onclick="doCheck('+oObj.iDataRow+')" value="'+oObj.aData.id+'"/></center>'; 
+						}
+					}
+				],
+		"fnServerData": function ( sSource, aoData, fnCallback ) {
+			$.ajax( {
+				"dataType": 'json', 
+				"type": "POST", 
+				"url": sSource, 
+				"data": aoData, 
+				"success": function(data){
+					if(data.rs == 'ERROR') {
+						ajax_error(data.data);
+					} else {
+						fnCallback(data);
+					}
+				}
+			} );
+		},
+		"sPaginationType": "two_button"
+	}).fnSetFilteringPressEnter();
+});
+</script>

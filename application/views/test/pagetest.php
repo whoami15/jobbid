@@ -1,1 +1,0 @@
-<a href="<?php echo BASE_PATH?>/test/process">Process1</a><br/><a href="<?php echo BASE_PATH?>/test/process">Process2</a><br/><a href="<?php echo BASE_PATH?>/test/process">Process3</a><br/><a href="<?php echo BASE_PATH?>/test/process">Process4</a><br/>Total Process: <?php echo $totalProcess ?>

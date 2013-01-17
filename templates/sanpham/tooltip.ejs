@@ -1,0 +1,23 @@
+<div id="view_tooltip">
+	<span class="ten_san_pham"><%= ten_san_pham %></span>
+	<span class="price">
+	<%
+	if(trang_thai == 3) {
+		%>Hết hàng<%;
+	} else {
+		if(loai_gia == 3) {
+			%>Vui lòng gọi<%;
+		} else {
+			if (loai_gia == 2) {
+				%>
+				<span class="old_price" style="display:inline;padding-right:10px"><%= formatMoney(gia_san_pham) %> VNĐ</span>
+				<%
+			}
+			%> <%= formatMoney(gia_ban) %> VNĐ<%
+		}
+	}
+	%>
+	</span>
+	<span class="ten_gian_hang">Gian hàng : <%= ten_gian_hang %></span>
+	<center><img src="<%= baseUrl + path %>"/></center>
+</div>

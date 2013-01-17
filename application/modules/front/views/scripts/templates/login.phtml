@@ -1,0 +1,35 @@
+<div class="small_box_container">
+	<?php
+	if(isset($this->taikhoan)) {
+	?>
+	<div class="header">THÔNG TIN TÀI KHOẢN</div>
+	<div class="content" style="padding:5px">
+	Xin chào <strong><?php echo $this->taikhoan->ho_ten?></strong>
+	<ul class="link" style="margin-top:10px">
+		<li><a class="link" href="<?php echo $this->baseUrl().'/'.$this->taikhoan->ma_gian_hang?>">Trang gian hàng của bạn.</a></li>
+		<li><a class="link" href="<?php echo $this->baseUrl()?>/admin/san-pham/xem-danh-sach">Trang quản trị gian hàng.</a></li>
+		<li><a class="link" href="<?php echo $this->baseUrl()?>/front/tai-khoan/doi-mat-khau">Thay đổi mật khẩu.</a></li>
+		<li><a class="link" href="<?php echo $this->baseUrl()?>/front/tai-khoan/logout">Thoát.</a></li>
+	</ul>
+	</div>
+	<?php
+	} else {
+	?>
+	<div class="header">ĐĂNG NHẬP</div>
+	<div class="content login">
+	<form id="login" action="<?php echo $this->baseUrl()?>/front/tai-khoan/do-login" method="POST">
+	Tên đăng nhập :<br/>
+	<input type="text" class="text" name="username">
+	Mật khẩu :<br/>
+	<input type="password" class="text" name="password">
+	<center><button id="btDangNhap" type="submit">Đăng Nhập</button></center>
+	</form>
+	<ul class="link" style="margin-top:10px">
+		<li><a class="link" href="<?php echo $this->baseUrl()?>/front/tai-khoan/dang-ky">Tạo mới tài khoản</a></li>
+		<li><a class="link" href="<?php echo $this->baseUrl()?>/front/tai-khoan/cap-lai-mat-khau">Quên mật khẩu?</a></li>
+	</ul>
+	</div>
+	<?php
+	}
+	?>
+</div>

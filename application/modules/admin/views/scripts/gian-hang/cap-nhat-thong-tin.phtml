@@ -1,0 +1,142 @@
+<?php
+$baseUrl = $this->baseUrl();
+?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl()?>/css/admin_style1.css" type="text/css" media="screen" />
+<script src="<?php echo $this->baseUrl()?>/js/jquery.validate.js" type="text/javascript" ></script>
+<fieldset class="form">
+	<legend>CẬP NHẬT THÔNG TIN GIAN HÀNG</legend>
+	<form id="form" method="post" action="">
+	<table style="width:42%">
+		<?php
+		if(isset($this->success_msg)) {
+		?>
+		<tr>
+			<td class="td_label"></td>
+			<td>
+				<div class="ui-state-highlight ui-corner-all" style=" padding: 0 .7em;">
+					<p style="padding: 5px; color: green;"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+					<strong>Success : </strong> <?php echo $this->success_msg?></p>
+				</div>
+			</td>
+		</tr>
+		<?php }?>
+		<tr>
+			<td class="td_label">Email gian hàng <span class="required">*</span> : </td>
+			<td>
+				<input type="text" class="input" id="email_gianhang" name="email_gianhang" value="<?php echo $this->taikhoan->email_gianhang?>">
+				<label for="email_gianhang" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Họ tên <span class="required">*</span> : </td>
+			<td>
+				<input type="text" class="input" id="ho_ten" name="ho_ten" value="<?php echo $this->taikhoan->ho_ten?>">
+				<label for="ho_ten" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Tên công ty/ cửa hàng <span class="required">*</span> : </td>
+			<td>
+				<input type="text" class="input" id="ten_gian_hang" name="ten_gian_hang" value="<?php echo $this->taikhoan->ten_gian_hang?>">
+				<label for="ten_gian_hang" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Điện thoại <span class="required">*</span> : </td>
+			<td>
+				<input type="text" class="input" id="dien_thoai" name="dien_thoai" value="<?php echo $this->taikhoan->dien_thoai?>">
+				<label for="dien_thoai" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Địa chỉ <span class="required">*</span> : </td>
+			<td>
+				<input type="text" class="input" id="dia_chi" name="dia_chi" value="<?php echo $this->taikhoan->dia_chi?>">
+				<label for="dia_chi" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Tỉnh thành <span class="required">*</span> : </td>
+			<td>
+				<select id="tinhthanh_id" name="tinhthanh_id">
+					<option value="">--Chọn tỉnh thành---</option>
+					<?php 
+					foreach($this->tinhthanh as $tinhthanh) {
+						echo "<option value='$tinhthanh->id'>$tinhthanh->ten_tinh_thanh</option>";
+					}
+					?>
+				</select>
+				<label for="tinhthanh_id" generated="false" class="error"></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Yahoo : </td>
+			<td>
+				<input type="text" class="input" id="yahoo" name="yahoo" value="<?php echo $this->taikhoan->yahoo?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Slogan : </td>
+			<td>
+				<input type="text" class="input" id="slogan" name="slogan" value="<?php echo $this->taikhoan->slogan?>">
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label"></td>
+			<td>
+				<button id="btSubmit">Cập Nhật</button>
+			</td>
+		</tr>
+	</table>
+	</form>
+</fieldset>
+<script>
+var tinhthanh_id = '<?php echo $this->taikhoan->tinhthanh_id?>'
+$(document).ready(function(){	
+	$("#tinhthanh_id").val(tinhthanh_id);
+	$("#form").validate({
+		onkeyup: false,
+		onfocusout:false,
+		rules: {
+			email_gianhang: {
+				required: true,
+				email :true
+			},
+			ho_ten: {
+				required: true
+			},
+			ten_gian_hang: {
+				required: true
+			},
+			dien_thoai: {
+				required: true
+			},
+			dia_chi: {
+				required: true
+			},
+			tinhthanh_id: {
+				required: true
+			}
+		},
+		messages: {
+			ho_ten: "Vui lòng nhập họ tên",
+			email_gianhang: {
+				required: "Vui lòng nhập email",
+				email : "Email không hợp lệ"
+			},
+			ten_gian_hang: {
+				required: "Vui lòng nhập tên gian hàng"
+			},
+			dien_thoai: {
+				required: "Vui lòng nhập số điện thoại"
+			},
+			dia_chi: {
+				required: "Vui lòng nhập địa chỉ liên hệ"
+			},
+			tinhthanh_id: {
+				required: "Vui lòng chọn tỉnh thành"
+			}
+		}
+	});
+});
+</script>

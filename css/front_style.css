@@ -1,0 +1,214 @@
+html, body {
+height: 100%;
+margin: 0;
+}
+
+body {
+color: #333333;
+font: 13px/18px Tahoma,Geneva,sans-serif;
+}
+.gradients {
+}
+#header {
+border-bottom: 1px solid #BBBBBB;
+height: 30px;
+position: relative;
+width: 100%;
+}
+#header #menu_bar {
+left: 0;
+position: absolute;
+text-align: left;
+top: 5px;
+width: 100%;
+}
+#header #menu_bar > a {
+padding-right: 15px;
+}
+.color-oran {
+  color: #FF670F;
+}
+#main {
+display: inline-block;
+margin-left: 0;
+padding-bottom: 10px;
+padding-top: 2px;
+width: 978px;
+}
+#page {
+position:relative
+}
+#footer {
+bottom: 0;
+height: 80px;
+position: relative;
+width: 100%;
+background-image:url('images/bg_footer.png');
+}
+#footer #menu_bar {
+border-top: 1px solid #BBBBBB;
+height: 20px;
+left: 0;
+position: absolute;
+top: 0;
+width: 100%;
+}
+#left_col {
+float: left;
+padding-left: 2px;
+position: relative;
+width: 180px;
+}
+#right_col {
+position:relative;
+width:786px;
+float:right;
+}
+ol, ul {
+  list-style: none outside none;
+}
+h2 {
+  margin-bottom: 10px;
+}
+.small_box_container {
+background-color: #FFFFFF;
+border: 1px solid #CCCCCC;
+display: block;
+float: left;
+margin-bottom: 10px;
+min-height: 50px;
+position: relative;
+width: 180px;
+}
+.small_box_container div.header {
+background-color: #252A30;
+background-repeat: repeat-x;
+color: #FFFFFF;
+display: block;
+font-size: 13px;
+font-weight: bold;
+height: 25px;
+margin: 1px;
+padding-left: 5px;
+padding-top: 6px;
+text-transform: uppercase;
+}
+.small_box_container div.content {
+text-align:left;
+}
+.vip_sanpham_container {
+  display: block;
+  float: left;
+  height: 250px;
+  margin: 9px;
+  position: relative;
+  text-align: center;
+  width: 175px;
+}
+.wraptocenter {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.sanpham_image_thumb {
+  cursor: pointer;
+  height: 150px;
+  width: 150px;
+}
+a {
+color: navy;
+outline: medium none;
+text-decoration: none;
+}
+a:hover {
+    color: #EEB10D;
+	text-decoration:underline;
+}
+.wraptocenter * {
+  vertical-align: middle;
+}
+img {
+  border: medium none;
+}
+.vip_sanpham_container .title {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+.vip_sanpham_container span.price {
+  color: #CC0033;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  padding-top: 5px;
+}
+#paging {
+display: block;
+float: left;
+height: 50px;
+text-align: center;
+width: 100%;
+}
+#paging .link {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.link {
+  color: blue;
+  cursor: pointer;
+}
+
+.vip_sanpham_container img {
+border: 1px solid #BBBBBB;
+margin-bottom: 5px;
+padding: 2px;
+}
+
+button.ui-button-icon-only {
+  height: 25px;
+  width: 25px;
+}
+
+.placeholder {color: gray !important;}
+.button {
+color: Green;
+cursor: pointer;
+font-family: arial;
+font-weight: bold;
+padding: 2px 5px;
+}
+.color-red {
+  color: #AC0404;
+}
+.font-bigger {
+  font-size: 1.6em;
+  font-weight: bold;
+}
+.font-normal {
+  font-size: 1em;
+  font-weight: bold;
+}
+.wraptocenter {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.wraptocenter * {
+    vertical-align: middle;
+}
+/*\*//*/
+.wraptocenter {
+    display: block;
+}
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+    width: 1px;
+}
+/**/
+.logo {
+display: block;
+float: left;
+}

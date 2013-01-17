@@ -1,0 +1,33 @@
+<?php
+$baseUrl = $this->baseUrl();
+?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl()?>/css/admin_style1.css" type="text/css" media="screen" />
+<fieldset class="form">
+	<legend>CẬP NHẬT LOGO GIAN HÀNG</legend>
+	<form id="form" method="POST" enctype="multipart/form-data" action="">
+	<table style="width:100%">
+		<tr>
+			<td class="td_label">Logo hiện tại : </td>
+			<td>
+				<img height="100px" src="<?php echo $baseUrl.$this->logo_url?>" alt="Logo"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label">Logo mới : </td>
+			<td>
+				<input type="file" id="logo" name="logo">
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<button id="btSubmit">Cập Nhật</button>
+			</td>
+		</tr>
+	</table>
+	</form>
+</fieldset>
+<script>
+$(document).ready(function(){	
+});
+</script>

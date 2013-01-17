@@ -1,0 +1,12 @@
+#tr_giakhuyenmai {
+display:none
+}
+span.checkbox_module {
+margin-right: 20px;
+}
+span.checkbox_module span.sosanpham {
+color:red;
+}
+input.error, select.error {
+border:1px solid red;
+}

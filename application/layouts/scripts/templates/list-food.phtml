@@ -1,0 +1,24 @@
+<table border="1">
+	<thead>
+		<th>STT</th>
+		<th>Tên món ăn</th>
+		<th>Đơn giá</th>
+		<th>Số lượng</th>
+	</thead>
+	<tbody>
+	<?php
+	$i = 1;
+	foreach($this->foods as $food) {
+		?>
+		<tr>
+			<td><?php echo $i?></td>
+			<td><?php echo $food->name_vi.' | '.$food->name_en?></td>
+			<td><?php echo $food->price?></td>
+			<td><?php echo $food->quantity?></td>
+		</tr>
+		<?php
+		$i++;
+	}
+	?>
+	</tbody>
+</table>
