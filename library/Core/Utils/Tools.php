@@ -60,4 +60,8 @@ class Core_Utils_Tools
 		}
 		//return ord($email)  & 0x1FE;
 	}
+	public static function substr($str,$len=255) {
+		if(mb_strlen($str,'UTF-8') <= $len) return $str;
+		return mb_substr($str, 0, $len,'UTF-8').'...';
+	}
 }

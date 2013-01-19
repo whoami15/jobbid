@@ -26,6 +26,7 @@ class Front_JobController extends Zend_Controller_Action
             	$secId = Core_Utils_Tools::genKey();
             	$jobId = $modelJob->insert(array(
             		'id' => null,
+            		'title' => $form_data['company'].' - '.$form_data['job_title'],
             		'account_id' => 1,
             		'company_id' => $companyId,
             		'job_title_id' => $jobTitleId,

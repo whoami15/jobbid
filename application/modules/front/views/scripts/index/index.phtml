@@ -7,15 +7,29 @@ $baseUrl = $this->baseUrl();
     height: 100%;
 }
 </style><![endif]-->
-<div id="left_col">
-	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
-				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
-</div>
+<?php echo $this->render('/templates/left.phtml')?>
 <div id="right_col">
+	<div id="search">
+		<?php echo $this->form?>
+	</div>
+	<?php
+	foreach($this->jobs as $job) {
+		?>
+		<div class="row">
+			<a href="#" title="<?php echo $job['title']?>"><?php echo Core_Utils_Tools::substr($job['title'],150)?></a>
+			<span class="line2"><a href="#" style="color:green"><?php echo $job['company']?></a> - <a style="color:gray" href="#"><?php echo $job['name_city']?></a></span>
+			<span class="line3"><?php echo Core_Utils_Tools::substr($job['job_description'])?></span>
+			<span class="line4"><abbr class="timeago" title="<?php echo $job['time_update']?>"></abbr></span>
+		</div>
+		<?php
+	}
+	?>
 	
 </div>
 </div>
 <script>
-$(document).ready(function(){	
+$(document).ready(function(){
+	$("abbr.timeago").timeago();
+	$('input[placeholder], textarea[placeholder]').placeholder();
 });
 </script>

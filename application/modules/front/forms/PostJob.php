@@ -19,14 +19,14 @@ class Front_Form_PostJob extends Zend_Form {
 		
 		$this->addElement ( 'Textarea', 'job_description', array (
 			'required' => true, 
-			'filters' => array ('StringTrim' ), 'attribs' => array ('class' => '', 'rows' => 5 ) ) 
+			'filters' => array ('StringTrim' ), 'attribs' => array ('class' => '', 'rows' => 10,'style' => 'width:100%' ) ) 
 		);
 		$cities = Application_Model_DbTable_City::findAll ();
 		$array = array ('' => 'Cả nước' );
 		foreach ( $cities as $city ) {
 			$array [$city ['id']] = $city ['name_city'];
 		}
-		$this->addElement ( 'Select', 'city', array ('multiOptions' => $array ) );
+		$this->addElement ( 'Select', 'city_id', array ('multiOptions' => $array ) );
 		$this->addElement ( 'Text', 'email_to', array (
 			'required' => true, 
 			'validators' => array ('EmailAddress' ), 
