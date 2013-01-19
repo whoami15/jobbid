@@ -1,0 +1,28 @@
+<?php
+$baseUrl = $this->baseUrl();
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
+<!--[if lt IE 8]><style>
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+}
+</style><![endif]-->
+<div id="left_col">
+	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
+				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
+</div>
+<div id="right_col">
+	<center>
+	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
+	<div id="post-job-header"><div id="page-title">Đăng tin tuyển dụng</div><div class="clear"><!-- --></div></div>
+	<?php echo $this->form?>
+	</div>
+	</center>
+	
+</div>
+<script>
+$(document).ready(function(){	
+});
+</script>

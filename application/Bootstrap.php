@@ -4,7 +4,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	protected function _initRoutes ()
     {
-    	if( preg_match('/front/', $_SERVER['REQUEST_URI']) == false &&
+    	/*if( preg_match('/front/', $_SERVER['REQUEST_URI']) == false &&
 			preg_match('/back/', $_SERVER['REQUEST_URI']) == false &&
 			preg_match('/admin/', $_SERVER['REQUEST_URI']) == false ) {
     		$routeLang = new Zend_Controller_Router_Route(':gianhang/:action',
@@ -21,7 +21,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	        // plain language route
 	        $router->addRoute('default', $routeLangDefault);
 	        $router->addRoute('gianhang', $routeLang);
-    	}
+    	}*/
     }
 	
 	/*protected function _initRoutes() {
@@ -63,7 +63,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	   //Zend_Registry::setInstance(new Zend_Registry(array("db"=>$dbOption)));
 	   $db=Zend_Db::factory($dbOption['adapter'],$dbOption['params']);
 	   //$db->setFetchMode(Zend_Db::FETCH_ASSOC);
-	   $db->setFetchMode(Zend_Db::FETCH_OBJ);
+	   //$db->setFetchMode(Zend_Db::FETCH_OBJ);
 	   $db->query("SET NAMES 'UTF8'" );
 	   $db->query("SET CHARACTER SET 'UTF8'");
 	   Zend_Registry::set("connectDb",$db);

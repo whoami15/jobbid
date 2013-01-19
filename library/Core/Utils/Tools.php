@@ -36,4 +36,28 @@ class Core_Utils_Tools
 			parse_str($parts['query'], $query);
 		return $query;
 	}
+	public static function printMessage($element) {
+		$messages = $element->getMessages();
+		$str = '';
+		if(!empty($messages)) {
+			$str = join('<br/>', $messages);
+		}
+		return $str;
+	}
+	public static function genKey($email=null) {
+		if($email == null) {
+			$key = '';
+			list($usec, $sec) = explode(' ', microtime());
+			mt_srand((float) $sec + ((float) $usec * 100000));
+			$inputs = array_merge(range('z','a'),range(0,9),range('A','Z'));
+			for($i=0; $i<32; $i++)
+			{
+				$key .= $inputs{mt_rand(0,61)};
+			}
+			return $key;
+		} else {
+			return hash('ripemd160', $email);
+		}
+		//return ord($email)  & 0x1FE;
+	}
 }

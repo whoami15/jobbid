@@ -2,7 +2,9 @@ html, body {
 height: 100%;
 margin: 0;
 }
-
+div.clear {
+  clear: both;
+}
 body {
 color: #333333;
 font: 13px/18px Tahoma,Geneva,sans-serif;
@@ -211,4 +213,29 @@ padding: 2px 5px;
 .logo {
 display: block;
 float: left;
+}
+input, textarea {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+  font-family: Arial,Tahoma,Helvetica,sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding: 2px;
+}
+input {
+  border: 1px solid #CCCCCC;
+  padding: 6px;
+}
+input, textarea {
+  box-shadow: 1px 1px 3px #EEEEEE inset;
+}
+input[type="text"] {
+  border: 1px solid #CCCCCC;
+}
+input.text {
+  width: 300px;
+}
+input.error , textarea.error, select.error {
+border:1px solid red;
 }

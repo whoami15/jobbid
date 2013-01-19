@@ -1,0 +1,23 @@
+div#post-job-header, div#preview-job-header {
+border-bottom: 2px solid navy;
+margin-bottom: 10px;
+padding-bottom: 3px;
+}
+div#post-job-header div#page-title, div#preview-job-header div#page-title {
+color: navy;
+float: left;
+font-size: 15px;
+font-weight: bold;
+}
+#post_job > label {
+display: block;
+font-weight: bold;
+margin-top: 5px;
+}
+.require {
+color:red
+}
+label.error {
+font-weight:normal !important;
+color:red;
+}
