@@ -8,6 +8,19 @@ class Front_JobController extends Zend_Controller_Action
         /* Initialize action controller here */
     	$this->_helper->layout->setLayout('front_layout');
     }
+    public function viewJobAction() {
+    	try {
+    		$jobId = $this->_request->getParam('id','');
+    		if(empty($jobId)) throw new Core_Exception('LINK_ERROR');
+    		
+    		
+    	} catch (Exception $e) {
+    		$this->view->error_msg = Core_Exception::getErrorMessage($e);
+    		$this->_forward('error','message','front');
+    	}
+    	
+    	
+    }
 
     public function createJobAction()
     {

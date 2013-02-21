@@ -13,6 +13,7 @@ font-weight: bold;
 display: block;
 font-weight: bold;
 margin-top: 5px;
+width: 100%;
 }
 .require {
 color:red
