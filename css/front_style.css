@@ -56,7 +56,9 @@ top: 0;
 width: 100%;
 }
 #left_col {
+display: block;
 float: left;
+min-height: 500px;
 padding-left: 2px;
 position: relative;
 width: 180px;
@@ -70,8 +72,14 @@ width: 700px;
 ol, ul {
   list-style: none outside none;
 }
+h1 {
+font-size: 15px;
+font-weight: bold;
+}
 h2 {
-  margin-bottom: 10px;
+font-size: 14px;
+font-weight: bold;
+margin-bottom: 10px;
 }
 .small_box_container {
 background-color: #FFFFFF;
@@ -281,4 +289,36 @@ text-align: left;
 .placeholder {color:gray !important}
 #search select option {
 
+}
+pre {
+display: inline;
+font-family: Tahoma;
+font-size: 13px;
+line-height: 20px;
+white-space: pre-wrap;
+width: 100%;
+word-wrap: break-word;
+}
+span.bold {
+font-weight:bold;
+}
+.jb_button {
+border: 1px solid #D8DFEA;
+color: #3B5998;
+cursor: pointer;
+display: block;
+float: right;
+font-family: tahoma,verdana,arial,sans-serif;
+font-size: 11px;
+height: 18px;
+margin-left: 10px;
+padding: 0 0 0 3px;
+text-align: left;
+width: 48px;
+}
+.jb_button.share {
+background: url("images/fb_sq_small.png") no-repeat scroll right 1px #FFFFFF;
+}
+.jb_button.report {
+background: url("images/unlike.png") no-repeat scroll right 1px #FFFFFF;
 }

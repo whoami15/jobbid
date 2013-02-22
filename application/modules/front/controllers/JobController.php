@@ -12,7 +12,7 @@ class Front_JobController extends Zend_Controller_Action
     	try {
     		$jobId = $this->_request->getParam('id','');
     		if(empty($jobId)) throw new Core_Exception('LINK_ERROR');
-    		
+    		$this->view->jobId = $jobId;
     		
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
