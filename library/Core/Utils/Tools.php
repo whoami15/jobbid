@@ -64,4 +64,19 @@ class Core_Utils_Tools
 		if(mb_strlen($str,'UTF-8') <= $len) return $str;
 		return mb_substr($str, 0, $len,'UTF-8').'...';
 	}
+	public static function getFullURL() {
+		return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	}
+	public static function genJobUrl($job) {
+		return '/job/view-job/'.Core_Utils_String::toUnSign($job['title']).'?id='.$job['id'];
+	}
+	public static function genCompanyUrl($id,$name) {
+		return '/tag/company/'.Core_Utils_String::toUnSign($name).'?id='.$id;
+	}
+	public static function genCityUrl($id,$name) {
+		return '/tag/city/'.Core_Utils_String::toUnSign($name).'?id='.$id;
+	}
+	public static function genPositionUrl($id,$name) {
+		return '/tag/position/'.Core_Utils_String::toUnSign($name).'?id='.$id;
+	}
 }

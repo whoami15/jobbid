@@ -12,11 +12,19 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
     		$sWhere.=' AND t2.id = :city_id ';
     		$params['city_id'] = $data['city_id'];
     	}
+		if(!empty($data['company_id'])) {
+    		$sWhere.=' AND t0.company_id = :company_id ';
+    		$params['company_id'] = $data['company_id'];
+    	}
+		if(!empty($data['position_id'])) {
+    		$sWhere.=' AND t0.job_title_id = :job_title_id ';
+    		$params['job_title_id'] = $data['position_id'];
+    	}
     	if(!empty($data['keyword'])) {
     		$sWhere.= ' AND t0.title like :keyword';
     		$params['keyword'] = '%'.$data['keyword'].'%';
     	}
-    	$query = 'SELECT t0.*,t1.`company`,t2.`name_city` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id` LEFT JOIN `cities` t2 ON t0.`city_id` = t2.`id` WHERE '.$sWhere.' ORDER BY t0.`time_update` DESC';
+    	$query = 'SELECT t0.*,t1.`company`,t2.`name_city` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id` LEFT JOIN `cities` t2 ON t0.`city_id` = t2.`id` LEFT JOIN `job_title` t3 ON t0.`job_title_id` = t3.`id` WHERE '.$sWhere.' ORDER BY t0.`time_update` DESC';
     	$stmt = $db->prepare($query);
         $stmt->execute($params);
         $rows = $stmt->fetchAll();
@@ -24,6 +32,39 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
         $db->closeConnection();
         return $rows;
     } 
-
+    public static function findById($jobId) {
+    	$db = Zend_Registry::get('connectDb');
+    	$query = 'SELECT t0.*,`company`,`job_title`,`name_city` FROM `jobs` t0 
+LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id`
+LEFT JOIN `job_title` t2 ON t0.`job_title_id` = t2.`id`
+LEFT JOIN `cities` t3 ON t0.`city_id` = t3.`id`
+WHERE t0.`status` = 1 AND t0.`id` = ?';
+    	$stmt = $db->prepare($query);
+        $stmt->execute(array($jobId));
+        $row = $stmt->fetch();
+        $stmt->closeCursor();
+        $db->closeConnection();
+        return $row==false?null:$row;
+    }
+    public static function getSimilarJob($job) {
+    	$db = Zend_Registry::get('connectDb');
+    	$result = array();
+    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `job_title_id` = ? ORDER BY `time_update` DESC LIMIT 0,5';
+    	$stmt = $db->prepare($query);
+        $stmt->execute(array($job['id'],$job['job_title_id']));
+        $result = $stmt->fetchAll();
+        $len = count($result);
+        if($len < 5) {
+        	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `company_id` = ? ORDER BY `time_update` DESC LIMIT 0,'.(5 - $len);
+    		$stmt = $db->prepare($query);
+        	$stmt->execute(array($job['id'],$job['company_id']));
+        	$rows = $stmt->fetchAll();
+        	$result = array_merge($result,$rows);
+        }
+        $stmt->closeCursor();
+        $db->closeConnection();
+        return $result;
+    }
+    
 }
 

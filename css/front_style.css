@@ -251,7 +251,7 @@ border:1px solid red;
 .row {
 display: block;
 float: left;
-margin-top: 10px;
+padding-top: 10px;
 text-align: left;
 width: 100%;
 }
@@ -321,4 +321,16 @@ background: url("images/fb_sq_small.png") no-repeat scroll right 1px #FFFFFF;
 }
 .jb_button.report {
 background: url("images/unlike.png") no-repeat scroll right 1px #FFFFFF;
+}
+
+fieldset.block {
+border-bottom-style: none;
+border-bottom-width: medium;
+border-left-style: none;
+border-left-width: medium;
+border-right-style: none;
+border-right-width: medium;
+margin-bottom: 5px;
+margin-top: 20px;
+padding-left: 0;
 }

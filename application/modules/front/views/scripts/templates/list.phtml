@@ -1,0 +1,6 @@
+<div class="row">
+	<a href="<?php echo $this->baseUrl.Core_Utils_Tools::genJobUrl($this->job)?>" title="<?php echo $this->job['title']?>"><?php echo Core_Utils_Tools::substr($this->job['title'],150)?></a>
+	<span class="line2"><a href="<?php echo $this->baseUrl.Core_Utils_Tools::genCompanyUrl($this->job['company_id'],$this->job['company']) ?>" style="color:green"><?php echo $this->job['company']?></a> - <a style="color:gray" href="<?php echo $this->baseUrl.Core_Utils_Tools::genCityUrl($this->job['city_id'],$this->job['name_city']) ?>"><?php echo $this->job['name_city']?></a></span>
+	<span class="line3"><?php echo Core_Utils_Tools::substr($this->job['job_description'])?></span>
+	<span class="line4"><abbr class="timeago" title="<?php echo $this->job['time_update']?>"></abbr></span>
+</div>

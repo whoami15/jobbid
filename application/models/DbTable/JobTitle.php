@@ -4,6 +4,16 @@ class Application_Model_DbTable_JobTitle extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'job_title';
+	public static function findById($id) {
+    	$db = Zend_Registry::get('connectDb');
+    	$query = 'SELECT * FROM `job_title` WHERE `status` = 1 AND `id` = ?';
+    	$stmt = $db->prepare($query);
+        $stmt->execute(array($id));
+        $row = $stmt->fetch();
+        $stmt->closeCursor();
+        $db->closeConnection();
+        return $row==false?null:$row;
+    }
 	public static function suggest($keyword) {
     	$db = Zend_Registry::get('connectDb');
     	$query = 'SELECT id,`job_title` as label FROM `job_title` WHERE `job_title` LIKE ?';

@@ -12,7 +12,11 @@ class Front_JobController extends Zend_Controller_Action
     	try {
     		$jobId = $this->_request->getParam('id','');
     		if(empty($jobId)) throw new Core_Exception('LINK_ERROR');
-    		$this->view->jobId = $jobId;
+    		$job = Application_Model_DbTable_Job::findById($jobId);
+    		if($job==null) throw new Core_Exception('LINK_ERROR');
+    		$similarJobs = Application_Model_DbTable_Job::getSimilarJob($job);
+    		$this->view->job = $job;
+    		$this->view->similarJobs = $similarJobs;
     		
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
@@ -21,7 +25,9 @@ class Front_JobController extends Zend_Controller_Action
     	
     	
     }
-
+	public function testAction() {
+		
+	}
     public function createJobAction()
     {
         // action body

@@ -22,7 +22,7 @@ class Front_Form_PostJob extends Zend_Form {
 			'filters' => array ('StringTrim' ), 'attribs' => array ('class' => '', 'rows' => 10,'style' => 'width:100%' ) ) 
 		);
 		$cities = Application_Model_DbTable_City::findAll ();
-		$array = array ('' => 'Cả nước' );
+		$array = array ();
 		foreach ( $cities as $city ) {
 			$array [$city ['id']] = $city ['name_city'];
 		}

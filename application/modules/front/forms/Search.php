@@ -11,13 +11,13 @@ class Front_Form_Search extends Zend_Form {
 			'attribs' => array ('class' => 'text', 'maxlength' => 255,'placeholder' => 'keywords, job title, company...' ) ) 
 		);
 		$cities = Application_Model_DbTable_City::findAll ();
-		$array = array ('' => 'Cả nước' );
+		$array = array ();
 		foreach ( $cities as $city ) {
 			$array [$city ['id']] = $city ['name_city'];
 		}
 		$this->addElement ( 'Select', 'city_id', array (
 			'multiOptions' => $array,
-			'attribs' => array('style' => 'left: 302px; padding: 5px; position: absolute; height: 30px')
+			'attribs' => array('style' => 'padding: 5px; position: absolute; height: 30px; left: 320px;')
 		) );
 		$this->setDecorators ( array (array ('ViewScript', array ('viewScript' => '_forms/search.php' ) ) ) );
 	}

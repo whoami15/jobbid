@@ -104,8 +104,8 @@
 	} else {
 		echo "you are human";
 	} */
-define('FACEBOOK_APP_ID', '344438602327914');
-define('FACEBOOK_SECRET', '229a6f60bc5d7dc41b3e1e8de9414e2b');
+define('FACEBOOK_APP_ID', '147187892112001');
+define('FACEBOOK_SECRET', 'c6a00f782b52a96707ff8ec841610760');
 
 function parse_signed_request($signed_request, $secret) {
   list($encoded_sig, $payload) = explode('.', $signed_request, 2); 
@@ -132,7 +132,6 @@ function parse_signed_request($signed_request, $secret) {
 function base64_url_decode($input) {
     return base64_decode(strtr($input, '-_', '+/'));
 }
-
 if ($_REQUEST) {
   echo '<p>signed_request contents:</p>';
   $response = parse_signed_request($_REQUEST['signed_request'], 
@@ -144,11 +143,15 @@ if ($_REQUEST) {
   //echo '$_REQUEST is empty';
 }
 ?>
-<iframe src="https://www.facebook.com/plugins/registration?
-             client_id=344438602327914&
-             redirect_uri=http://www.jobbid.vn%2F&
-             fields=name,birthday,gender,location,email"
-        scrolling="auto"
+<iframe 
+	src="https://www.facebook.com/plugins/registration?client_id=<?php echo FACEBOOK_APP_ID?>&redirect_uri=http://localhost/jobbid/test.php& fields=[
+                { 'name':'name' },
+                { 'name':'company', 'description':'Company Name', 'type':'text' },
+                { 'name':'email' },
+                { 'name':'phone', 'description':'Phone Number', 'type':'text' },
+                { 'name':'city', 'description':'City', 'type':'text' }
+                ]" 
+		scrolling="auto"
         frameborder="no"
         style="border:none"
         allowTransparency="true"

@@ -4,6 +4,16 @@ class Application_Model_DbTable_Company extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'company';
+	public static function findById($id) {
+    	$db = Zend_Registry::get('connectDb');
+    	$query = 'SELECT * FROM `company` WHERE `status` = 1 AND `id` = ?';
+    	$stmt = $db->prepare($query);
+        $stmt->execute(array($id));
+        $row = $stmt->fetch();
+        $stmt->closeCursor();
+        $db->closeConnection();
+        return $row==false?null:$row;
+    }
 	public static function suggest($keyword) {
     	$db = Zend_Registry::get('connectDb');
     	$query = 'SELECT id,`company` as label FROM `company` WHERE `company` LIKE ?';
