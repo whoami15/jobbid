@@ -2,29 +2,26 @@
 
 class Front_UserController extends Zend_Controller_Action
 {
-
+	private $session;
     public function init()
     {
         /* Initialize action controller here */
-    	$this->_helper->layout->setLayout('test_layout');
+    	$this->_helper->layout->setLayout('front_layout');
     	//$this->_helper->layout->disableLayout();
+    	$this->session = new Zend_Session_Namespace('session');
     }
 
-    public function registrationAction()
+    public function loginAction()
     {
-    	if ($_REQUEST) {
-    		echo '<p>signed_request contents:</p>';
-    		$response = parse_signed_request($_REQUEST['signed_request'],
-    				FACEBOOK_SECRET);
-    		echo '<pre>';
-    		print_r($response);
-    		echo '</pre>';
+    	
+    	if($this->session->logged) {
+			$this->_redirect('/index');
     		die;
-    	} else {
-    		//echo '$_REQUEST is empty';
     	}
+    	$form = new Front_Form_Login();
+        $this->view->form = $form;
     }
-
+	
 
 }
 

@@ -19,6 +19,8 @@ width: 100%;
 color:red
 }
 label.error {
-font-weight:normal !important;
-color:red;
+color: red;
+display: block;
+font-size: 12px;
+font-weight: normal !important;
 }

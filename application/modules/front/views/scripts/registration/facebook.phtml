@@ -1,0 +1,30 @@
+<?php
+$baseUrl = $this->baseUrl();
+$actual_link = Core_Utils_Tools::getFullURL();
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.autocomplete.min.js'></script>
+<!--[if lt IE 8]><style>
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+}
+</style><![endif]-->
+<div id="fb-root"></div>
+<div id="left_col">
+	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
+				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
+</div>
+<div id="right_col">
+	<center>
+	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
+	<iframe src="https://www.facebook.com/plugins/registration?client_id=<?php echo FACEBOOK_APP_ID?>&redirect_uri=http://localhost/jobbid/registration/facebook&fields=[{ 'name':'name' },{ 'name':'email' },{ 'name':'phone', 'description':'Phone Number', 'type':'text' }]&fb_only=true" scrolling="auto" frameborder="no" style="border:none" allowTransparency="true" width="600px" height="330"></iframe>
+	</div>
+	</center>
+</div>
+<script type='text/javascript'>
+$(document).ready(function(){	
+
+});
+</script>

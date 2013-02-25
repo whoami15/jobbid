@@ -50,6 +50,26 @@ class Front_AjaxController extends Zend_Controller_Action
 		}
 		die('WRONG');
 	}
+	public function fbauthAction()
+    {
+    	$accessToken = $this->_request->getParam('accessToken','');
+    	if(empty($accessToken)) die('ERROR');
+    	$graphInfo = Core_Utils_Facebook::getGraphInfo($accessToken);
+    	$taikhoan = Application_Model_DbTable_TaiKhoan::findByFbId($graphInfo->id);
+    	if($taikhoan == null) die('ERROR');
+    	$session = new Zend_Session_Namespace('session');
+    	$session->__set('logged', $taikhoan);
+    	$session->__set('graphInfo', $graphInfo);
+    	die('OK');
+    }
+	public function testAction() {
+		/*$str = file_get_contents('https://graph.facebook.com/me?access_token=AAACF3doGSoEBAD0ph0PHsAftEr5GVbZBR0IjpximstoVGjiwj2xbSuVxVXKIO3qlS5VyJ0ZCA9zsa7L2GMMZB1dhq0HgiIsrZCCjm7uP0XtuA3jOkVcy');
+		$array = json_decode($str);
+		print_r($array);*/
+		$session = new Zend_Session_Namespace('session');
+		//$session->unsetAll();
+		print_r($session->logged);
+	}
 	/*
 	public function sendOrderMailAction() {
 		$purchase_id = $this->_request->getParam('id','');

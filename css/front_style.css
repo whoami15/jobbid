@@ -334,3 +334,7 @@ margin-bottom: 5px;
 margin-top: 20px;
 padding-left: 0;
 }
+span.warning {
+color: red;
+cursor: pointer;
+}

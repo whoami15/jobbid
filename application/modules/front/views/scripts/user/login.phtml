@@ -1,0 +1,56 @@
+<?php
+$baseUrl = $this->baseUrl();
+$actual_link = Core_Utils_Tools::getFullURL();
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
+<!--[if lt IE 8]><style>
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+}
+</style><![endif]-->
+<div id="fb-root"></div>
+<script src="https://connect.facebook.net/vi_VN/all.js#appId=<?php echo FACEBOOK_APP_ID?>&xfbml=1"></script>
+<div id="left_col">
+	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
+				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
+</div>
+<div id="right_col">
+	<center>
+	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
+	<h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px;">Đăng nhập bằng tài khoản jobbid.vn</h1>
+	<?php echo $this->form?>
+	<h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px; margin-top: 30px;">Đăng nhập bằng tài khoản facebook</h1>
+	<fb:login-button autologoutlink="true" onlogin="OnRequestPermission();" registration-url="<?php echo $baseUrl?>/registration/facebook"></fb:login-button>
+	</div>
+	</center>
+</div>
+<script type='text/javascript'>
+function OnRequestPermission() {
+	FB.getLoginStatus(function(response) {
+		if (response.status === 'connected') {
+		// the user is logged in and has authenticated your
+		// app, and response.authResponse supplies
+		// the user's ID, a valid access token, a signed
+		// request, and the time the access token 
+		// and signed request each expire
+		var uid = response.authResponse.userID;
+		var accessToken = response.authResponse.accessToken;
+		$.get(baseUrl+'/ajax/fbauth?accessToken='+accessToken,function(response){
+			if(response == 'OK') {
+				location.href = baseUrl;
+			}
+		});
+		} else if (response.status === 'not_authorized') {
+		// the user is logged in to Facebook, 
+		// but has not authenticated your app
+		} else {
+		// the user isn't logged in to Facebook.
+		}
+	});
+}
+$(document).ready(function(){	
+	OnRequestPermission();
+});
+</script>
