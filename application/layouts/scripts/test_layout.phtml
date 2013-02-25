@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--[if IE 6]>
+<html class="ie" id="ie6">
+<![endif]-->
+<!--[if IE 7]>
+<html class="ie" id="ie7">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie" id="ie8">
+<![endif]-->
+<!--[if IE 9]>
+<html class="ie" id="ie9">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html>
+<!--<![endif]-->
+<head>
+<?php
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$baseUrl = $this->baseUrl();
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="<?php echo $baseUrl?>/favico.ico">
+<title><?php echo (isset($this->title)?$this->title.' - ':'').SITE_TITLE ?></title>
+<meta http-equiv="content-language" content="vi"/>
+<meta content="Vietnamese, Vietnam" name="language">
+<meta name="robots" content="index, follow"/>
+<meta content="Jobbid.vn là sàn việc làm để bạn có thể gửi dự án đấu giá công khai, qua đó tìm được ứng viên thích hợp để thực hiện dự án của bạn.Các bạn có thể tìm kiếm được những công việc bán thời gian (parttime) hoặc các dự án nhỏ phù hợp với khả năng của bạn." name="description"/>
+<meta content="jobbid.vn,tim viec part time, tìm việc part time,sàn việc làm,viec ban thoi gian,viec lam tu do,san viec lam,viec ban thoi gian,du an, cong viec,tim viec ban thoi gian,viec lam tai nha,dau thau,dau thau du an, dau thau cong viec, thau du an, thau cong viec,tim viec lam them, lam them, viec part time,cong viec ban thoi gian,tim nha thau,tim viec,viec lam online, viec lam ban thoi gian, đấu giá dự án, đấu giá công việc, thầu dự án, thầu công việc, tìm việc làm thêm,làm thêm,việc part time,công việc tại nhà,công việc bán thời gian,dự án,công việc, đấu giá,tìm việc,việc làm onlien,việc làm bán thời gian,việc làm tại nhà, làm thêm online, làm thêm cho sinh viên, làm thêm trên mạng,việc bán thời gian,việc làm tự do" name="keywords"/>
+<meta content="jobbid.vn" name="author"/>
+<meta content="jobbid.vn" name="copyright"/>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/front_style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/jquery-ui.css" type="text/css" media="screen" />
+<!--Internet Explorer Trancparency fix-->
+<!--[if IE 6]>
+<script src="/<?php echo $baseUrl?>/js/ie6pngfix.js"></script>
+<script>
+  DD_belatedPNG.fix('#head, a, a span, img, .message p, .click_to_close, .ie6fix');
+</script>
+<![endif]--> 
+
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.core.min.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.widget.min.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.button.min.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.position.min.js'></script>
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/mylibs/utils.js"></script>
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.placeholder.min.js"></script>
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.timeago.js"></script>
+<script>
+var baseUrl = '<?php echo $baseUrl?>';
+function byId(id) { //Viet tat cua ham document.getElementById
+	return document.getElementById(id);
+}
+function ajdebug(val) {
+	alert(val);
+}
+</script>
+</head>
+<body class="gradients">
+	<div id="page">
+		<center>
+		<div id="main">
+		<?php echo $this->layout()->content;?>
+		</div>
+		</center>
+	</div>
+</body>
+</html>
+<script>
+var ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại.';
+var PROCESSING_MESSAGE = 'Đang xử lý...';
+$(document).ready(function(){	 
+	
+	/*if($("#page #content").height()+218 < $(window).height()) {
+		$("#bottom").attr('style','position:fixed;bottom:0');
+	}*/
+});
+</script>

@@ -1,0 +1,25 @@
+<?php
+$baseUrl = $this->baseUrl();
+?>
+<div id="fb-root"></div>
+<script src="https://connect.facebook.net/vi_VN/all.js#appId=<?php echo FACEBOOK_APP_ID?>&xfbml=1"></script>
+
+<fb:registration 
+  fields="[
+                { 'name':'name' },
+                { 'name':'company', 'description':'Company Name', 'type':'text' },
+                { 'name':'email' },
+                { 'name':'phone', 'description':'Phone Number', 'type':'text' },
+                { 'name':'city', 'description':'City', 'type':'text' }
+                ]" 
+  redirect-uri="http://localhost/jobbid/user/registration"
+  width="530"
+  onvalidate="validate">
+</fb:registration>
+<script> 
+function validate(form) {
+  errors = {};
+   errors.email = "You didn't type foo";
+  return errors;
+}
+</script> 
