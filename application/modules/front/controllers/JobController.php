@@ -2,16 +2,20 @@
 
 class Front_JobController extends Zend_Controller_Action
 {
-
+	private $session;
     public function init()
     {
         /* Initialize action controller here */
     	$this->_helper->layout->setLayout('front_layout');
+    	$this->session = new Zend_Session_Namespace('session');
+    	$this->session->visitor = Application_Model_DbTable_Visitor::getVisitor($this->session->logged);
+    	$this->session->url = Core_Utils_Tools::getFullURL();
     }
     public function viewJobAction() {
     	try {
     		$jobId = $this->_request->getParam('id','');
     		if(empty($jobId)) throw new Core_Exception('LINK_ERROR');
+    		Core_Utils_DB::update('jobs',array('view' => '`view` + 1'),array('id' => 1));
     		$job = Application_Model_DbTable_Job::findById($jobId);
     		if($job==null) throw new Core_Exception('LINK_ERROR');
     		$similarJobs = Application_Model_DbTable_Job::getSimilarJob($job);

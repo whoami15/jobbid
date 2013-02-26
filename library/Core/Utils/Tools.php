@@ -4,18 +4,6 @@ class Core_Utils_Tools
 	public static function getCurrentDateSQL() {
 		return date('Y-m-d H:i:s');
 	}
-	public static function toUnUnicode($string) {
-		$pattern = array("a" => "á|à|ạ|ả|ã|Á|À|Ạ|Ả|Ã|ă|ắ|ằ|ặ|ẳ|ẵ|Ă|Ắ|Ằ|Ặ|Ẳ|Ẵ|â|ấ|ầ|ậ|ẩ|ẫ|Â|Ấ|Ầ|Ậ|Ẩ|Ẫ", "o" => "ó|ò|ọ|ỏ|õ|Ó|Ò|Ọ|Ỏ|Õ|ô|ố|ồ|ộ|ổ|ỗ|Ô|Ố|Ồ|Ộ|Ổ|Ỗ|ơ|ớ|ờ|ợ|ở|ỡ|Ơ|Ớ|Ờ|Ợ|Ở|Ỡ", "e" =>
-				"é|è|ẹ|ẻ|ẽ|É|È|Ẹ|Ẻ|Ẽ|ê|ế|ề|ệ|ể|ễ|Ê|Ế|Ề|Ệ|Ể|Ễ", "u" => "ú|ù|ụ|ủ|ũ|Ú|Ù|Ụ|Ủ|Ũ|ư|ứ|ừ|ự|ử|ữ|Ư|Ứ|Ừ|Ự|Ử|Ữ", "i" => "í|ì|ị|ỉ|ĩ|Í|Ì|Ị|Ỉ|Ĩ", "y" => "ý|ỳ|ỵ|ỷ|ỹ|Ý|Ỳ|Ỵ|Ỷ|Ỹ", "d" => "đ|Đ", "c" => "ç", );
-		$i = 0;
-		while ((list($key, $value) = each($pattern)) != null)
-		{
-			$i++;
-			if($i>=5000) break;
-			$string = preg_replace('/' . $value . '/i', $key, $string);
-		}
-		return $string;
-	}
 	public static function file_get_contents_utf8($fn) {
 		$opts = array(
 				'http' => array(
@@ -68,15 +56,34 @@ class Core_Utils_Tools
 		return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 	}
 	public static function genJobUrl($job) {
-		return '/job/view-job/'.Core_Utils_String::toUnSign($job['title']).'?id='.$job['id'];
+		return '/job/view-job/'.Core_Utils_String::getSlug($job['title']).'?id='.$job['id'];
 	}
 	public static function genCompanyUrl($id,$name) {
-		return '/tag/company/'.Core_Utils_String::toUnSign($name).'?id='.$id;
+		return '/tag/company/'.Core_Utils_String::getSlug($name).'?id='.$id;
 	}
 	public static function genCityUrl($id,$name) {
-		return '/tag/city/'.Core_Utils_String::toUnSign($name).'?id='.$id;
+		return '/tag/city/'.Core_Utils_String::getSlug($name).'?id='.$id;
 	}
 	public static function genPositionUrl($id,$name) {
-		return '/tag/position/'.Core_Utils_String::toUnSign($name).'?id='.$id;
+		return '/tag/position/'.Core_Utils_String::getSlug($name).'?id='.$id;
+	}
+	public static function genSecureKey($len = 10) {
+		$key = '';
+		list($usec, $sec) = explode(' ', microtime());
+		mt_srand((float) $sec + ((float) $usec * 100000));
+		$inputs = array_merge(range('z','a'),range(0,9),range('A','Z'));
+		for($i=0; $i<$len; $i++)
+		{
+		$key .= $inputs{mt_rand(0,61)};
+		}
+		return $key;
+	}
+	public static function getIPClient() {
+		return $_SERVER['REMOTE_ADDR'];
+	}
+	public static function isAdmin() {
+		$session = new Zend_Session_Namespace('session');
+		if(isset($session->logged) && $session->logged['role'] == ROLE_ADMIN) return true;
+		return false;
 	}
 }

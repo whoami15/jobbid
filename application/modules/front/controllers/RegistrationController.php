@@ -2,19 +2,21 @@
 
 class Front_RegistrationController extends Zend_Controller_Action
 {
-
+	private $session;
     public function init()
     {
         /* Initialize action controller here */
     	$this->_helper->layout->setLayout('front_layout');
+    	$this->session = new Zend_Session_Namespace('session');
+    	$this->session->visitor = Application_Model_DbTable_Visitor::getVisitor($this->session->logged);
     	//$this->_helper->layout->disableLayout();
     }
 
     public function facebookAction()
     {
-    	$session = new Zend_Session_Namespace('session');
-    	if($session->logged) {
-			$this->_redirect('/index');
+    	if($this->session->logged) {
+			$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
+			$this->_redirect($redirectUrl);
     		die;
     	}
     	if ($_REQUEST) {
@@ -29,6 +31,7 @@ class Front_RegistrationController extends Zend_Controller_Action
     			$taikhoan['sodienthoai'] = $registration['phone'];
     			$taikhoan['name'] = $registration['name'];
     			$taikhoan['lastlogin'] = $now;
+    			Application_Model_DbTable_Activity::insertActivity(ACTION_LOGIN,$taikhoan['id']);
     		} else {
 	    		if(($taikhoan = Application_Model_DbTable_TaiKhoan::findByUsername($registration['email'])) == null) {
 	    			$taikhoan = array(
@@ -44,6 +47,7 @@ class Front_RegistrationController extends Zend_Controller_Action
 	    			);
 	    			$id = $dbTaikhoan->insert($taikhoan);
 	    			$taikhoan['id'] = $id;
+	    			Application_Model_DbTable_Activity::insertActivity(ACTION_REGISTRATION,$id);
 	    		} else {
 	    			if($taikhoan['status'] == 0) die('Tài khoản này đã bị khóa, vui lòng liên hệ admin@jobbid.vn');
 	    			$dbTaikhoan->update(array('sodienthoai' => $registration['phone'],'name' => $registration['name'],'fb_id' => $fbId,'lastlogin' => $now), array('id = ?' => $taikhoan['id']));
@@ -51,10 +55,12 @@ class Front_RegistrationController extends Zend_Controller_Action
 	    			$taikhoan['name'] = $registration['name'];
 	    			$taikhoan['fb_id'] = $fbId;
 	    			$taikhoan['lastlogin'] = $now;
+	    			Application_Model_DbTable_Activity::insertActivity(ACTION_LOGIN,$taikhoan['id']);
 	    		}
     		}
-    		$session->__set('logged', $taikhoan);
-    		$this->_redirect('/index');
+    		$this->session->__set('logged', $taikhoan);
+    		$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
+			$this->_redirect($redirectUrl);
     		die;
     	}
     	
@@ -67,7 +73,9 @@ class Front_RegistrationController extends Zend_Controller_Action
 		if ($this->getRequest()->isPost()) {
             $form_data = $this->getRequest()->getParams();
             if ($form->isValid($form_data)) {
-            	$session = new Zend_Session_Namespace('session');
+            	if(Application_Model_DbTable_Activity::getNumActivity(ACTION_REGISTRATION, $this->session->visitor) > LIMIT_REGISTRATION) {
+            		
+            	}
             	$dbTaikhoan = new Application_Model_DbTable_TaiKhoan();
             	$taikhoan = array(
     				'id' => null,
@@ -81,8 +89,22 @@ class Front_RegistrationController extends Zend_Controller_Action
     			);
     			$id = $dbTaikhoan->insert($taikhoan);
     			$taikhoan['id'] = $id;
-    			$session->__set('logged', $taikhoan);
-	    		$this->_redirect('/index');
+    			Application_Model_DbTable_Activity::insertActivity(ACTION_REGISTRATION,$id);
+    			$this->session->__set('logged', $taikhoan);
+    			$dbSecureKey = new Application_Model_DbTable_SecureKey();
+    			$key = strtoupper(Core_Utils_Tools::genSecureKey());
+    			$dbSecureKey->insert(array(
+    				'id' => null,
+    				'account_id' => $id,
+    				'key' => $key,
+    				'type' => KEY_VERIFY_ACCOUNT,
+    				'ref_id' => $id,
+    				'create_time' => Core_Utils_Date::getCurrentDateSQL(),
+    				'status' => 1
+    			));
+    			//send email 
+	    		$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
+				$this->_redirect($redirectUrl);
 	    		die;
             } else {
                 $form->populate($form_data);

@@ -2,6 +2,7 @@
 define('DOMAIN', 'http://'.$_SERVER['HTTP_HOST'] );
 define('DEFAULT_LANG', 'vi');
 define('SITE_TITLE', 'Sàn Giao Dịch Công Việc');
+define('TIME_CREATE_NEW_VISITOR', 5); //gioi han thoi gian idle cua client de tao 1 luot truy cap moi
 define('SAFE_MODE', false);
 define('SITE_NAME', 'ZendCMS');
 define('MAX_LOOP', 100);
@@ -76,3 +77,26 @@ define('TEMPLATE_ORDER', 3);
 //facebook API
 define('FACEBOOK_APP_ID', '147187892112001');
 define('FACEBOOK_SECRET', 'c6a00f782b52a96707ff8ec841610760');
+
+//secure key type
+define('KEY_VERIFY_ACCOUNT', 1);
+define('KEY_VERIFY_JOB', 2);
+
+//format time
+define('TIME_FORMAT_SQL', 'Y-MM-dd HH:mm:ss');
+define('TIME_FORMAT_FRIENDLY', 'dd/MM/Y HH:mm:ss');
+
+//role type
+define('ROLE_ADMIN', 1);
+define('ROLE_USER', 2);
+
+//action type
+define('ACTION_LOGIN', 1);
+define('ACTION_LOGOUT', 2);
+define('ACTION_REGISTRATION', 3);
+define('ACTION_POST_JOB', 4);
+define('ACTION_REPORT_JOB', 5);
+
+//limit in session 
+define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
+define('LIMIT_REGISTRATION', 3);

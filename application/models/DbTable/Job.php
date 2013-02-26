@@ -6,8 +6,8 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
     protected $_name = 'jobs';
 	public static function findAll($data,$page) {
     	$db = Zend_Registry::get('connectDb');
-    	$sWhere = 't0.`status` = 1';
-    	$params = array();
+    	$sWhere = 't0.`status` = 1 AND `num_report` < :num_report ';
+    	$params = array('num_report' => LIMIT_REPORT);
     	if(!empty($data['city_id'])) {
     		$sWhere.=' AND t2.id = :city_id ';
     		$params['city_id'] = $data['city_id'];
@@ -38,9 +38,9 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id`
 LEFT JOIN `job_title` t2 ON t0.`job_title_id` = t2.`id`
 LEFT JOIN `cities` t3 ON t0.`city_id` = t3.`id`
-WHERE t0.`status` = 1 AND t0.`id` = ?';
+WHERE t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
     	$stmt = $db->prepare($query);
-        $stmt->execute(array($jobId));
+        $stmt->execute(array($jobId,LIMIT_REPORT));
         $row = $stmt->fetch();
         $stmt->closeCursor();
         $db->closeConnection();
@@ -49,15 +49,15 @@ WHERE t0.`status` = 1 AND t0.`id` = ?';
     public static function getSimilarJob($job) {
     	$db = Zend_Registry::get('connectDb');
     	$result = array();
-    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `job_title_id` = ? ORDER BY `time_update` DESC LIMIT 0,5';
+    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `job_title_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,5';
     	$stmt = $db->prepare($query);
-        $stmt->execute(array($job['id'],$job['job_title_id']));
+        $stmt->execute(array($job['id'],$job['job_title_id'],LIMIT_REPORT));
         $result = $stmt->fetchAll();
         $len = count($result);
         if($len < 5) {
-        	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `company_id` = ? ORDER BY `time_update` DESC LIMIT 0,'.(5 - $len);
+        	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `company_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,'.(5 - $len);
     		$stmt = $db->prepare($query);
-        	$stmt->execute(array($job['id'],$job['company_id']));
+        	$stmt->execute(array($job['id'],$job['company_id'],LIMIT_REPORT));
         	$rows = $stmt->fetchAll();
         	$result = array_merge($result,$rows);
         }
@@ -65,6 +65,26 @@ WHERE t0.`status` = 1 AND t0.`id` = ?';
         $db->closeConnection();
         return $result;
     }
-    
+    public static function doReport($jobId,$visitor) {
+    	$db = Zend_Registry::get('connectDb');
+    	$now = Core_Utils_Date::getCurrentDateSQL();
+    	$query = 'SELECT COUNT(*) as num FROM  `activities` WHERE `visitor_id` = ? AND `action` = ? AND `data_ref` = ?';
+    	$stmt = $db->prepare($query);
+    	$stmt->execute(array($visitor['id'],ACTION_REPORT_JOB,$jobId));
+    	$row = $stmt->fetch();
+    	$flag = false;
+    	if($row['num'] == 0) { //user chua report job trong session hien tai
+    		if(Core_Utils_Tools::isAdmin()) { //gap admin thi tat dai ngay!
+    			Core_Utils_DB::update('jobs', array('status' => 0), array('id' => $jobId));
+    		} else {
+    			Core_Utils_DB::update('jobs', array('num_report' => '`num_report` + 1'), array('id' => $jobId));
+    		}
+    		Application_Model_DbTable_Activity::insertActivity(ACTION_REPORT_JOB,$jobId);
+    		$flag = true;
+    	}
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    	return $flag;
+    }
 }
 

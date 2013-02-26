@@ -2,11 +2,13 @@
 
 class Front_AjaxController extends Zend_Controller_Action
 {
-
+	private $session;
     public function init()
     {
     	$this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->session = new Zend_Session_Namespace('session');
+        $this->session->visitor = Application_Model_DbTable_Visitor::getVisitor($this->session->logged);
     }
     public function autoCompleteAction() {
     	$type = $this->_request->getParam('type','');
@@ -57,18 +59,33 @@ class Front_AjaxController extends Zend_Controller_Action
     	$graphInfo = Core_Utils_Facebook::getGraphInfo($accessToken);
     	$taikhoan = Application_Model_DbTable_TaiKhoan::findByFbId($graphInfo->id);
     	if($taikhoan == null) die('ERROR');
-    	$session = new Zend_Session_Namespace('session');
-    	$session->__set('logged', $taikhoan);
-    	$session->__set('graphInfo', $graphInfo);
+    	$this->session->__set('logged', $taikhoan);
+    	$this->session->__set('graphInfo', $graphInfo);
+    	die('OK');
+    }
+    public function reportJobAction()
+    {
+    	$jobId = $this->_request->getParam('id','');
+    	if(empty($jobId)) die('ERROR');
+    	if(isset($this->session->reports[$jobId])) die('OK');
+    	if(Application_Model_DbTable_Job::doReport($jobId, $this->session->visitor) == true) {
+    		$this->session->reports[$jobId] = $jobId; 
+    	}
     	die('OK');
     }
 	public function testAction() {
+		print_r($this->session->reports);die;
+		$date = new Zend_Date();
+		$date->subMinute(5);
+		echo $date->toString();
+		//Core_Utils_DB::update('jobs',array('view' => '`view` + 1'),array('id' => 1));
+		//echo $key;
 		/*$str = file_get_contents('https://graph.facebook.com/me?access_token=AAACF3doGSoEBAD0ph0PHsAftEr5GVbZBR0IjpximstoVGjiwj2xbSuVxVXKIO3qlS5VyJ0ZCA9zsa7L2GMMZB1dhq0HgiIsrZCCjm7uP0XtuA3jOkVcy');
 		$array = json_decode($str);
 		print_r($array);*/
-		$session = new Zend_Session_Namespace('session');
+		/* $session = new Zend_Session_Namespace('session');
 		//$session->unsetAll();
-		print_r($session->logged);
+		print_r($session->logged); */
 	}
 	/*
 	public function sendOrderMailAction() {
