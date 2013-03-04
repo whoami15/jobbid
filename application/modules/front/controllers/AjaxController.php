@@ -61,6 +61,7 @@ class Front_AjaxController extends Zend_Controller_Action
     	if($taikhoan == null) die('ERROR');
     	$this->session->__set('logged', $taikhoan);
     	$this->session->__set('graphInfo', $graphInfo);
+    	$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
     	die('OK');
     }
     public function reportJobAction()

@@ -30,43 +30,53 @@ class Front_JobController extends Zend_Controller_Action
     	
     }
 	public function testAction() {
-		
+		$this->_helper->layout->setLayout('test_layout');
 	}
     public function createJobAction()
     {
-        // action body
-        $form = new Front_Form_PostJob();
-        $this->view->form = $form;
-        if ($this->getRequest()->isPost()) {
-            $form_data = $this->getRequest()->getParams();
-            if ($form->isValid($form_data)) {
-            	$modelCompany = new Application_Model_DbTable_Company();
-            	$companyId = $modelCompany->save($form_data['company']);
-            	$modelJobTitle = new Application_Model_DbTable_JobTitle();
-            	$jobTitleId = $modelJobTitle->save($form_data['job_title']);
-            	$modelJob = new Application_Model_DbTable_Job();
-            	$now = Core_Utils_Date::getCurrentDateSQL();
-            	$secId = Core_Utils_Tools::genKey();
-            	$jobId = $modelJob->insert(array(
-            		'id' => null,
-            		'title' => $form_data['company'].' - '.$form_data['job_title'],
-            		'account_id' => 1,
-            		'company_id' => $companyId,
-            		'job_title_id' => $jobTitleId,
-            		'job_description' => $form_data['job_description'],
-            		'city_id' => $form_data['city_id'],
-            		'email_to' => $form_data['email_to'],
-            		'job_type' => $form_data['job_type'],
-            		'view' => 0,
-            		'time_create' => $now,
-            		'time_update' => $now,
-            		'sec_id' => $secId
-            	));
-            	$this->_redirect('/message/success?type=post-job&email='.$form_data['email_to']);
-            } else {
-            	$form->populate($form_data);
-            }
-        }
+        try {
+        	//die('');
+        	$form = new Front_Form_PostJob();
+        	$this->view->form = $form;
+        	if ($this->getRequest()->isPost()) {
+        		$form_data = $this->getRequest()->getParams();
+        		if ($form->isValid($form_data)) {
+        			if(Application_Model_DbTable_Activity::getNumActivity(ACTION_POST_JOB) > LIMIT_POST_JOB) {
+        				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_POST_JOB);
+        				throw new Core_Exception('LIMIT_POST_JOB');
+        			}
+        			$modelCompany = new Application_Model_DbTable_Company();
+        			$companyId = $modelCompany->save($form_data['company']);
+        			$modelJobTitle = new Application_Model_DbTable_JobTitle();
+        			$jobTitleId = $modelJobTitle->save($form_data['job_title']);
+        			$modelJob = new Application_Model_DbTable_Job();
+        			$now = Core_Utils_Date::getCurrentDateSQL();
+        			$secId = Core_Utils_Tools::genKey();
+        			$jobId = $modelJob->insert(array(
+        					'id' => null,
+        					'title' => $form_data['company'].' - '.$form_data['job_title'],
+        					'account_id' => 1,
+        					'company_id' => $companyId,
+        					'job_title_id' => $jobTitleId,
+        					'job_description' => $form_data['job_description'],
+        					'city_id' => $form_data['city_id'],
+        					'email_to' => $form_data['email_to'],
+        					'job_type' => $form_data['job_type'],
+        					'view' => 0,
+        					'time_create' => $now,
+        					'time_update' => $now,
+        					'sec_id' => $secId
+        			));
+        			Application_Model_DbTable_Activity::insertActivity(ACTION_POST_JOB,$jobId);
+        			$this->_redirect('/message/success?type=post-job&email='.$form_data['email_to']);
+        		} else {
+        			$form->populate($form_data);
+        		}
+        	}
+        } catch (Exception $e) {
+        	$this->view->error_msg = Core_Exception::getErrorMessage($e);
+        	$this->_forward('error','message','front');
+        }	
     }
 	public function indexAction()
     {

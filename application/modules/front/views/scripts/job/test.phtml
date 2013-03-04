@@ -1,73 +1,19 @@
 <?php
 $baseUrl = $this->baseUrl();
 ?>
-<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
-<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
-<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.autocomplete.min.js'></script>
-<!--[if lt IE 8]><style>
-.wraptocenter span {
-    display: inline-block;
-    height: 100%;
-}
-</style><![endif]-->
-<div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function() {
-    // init the FB JS SDK
-    FB.init({
-      appId      : '<?php echo FACEBOOK_APP_ID?>', // App ID from the App Dashboard
-      channelUrl : '', // Channel File for x-domain communication
-      status     : true, // check the login status upon init?
-      cookie     : true, // set sessions cookies to allow your server to access the session?
-      xfbml      : true  // parse XFBML tags on this page?
-    });
-		
-    // Additional initialization code such as adding Event Listeners goes here
-	FB.getLoginStatus(function(response) {
-  if (response.status === 'connected') {
-    // the user is logged in and has authenticated your
-    // app, and response.authResponse supplies
-    // the user's ID, a valid access token, a signed
-    // request, and the time the access token 
-    // and signed request each expire
-    var uid = response.authResponse.userID;
-    var accessToken = response.authResponse.accessToken;
-  } else if (response.status === 'not_authorized') {
-    // the user is logged in to Facebook, 
-    // but has not authenticated your app
-  } else {
-    // the user isn't logged in to Facebook.
-  }
- });
-  }; 
-
-  // Load the SDK's source Asynchronously
-  // Note that the debug version is being actively developed and might 
-  // contain some type checks that are overly strict. 
-  // Please report such bugs using the bugs tool.
-  (function(d, debug){
-     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement('script'); js.id = id; js.async = true;
-     //js.src = "//connect.facebook.net/vi_VN/all" + (debug ? "/debug" : "") + ".js";
-	 js.src = "<?php echo $baseUrl?>/js/all.js";
-     ref.parentNode.insertBefore(js, ref);
-   }(document, /*debug*/ false));
-</script>
-<div id="left_col">
-	<!--a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
-				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a-->
-</div>
-<div id="right_col">
-	<center>
-	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
-		<fb:login-button
-registration-url="https://developers.facebook.com/docs/plugins/registration" />
-	</div>
-	</center>
-</div>
+<a href="http://localhost/jobbid/user/login" id="linkLogin">Login</a>
 <script type='text/javascript'>
+function loginSuccess() {
+	console.log('Testing console');
+}
 $(document).ready(function(){	
-	
+	$("a#linkLogin").live("click",function(){
+		var w = 600;
+		var h = 350;
+		var left = (screen.width/2)-(w/2);
+		var top = (screen.height/2)-(h/2);
+		window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left); 
+		return false;
+	});
 });
 </script>

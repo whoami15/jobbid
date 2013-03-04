@@ -2,6 +2,11 @@
 $baseUrl = $this->baseUrl();
 $actual_link = Core_Utils_Tools::getFullURL();
 ?>
+<style>
+.fb-login-button {
+display:none;
+}
+</style>
 <link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
 <!--[if lt IE 8]><style>
@@ -12,45 +17,50 @@ $actual_link = Core_Utils_Tools::getFullURL();
 </style><![endif]-->
 <div id="fb-root"></div>
 <script src="https://connect.facebook.net/vi_VN/all.js#appId=<?php echo FACEBOOK_APP_ID?>&xfbml=1"></script>
-<div id="left_col">
+<!--div id="left_col">
 	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
 				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
-</div>
-<div id="right_col">
-	<center>
-	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
+</div-->
+<div id="right_col" style="margin-left:10px">
+	<div style="width: 500px; margin: 20px auto 0px; text-align: left; float: left;">
 	<h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px;">Đăng nhập bằng tài khoản jobbid.vn</h1>
 	<?php echo $this->form?>
+	<a id="linkRegistration" href="../registration/jobbid" title="Đăng ký tài khoản jobbid.vn mới" style="margin-left: 108px;">Đăng ký tài khoản mới</a>
 	<h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px; margin-top: 30px;">Đăng nhập bằng tài khoản facebook</h1>
-	<fb:login-button autologoutlink="true" onlogin="OnRequestPermission();" registration-url="<?php echo $baseUrl?>/registration/facebook"></fb:login-button>
+	<span id="msg_checkfacebookaccount">Đang kiểm tra tài khoản facebook của bạn...</span>
+	<div id="fb-register" class="fb-login-button" data-registration-url="<?php echo $baseUrl?>/registration/facebook" data-onlogin="OnRequestPermission()">
+</div>
 	</div>
-	</center>
 </div>
 <script type='text/javascript'>
 function OnRequestPermission() {
 	FB.getLoginStatus(function(response) {
 		if (response.status === 'connected') {
-		// the user is logged in and has authenticated your
-		// app, and response.authResponse supplies
-		// the user's ID, a valid access token, a signed
-		// request, and the time the access token 
-		// and signed request each expire
-		var uid = response.authResponse.userID;
-		var accessToken = response.authResponse.accessToken;
-		$.get(baseUrl+'/ajax/fbauth?accessToken='+accessToken,function(response){
-			if(response == 'OK') {
-				location.href = baseUrl;
-			}
-		});
-		} else if (response.status === 'not_authorized') {
-		// the user is logged in to Facebook, 
-		// but has not authenticated your app
+			var uid = response.authResponse.userID;
+			var accessToken = response.authResponse.accessToken;
+			$.get(baseUrl+'/ajax/fbauth?accessToken='+accessToken,function(response){
+				if(response != 'ERROR') {
+					location.href = baseUrl + '/user/login-success?isPopup='+isPopup;
+				}
+			});
+		/* } else if (response.status === 'not_authorized') {
+			// but has not authenticated your app */
 		} else {
-		// the user isn't logged in to Facebook.
+			// the user isn't logged in to Facebook.
+			$("#msg_checkfacebookaccount").html('');
+			$(".fb-login-button").show();
 		}
 	});
 }
+var isPopup = '0';
 $(document).ready(function(){	
+	if(window.opener != null) {
+		isPopup = '1';
+		var registrationUrl = $("#fb-register").attr("data-registration-url");
+		$("#fb-register").attr("data-registration-url",registrationUrl+"?isPopup=1");
+		$("#linkRegistration").attr("href",$("#linkRegistration").attr("href")+"?isPopup=1");
+	}
+	$("#fLogin #isPopup").val(isPopup);
 	OnRequestPermission();
 });
 </script>

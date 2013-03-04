@@ -28,7 +28,9 @@ class Core_Const
 		'INVALID_GIANHANG' => 'Gian hàng không tồn tại!',
 		'EMAIL_NOT_EXIST' => 'Email %s không tồn tại trong hệ thống',
 		'REQUEST_RESET_PASS_SUCCESS' => 'Bạn đã gửi yêu cầu cấp lại mật khẩu thành công, vui lòng kiểm tra email %s để lấy link cập nhật mật khẩu',
-		'LOGIN_FAIL' => 'Đăng nhập không thành công!'
+		'LOGIN_FAILED' => 'Đăng nhập không thành công, vui lòng kiểm tra lại username và password!',
+		'LIMIT_REGISTRATION' => 'Vượt quá số lần đăng ký cho phép!',
+		'LIMIT_POST_JOB' => 'Vượt quá số lần đăng công việc cho phép!'
 	);
 	public static $success_messages = array(
 		'CHANGE_PASSWORD' => 'Thay đổi mật khẩu thành công!',

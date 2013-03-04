@@ -7,10 +7,12 @@ class Front_Form_Login extends Zend_Form {
 		$this->setOptions ( array ('method' => 'get', 'elementDecorators' => array ('ViewHelper' ) ) );
 		
 		$this->addElement ( 'Text', 'username', array (
+			'required'   => true,
 			'filters' => array ('StringTrim' ), 
 			'attribs' => array ('class' => 'text', 'maxlength' => 100,'placeholder' => 'example@gmail.com' ) ) 
 		);
 		$this->addElement ( 'Password', 'password', array (
+			'required'   => true,
 			'filters' => array ('StringTrim' ), 
 			'attribs' => array ('class' => 'text', 'maxlength' => 255 ) ) 
 		);

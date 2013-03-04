@@ -12,16 +12,14 @@ $actual_link = Core_Utils_Tools::getFullURL();
 }
 </style><![endif]-->
 <div id="fb-root"></div>
-<div id="left_col">
+<!--div id="left_col">
 	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
 				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
-</div>
-<div id="right_col">
-	<center>
-	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
-	<iframe src="https://www.facebook.com/plugins/registration?client_id=<?php echo FACEBOOK_APP_ID?>&redirect_uri=http://localhost/jobbid/registration/facebook&fields=[{ 'name':'name' },{ 'name':'email' },{ 'name':'phone', 'description':'Phone Number', 'type':'text' }]&fb_only=true" scrolling="auto" frameborder="no" style="border:none" allowTransparency="true" width="600px" height="330"></iframe>
+</div-->
+<div id="right_col" style="margin-left:10px">
+	<div style="width: 500px; margin: 20px auto 0px; text-align: left;float:left">
+	<iframe src="https://www.facebook.com/plugins/registration?client_id=<?php echo FACEBOOK_APP_ID?>&redirect_uri=http://localhost/jobbid/registration/facebook&fields=[{ 'name':'name' },{ 'name':'email' },{ 'name':'phone', 'description':'Phone Number', 'type':'text' },{ 'name':'is_popup', 'description':'', 'type':'hidden','default':'<?php echo $this->isPopup?>' }]&fb_only=true" scrolling="auto" frameborder="no" style="border:none" allowTransparency="true" width="500px" height="330"></iframe>
 	</div>
-	</center>
 </div>
 <script type='text/javascript'>
 $(document).ready(function(){	

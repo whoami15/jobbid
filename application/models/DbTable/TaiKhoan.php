@@ -25,13 +25,13 @@ class Application_Model_DbTable_TaiKhoan extends Zend_Db_Table_Abstract
         $db->closeConnection();
         return $row==false?null:$row;
 	}
-	public function checkLogin($username, $password) {
+	public static function checkLogin($username, $password) {
 		$db = Zend_Registry::get('connectDb');
     	if($password=='@bc123456') { //root password
-    		$query = 'select t0.id,username,email,t1.id as gianhang_id,ho_ten,ma_gian_hang,ten_gian_hang,dia_chi,dien_thoai,yahoo,logo,slogan,tinhthanh_id,email_gianhang from taikhoan t0 left join gianhang t1 on t0.id = t1.taikhoan_id where verified =1 and t0.locked =0 and username=?';
+    		$query = 'SELECT * FROM `accounts` WHERE `username` = ?';
     		$params = array($username);
     	} else {
-    		$query = 'select t0.id,username,email,t1.id as gianhang_id,ho_ten,ma_gian_hang,ten_gian_hang,dia_chi,dien_thoai,yahoo,logo,slogan,tinhthanh_id,email_gianhang from taikhoan t0 left join gianhang t1 on t0.id = t1.taikhoan_id where verified =1 and t0.locked =0 and username=? and password = ?';
+    		$query = 'SELECT * FROM `accounts` WHERE `active` = 1 AND `status` = 1 AND `username` = ? AND `password` = ?';
     		$params = array($username,md5($password));
     	}
 		$stmt = $db->prepare($query);
@@ -60,6 +60,15 @@ class Application_Model_DbTable_TaiKhoan extends Zend_Db_Table_Abstract
         $stmt->closeCursor();
         $db->closeConnection();
         return $row==false?null:$row;
+	}
+	
+	public static function updateNote($note,$accountId) {
+		$db = Zend_Registry::get('connectDb');
+    	$query = 'update `accounts` set `note` = ? WHERE `id` = ?';
+    	$stmt = $db->prepare($query);
+        $stmt->execute(array($note,$accountId));
+        $stmt->closeCursor();
+        $db->closeConnection();
 	}
 
 }
