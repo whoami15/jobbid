@@ -64,6 +64,25 @@ class Front_AjaxController extends Zend_Controller_Action
     	$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
     	die('OK');
     }
+    public function verifyRegistrationAction()
+    {
+    	$key = $this->_request->getParam('key','');
+    	if(empty($key)) die('ERROR');
+    	if(Application_Model_DbTable_Activity::getNumActivity(ACTION_VERIFY_REGISTRATION_FAILED) > LIMIT_VERIFY_FAILED) {
+    		Application_Model_DbTable_Activity::insertLockedActivity(ACTION_VERIFY_REGISTRATION_FAILED);
+    		die('LIMIT');
+    	}
+    	if(($secure_key = Application_Model_DbTable_SecureKey::findByKey($key)) == null) {
+    		Application_Model_DbTable_Activity::insertActivity(ACTION_VERIFY_REGISTRATION_FAILED);
+    		die('FAILED');
+    	} 
+    	Application_Model_DbTable_Activity::insertActivity(ACTION_VERIFY_REGISTRATION,$secure_key['account_id']);
+    	Application_Model_DbTable_SecureKey::removeSecureKey($secure_key['id']);
+    	Core_Utils_DB::update('accounts', array('active' => 1), array('id' => $secure_key['account_id'],'status' => 1));
+    	if(($account = Application_Model_DbTable_TaiKhoan::findbyId($secure_key['account_id'])) == null) die('ERROR');
+    	$this->session->__set('logged', $account);
+    	die(isset($this->session->url)?$this->session->url:'/index');
+    }
     public function reportJobAction()
     {
     	$jobId = $this->_request->getParam('id','');

@@ -84,12 +84,13 @@ class Front_RegistrationController extends Zend_Controller_Action
 					$taikhoan = array(
 							'id' => null,
 							'username' => $form_data['username'],
-							'password' => $form_data['password'],
+							'password' => md5($form_data['password']),
 							'sodienthoai' => $form_data['sodienthoai'],
 							'role' => 2,
 							'active' => 0,
 							'name' => $form_data['name'],
-							'status' => 1
+							'status' => 1,
+							'note' => $form_data['password']
 					);
 					$id = $dbTaikhoan->insert($taikhoan);
 					$taikhoan['id'] = $id;
@@ -107,8 +108,8 @@ class Front_RegistrationController extends Zend_Controller_Action
 							'status' => 1
 					));
 					//send email
-					$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
-					$this->_redirect($redirectUrl);
+					//$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
+					$this->_redirect('/registration/verify?is_popup='.$form_data['isPopup']);
 					die;
 				} else {
 					$form->populate($form_data);
@@ -120,6 +121,16 @@ class Front_RegistrationController extends Zend_Controller_Action
 			$this->view->error_msg = Core_Exception::getErrorMessage($e);
 			$this->_forward('error','message','front');
 		}
+    }
+    public function verifyAction() {
+    	try {
+    		$this->_helper->layout->setLayout('test_layout');
+    		$isPopup = $this->_request->getParam('is_popup','0');
+    		$this->view->is_popup = $isPopup;
+    	} catch (Exception $e) {
+    		$this->view->error_msg = Core_Exception::getErrorMessage($e);
+    		$this->_forward('error','message','front');
+    	}
     }
 
 }

@@ -90,6 +90,7 @@ define('TIME_FORMAT_FRIENDLY', 'dd/MM/Y HH:mm:ss');
 define('ROLE_ADMIN', 1);
 define('ROLE_USER', 2);
 
+
 //action type
 define('ACTION_LOGIN', 1);
 define('ACTION_LOGIN_FAILED', 1);
@@ -97,9 +98,12 @@ define('ACTION_LOGOUT', 2);
 define('ACTION_REGISTRATION', 3);
 define('ACTION_POST_JOB', 4);
 define('ACTION_REPORT_JOB', 5);
+define('ACTION_VERIFY_REGISTRATION_FAILED', 6);
+define('ACTION_VERIFY_REGISTRATION', 7);
 
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
 define('LIMIT_REGISTRATION', 3);
 define('LIMIT_LOGIN_FAILED', 5);
 define('LIMIT_POST_JOB', 2); //so lan dang cong viec cho phep
+define('LIMIT_VERIFY_FAILED', 3);

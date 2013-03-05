@@ -15,9 +15,9 @@ class Application_Model_DbTable_TaiKhoan extends Zend_Db_Table_Abstract
         if($row!=false) return true;
         return false;
 	}
-	public function findbyId($id) {
+	public static function findbyId($id) {
 		$db = Zend_Registry::get('connectDb');
-    	$query = 'select * from accounts where id=?';
+    	$query = 'select * from accounts where status = 1 and id=?';
     	$stmt = $db->prepare($query);
         $stmt->execute(array($id));
         $row = $stmt->fetch();
