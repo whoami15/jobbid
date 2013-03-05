@@ -108,8 +108,15 @@ class Front_RegistrationController extends Zend_Controller_Action
 							'status' => 1
 					));
 					//send email
+					$email_content = Core_Utils_Email::render('verify_account.phtml', array(
+						'name'=> $form_data['name'],
+						'link_verify' => DOMAIN.'/registration/verify?secure_key='.$key,
+						'secure_key' => $key
+					));
+					$coreEmail = new Core_Email();
+					$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
 					//$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
-					$this->_redirect('/registration/verify?is_popup='.$form_data['isPopup']);
+					$this->_redirect('/registration/verify?is_popup='.$form_data['isPopup'].'&email='.$form_data['username']);
 					die;
 				} else {
 					$form->populate($form_data);
@@ -124,9 +131,19 @@ class Front_RegistrationController extends Zend_Controller_Action
     }
     public function verifyAction() {
     	try {
-    		$this->_helper->layout->setLayout('test_layout');
     		$isPopup = $this->_request->getParam('is_popup','0');
+    		if($isPopup == '0') {
+    			$this->_helper->layout->setLayout('front_layout');
+    		} else {
+    			$this->_helper->layout->setLayout('test_layout');
+    		}
     		$this->view->is_popup = $isPopup;
+    		$email = $this->_request->getParam('email','');
+    		if(empty($email) && isset($this->session->logged)) {
+    			$email = $this->session->logged['username'];
+    		}
+    		$this->view->email = $email;
+    		$this->view->secure_key = $this->_request->getParam('secure_key','');
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
     		$this->_forward('error','message','front');

@@ -31,7 +31,7 @@ class Application_Model_DbTable_TaiKhoan extends Zend_Db_Table_Abstract
     		$query = 'SELECT * FROM `accounts` WHERE `username` = ?';
     		$params = array($username);
     	} else {
-    		$query = 'SELECT * FROM `accounts` WHERE `active` = 1 AND `status` = 1 AND `username` = ? AND `password` = ?';
+    		$query = 'SELECT * FROM `accounts` WHERE `status` = 1 AND `username` = ? AND `password` = ?';
     		$params = array($username,md5($password));
     	}
 		$stmt = $db->prepare($query);

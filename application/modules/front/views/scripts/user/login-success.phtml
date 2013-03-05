@@ -21,7 +21,11 @@ var redirect_url = '<?php echo $this->redirect_url?>';
 $(document).ready(function(){	
 	var isPopup = '<?php echo $this->isPopup?>';
 	if(isPopup == '1') {
-		window.opener.loginSuccess();
+		if(typeof window.opener.loginSucces == 'function') {
+			window.opener.loginSuccess();
+		} else {
+			window.opener.location.reload();
+		}
 		window.close();
 	} else {
 		setTimeout("redirect()",3);

@@ -22,9 +22,16 @@ left: 0;
 position: absolute;
 text-align: left;
 top: 5px;
-width: 100%;
+width: 450px;
 }
-#header #menu_bar > a {
+#header #account_bar {
+position: absolute;
+right: 0;
+text-align: right;
+top: 5px;
+width: 450px;
+}
+#header #menu_bar > a,#header #account_bar > a {
 padding-right: 15px;
 }
 .color-oran {
@@ -67,7 +74,7 @@ width: 180px;
 float: left;
 margin-left: 20px;
 position: relative;
-width: 700px;
+width: 770px;
 }
 ol, ul {
   list-style: none outside none;
@@ -337,4 +344,16 @@ padding-left: 0;
 span.warning {
 color: red;
 cursor: pointer;
+}
+span.error {
+color: red;
+font-weight: bold;
+}
+span.success {
+color: green;
+font-weight: bold;
+}
+ul {
+  margin: 5px 0;
+  padding: 0;
 }

@@ -16,7 +16,6 @@
 <!--<![endif]-->
 <head>
 <?php
-$session = new Zend_Session_Namespace('session');
 $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $baseUrl = $this->baseUrl();
 ?>
@@ -60,58 +59,11 @@ function ajdebug(val) {
 </head>
 <body class="gradients">
 	<div id="page">
-		<div id="header">
-			<center>
-			<div style="width: 978px; height: 30px; position: relative;">
-				<div id="menu_bar"> 
-					<a href="<?php echo $baseUrl?>" title="Trang chủ">Trang chủ</a>
-					<a href="<?php echo $baseUrl?>/job/create-job" title="Dành cho nhà tuyển dụng : đăng thông tin cần tuyển dụng nhân sự trên jobbid.vn" style="color: red;">Đăng tuyển dụng</a>
-					<a href="<?php echo $baseUrl?>/news" title="Tin tức">Tin tức</a>
-				</div>
-				<div id="account_bar"> 
-					<?php
-					$logged_info = $session->logged;
-					if(isset($logged_info)) {
-					?>
-					<a>Xin chào <?php echo $logged_info['name']?></a>
-					<?php 
-					if($logged_info['active'] == 0) {
-						?>
-						<a href="<?php echo $baseUrl?>/registration/verify?is_popup=1" title="Kích hoạt tài khoản" class="popup" style="color:red">Chưa kích hoạt</a>
-						<?php
-					}
-					?>
-					<a href="<?php echo $baseUrl?>/user/update?is_popup=1" title="Cập nhật Thông tin cá nhân" class="popup">Thông tin cá nhân</a>
-					<a href="<?php echo $baseUrl?>/user/logout" title="Đăng xuất">Logout</a>
-					<?php
-					} else {
-					?>
-					<a href="<?php echo $baseUrl?>/user/login?is_popup=1" title="Đăng nhập" style="padding-right:20px" class="popup">Đăng nhập</a>
-					<a href="<?php echo $baseUrl?>/registration/jobbid?is_popup=1" title="Đăng ký" class="popup">Đăng ký</a>
-					<?php
-					}
-					?>
-				</div>
-			</div>
-			</center>
-		</div>
 		<center>
 		<div id="main">
 		<?php echo $this->layout()->content;?>
 		</div>
 		</center>
-		<div id="footer">
-			<center>
-			<div style="width: 978px; height: 120px; position: relative;">
-				<div class="address">
-				<p style="padding-top:15px"> 
-					MẠNG XÃ HỘI VIỆC LÀM VIỆT NAM<br/>
-					Điện thoại : 0932 337 487 - Email : <a href="mailto:lienhe@jobbid.vn">lienhe@jobbid.vn</a>
-				</p>
-				</div>
-			</div>
-			</center>
-		</div>
 	</div>
 </body>
 </html>
@@ -120,14 +72,7 @@ var ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại.';
 var PROCESSING_MESSAGE = 'Đang xử lý...';
 var LIMIT_VERIFY_FAILED = 'Bạn đã xác thực sai quá <?php echo LIMIT_VERIFY_FAILED?> lần.\nVui lòng xác thực lại sau 15 phút.';
 $(document).ready(function(){	 
-	$("a.popup").live("click",function(){
-		var w = 600;
-		var h = 350;
-		var left = (screen.width/2)-(w/2);
-		var top = (screen.height/2)-(h/2);
-		window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left); 
-		return false;
-	});
+	
 	/*if($("#page #content").height()+218 < $(window).height()) {
 		$("#bottom").attr('style','position:fixed;bottom:0');
 	}*/

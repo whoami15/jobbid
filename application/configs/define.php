@@ -100,10 +100,14 @@ define('ACTION_POST_JOB', 4);
 define('ACTION_REPORT_JOB', 5);
 define('ACTION_VERIFY_REGISTRATION_FAILED', 6);
 define('ACTION_VERIFY_REGISTRATION', 7);
+define('ACTION_UPDATE_PROFILE', 8);
 
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
 define('LIMIT_REGISTRATION', 3);
-define('LIMIT_LOGIN_FAILED', 5);
+define('LIMIT_LOGIN_FAILED', 50);
 define('LIMIT_POST_JOB', 2); //so lan dang cong viec cho phep
 define('LIMIT_VERIFY_FAILED', 3);
+
+//email subjects
+define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài khoản.');

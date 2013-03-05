@@ -12,13 +12,14 @@ $actual_link = Core_Utils_Tools::getFullURL();
 <script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
 <div id="right_col" style="margin-left:10px">
 	<div style="width: 500px; margin: 20px auto 0px; text-align: left; float: left;">
-	<!--h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px;">Xác thực tài khoản</h1-->
+	<h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px;">Xác thực tài khoản</h1>
+	<span style="font-size: 12px; color: gray;">Mã xác thực đã được gửi vào email <b><?php echo $this->email?></b>,vui lòng kiểm tra email <b><?php echo $this->email?></b> và nhập mã xác thực vào ô bên dưới để kích hoạt tài khoản của bạn.</span>
 	<form id="fVerify" action="" method="post" onsubmit="return false;">
 	<table	style="width:100%">
 	<tr>
 		<td style="width:120px">Nhập mã xác thực :</td>
 		<td>
-		<input type="text" name="verify_key" value="" class="text element" id="verify_key"/> <span class="warning" title="Mã xác thực được gửi vào địa chỉ email mà bạn đã đăng ký tại jobbid.vn">*</span>
+		<input type="text" name="verify_key" value="<?php echo $this->secure_key?>" class="text element" id="verify_key"/> <span class="warning" title="Mã xác thực được gửi vào địa chỉ email mà bạn đã đăng ký tại jobbid.vn">*</span>
 		<label for="verify_key" generated="false" class="error"></label>
 		</td>
 	</tr>
@@ -67,7 +68,11 @@ $(document).ready(function(){
 					return;
 				}
 				if(isPopup == '1') {
-					window.opener.loginSuccess();
+					if(typeof window.opener.loginSucces == 'function') {
+						window.opener.loginSuccess();
+					} else {
+						window.opener.location.reload();
+					}
 					window.close();
 				} else {
 					location.href = data;

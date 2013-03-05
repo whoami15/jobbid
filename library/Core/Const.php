@@ -30,7 +30,9 @@ class Core_Const
 		'REQUEST_RESET_PASS_SUCCESS' => 'Bạn đã gửi yêu cầu cấp lại mật khẩu thành công, vui lòng kiểm tra email %s để lấy link cập nhật mật khẩu',
 		'LOGIN_FAILED' => 'Đăng nhập không thành công, vui lòng kiểm tra lại username và password!',
 		'LIMIT_REGISTRATION' => 'Vượt quá số lần đăng ký cho phép!',
-		'LIMIT_POST_JOB' => 'Vượt quá số lần đăng công việc cho phép!'
+		'LIMIT_POST_JOB' => 'Vượt quá số lần đăng công việc cho phép!',
+		'LOGIN_REQUIRED' => 'Bạn cần đăng nhập để thực hiện chức năng này!',
+		'CHANGE_PROFILE_SUCCESS' => 'Cập nhật thông tin cá nhân thành công!'
 	);
 	public static $success_messages = array(
 		'CHANGE_PASSWORD' => 'Thay đổi mật khẩu thành công!',

@@ -94,7 +94,7 @@ class Front_AjaxController extends Zend_Controller_Action
     	die('OK');
     }
 	public function testAction() {
-		print_r($this->session->reports);die;
+		print_r($this->session->logged);die;
 		$date = new Zend_Date();
 		$date->subMinute(5);
 		echo $date->toString();

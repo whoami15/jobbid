@@ -62,5 +62,11 @@ $(document).ready(function(){
 	}
 	$("#fLogin #isPopup").val(isPopup);
 	OnRequestPermission();
+	<?php
+	$msg = '';
+	if(!empty($this->errors))
+		$msg = join(',', $this->errors);
+	?>
+	$("#fLogin #msg").text("<?php echo $msg?>");
 });
 </script>
