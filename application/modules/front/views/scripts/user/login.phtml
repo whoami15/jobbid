@@ -58,7 +58,7 @@ $(document).ready(function(){
 		isPopup = '1';
 		var registrationUrl = $("#fb-register").attr("data-registration-url");
 		$("#fb-register").attr("data-registration-url",registrationUrl+"?isPopup=1");
-		$("#linkRegistration").attr("href",$("#linkRegistration").attr("href")+"?isPopup=1");
+		$("#linkRegistration").attr("href",$("#linkRegistration").attr("href")+"?is_popup=1");
 	}
 	$("#fLogin #isPopup").val(isPopup);
 	OnRequestPermission();

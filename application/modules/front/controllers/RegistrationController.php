@@ -72,7 +72,11 @@ class Front_RegistrationController extends Zend_Controller_Action
 			$form = new Front_Form_Registration();
 			$this->view->form = $form;
 			$errors = array();
-			$this->view->isPopup = $this->_request->getParam('isPopup','0');
+			$is_popup = $this->_request->getParam('is_popup','0');
+			if($is_popup == '1') {
+				$this->_helper->layout->setLayout('popup_layout');
+			}
+			$this->view->isPopup = $is_popup;
 			if ($this->getRequest()->isPost()) {
 				$form_data = $this->getRequest()->getParams();
 				if ($form->isValid($form_data)) {
@@ -132,10 +136,8 @@ class Front_RegistrationController extends Zend_Controller_Action
     public function verifyAction() {
     	try {
     		$isPopup = $this->_request->getParam('is_popup','0');
-    		if($isPopup == '0') {
-    			$this->_helper->layout->setLayout('front_layout');
-    		} else {
-    			$this->_helper->layout->setLayout('test_layout');
+    		if($isPopup == '1') {
+    			$this->_helper->layout->setLayout('popup_layout');
     		}
     		$this->view->is_popup = $isPopup;
     		$email = $this->_request->getParam('email','');
