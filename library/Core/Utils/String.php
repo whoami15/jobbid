@@ -30,4 +30,21 @@ class Core_Utils_String
 		}
 		return $string;
 	}
+	
+	public static function getMatches($string,$words_list) {
+		//$words_list = array('company', 'executive', 'files', 'resource');
+		//$string = 'Executives are running the compa ny.';
+		foreach ($words_list as &$word) $word = preg_quote($word, '/');
+		return preg_match_all('/('.join('|', $words_list).')/i', $string, $matches);
+	}
+	public static function checkContent($content) {
+		$rows = Application_Model_DbTable_Prohibition::getProhibitionWords();
+		$words_list = array();
+		foreach($rows as $row) {
+			$words_list[] = $row['words'];
+		}
+		if(empty($words_list)) return true;
+		foreach ($words_list as &$word) $word = preg_quote($word, '/');
+		return preg_match_all('/('.join('|', $words_list).')/i', $content, $matches) > 0 ?false:true;
+	}
 }

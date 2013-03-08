@@ -34,6 +34,8 @@ define('MAX_FILE_SIZE_UPLOAD', '4MB');
 define('LIMIT_SLIDE', 5);
 define('BUFFER_ELEMENT_IN_SESSION', 100);
 define('DEFAULT_IMAGE_RESIZE_QUALITY', 90);
+define('MIN_CONTENT_LENGTH', 50);
+define('MAX_CONTENT_LENGTH', 3000);
 
 //Session variables
 define('SESSION_TIME_VARIABLE_SHORT', 60*2); // 2 minutes

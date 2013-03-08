@@ -94,6 +94,13 @@ class Front_AjaxController extends Zend_Controller_Action
     	die('OK');
     }
 	public function testAction() {
+		$content = 'Một chủ cửa hàng bán mũ bảo hiểm trên đường Bà Triệu (Hà Nội) nói: “Đối chiếu với những quy định như vậy, hơn 2/3 số mũ trong cửa hàng của tôi không phải là mũ bảo hiểm. từ cấm Thị trường mũ bảo hiểm cả nước cũng tương tự như thế';
+		if(Core_Utils_String::checkContent($content) == true) {
+			echo 'true';
+		} else {
+			echo 'false';
+		}
+		die;
 		print_r($this->session->logged);die;
 		$date = new Zend_Date();
 		$date->subMinute(5);

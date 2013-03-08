@@ -39,11 +39,18 @@ class Front_JobController extends Zend_Controller_Action
         	$form = new Front_Form_PostJob();
         	$this->view->form = $form;
         	if ($this->getRequest()->isPost()) {
+        		if(Application_Model_DbTable_Lock::isLocked(ACTION_POST_JOB) == true) {
+        			throw new Core_Exception('LOCK_ACTION');
+        		}
         		$form_data = $this->getRequest()->getParams();
         		if ($form->isValid($form_data)) {
         			if(Application_Model_DbTable_Activity::getNumActivity(ACTION_POST_JOB) > LIMIT_POST_JOB) {
-        				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_POST_JOB);
+        				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_POST_JOB,'LIMIT_POST_JOB');
         				throw new Core_Exception('LIMIT_POST_JOB');
+        			}
+        			if(Core_Utils_String::checkContent($form_data['job_description']) == false) {
+        				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_POST_JOB,'PROHIBITION_WORDS');
+        				throw new Core_Exception('PROHIBITION_WORDS');
         			}
         			$modelCompany = new Application_Model_DbTable_Company();
         			$companyId = $modelCompany->save($form_data['company']);
