@@ -3,6 +3,7 @@
 class Front_JobController extends Zend_Controller_Action
 {
 	private $session;
+	private $account;
     public function init()
     {
         /* Initialize action controller here */
@@ -10,6 +11,7 @@ class Front_JobController extends Zend_Controller_Action
     	$this->session = new Zend_Session_Namespace('session');
     	$this->session->visitor = Application_Model_DbTable_Visitor::getVisitor($this->session->logged);
     	$this->session->url = Core_Utils_Tools::getFullURL();
+    	$this->account = $this->session->logged;
     }
     public function viewJobAction() {
     	try {
@@ -35,10 +37,15 @@ class Front_JobController extends Zend_Controller_Action
     public function createJobAction()
     {
         try {
-        	//die('');
         	$form = new Front_Form_PostJob();
         	$this->view->form = $form;
         	if ($this->getRequest()->isPost()) {
+	        	if(!isset($this->account)) {
+	        		throw new Core_Exception('LOGIN_REQUIRED'); 
+	        	}
+	        	if($this->account['active'] == 0) {
+	        		throw new Core_Exception('ACTIVE_REQUIRED'); 
+	        	}
         		if(Application_Model_DbTable_Lock::isLocked(ACTION_POST_JOB) == true) {
         			throw new Core_Exception('LOCK_ACTION');
         		}
@@ -58,11 +65,10 @@ class Front_JobController extends Zend_Controller_Action
         			$jobTitleId = $modelJobTitle->save($form_data['job_title']);
         			$modelJob = new Application_Model_DbTable_Job();
         			$now = Core_Utils_Date::getCurrentDateSQL();
-        			$secId = Core_Utils_Tools::genKey();
         			$jobId = $modelJob->insert(array(
         					'id' => null,
         					'title' => $form_data['company'].' - '.$form_data['job_title'],
-        					'account_id' => 1,
+        					'account_id' => $this->account['id'],
         					'company_id' => $companyId,
         					'job_title_id' => $jobTitleId,
         					'job_description' => $form_data['job_description'],
@@ -72,10 +78,30 @@ class Front_JobController extends Zend_Controller_Action
         					'view' => 0,
         					'time_create' => $now,
         					'time_update' => $now,
-        					'sec_id' => $secId
+        					'sec_id' => '',
+        					'status' => 1,
+        					'active' => 0
         			));
         			Application_Model_DbTable_Activity::insertActivity(ACTION_POST_JOB,$jobId);
-        			$this->_redirect('/message/success?type=post-job&email='.$form_data['email_to']);
+        			$dbSecureKey = new Application_Model_DbTable_SecureKey();
+					$key = strtoupper(Core_Utils_Tools::genSecureKey());
+					$dbSecureKey->insert(array(
+							'id' => null,
+							'account_id' => $this->account['id'],
+							'key' => $key,
+							'type' => KEY_VERIFY_JOB,
+							'ref_id' => $jobId,
+							'create_time' => $now,
+							'status' => 1
+					));
+        			/*$email_content = Core_Utils_Email::render('verify_job.phtml', array(
+						'name'=> $this->account['username'],
+						'link_verify' => DOMAIN.'/job/verify?secure_key='.$key,
+						'secure_key' => $key
+					));*/
+					$coreEmail = new Core_Email();
+					//$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
+        			$this->_redirect('/job/verify?email='.$form_data['email_to']);
         		} else {
         			$form->populate($form_data);
         		}
@@ -93,5 +119,18 @@ class Front_JobController extends Zend_Controller_Action
 		//$this->_redirect('/view')
 		$this->_forward('view-job','job','front',array('id' => 8));
 	}
+ 	public function verifyAction()
+    {
+        try {
+	        $email = $this->_request->getParam('email','');
+        	if(empty($email)) throw new Core_Exception('LINK_ERROR');
+        	$this->view->email = $email;
+        } catch (Exception $e) {
+        	$this->view->error_msg = Core_Exception::getErrorMessage($e);
+        	$this->_forward('error','message','front');
+        }
+        
+    	
+    }
 }
 

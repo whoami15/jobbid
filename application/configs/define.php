@@ -34,7 +34,7 @@ define('MAX_FILE_SIZE_UPLOAD', '4MB');
 define('LIMIT_SLIDE', 5);
 define('BUFFER_ELEMENT_IN_SESSION', 100);
 define('DEFAULT_IMAGE_RESIZE_QUALITY', 90);
-define('MIN_CONTENT_LENGTH', 50);
+define('MIN_CONTENT_LENGTH', 30);
 define('MAX_CONTENT_LENGTH', 3000);
 
 //Session variables
@@ -103,6 +103,8 @@ define('ACTION_REPORT_JOB', 5);
 define('ACTION_VERIFY_REGISTRATION_FAILED', 6);
 define('ACTION_VERIFY_REGISTRATION', 7);
 define('ACTION_UPDATE_PROFILE', 8);
+define('ACTION_VERIFY_JOB_FAILED', 9);
+define('ACTION_VERIFY_JOB_SUCCESS', 10);
 
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep

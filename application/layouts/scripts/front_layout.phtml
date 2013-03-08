@@ -41,13 +41,12 @@ $baseUrl = $this->baseUrl();
 <![endif]--> 
 
 <script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery.js'></script>
-<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.core.min.js'></script>
-<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.widget.min.js'></script>
-<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.button.min.js'></script>
-<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.position.min.js'></script>
-<script type="text/javascript" src="<?php echo $baseUrl?>/js/mylibs/utils.js"></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui.min.js'></script>
 <script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.placeholder.min.js"></script>
 <script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.timeago.js"></script>
+<script src="<?php echo $baseUrl?>/js/jquery-window/jquery.window.min.js" type="text/javascript"></script>
+<link href="<?php echo $baseUrl?>/js/jquery-window/css/jquery.window.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/mylibs/utils.js"></script>
 <script>
 var baseUrl = '<?php echo $baseUrl?>';
 function byId(id) { //Viet tat cua ham document.getElementById
@@ -77,7 +76,7 @@ function ajdebug(val) {
 					<?php 
 					if($logged_info['active'] == 0) {
 						?>
-						<a href="<?php echo $baseUrl?>/registration/verify?is_popup=1" title="Kích hoạt tài khoản" class="popup" style="color:red">Chưa kích hoạt</a>
+						<a href="<?php echo $baseUrl?>/registration/verify?is_popup=1" title="Kích hoạt tài khoản" class="popup verify" style="color:red">Chưa kích hoạt</a>
 						<?php
 					}
 					?>
@@ -86,8 +85,8 @@ function ajdebug(val) {
 					<?php
 					} else {
 					?>
-					<a href="<?php echo $baseUrl?>/user/login?is_popup=1" title="Đăng nhập" style="padding-right:20px" class="popup">Đăng nhập</a>
-					<a href="<?php echo $baseUrl?>/registration/jobbid?is_popup=1" title="Đăng ký" class="popup">Đăng ký</a>
+					<a href="<?php echo $baseUrl?>/user/login?is_popup=1" title="Đăng nhập" style="padding-right:20px" class="popup login">Đăng nhập</a>
+					<a href="<?php echo $baseUrl?>/registration/jobbid?is_popup=1" title="Đăng ký" class="popup registration">Đăng ký</a>
 					<?php
 					}
 					?>
@@ -120,12 +119,10 @@ var ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại.';
 var PROCESSING_MESSAGE = 'Đang xử lý...';
 var LIMIT_VERIFY_FAILED = 'Bạn đã xác thực sai quá <?php echo LIMIT_VERIFY_FAILED?> lần.\nVui lòng xác thực lại sau 15 phút.';
 $(document).ready(function(){	 
-	$("a.popup").live("click",function(){
-		var w = 600;
-		var h = 350;
-		var left = (screen.width/2)-(w/2);
-		var top = (screen.height/2)-(h/2);
-		window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left); 
+	$("a.popup").live("click",function(event){
+		event.stopPropagation();
+		event.preventDefault();
+		ShowWindow(this.href,$(this).text(),500,350);
 		return false;
 	});
 	/*if($("#page #content").height()+218 < $(window).height()) {

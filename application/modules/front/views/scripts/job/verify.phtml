@@ -1,0 +1,77 @@
+<?php
+$baseUrl = $this->baseUrl();
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
+<div id="left_col">
+	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
+				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
+</div>
+<div id="right_col">
+	<div class="ui-state-highlight ui-corner-all" style=" padding: 0px 0.7em; margin-top: 10px;">
+		<p style="padding: 3px; text-align: left; margin: 0px;"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+		<strong>Bước 2 : </strong> Nhập mã xác nhận</p>
+	</div>
+	<span style="text-align: left; display: block; margin-top: 5px; ">Chúng tôi vừa gửi một email xác nhận đến địa chỉ mail <strong style="color: orangered;"><?php echo $this->email?></strong>, vui lòng check mail để xác nhận, sau khi xác nhận thành công thì tin đăng của bạn sẽ được hiển thị trên trang chủ.</span>
+	<form id="fVerify" action="" method="post" onsubmit="return false;">
+	<table	style="width:100%;margin-top:10px">
+	<tr>
+		<td style="width:120px">Nhập mã xác nhận :</td>
+		<td>
+		<input type="text" name="verify_key" value="<?php echo $this->secure_key?>" class="text element" id="verify_key"/> <span class="warning" title="Mã xác nhận được gửi vào địa chỉ email liên hệ : <?php echo $this->email?>">*</span>
+		<label for="verify_key" generated="false" class="error"></label>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<button id="btSubmit" class="button element">Xác nhận</button>
+		</tr>
+	</table>
+	</form>
+</div>
+<script type='text/javascript'>
+$(document).ready(function(){	
+	$("#verify_key").focus();
+	$("#fVerify").validate({
+	  rules: {
+		verify_key: {
+			required: true
+		}
+	  }
+	});
+	$("#fVerify").live("submit",function(){
+		var form = $(this);
+		form.find('.element').attr('disabled', 'disabled');
+		$.ajax({
+			type : "POST",
+			cache: false,
+			url: baseUrl +'/ajax/verify-job',
+			data : {key : $("#verify_key").val()},
+			success : function(data){	
+				form.find('.element').removeAttr('disabled');
+				if(data=='ERROR') {
+					alert(ERROR_MESSAGE);
+					return;
+				}
+				if(data=='LIMIT') {
+					alert(LIMIT_VERIFY_FAILED);
+					form.find('.element').attr('disabled', 'disabled');
+					return;
+				}
+				if(data=='FAILED') {
+					alert('Mã xác nhận không đúng, vui lòng thử lại!');
+					return;
+				}
+				alert("Xác nhận thành công!");
+				location.href = baseUrl;
+			},
+			error: function(data){ 
+				alert(ERROR_MESSAGE);
+				form.find('.element').removeAttr('disabled');
+			}			
+		});
+		return false;
+	});
+});
+</script>

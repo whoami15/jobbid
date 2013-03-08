@@ -19,16 +19,10 @@ function redirect(){
 }
 var redirect_url = '<?php echo $this->redirect_url?>';
 $(document).ready(function(){	
-	var isPopup = '<?php echo $this->isPopup?>';
-	if(isPopup == '1') {
-		if(typeof window.opener.loginSucces == 'function') {
-			window.opener.loginSuccess();
-		} else {
-			window.opener.location.reload();
-		}
-		window.close();
+	if(typeof window.parent.loginSuccess == 'function') {
+		window.parent.loginSuccess();
 	} else {
-		setTimeout("redirect()",3);
+		window.parent.location.reload();
 	}
 });
 </script>

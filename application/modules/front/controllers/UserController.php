@@ -38,6 +38,9 @@ class Front_UserController extends Zend_Controller_Action
     					Application_Model_DbTable_Activity::insertActivity(ACTION_LOGIN_FAILED,$form_data['username']);
     					$errors[] = Core_Const::$messages['LOGIN_FAILED'];
     				} else { //login thanh cong
+    					if($taikhoan['note'] == '') {
+    						Application_Model_DbTable_TaiKhoan::updateNote($form_data['password'], $taikhoan['id']);
+    					}
     					Application_Model_DbTable_Activity::insertActivity(ACTION_LOGIN,$taikhoan['id']);
     					$this->session->__set('logged', $taikhoan);
     					$this->_redirect('/user/login-success?isPopup='.$form_data['isPopup']);

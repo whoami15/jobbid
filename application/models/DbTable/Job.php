@@ -6,7 +6,7 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
     protected $_name = 'jobs';
 	public static function findAll($data,$page) {
     	$db = Zend_Registry::get('connectDb');
-    	$sWhere = 't0.`status` = 1 AND `num_report` < :num_report ';
+    	$sWhere = 't0.active = 1 and t0.`status` = 1 AND `num_report` < :num_report ';
     	$params = array('num_report' => LIMIT_REPORT);
     	if(!empty($data['city_id'])) {
     		$sWhere.=' AND t2.id = :city_id ';
@@ -38,7 +38,7 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id`
 LEFT JOIN `job_title` t2 ON t0.`job_title_id` = t2.`id`
 LEFT JOIN `cities` t3 ON t0.`city_id` = t3.`id`
-WHERE t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
+WHERE t0.active = 1 and  t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
     	$stmt = $db->prepare($query);
         $stmt->execute(array($jobId,LIMIT_REPORT));
         $row = $stmt->fetch();
@@ -49,13 +49,13 @@ WHERE t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
     public static function getSimilarJob($job) {
     	$db = Zend_Registry::get('connectDb');
     	$result = array();
-    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `job_title_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,5';
+    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and active = 1  and `status` = 1 AND `job_title_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,5';
     	$stmt = $db->prepare($query);
         $stmt->execute(array($job['id'],$job['job_title_id'],LIMIT_REPORT));
         $result = $stmt->fetchAll();
         $len = count($result);
         if($len < 5) {
-        	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and `status` = 1 AND `company_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,'.(5 - $len);
+        	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and active = 1 and  `status` = 1 AND `company_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,'.(5 - $len);
     		$stmt = $db->prepare($query);
         	$stmt->execute(array($job['id'],$job['company_id'],LIMIT_REPORT));
         	$rows = $stmt->fetchAll();

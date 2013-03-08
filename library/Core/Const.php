@@ -32,6 +32,7 @@ class Core_Const
 		'LIMIT_REGISTRATION' => 'Vượt quá số lần đăng ký cho phép!',
 		'LIMIT_POST_JOB' => 'Vượt quá số lần đăng công việc cho phép!',
 		'LOGIN_REQUIRED' => 'Bạn cần đăng nhập để thực hiện chức năng này!',
+		'ACTIVE_REQUIRED' => 'Bạn cần xác nhận tài khoản để thực hiện chức năng này!',
 		'CHANGE_PROFILE_SUCCESS' => 'Cập nhật thông tin cá nhân thành công!',
 		'LOCK_ACTION' => 'Thao tác của bạn đã bị chặn từ hệ thống jobbid.vn, mọi thắc mắc vui lòng liên hệ admin@jobbid.vn.',
 		'PROHIBITION_WORDS' => 'Nội dung không hợp lệ, mọi thắc mắc vui lòng liên hệ admin@jobbid.vn.'

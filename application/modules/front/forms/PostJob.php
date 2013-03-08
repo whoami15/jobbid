@@ -8,13 +8,13 @@ class Front_Form_PostJob extends Zend_Form {
 		
 		$this->addElement ( 'Text', 'company', array (
 			'filters' => array ('StringTrim' ), 
-			'attribs' => array ('class' => 'text', 'maxlength' => 255 ) ) 
+			'attribs' => array ('class' => 'text element', 'maxlength' => 255 ) ) 
 		);
 		
 		$this->addElement ( 'Text', 'job_title', array (
 			'required'=>true,
 			'filters' => array ('StringTrim' ), 
-			'attribs' => array ('class' => 'text', 'maxlength' => 255 ) ) 
+			'attribs' => array ('class' => 'text element', 'maxlength' => 255 ) ) 
 		);
 		
 		$this->addElement ( 'Textarea', 'job_description', array (
@@ -31,7 +31,7 @@ class Front_Form_PostJob extends Zend_Form {
 			'required' => true, 
 			'validators' => array ('EmailAddress' ), 
 			'filters' => array ('StringTrim' ), 
-			'attribs' => array ('class' => 'text', 'maxlength' => 255 ) )
+			'attribs' => array ('class' => 'text element', 'maxlength' => 255 ) )
 		);
 		$this->addElement ( 'Select', 'job_type', array ('multiOptions' => array(
 			'1' => 'Part-time','2' => 'Full-time', '3' => 'Theo công việc'

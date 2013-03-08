@@ -73,9 +73,7 @@ class Front_RegistrationController extends Zend_Controller_Action
 			$this->view->form = $form;
 			$errors = array();
 			$is_popup = $this->_request->getParam('is_popup','0');
-			if($is_popup == '1') {
-				$this->_helper->layout->setLayout('popup_layout');
-			}
+			$this->_helper->layout->setLayout('popup_layout');
 			$this->view->isPopup = $is_popup;
 			if ($this->getRequest()->isPost()) {
 				$form_data = $this->getRequest()->getParams();
@@ -118,8 +116,7 @@ class Front_RegistrationController extends Zend_Controller_Action
 						'secure_key' => $key
 					));
 					$coreEmail = new Core_Email();
-					$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
-					//$redirectUrl = isset($this->session->url)?$this->session->url:'/index';
+					//$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
 					$this->_redirect('/registration/verify?is_popup='.$form_data['isPopup'].'&email='.$form_data['username']);
 					die;
 				} else {
@@ -135,11 +132,7 @@ class Front_RegistrationController extends Zend_Controller_Action
     }
     public function verifyAction() {
     	try {
-    		$isPopup = $this->_request->getParam('is_popup','0');
-    		if($isPopup == '1') {
-    			$this->_helper->layout->setLayout('popup_layout');
-    		}
-    		$this->view->is_popup = $isPopup;
+    		$this->_helper->layout->setLayout('popup_layout');
     		$email = $this->_request->getParam('email','');
     		if(empty($email) && isset($this->session->logged)) {
     			$email = $this->session->logged['username'];

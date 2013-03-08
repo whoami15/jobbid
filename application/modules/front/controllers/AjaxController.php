@@ -10,6 +10,15 @@ class Front_AjaxController extends Zend_Controller_Action
         $this->session = new Zend_Session_Namespace('session');
         $this->session->visitor = Application_Model_DbTable_Visitor::getVisitor($this->session->logged);
     }
+	public function checkLoggedAction() {
+		if(!isset($this->session->logged)) {
+			die('NOT_LOGIN');
+		}
+		if($this->session->logged['active'] == 0) {
+			die('NOT_VERIFY');
+		}
+		die('OK');
+	}
     public function autoCompleteAction() {
     	$type = $this->_request->getParam('type','');
     	$keyword = $this->_request->getParam('keyword','');
@@ -82,6 +91,23 @@ class Front_AjaxController extends Zend_Controller_Action
     	if(($account = Application_Model_DbTable_TaiKhoan::findbyId($secure_key['account_id'])) == null) die('ERROR');
     	$this->session->__set('logged', $account);
     	die(isset($this->session->url)?$this->session->url:'/index');
+    }
+	public function verifyJobAction()
+    {
+    	$key = $this->_request->getParam('key','');
+    	if(empty($key)) die('ERROR');
+    	if(Application_Model_DbTable_Activity::getNumActivity(ACTION_VERIFY_JOB_FAILED) > LIMIT_VERIFY_FAILED) {
+    		Application_Model_DbTable_Activity::insertLockedActivity(ACTION_VERIFY_JOB_FAILED,$key);
+    		die('LIMIT');
+    	}
+    	if(($secure_key = Application_Model_DbTable_SecureKey::findByKey($key)) == null) {
+    		Application_Model_DbTable_Activity::insertActivity(ACTION_VERIFY_JOB_FAILED);
+    		die('FAILED');
+    	} 
+    	Application_Model_DbTable_Activity::insertActivity(ACTION_VERIFY_JOB_SUCCESS,$secure_key['ref_id']);
+    	Application_Model_DbTable_SecureKey::removeSecureKey($secure_key['id']);
+    	Core_Utils_DB::update('jobs', array('active' => 1), array('id' => $secure_key['ref_id'],'status' => 1));
+    	die('OK');
     }
     public function reportJobAction()
     {

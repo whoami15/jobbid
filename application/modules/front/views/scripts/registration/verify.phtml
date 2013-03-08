@@ -11,8 +11,7 @@ $actual_link = Core_Utils_Tools::getFullURL();
 <link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
 <script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
 <div id="right_col" style="margin-left:10px">
-	<div style="width: 500px; margin: 20px auto 0px; text-align: left; float: left;">
-	<h1 style="text-align: left; border-bottom: 1px dashed gray; padding-bottom: 10px; margin-bottom: 10px;">Xác thực tài khoản</h1>
+	<div style="width: 490px; margin: 20px auto 0px; text-align: left; float: left;">
 	<span style="font-size: 12px; color: gray;">Mã xác thực đã được gửi vào email <b><?php echo $this->email?></b>,vui lòng kiểm tra email <b><?php echo $this->email?></b> và nhập mã xác thực vào ô bên dưới để kích hoạt tài khoản của bạn.</span>
 	<form id="fVerify" action="" method="post" onsubmit="return false;">
 	<table	style="width:100%">
@@ -34,7 +33,6 @@ $actual_link = Core_Utils_Tools::getFullURL();
 	</div>
 </div>
 <script type='text/javascript'>
-var isPopup = '<?php echo $this->is_popup?>'; 
 $(document).ready(function(){	
 	$("#verify_key").focus();
 	$("#fVerify").validate({
@@ -67,15 +65,10 @@ $(document).ready(function(){
 					alert('Mã xác nhận không đúng, vui lòng thử lại!');
 					return;
 				}
-				if(isPopup == '1') {
-					if(typeof window.opener.loginSucces == 'function') {
-						window.opener.loginSuccess();
-					} else {
-						window.opener.location.reload();
-					}
-					window.close();
+				if(typeof parent.loginSuccess == 'function') {
+					parent.loginSuccess();
 				} else {
-					location.href = data;
+					parent.location.reload();
 				}
 			},
 			error: function(data){ 

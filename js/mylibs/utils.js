@@ -126,3 +126,67 @@
 		if(this.val() == this.attr('placeholder'))
 			this.val('');
 	}
+var windowObj;
+function ShowWindow(_url,_title, _width, _height) {
+	windowObj = $.window({
+		title: _title,
+		url: _url,
+		width: _width,
+		height:_height,
+		showModal: true,
+		resizable: true,
+		scrollable: true,
+		minimizable: false,
+		maximizable: false, 
+		bookmarkable: false,
+		scrollable:true,
+		showFooter : false,
+		showRoundCorner : true,
+		onClose: function () {
+		},
+		onOpen : function(){
+			//$("body").css("overflow", "hidden");
+		},
+		onIframeEnd: function() {
+			var height = $("iframe").contents().find("body").height();
+			$("iframe").css("height",height+30+"px");
+			$("div.window_panel").css("height",height+30+"px"); 
+		}
+	});
+}
+function MaxWindow()
+{
+    windowObj.maximize();
+}
+function CloseWindow() {
+    //status == "closing";
+    windowObj.close();
+    //oTable.fnDraw(false);
+}
+function popup(url,width,height) {
+	$.window({
+		title: "",
+		url: url,
+		width: width,
+		height:height,
+		showModal: true,
+		resizable: true,
+		scrollable: true,
+		minimizable: false,
+		maximizable: false, 
+		bookmarkable: false,
+		scrollable:true,
+		showFooter : false,
+		showRoundCorner : true,
+		onClose: function () {
+		},
+		onOpen : function(){
+			//$("body").css("overflow", "hidden");
+		},
+		onIframeEnd: function() {
+			var height = $("iframe").contents().find("body").height();
+			$("iframe").css("height",height+30+"px");
+			$("div.window_panel").css("height",height+30+"px"); 
+		}
+	});
+}
