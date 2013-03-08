@@ -22,6 +22,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	        $router->addRoute('default', $routeLangDefault);
 	        $router->addRoute('gianhang', $routeLang);
     	}*/
+    	$front = Zend_Controller_Front::getInstance();
+    	
+    	// Get Router
+    	$router = $front->getRouter();
+    	$oldRoute1 = new Zend_Controller_Router_Route(
+    			'/duan/view/:id/*',
+    			array(
+    					'controller' => 'job',
+    					'action'     => 'redirect'
+    			)
+    	);
+    	
+    	
+    	
+    	$router->addRoute('oldRoute1', $oldRoute1);
     }
 	
 	/*protected function _initRoutes() {

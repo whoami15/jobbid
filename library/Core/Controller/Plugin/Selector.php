@@ -1,14 +1,21 @@
 <?php
 
-class Core_Controller_Plugin_GianhangSelector extends Zend_Controller_Plugin_Abstract {
+class Core_Controller_Plugin_Selector extends Zend_Controller_Plugin_Abstract {
 	public function preDispatch (Zend_Controller_Request_Abstract $request)
     {
-        $gianhang = $request->getParam('gianhang', '');
-       	if(!empty($gianhang))
-        	$request->setParam('controller', 'gian-hang');
+       $params = $request->getParams();
+       if($params['controller'] == 'duan' && $params['action'] == 'view') {
+       		header('job/view-job/vng-tuyen-marketing-online-executive?id=8');
+       		/* $request->setDispatched(true);
+       		//$this->_response->s
+       		$request->setParams(array(
+       			'controller' => 'job',
+       			'action' => 'view-job',
+       			'id' => 8		
+       		)); */
+       		//$this->_response->setRedirect('job/view-job/vng-tuyen-marketing-online-executive?id=8')->sendResponse();
+       }
         //die('Language : '.$lang);
-        //var_dump($request->getParams());
-       //die();
        /* if ($lang !== 'en' && $lang !== 'vi') {
             $request->setParam('lang', DEFAULT_LANG);
         }

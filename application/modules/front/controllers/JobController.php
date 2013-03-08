@@ -89,6 +89,9 @@ class Front_JobController extends Zend_Controller_Action
     {
         // action body
     }
-
+	public function redirectAction() {
+		//$this->_redirect('/view')
+		$this->_forward('view-job','job','front',array('id' => 8));
+	}
 }
 
