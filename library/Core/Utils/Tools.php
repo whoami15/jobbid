@@ -86,4 +86,9 @@ class Core_Utils_Tools
 		if(isset($session->logged) && $session->logged['role'] == ROLE_ADMIN) return true;
 		return false;
 	}
+	public static function loadCache($lifetime = null) {
+		$frontendOptions = array('lifetime' => $lifetime, 'automatic_serialization' => true);
+		$backendOptions = array('cache_dir' => PUBLIC_DIR .'/cache/'); // getting a Zend_Cache_Core object
+		return Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+	}
 }

@@ -1,0 +1,8 @@
+<ul>
+<?php
+$top_tags = Application_Model_DbTable_Tag::findTopTag();
+foreach($top_tags as $tag) {
+	echo '<li>'.$tag['tag'].'</li>';
+}
+?>
+</ul>

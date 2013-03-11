@@ -1,5 +1,5 @@
 <?php
-define('DOMAIN', 'http://'.$_SERVER['HTTP_HOST'].'/jobbid' );
+define('DOMAIN', 'http://localhost/jobbid' );
 define('DEFAULT_LANG', 'vi');
 define('SITE_TITLE', 'Sàn Giao Dịch Công Việc');
 define('TIME_CREATE_NEW_VISITOR', 5); //gioi han thoi gian idle cua client de tao 1 luot truy cap moi
@@ -115,3 +115,6 @@ define('LIMIT_VERIFY_FAILED', 3);
 
 //email subjects
 define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài khoản.');
+
+//CACHE
+define('CACHE_TOP_TAGS', 'CACHE_TOP_TAGS');

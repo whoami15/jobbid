@@ -23,7 +23,7 @@ class Front_JobController extends Zend_Controller_Action
     		$similarJobs = Application_Model_DbTable_Job::getSimilarJob($job);
     		$this->view->job = $job;
     		$this->view->similarJobs = $similarJobs;
-    		
+    		$this->view->facebook_comment = DOMAIN.'/job/view-job?id='.$jobId;
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
     		$this->_forward('error','message','front');
