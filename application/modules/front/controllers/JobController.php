@@ -129,8 +129,78 @@ class Front_JobController extends Zend_Controller_Action
         	$this->view->error_msg = Core_Exception::getErrorMessage($e);
         	$this->_forward('error','message','front');
         }
-        
-    	
+    }
+	public function myJobsAction()
+    {
+        try {
+        	$this->_helper->layout->setLayout('popup_layout');
+        	if($this->account == NULL) {
+        		throw new Core_Exception('LOGIN_REQUIRED');
+        	}
+        	$this->view->my_jobs = Application_Model_DbTable_Job::findJobsByUser($this->account['id']);
+        } catch (Exception $e) {
+        	$this->view->error_msg = Core_Exception::getErrorMessage($e);
+        	$this->_forward('error','message','front');
+        }
+    }
+	public function editAction()
+    {
+        try {
+        	$jobId = $this->_request->getParam('job_id','');
+        	if(empty($jobId)) throw new Core_Exception('ERROR');
+        	if($this->account == null) throw new Core_Exception('LOGIN_REQUIRED');
+        	if(($job = Application_Model_DbTable_Job::findById($jobId)) == null) throw new Core_Exception('LINK_ERROR');
+        	if(Core_Utils_Tools::isOwner($job) == false) throw new Core_Exception('LIMIT_PERMISSION');
+        	
+        	$form = new Front_Form_PostJob();
+        	$this->view->form = $form;
+        	$this->view->flag = $this->_request->getParam('f','');
+        	$this->view->job = $job;
+        	$form->populate($job);
+        	if ($this->getRequest()->isPost()) {
+	        	if($this->account['active'] == 0) {
+	        		throw new Core_Exception('ACTIVE_REQUIRED'); 
+	        	}
+        		if(Application_Model_DbTable_Lock::isLocked(ACTION_POST_JOB) == true) {
+        			throw new Core_Exception('LOCK_ACTION');
+        		}
+        		$form_data = $this->getRequest()->getParams();
+        		if ($form->isValid($form_data)) {
+        			if(Application_Model_DbTable_Activity::getNumActivity(ACTION_EDIT_JOB) > LIMIT_EDIT_JOB) {
+        				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_EDIT_JOB,$jobId);
+        				throw new Core_Exception('LIMIT_EDIT_JOB');
+        			}
+        			if(Core_Utils_String::checkContent($form_data['job_description']) == false) {
+        				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_POST_JOB,'PROHIBITION_WORDS');
+        				throw new Core_Exception('PROHIBITION_WORDS');
+        			}
+        			$modelCompany = new Application_Model_DbTable_Company();
+        			$companyId = $modelCompany->save($form_data['company']);
+        			$modelJobTitle = new Application_Model_DbTable_JobTitle();
+        			$jobTitleId = $modelJobTitle->save($form_data['job_title']);
+        			$modelJob = new Application_Model_DbTable_Job();
+        			$now = Core_Utils_Date::getCurrentDateSQL();
+        			$modelJob->update(array(
+        					'title' => $form_data['company'].' - '.$form_data['job_title'],
+        					'account_id' => $this->account['id'],
+        					'company_id' => $companyId,
+        					'job_title_id' => $jobTitleId,
+        					'job_description' => $form_data['job_description'],
+        					'city_id' => $form_data['city_id'],
+        					'email_to' => $form_data['email_to'],
+        					'job_type' => $form_data['job_type'],
+        					'time_update' => $now
+        			),array('id = ?' => $jobId));
+        			Application_Model_DbTable_Activity::insertActivity(ACTION_EDIT_JOB,$jobId);
+        			$this->_redirect('/job/edit?job_id='.$jobId.'&f=1');
+        		} else {
+        			$form->populate($form_data);
+        		}
+        	}
+        } catch (Exception $e) {
+        	$this->view->error_msg = Core_Exception::getErrorMessage($e);
+        	$this->_forward('error','message','front');
+        }	
     }
 }
 

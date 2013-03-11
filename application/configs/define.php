@@ -62,7 +62,7 @@ define('FOLDER_IMAGE_RESTAURANT', 1);
 //Front
 define('FRONT_PAGE_SIZE', 6);
 define('INT_PAGE_SUPPORT', 2);
-define('SEARCH_PAGE_SIZE', 20);
+define('SEARCH_PAGE_SIZE', 2);
 
 
 //Image size upload
@@ -105,6 +105,8 @@ define('ACTION_VERIFY_REGISTRATION', 7);
 define('ACTION_UPDATE_PROFILE', 8);
 define('ACTION_VERIFY_JOB_FAILED', 9);
 define('ACTION_VERIFY_JOB_SUCCESS', 10);
+define('ACTION_REFESH_JOB', 11);
+define('ACTION_EDIT_JOB', 12);
 
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
@@ -112,6 +114,8 @@ define('LIMIT_REGISTRATION', 3);
 define('LIMIT_LOGIN_FAILED', 50);
 define('LIMIT_POST_JOB', 2); //so lan dang cong viec cho phep
 define('LIMIT_VERIFY_FAILED', 3);
+define('LIMIT_REFESH_JOB', 3);
+define('LIMIT_EDIT_JOB', 3); //so lan edit cong viec cho phep
 
 //email subjects
 define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài khoản.');

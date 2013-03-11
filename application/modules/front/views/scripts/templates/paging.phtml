@@ -1,0 +1,28 @@
+<div class="paging">
+<?php 
+$link = $this->link;
+$pagesindex = $this->pagesindex;
+$pageend = $this->pageend;
+$pagesbefore = $pagesindex - INT_PAGE_SUPPORT;
+if ($pagesbefore < 1)
+	$pagesbefore = 1;
+$pagesnext = $pagesindex + INT_PAGE_SUPPORT;
+if ($pagesnext > $pageend)
+	$pagesnext = $pageend;
+if($pagesbefore>1)
+	echo '<a class="page wide" style="padding-right:5px" href="'.$link.'">1 ...</a>';
+while($pagesbefore<$pagesindex) {
+	echo "<a class='page' href='$link&p=$pagesbefore'>$pagesbefore</a>";
+	$pagesbefore++;
+}
+?>
+<span class="page" style="color: gray;"><?php echo $pagesindex ?></span>
+<?php 
+while($pagesnext>$pagesindex) {
+	$pagesindex++;
+	echo "<a class='page' href='$link&p=$pagesindex'>$pagesindex</a>";
+}
+if($pagesnext<$pageend)
+	echo "<a class='page wide' style='padding-right:5px' href='$link&p=$pageend'>... $pageend</a>";
+?>
+</div>

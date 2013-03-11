@@ -18,11 +18,16 @@ class Front_IndexController extends Zend_Controller_Action
         $form = new Front_Form_Search();
         $this->view->form = $form;
         $cityId = $this->_request->getParam('city_id','');
+        $page = $this->_request->getParam('p',1);
         $keyword = $this->_request->getParam('keyword','');
+        $totalRows = 0;
         $this->view->jobs = Application_Model_DbTable_Job::findAll(array(
         	'city_id' => $cityId,
         	'keyword' => trim($keyword)
-        ),1);
+        ),$page,$totalRows);
+        $this->view->page = $page;
+        $this->view->totalPage = ceil($totalRows/SEARCH_PAGE_SIZE);
+        $this->view->url = "/?keyword=$keyword&city_id=$cityId";
         //if($this->_request->isPost()) {
         	$form->populate($this->_request->getParams());
        // }

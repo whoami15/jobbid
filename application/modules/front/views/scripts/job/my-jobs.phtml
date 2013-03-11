@@ -1,0 +1,27 @@
+<?php
+$baseUrl = $this->baseUrl();
+$actual_link = Core_Utils_Tools::getFullURL();
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
+<!--[if lt IE 8]><style>
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+}
+</style><![endif]-->
+<div id="right_col" style="margin-left:10px">
+	<div style="width: 500px; margin: 0px auto 0px; text-align: left;float:left">
+	<ul class="circle">
+	<?php
+	foreach($this->my_jobs as $job) {
+		echo '<li><a target="_blank" href="'.$baseUrl.Core_Utils_Tools::genJobUrl($job).'">'.$job['title'].'</a> ('.Core_Utils_Date::displaySQLDate($job['time_update']).')</li>';
+	}
+	?>
+	</ul>
+	</div>
+</div>
+<script type='text/javascript'>
+$(document).ready(function(){	
+	
+});
+</script>

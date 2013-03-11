@@ -74,6 +74,24 @@ $actual_link = Core_Utils_Tools::getFullURL();
 				<span class="jb_button report" title="Báo cáo tin đăng xấu">UnLike</span>
 			</td>
 		</tr>
+		<?php
+		if(Core_Utils_Tools::isOwner($this->job)) {
+		?>
+		<tr>
+			<td colspan="2" align="left">
+				<form method="GET" action="<?php echo $baseUrl?>/job/edit">
+				<input type="hidden" name="job_id" value="<?php echo $this->job['id']?>"/>
+				<button id="btEdit" class="button" title="Cập nhật nội dung tin đăng của bạn">Chỉnh sửa</button>
+				</form>
+				<form method="POST" action="<?php echo $baseUrl?>/action/refesh-job">
+				<input type="hidden" name="job_id" value="<?php echo $this->job['id']?>"/>
+				<button id="btUp" class="button" title="Chức năng đẩy tin đăng của bạn lên top những tin đăng mới nhất ( tối đa 3 lần 1 ngày)">Làm mới (up tin)</button>
+				</form>
+			</td>
+		</tr>
+		<?php
+		}
+		?>
 	</table>
 	<fieldset class="block">
 		<legend>Những công việc tương tự</legend>

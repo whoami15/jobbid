@@ -18,10 +18,15 @@ class Front_TagController extends Zend_Controller_Action
     		$companyId = $this->_request->getParam('id','');
 	        $company = Application_Model_DbTable_Company::findById($companyId);
 	        if($company == null) throw new Core_Exception('LINK_ERROR');
+	        $totalRows = 0;
+	        $page = $this->_request->getParam('p',1);
 	        $this->view->jobs = Application_Model_DbTable_Job::findAll(array(
 	        	'company_id' => $companyId
-	        ),1);
+	        ),$page,$totalRows);
 	       	$this->view->title = 'Việc làm tại "'.$company['company'].'"';
+	       	$this->view->page = $page;
+        	$this->view->totalPage = ceil($totalRows/SEARCH_PAGE_SIZE);
+        	$this->view->url = Core_Utils_Tools::genCompanyUrl($companyId, $company['company']);
 	        $this->renderScript('/tag/index.phtml');
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
@@ -35,10 +40,15 @@ class Front_TagController extends Zend_Controller_Action
     		$id = $this->_request->getParam('id','');
     		$city = Application_Model_DbTable_City::findById($id);
 	        if($city == null) throw new Core_Exception('LINK_ERROR');
+	        $page = $this->_request->getParam('p',1);
+	        $totalRows = 0;
 	        $this->view->jobs = Application_Model_DbTable_Job::findAll(array(
 	        	'city_id' => $id
-	        ),1);
+	        ),$page,$totalRows);
 	        $this->view->title = 'Việc làm tại "'.$city['name_city'].'"';
+	        $this->view->page = $page;
+	        $this->view->url = Core_Utils_Tools::genCityUrl($id, $city['name_city']);
+        	$this->view->totalPage = ceil($totalRows/SEARCH_PAGE_SIZE);
 	        $this->renderScript('/tag/index.phtml');
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
@@ -51,10 +61,15 @@ class Front_TagController extends Zend_Controller_Action
     		$id = $this->_request->getParam('id','');
     		$jobTitle = Application_Model_DbTable_JobTitle::findById($id);
 	        if($jobTitle == null) throw new Core_Exception('LINK_ERROR');
+	        $page = $this->_request->getParam('p',1);
+	        $totalRows = 0;
 	        $this->view->jobs = Application_Model_DbTable_Job::findAll(array(
 	        	'position_id' => $id
-	        ),1);
+	        ),$page,$totalRows);
 	        $this->view->title = 'Việc làm liên quan đến "'.$jobTitle['job_title'].'"';
+	        $this->view->page = $page;
+	        $this->view->url = Core_Utils_Tools::genPositionUrl($id, $jobTitle['job_title']);
+        	$this->view->totalPage = ceil($totalRows/SEARCH_PAGE_SIZE);
 	        $this->renderScript('/tag/index.phtml');
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);

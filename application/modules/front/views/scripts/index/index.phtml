@@ -16,6 +16,12 @@ $baseUrl = $this->baseUrl();
 	foreach($this->jobs as $job) {
 		echo $this->partial('/templates/list.phtml',array('job'=>$job,'baseUrl' => $baseUrl));
 	}
+	echo $this->partial('/templates/paging.phtml',array(
+		'link' => $baseUrl.$this->url,
+		'baseUrl' => $baseUrl,
+		'pagesindex' => $this->page,
+		'pageend' => $this->totalPage
+	));
 	?>
 </div>
 </div>

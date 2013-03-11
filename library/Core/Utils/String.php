@@ -49,4 +49,10 @@ class Core_Utils_String
 		foreach ($words_list as &$word) $word = preg_quote($word, '/');
 		return preg_match_all('/('.join('|', $words_list).')/i', $content, $matches) > 0 ?false:true;
 	}
+	public static function trim($str,$length = 50) {
+		if(mb_strlen($str,'utf-8') <= $length)
+			return $str;
+		$str = mb_substr($str, 0, $length,'utf-8').'...';
+		return $str;
+	}
 }

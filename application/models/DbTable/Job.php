@@ -4,7 +4,7 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
 {
 
     protected $_name = 'jobs';
-	public static function findAll($data,$page) {
+	public static function findAll($data,$page,&$totalResult) {
     	$db = Zend_Registry::get('connectDb');
     	$sWhere = 't0.active = 1 and t0.`status` = 1 AND `num_report` < :num_report ';
     	$params = array('num_report' => LIMIT_REPORT);
@@ -24,10 +24,17 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
     		$sWhere.= ' AND t0.title like :keyword';
     		$params['keyword'] = '%'.$data['keyword'].'%';
     	}
-    	$query = 'SELECT t0.*,t1.`company`,t2.`name_city` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id` LEFT JOIN `cities` t2 ON t0.`city_id` = t2.`id` LEFT JOIN `job_title` t3 ON t0.`job_title_id` = t3.`id` WHERE '.$sWhere.' ORDER BY t0.`time_update` DESC';
+    	$from = ($page - 1)*SEARCH_PAGE_SIZE;
+    	$to = SEARCH_PAGE_SIZE;
+    	$query = 'SELECT SQL_CALC_FOUND_ROWS t0.*,t1.`company`,t2.`name_city` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id` LEFT JOIN `cities` t2 ON t0.`city_id` = t2.`id` LEFT JOIN `job_title` t3 ON t0.`job_title_id` = t3.`id` WHERE '.$sWhere.' ORDER BY t0.`time_update` DESC limit '.$from.','.$to;
     	$stmt = $db->prepare($query);
         $stmt->execute($params);
         $rows = $stmt->fetchAll();
+        $query = 'SELECT FOUND_ROWS() as total';
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        $totalResult = $row['total'];
         $stmt->closeCursor();
         $db->closeConnection();
         return $rows;
@@ -93,6 +100,16 @@ WHERE t0.active = 1 and  t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
     	$query = 'SELECT * FROM `jobs` WHERE active = 1  and `status` = 1 and `time_update` >= ?';
     	$stmt = $db->prepare($query);
     	$stmt->execute(array($date->toString('Y-M-d H:m:s')));
+    	$rows = $stmt->fetchAll();
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    	return $rows;
+    }
+	public static function findJobsByUser($uid) {
+    	$db = Zend_Registry::get('connectDb');
+    	$query = 'SELECT `id`,`title`,`account_id`,`time_update` FROM `jobs` WHERE active = 1  and `status` = 1 and `account_id` = ? order by `time_update` desc';
+    	$stmt = $db->prepare($query);
+    	$stmt->execute(array($uid));
     	$rows = $stmt->fetchAll();
     	$stmt->closeCursor();
     	$db->closeConnection();
