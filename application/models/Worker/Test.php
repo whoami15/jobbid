@@ -18,12 +18,21 @@ class Application_Model_Worker_Test
 		 
 	}
 	public function start() {
+		/*$ta
 		$from = strtotime('2013-03-01');
 		$end = strtotime('2013-03-02');
 		echo $end - $from;
-		die;
+		die;*/
 	
 		$tags = Application_Model_DbTable_Tag::findAllTag();
+		foreach($tags as $tag) {
+			$key = Core_Utils_String::getSlug($tag['tag']);
+			if(Application_Model_DbTable_Tag::findByKey($key) == null) {
+				Core_Utils_DB::update('tags', array('key' => $key), array('id' => $tag['id']));
+			}
+			
+		}
+		die;
 		$str = array();
 		foreach($tags as $index => $tag ) {
 			$str[] = "MATCH(t0.`txt`) AGAINST('{$tag['tag']}') AS r$index";

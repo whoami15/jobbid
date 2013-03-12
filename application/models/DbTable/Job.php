@@ -24,6 +24,9 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
     		$sWhere.= ' AND t0.title like :keyword';
     		$params['keyword'] = '%'.$data['keyword'].'%';
     	}
+		if(!empty($data['ids'])) {
+    		$sWhere.= ' AND t0.id IN ('.join(',', $data['ids']).')';
+    	}
     	$from = ($page - 1)*SEARCH_PAGE_SIZE;
     	$to = SEARCH_PAGE_SIZE;
     	$query = 'SELECT SQL_CALC_FOUND_ROWS t0.*,t1.`company`,t2.`name_city` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id` LEFT JOIN `cities` t2 ON t0.`city_id` = t2.`id` LEFT JOIN `job_title` t3 ON t0.`job_title_id` = t3.`id` WHERE '.$sWhere.' ORDER BY t0.`time_update` DESC limit '.$from.','.$to;

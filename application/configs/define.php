@@ -1,7 +1,9 @@
 <?php
 define('DOMAIN', 'http://localhost/jobbid' );
 define('DEFAULT_LANG', 'vi');
-define('SITE_TITLE', 'Sàn Giao Dịch Công Việc');
+define('SITE_TITLE', 'Sàn Giao Dịch Việc Làm Thêm');
+define('SITE_DESCRIPTION', 'Jobbid.vn là sàn việc làm để bạn có thể đăng thông tin tuyển dụng việc làm thêm, qua đó tìm được ứng viên thích hợp để thực hiện công việc của bạn. Các bạn có thể tìm kiếm được những công việc làm thêm hoặc các dự án nhỏ phù hợp với khả năng của bạn.');
+define('SITE_KEYWORDS', 'jobbid.vn,tim viec part time, tìm việc part time,sàn việc làm,viec ban thoi gian,viec lam tu do,san viec lam,viec ban thoi gian,du an, cong viec,tim viec ban thoi gian,viec lam tai nha,tim viec lam them, lam them, viec part time,cong viec ban thoi gian,tim viec,viec lam online, viec lam ban thoi gian, tìm việc làm thêm,làm thêm,việc part time,công việc tại nhà,công việc bán thời gian,dự án,công việc,tìm việc,việc làm online,việc làm bán thời gian,việc làm tại nhà, làm thêm online, làm thêm cho sinh viên, làm thêm trên mạng,việc bán thời gian,việc làm tự do');
 define('TIME_CREATE_NEW_VISITOR', 5); //gioi han thoi gian idle cua client de tao 1 luot truy cap moi
 define('SAFE_MODE', false);
 define('SITE_NAME', 'ZendCMS');
@@ -61,8 +63,8 @@ define('FOLDER_IMAGE_RESTAURANT', 1);
 
 //Front
 define('FRONT_PAGE_SIZE', 6);
-define('INT_PAGE_SUPPORT', 2);
-define('SEARCH_PAGE_SIZE', 2);
+define('INT_PAGE_SUPPORT', 3);
+define('SEARCH_PAGE_SIZE', 20);
 
 
 //Image size upload
@@ -119,7 +121,9 @@ define('LIMIT_EDIT_JOB', 3); //so lan edit cong viec cho phep
 
 //email subjects
 define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài khoản.');
+define('EMAIL_SUBJECT_VERIFY_JOB', '[jobbid.vn] Email xác nhận tin tuyển dụng.');
 
 //CACHE
 define('CACHE_TOP_TAGS', 'CACHE_TOP_TAGS');
 define('CACHE_ALL_TAGS', 'CACHE_ALL_TAGS');
+define('CACHE_TAGS_CLOUD', 'CACHE_TAGS_CLOUD');

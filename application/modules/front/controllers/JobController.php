@@ -24,6 +24,8 @@ class Front_JobController extends Zend_Controller_Action
     		$this->view->job = $job;
     		$this->view->similarJobs = $similarJobs;
     		$this->view->facebook_comment = DOMAIN.'/job/view-job?id='.$jobId;
+    		$this->view->title = $job['title'];
+    		$this->view->description = Core_Utils_String::trim($job['job_description'],250);
     	} catch (Exception $e) {
     		$this->view->error_msg = Core_Exception::getErrorMessage($e);
     		$this->_forward('error','message','front');
@@ -39,6 +41,7 @@ class Front_JobController extends Zend_Controller_Action
         try {
         	$form = new Front_Form_PostJob();
         	$this->view->form = $form;
+        	$this->view->title = 'Bạn đang đăng tin tuyển dụng tại jobbid.vn';
         	if ($this->getRequest()->isPost()) {
 	        	if(!isset($this->account)) {
 	        		throw new Core_Exception('LOGIN_REQUIRED'); 
@@ -94,13 +97,14 @@ class Front_JobController extends Zend_Controller_Action
 							'create_time' => $now,
 							'status' => 1
 					));
-        			/*$email_content = Core_Utils_Email::render('verify_job.phtml', array(
+        			$email_content = Core_Utils_Email::render('verify_job.phtml', array(
 						'name'=> $this->account['username'],
 						'link_verify' => DOMAIN.'/job/verify?secure_key='.$key,
-						'secure_key' => $key
-					));*/
+						'secure_key' => $key,
+        				'job_title' => $form_data['job_title']
+					));
 					$coreEmail = new Core_Email();
-					//$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
+					$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
         			$this->_redirect('/job/verify?email='.$form_data['email_to']);
         		} else {
         			$form->populate($form_data);
@@ -122,9 +126,14 @@ class Front_JobController extends Zend_Controller_Action
  	public function verifyAction()
     {
         try {
+        	$this->view->title = 'Xác nhận tin tuyển dụng tại jobbid.vn';
 	        $email = $this->_request->getParam('email','');
+        	if(empty($email) && isset($this->session->logged)) {
+    			$email = $this->session->logged['username'];
+    		}
         	if(empty($email)) throw new Core_Exception('LINK_ERROR');
         	$this->view->email = $email;
+        	$this->view->secure_key = $this->_request->getParam('secure_key','');
         } catch (Exception $e) {
         	$this->view->error_msg = Core_Exception::getErrorMessage($e);
         	$this->_forward('error','message','front');
@@ -156,6 +165,7 @@ class Front_JobController extends Zend_Controller_Action
         	$this->view->form = $form;
         	$this->view->flag = $this->_request->getParam('f','');
         	$this->view->job = $job;
+        	$this->view->title = 'Chỉnh sửa tin tuyển dụng tại jobbid.vn';
         	$form->populate($job);
         	if ($this->getRequest()->isPost()) {
 	        	if($this->account['active'] == 0) {

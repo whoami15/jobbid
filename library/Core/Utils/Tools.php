@@ -67,6 +67,9 @@ class Core_Utils_Tools
 	public static function genPositionUrl($id,$name) {
 		return '/tag/position/'.Core_Utils_String::getSlug($name).'?id='.$id;
 	}
+	public static function genTagUrl($tag) {
+		return '/tag/'.$tag;
+	}
 	public static function genSecureKey($len = 10) {
 		$key = '';
 		list($usec, $sec) = explode(' ', microtime());

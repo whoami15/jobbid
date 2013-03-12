@@ -391,3 +391,9 @@ width: 20px;
 .paging a.page.wide {
 width: 40px;
 }
+.Zend_Tag_Cloud li {
+display: block;
+float: left;
+margin: 10px;
+width: 100px;
+}

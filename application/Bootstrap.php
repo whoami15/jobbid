@@ -33,10 +33,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     					'action'     => 'redirect'
     			)
     	);
-    	
-    	
+    	$routeTag = new Zend_Controller_Router_Route(
+    			'/tag/:key/*',
+    			array(
+    					'controller' => 'tag',
+    					'action'     => 'index'
+    			)
+    	);
     	
     	$router->addRoute('oldRoute1', $oldRoute1);
+    	$router->addRoute('routeTag', $routeTag);
     }
 	
 	/*protected function _initRoutes() {

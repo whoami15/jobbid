@@ -22,10 +22,7 @@ $actual_link = Core_Utils_Tools::getFullURL();
      ref.parentNode.insertBefore(js, ref);
    }(document, /*debug*/ false));
 </script>
-<div id="left_col">
-	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
-				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
-</div>
+<?php echo $this->render('/templates/left.phtml')?>
 <div id="right_col">
 	<center>
 	<div style="width: 600px; margin: 20px auto 0px; text-align: left;">
