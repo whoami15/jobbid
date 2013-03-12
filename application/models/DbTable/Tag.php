@@ -27,6 +27,20 @@ class Application_Model_DbTable_Tag extends Zend_Db_Table_Abstract
     	} 
     	return $rows;
     }
+    public static function findAllTag() {
+    	$cache = Core_Utils_Tools::loadCache(86400);
+    	if(($rows = $cache->load(CACHE_ALL_TAGS)) == null) {
+    		$db = Zend_Registry::get('connectDb');
+    		$query = 'SELECT * FROM `tags` WHERE status = 1';
+    		$stmt = $db->prepare($query);
+    		$stmt->execute();
+    		$rows = $stmt->fetchAll();
+    		$stmt->closeCursor();
+    		$db->closeConnection();
+    		$cache->save($rows,CACHE_ALL_TAGS);
+    	}
+    	return $rows;
+    }
   
 }
 

@@ -122,3 +122,4 @@ define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài kho�
 
 //CACHE
 define('CACHE_TOP_TAGS', 'CACHE_TOP_TAGS');
+define('CACHE_ALL_TAGS', 'CACHE_ALL_TAGS');
