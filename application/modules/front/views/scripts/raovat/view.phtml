@@ -1,0 +1,42 @@
+<?php
+$baseUrl = $this->baseUrl();
+$actual_link = Core_Utils_Tools::getFullURL();
+?>
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
+<!--[if lt IE 8]><style>
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+}
+</style><![endif]-->
+<div id="fb-root"></div>
+<script>
+(function(d, debug){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     //js.src = "//connect.facebook.net/vi_VN/all" + (debug ? "/debug" : "") + ".js";
+	 js.src = "<?php echo $baseUrl?>/js/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document, /*debug*/ false));
+</script>
+<?php echo $this->render('/templates/left.phtml')?>
+<div id="right_col">
+	<center>
+	<div style="margin: 20px auto 0px; text-align: left; width: 720px;">
+	<span style="color: gray; font-size: 11px; text-align: right; width: 100%; display: block;"><?php echo Core_Utils_Date::displaySQLDate($this->data['ngayupdate'],'dd/MM/Y HH:mm')?></span>
+	<h1><?php echo $this->data['tieude']?></h1>
+	<div>
+		<pre><?php echo $this->data['noidung']?></pre>
+	</div>
+	<fieldset class="block">
+		<legend>Bình luận</legend>
+		<div class="fb-comments" data-href="<?php echo $this->facebook_comment?>" data-width="600" data-num-posts="10"></div>
+	</fieldset>
+	</div>
+	</center>
+</div>
+<script type='text/javascript'>
+$(document).ready(function(){	
+});
+</script>

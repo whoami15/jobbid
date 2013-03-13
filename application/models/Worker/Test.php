@@ -29,10 +29,6 @@ class Application_Model_Worker_Test
 		 
 	}
 	public function start() {
-		/* $email = '123456';
-		echo ord($email); */
-		echo chr('49');
-		die;
 		/*$ta
 		$from = strtotime('2013-03-01');
 		$end = strtotime('2013-03-02');
@@ -59,8 +55,28 @@ class Application_Model_Worker_Test
 			foreach($doc['ul > li'] as $li2) {
 				$data[$li2->getAttribute('id')] = trim($li2->textContent);
 			}
+			Core_Utils_DB::insert('raovats', array(
+				'id' => $data['id'],
+				'tieude' => $data['tieude'],
+				'noidung' => $data['noidung'],
+				'ngaypost' => $data['ngaypost'],
+				'ngayupdate' => $data['ngayupdate'],
+				'views' => $data['views'],
+				'account_id' => $data['account_id'],
+				'status' => 1
+			));
+			/*Core_Utils_DB::insert('articles', array(
+				'id' => $data['id'],
+				'title' => $data['title'],
+				'imagedes' => $data['imagedes'],
+				'content' => $data['content'],
+				'datemodified' => $data['datemodified'],
+				'usermodified' => $data['usermodified'],
+				'viewcount' => $data['viewcount'],
+				'active' => $data['active']
+			));*/
 			//$jobTitleId = $modelJobTitle->save($data['tenduan']);
-			$jobId = $modelJob->insert(array(
+			/*$jobId = $modelJob->insert(array(
 					'id' => null,
 					'title' => $data['tenduan'],
 					'account_id' => $data['account_id'],
@@ -81,7 +97,7 @@ class Application_Model_Worker_Test
 				'id1' => $data['id'],
 				'id2' => $jobId,
 				'type' => 1
-			));
+			));*/
 			//print_r($data);die;
 			//Core_Utils_Tools::log($li->textContent);
 		}

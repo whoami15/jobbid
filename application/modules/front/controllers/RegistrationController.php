@@ -116,7 +116,7 @@ class Front_RegistrationController extends Zend_Controller_Action
 						'secure_key' => $key
 					));
 					$coreEmail = new Core_Email();
-					//$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
+					$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
 					$this->_redirect('/registration/verify?is_popup='.$form_data['isPopup'].'&email='.$form_data['username']);
 					die;
 				} else {

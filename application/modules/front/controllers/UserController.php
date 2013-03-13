@@ -118,7 +118,7 @@ class Front_UserController extends Zend_Controller_Action
     
     public function forgotPasswordAction() {
     	try {
-    		$this->_helper->layout->setLayout('test_layout');
+    		$this->_helper->layout->setLayout('popup_layout');
     		$result_msg = array(
     			'error' => '',
     			'success' => ''	
@@ -146,13 +146,12 @@ class Front_UserController extends Zend_Controller_Action
     				));
     				Application_Model_DbTable_Activity::insertActivity(ACTION_RESET_PASSWORD,$username);
     				//send email
-    				/* $email_content = Core_Utils_Email::render('reset_password.phtml', array(
-    						'name'=> $form_data['name'],
-    						'link_verify' => DOMAIN.'/registration/verify?secure_key='.$key,
-    						'secure_key' => $key
+    				$email_content = Core_Utils_Email::render('reset_password.phtml', array(
+    						'name'=> $username,
+    						'link_verify' => DOMAIN.'/user/update-password?secure_key='.$key
     				));
-    				$coreEmail = new Core_Email(); */
-    				//$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
+    				$coreEmail = new Core_Email(); 
+    				$coreEmail->send($username, EMAIL_SUBJECT_RESET_PASSWORD, $email_content);
     				$result_msg['success'] = $username;
     			}
     		}
@@ -165,7 +164,6 @@ class Front_UserController extends Zend_Controller_Action
     }
     public function updatePasswordAction() {
     	try {
-    		$this->_helper->layout->setLayout('test_layout');
     		$key = $this->_request->getParam('secure_key','');
     		if(empty($key)) throw new Core_Exception('LINK_ERROR'); 
     		if(($secure_key = Application_Model_DbTable_SecureKey::findByKey($key)) == null) throw new Core_Exception('LINK_ERROR');

@@ -26,23 +26,38 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	
     	// Get Router
     	$router = $front->getRouter();
-    	$oldRoute1 = new Zend_Controller_Router_Route(
+    	$route = new Zend_Controller_Router_Route(
     			'/duan/view/:id/*',
     			array(
     					'controller' => 'job',
     					'action'     => 'redirect'
     			)
     	);
-    	$routeTag = new Zend_Controller_Router_Route(
+    	$router->addRoute('route1', $route);
+    	$route = new Zend_Controller_Router_Route(
     			'/tag/:key/*',
     			array(
     					'controller' => 'tag',
     					'action'     => 'index'
     			)
     	);
-    	
-    	$router->addRoute('oldRoute1', $oldRoute1);
-    	$router->addRoute('routeTag', $routeTag);
+    	$router->addRoute('route2', $route);
+    	$route = new Zend_Controller_Router_Route(
+    			'/article/view/:id/*',
+    			array(
+    					'controller' => 'tintuc',
+    					'action'     => 'view'
+    			)
+    	);
+    	$router->addRoute('route3', $route);
+    	$route = new Zend_Controller_Router_Route(
+    			'/raovat/view/:id/*',
+    			array(
+    					'controller' => 'raovat',
+    					'action'     => 'view'
+    			)
+    	);
+    	$router->addRoute('route3', $route);
     }
 	
 	/*protected function _initRoutes() {

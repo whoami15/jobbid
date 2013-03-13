@@ -6,7 +6,7 @@ define('SITE_DESCRIPTION', 'Jobbid.vn là sàn việc làm để bạn có thể
 define('SITE_KEYWORDS', 'jobbid.vn,tim viec part time, tìm việc part time,sàn việc làm,viec ban thoi gian,viec lam tu do,san viec lam,viec ban thoi gian,du an, cong viec,tim viec ban thoi gian,viec lam tai nha,tim viec lam them, lam them, viec part time,cong viec ban thoi gian,tim viec,viec lam online, viec lam ban thoi gian, tìm việc làm thêm,làm thêm,việc part time,công việc tại nhà,công việc bán thời gian,dự án,công việc,tìm việc,việc làm online,việc làm bán thời gian,việc làm tại nhà, làm thêm online, làm thêm cho sinh viên, làm thêm trên mạng,việc bán thời gian,việc làm tự do');
 define('TIME_CREATE_NEW_VISITOR', 5); //gioi han thoi gian idle cua client de tao 1 luot truy cap moi
 define('SAFE_MODE', false);
-define('SITE_NAME', 'ZendCMS');
+define('SITE_NAME', 'Sàn Giao Dịch Việc Làm Thêm');
 define('MAX_LOOP', 100);
 define('MSG_ERROR', 'MSG_ERROR');
 define('MSG_OK', 'MSG_OK');
@@ -46,12 +46,12 @@ define('SESSION_TIME_VARIABLE_LONG', 60*30); // 30 minutes
 
 
 //Config email sender
-define('SENDER_EMAIL', 'no-reply@somuahang.com');
-define('SENDER_EMAIL_PASSWORD', '@bc123456');
-define('SENDER_EMAIL_SMTP', 'mail.somuahang.com');
+define('SENDER_EMAIL', 'no-reply@jobbid.vn');
+define('SENDER_EMAIL_PASSWORD', '74198788');
+define('SENDER_EMAIL_SMTP', 'mail.jobbid.vn');
 define('SENDER_EMAIL_PORT', '465');
-define('SENDER_EMAIL_FROM', 'Sổ Mua Hàng Support');
-define('REPLY_TO_EMAIL', 'admin@somuahang.com');
+define('SENDER_EMAIL_FROM', 'Jobbid.vn Support');
+define('REPLY_TO_EMAIL', 'admin@jobbid.vn');
 define('DEV_EMAIL', 'nclong87@gmail.com');
 
 //Config file manager
@@ -115,7 +115,7 @@ define('ACTION_RESET_PASSWORD', 13);
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
 define('LIMIT_REGISTRATION', 3);
-define('LIMIT_LOGIN_FAILED', 50);
+define('LIMIT_LOGIN_FAILED', 5);
 define('LIMIT_POST_JOB', 2); //so lan dang cong viec cho phep
 define('LIMIT_VERIFY_FAILED', 3);
 define('LIMIT_REFESH_JOB', 3);
@@ -125,6 +125,7 @@ define('LIMIT_RESET_PASSWORD', 3); //so lan edit cong viec cho phep
 //email subjects
 define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài khoản.');
 define('EMAIL_SUBJECT_VERIFY_JOB', '[jobbid.vn] Email xác nhận tin tuyển dụng.');
+define('EMAIL_SUBJECT_RESET_PASSWORD', '[jobbid.vn] Email xác nhận thay đổi mật khẩu đăng nhập.');
 
 //CACHE
 define('CACHE_TOP_TAGS', 'CACHE_TOP_TAGS');
@@ -132,6 +133,7 @@ define('CACHE_ALL_TAGS', 'CACHE_ALL_TAGS');
 define('CACHE_TAGS_CLOUD', 'CACHE_TAGS_CLOUD');
 define('CACHE_TRANSFER_ID', 'CACHE_TRANSFER_ID');
 define('CACHE_JOB_TAGS', 'CACHE_JOB_TAGS');
+define('CACHE_SIMILAR_JOBS', 'CACHE_SIMILAR_JOBS');
 
 //Curl
 define('PATH_COOKIE', 'd://NOTES/crawling/cookie.txt');

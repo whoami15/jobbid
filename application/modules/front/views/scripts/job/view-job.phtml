@@ -3,8 +3,6 @@ $baseUrl = $this->baseUrl();
 $actual_link = Core_Utils_Tools::getFullURL();
 ?>
 <link rel="stylesheet" href="<?php echo $baseUrl?>/css/post.css" type="text/css" media="screen" />
-<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.validate.js"></script>
-<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.autocomplete.min.js'></script>
 <!--[if lt IE 8]><style>
 .wraptocenter span {
     display: inline-block;
@@ -17,8 +15,8 @@ $actual_link = Core_Utils_Tools::getFullURL();
      var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
      if (d.getElementById(id)) {return;}
      js = d.createElement('script'); js.id = id; js.async = true;
-     //js.src = "//connect.facebook.net/vi_VN/all" + (debug ? "/debug" : "") + ".js";
-	 js.src = "<?php echo $baseUrl?>/js/all.js";
+     js.src = "//connect.facebook.net/vi_VN/all" + (debug ? "/debug" : "") + ".js";
+	 //js.src = "<?php echo $baseUrl?>/js/all.js";
      ref.parentNode.insertBefore(js, ref);
    }(document, /*debug*/ false));
 </script>
@@ -33,12 +31,6 @@ $actual_link = Core_Utils_Tools::getFullURL();
 			<td style="width:100px"><span class="bold">Công ty :</span></td>
 			<td>
 				<a href="<?php echo $baseUrl.Core_Utils_Tools::genCompanyUrl($this->job['company_id'],$this->job['company']) ?>" title="Xem những việc làm tại <?php echo $this->job['company']?>"><?php echo $this->job['company']?></a>
-			</td>
-		</tr>
-		<tr>
-			<td><span class="bold">Cần tuyển :</span></td>
-			<td>
-				<a href="<?php echo $baseUrl.Core_Utils_Tools::genPositionUrl($this->job['job_title_id'],$this->job['job_title']) ?>" title="Xem những việc làm tuyển dụng vị trí <?php echo $this->job['job_title']?>"><?php echo $this->job['job_title']?></a>
 			</td>
 		</tr>
 		<tr>

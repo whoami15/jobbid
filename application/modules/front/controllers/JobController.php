@@ -65,16 +65,16 @@ class Front_JobController extends Zend_Controller_Action
         			}
         			$modelCompany = new Application_Model_DbTable_Company();
         			$companyId = $modelCompany->save($form_data['company']);
-        			$modelJobTitle = new Application_Model_DbTable_JobTitle();
-        			$jobTitleId = $modelJobTitle->save($form_data['job_title']);
+        			//$modelJobTitle = new Application_Model_DbTable_JobTitle();
+        			//$jobTitleId = $modelJobTitle->save($form_data['job_title']);
         			$modelJob = new Application_Model_DbTable_Job();
         			$now = Core_Utils_Date::getCurrentDateSQL();
         			$jobId = $modelJob->insert(array(
         					'id' => null,
-        					'title' => $form_data['company'].' - '.$form_data['job_title'],
+        					'title' => $form_data['title'],
         					'account_id' => $this->account['id'],
         					'company_id' => $companyId,
-        					'job_title_id' => $jobTitleId,
+        					'job_title_id' => null,
         					'job_description' => $form_data['job_description'],
         					'city_id' => $form_data['city_id'],
         					'email_to' => $form_data['email_to'],
@@ -203,15 +203,15 @@ class Front_JobController extends Zend_Controller_Action
         			}
         			$modelCompany = new Application_Model_DbTable_Company();
         			$companyId = $modelCompany->save($form_data['company']);
-        			$modelJobTitle = new Application_Model_DbTable_JobTitle();
-        			$jobTitleId = $modelJobTitle->save($form_data['job_title']);
+        			//$modelJobTitle = new Application_Model_DbTable_JobTitle();
+        			//$jobTitleId = $modelJobTitle->save($form_data['job_title']);
         			$modelJob = new Application_Model_DbTable_Job();
         			$now = Core_Utils_Date::getCurrentDateSQL();
         			$modelJob->update(array(
-        					'title' => $form_data['company'].' - '.$form_data['job_title'],
+        					'title' => $form_data['title'],
         					'account_id' => $this->account['id'],
         					'company_id' => $companyId,
-        					'job_title_id' => $jobTitleId,
+        					'job_title_id' => null,
         					'job_description' => $form_data['job_description'],
         					'city_id' => $form_data['city_id'],
         					'email_to' => $form_data['email_to'],

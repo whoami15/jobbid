@@ -1,0 +1,5 @@
+<div class="row">
+	<a href="<?php echo $this->baseUrl.Core_Utils_Tools::genArticleUrl($this->article)?>" title="<?php echo $this->article['title']?>"><?php echo Core_Utils_Tools::substr($this->article['title'],150)?></a>
+	<span class="line3"><?php echo Core_Utils_Tools::substr($this->article['content'])?></span>
+	<span class="line4"><abbr class="timeago" title="<?php echo $this->article['datemodified']?>"></abbr></span>
+</div>

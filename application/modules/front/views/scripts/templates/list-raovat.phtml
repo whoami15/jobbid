@@ -1,0 +1,5 @@
+<div class="row">
+	<a href="<?php echo $this->baseUrl.Core_Utils_Tools::genRaovatUrl($this->data)?>" title="<?php echo $this->data['tieude']?>"><?php echo Core_Utils_Tools::substr($this->data['tieude'],150)?></a>
+	<span class="line3"><?php echo Core_Utils_Tools::substr($this->data['noidung'])?></span>
+	<span class="line4"><abbr class="timeago" title="<?php echo $this->data['ngayupdate']?>"></abbr></span>
+</div>

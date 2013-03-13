@@ -19,7 +19,6 @@ class Application_Model_Worker_Time24h
 	}
 	public function start() {
 		Core_Utils_Job::removeExpriedSecureKeys();
-		die;
 		Core_Utils_Job::updateFulltextData();
 		Core_Utils_Job::updateTags();
 	}

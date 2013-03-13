@@ -70,6 +70,12 @@ class Core_Utils_Tools
 	public static function genTagUrl($tag) {
 		return '/tag/'.$tag;
 	}
+	public static function genArticleUrl($article) {
+		return '/tintuc/view/'.Core_Utils_String::getSlug($article['title']).'?id='.$article['id'];
+	}
+	public static function genRaovatUrl($raovat) {
+		return '/raovat/view/'.Core_Utils_String::getSlug($raovat['tieude']).'?id='.$raovat['id'];
+	}	
 	public static function genSecureKey($len = 10) {
 		$key = '';
 		list($usec, $sec) = explode(' ', microtime());

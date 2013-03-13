@@ -11,7 +11,7 @@ class Front_Form_PostJob extends Zend_Form {
 			'attribs' => array ('class' => 'text element', 'maxlength' => 255 ) ) 
 		);
 		
-		$this->addElement ( 'Text', 'job_title', array (
+		$this->addElement ( 'Text', 'title', array (
 			'required'=>true,
 			'filters' => array ('StringTrim' ), 
 			'attribs' => array ('class' => 'text element', 'maxlength' => 255 ) ) 

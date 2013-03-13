@@ -57,20 +57,27 @@ WHERE t0.active = 1 and  t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
         return $row==false?null:$row;
     }
     public static function getSimilarJob($job) {
+    	$cache = Core_Utils_Tools::loadCache(86400);
+    	$key = CACHE_SIMILAR_JOBS.'_'.$job['id'];
     	$db = Zend_Registry::get('connectDb');
-    	$result = array();
-    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and active = 1  and `status` = 1 AND `job_title_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,5';
-    	$stmt = $db->prepare($query);
-        $stmt->execute(array($job['id'],$job['job_title_id'],LIMIT_REPORT));
-        $result = $stmt->fetchAll();
-        $len = count($result);
-        if($len < 5) {
-        	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE id!=? and active = 1 and  `status` = 1 AND `company_id` = ?  AND `num_report` < ? ORDER BY `time_update` DESC LIMIT 0,'.(5 - $len);
+    	if(($array = $cache->load($key)) == null) {
+    		$query = 'SELECT * FROM `job_tags` WHERE `tag_id` IN (SELECT tag_id FROM `job_tags` WHERE `job_id` = :job_id) AND `job_id` != :job_id ORDER BY `relevancy` DESC';
     		$stmt = $db->prepare($query);
-        	$stmt->execute(array($job['id'],$job['company_id'],LIMIT_REPORT));
-        	$rows = $stmt->fetchAll();
-        	$result = array_merge($result,$rows);
-        }
+    		$stmt->execute(array('job_id' => $job['id']));
+    		$rows = $stmt->fetchAll();
+    		$array = array();
+    		foreach ($rows as $row) {
+    			$array[$row['job_id']] = $row['job_id'];
+    			if(count($array) >= 10) break;
+    		}
+    		$cache->save($array,$key);
+    	} 
+    	if(empty($array)) return array();
+    	$result = array();
+    	$query = 'SELECT `id`,`title`,`time_update` FROM `jobs` WHERE active = 1  and `status` = 1 AND `num_report` < ? and id in ('.join(',', $array).') ORDER BY `time_update` DESC LIMIT 0,5';
+    	$stmt = $db->prepare($query);
+        $stmt->execute(array(LIMIT_REPORT));
+        $result = $stmt->fetchAll();
         $stmt->closeCursor();
         $db->closeConnection();
         return $result;
