@@ -9,7 +9,7 @@ $baseUrl = $this->baseUrl();
 </style><![endif]-->
 <?php echo $this->render('/templates/left.phtml')?>
 <div id="right_col">
-	<h1 style="text-align: left; border-bottom: 1px dashed gray; margin-bottom: 5px; padding-bottom: 10px;">Tin tức về làm thêm</h1>
+	<h1 style="text-align: left; border-bottom: 1px dashed gray; margin-bottom: 5px; padding-bottom: 10px;">Rao vặt về làm thêm</h1>
 	<?php
 	foreach($this->list as $item) {
 		echo $this->partial('/templates/list-raovat.phtml',array('data'=>$item,'baseUrl' => $baseUrl));
