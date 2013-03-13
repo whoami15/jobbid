@@ -514,7 +514,7 @@ class DOMDocumentWrapper {
 			.($xhtml ? '/' : '')
 			.'>';
 		if (strpos($html, '<head') === false) {
-			if (strpos($hltml, '<html') === false) {
+			if (strpos($html, '<html') === false) {
 				return $meta.$html;
 			} else {
 				return preg_replace(
@@ -4204,7 +4204,7 @@ class phpQueryObject
 					.($node->getAttribute('id')
 						? '#'.$node->getAttribute('id'):'')
 					.($node->getAttribute('class')
-						? '.'.join('.', split(' ', $node->getAttribute('class'))):'')
+						? '.'.join('.', explode(' ', $node->getAttribute('class'))):'')
 					.($node->getAttribute('name')
 						? '[name="'.$node->getAttribute('name').'"]':'')
 					.($node->getAttribute('value') && strpos($node->getAttribute('value'), '<'.'?php') === false
@@ -4629,6 +4629,9 @@ abstract class phpQuery {
 		$documentID = phpQuery::createDocumentWrapper($markup, $contentType);
 		return new phpQueryObject($documentID);
 	}
+	public static function cleanup() {
+		self::$documents = array();
+	}
 	/**
 	 * Creates new document from markup.
 	 * Chainable.
@@ -4760,9 +4763,29 @@ abstract class phpQuery {
 	 * @param string $file URLs allowed. See File wrapper page at php.net for more supported sources.
 	 * @return phpQueryObject|QueryTemplatesSource|QueryTemplatesParse|QueryTemplatesSourceQuery
 	 */
-	public static function newDocumentFile($file, $contentType = null) {
+	public static function newDocumentFile($file, $contentType = null, $context = null) {
+		$i = 0;
+		while($i < 5) {
+			if($context == null) {
+				$html = file_get_contents($file);
+			} else {
+				$html = file_get_contents($file,False, $context);
+			}
+			if($html != null)
+				break;
+			$i++;
+			echo 'Failed to get content ('.$file.'), try again times '.$i.'...'.PHP_EOL;
+			sleep(5);
+		}
+		if($html == null) throw new Exception('Failed to get content ('.$file.')');
+		$len = strlen($html);
+		if ($len < 18 || strcmp(substr($html,0,2),"\x1f\x8b")) {
+		} else {
+			$html = Core_Utils_Tools::gzdecode($html);
+			$contentType = 'text/html';
+		}
 		$documentID = self::createDocumentWrapper(
-			file_get_contents($file), $contentType
+			$html, $contentType
 		);
 		return new phpQueryObject($documentID);
 	}
@@ -4773,11 +4796,11 @@ abstract class phpQuery {
 	 * @param unknown_type $markup
 	 * @return phpQueryObject|QueryTemplatesSource|QueryTemplatesParse|QueryTemplatesSourceQuery
 	 */
-	public static function newDocumentFileHTML($file, $charset = null) {
+	public static function newDocumentFileHTML($file, $charset = null, $context = null) {
 		$contentType = $charset
 			? ";charset=$charset"
 			: '';
-		return self::newDocumentFile($file, "text/html{$contentType}");
+		return self::newDocumentFile($file, "text/html{$contentType}", $context);
 	}
 	/**
 	 * Creates new document from markup.

@@ -33,12 +33,15 @@ class Core_Const
 		'LIMIT_PERMISSION' => 'Bạn không có quyền thực hiện thao tác này, mọi thắc mắc vui lòng liên hệ admin@jobbid.vn',
 		'LIMIT_POST_JOB' => 'Vượt quá số lần đăng công việc cho phép!',
 		'LIMIT_EDIT_JOB' => 'Vượt quá số lần cập nhật công việc cho phép!',
+		LIMIT_RESET_PASSWORD => 'Vượt quá số lần gửi yêu cầu reset mật khẩu cho phép!',
 		'LIMIT_REFESH_JOB' => 'Vượt quá số lần up tin cho phép!',
 		'LOGIN_REQUIRED' => 'Bạn cần đăng nhập để thực hiện chức năng này!',
 		'ACTIVE_REQUIRED' => 'Bạn cần xác nhận tài khoản để thực hiện chức năng này!',
 		'CHANGE_PROFILE_SUCCESS' => 'Cập nhật thông tin cá nhân thành công!',
 		'LOCK_ACTION' => 'Thao tác của bạn đã bị chặn từ hệ thống jobbid.vn, mọi thắc mắc vui lòng liên hệ admin@jobbid.vn.',
-		'PROHIBITION_WORDS' => 'Nội dung không hợp lệ, mọi thắc mắc vui lòng liên hệ admin@jobbid.vn.'
+		'PROHIBITION_WORDS' => 'Nội dung không hợp lệ, mọi thắc mắc vui lòng liên hệ admin@jobbid.vn.',
+		'INVALID_USERNAME' => 'Tài khoản này không tồn tại',
+		
 	);
 	public static $success_messages = array(
 		'CHANGE_PASSWORD' => 'Thay đổi mật khẩu thành công!',

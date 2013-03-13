@@ -5,7 +5,7 @@ class Application_Model_DbTable_Transfer extends Zend_Db_Table_Abstract
     //protected $_name = '';
     
     public static function findAllDuan() {
-    	$query = 'SELECT `id`,`tenduan` FROM `_duans` WHERE `active` =1 AND `approve` = 1 limit 50,10';
+    	$query = 'SELECT `id`,`tenduan` FROM `_duans` WHERE `active` =1 AND `approve` = 1';
     	$db = Zend_Registry::get('connectDb');
     	$stmt = $db->prepare($query);
     	$stmt->execute();
@@ -24,7 +24,6 @@ class Application_Model_DbTable_Transfer extends Zend_Db_Table_Abstract
     	$db->closeConnection();
     	return $row==false?null:$row;
     }
-    
     
 }
 

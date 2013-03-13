@@ -87,7 +87,7 @@ WHERE t0.active = 1 and  t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
     		if(Core_Utils_Tools::isAdmin()) { //gap admin thi tat dai ngay!
     			Core_Utils_DB::update('jobs', array('status' => 0), array('id' => $jobId));
     		} else {
-    			Core_Utils_DB::update('jobs', array('num_report' => '`num_report` + 1'), array('id' => $jobId));
+    			Core_Utils_DB::query('UPDATE `jobs` SET `num_report` = `num_report` + 1 WHERE `id` = ?',3,array($jobId));
     		}
     		Application_Model_DbTable_Activity::insertActivity(ACTION_REPORT_JOB,$jobId);
     		$flag = true;

@@ -65,6 +65,17 @@ $actual_link = Core_Utils_Tools::getFullURL();
 				<a href="mailto:<?php echo $this->job['email_to']?>" title=""><?php echo $this->job['email_to']?></a>
 			</td>
 		</tr>
+		<tr height="30px">
+			<td colspan="2">
+				<?php
+				$array = array();
+				foreach($this->tags as $tag) {
+					$array[] = '<a href="'.$baseUrl.'/tag/'.$tag['key'].'" title="'.$tag['tag'].'">'.$tag['tag'].'</a>';
+				}
+				echo 'Tags : '.join(', ',$array);
+				?>
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2" align="right">
 				<span class="jb_button share" title="Chia sẽ lên Facebook">Share</span>
@@ -110,6 +121,15 @@ $actual_link = Core_Utils_Tools::getFullURL();
 $(document).ready(function(){	
 	$("span.jb_button.share").live("click",function(){
 		window.open("http://www.facebook.com/share.php?u=<?php echo $actual_link?>", "window_name","location=1,status=1,scrollbars=1,resizable=no,width=500,height=400");
+	});
+	$("span.jb_button.report").live("click",function(){
+		$.get(baseUrl+"/ajax/report-job?id=<?php echo $this->job['id']?>",function(response) {
+			if(response == 'ERROR') {
+				alert(ERROR_MESSAGE);
+			} else {
+				alert('Report thành công, cảm ơn bạn đã report.');
+			}
+		});
 	});
 });
 </script>

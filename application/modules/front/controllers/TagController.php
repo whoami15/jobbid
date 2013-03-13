@@ -91,6 +91,7 @@ class Front_TagController extends Zend_Controller_Action
     		if(in_array($key, array('tag-cloud','company','position','city'))) {
     			$this->_forward($key);
     		} else {
+    			//print_r($this->_request->getParams());die;
     			if(($tag = Application_Model_DbTable_Tag::findByKey($key)) == null) {
     				throw new Core_Exception('LINK_ERROR');
     			}
@@ -110,7 +111,7 @@ class Front_TagController extends Zend_Controller_Action
 		        }
 		        $this->view->title = 'Hiển thị kết quả tìm kiếm cho tag "'.$tag['tag'].'"';
 		        $this->view->page = $page;
-		        $this->view->url = Core_Utils_Tools::genTagUrl($tag['key']);
+		        $this->view->url = Core_Utils_Tools::genTagUrl($tag['key']).'?';
 	        	$this->view->totalPage = ceil($totalRows/SEARCH_PAGE_SIZE);
 		        $this->renderScript('/tag/index.phtml');
     		}

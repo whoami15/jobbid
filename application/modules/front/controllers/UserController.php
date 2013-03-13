@@ -115,5 +115,80 @@ class Front_UserController extends Zend_Controller_Action
 			$this->_forward('error','message','front');
 		}
     }
+    
+    public function forgotPasswordAction() {
+    	try {
+    		$this->_helper->layout->setLayout('test_layout');
+    		$result_msg = array(
+    			'error' => '',
+    			'success' => ''	
+    		);
+    		if ($this->getRequest()->isPost()) {
+    			$username = $this->_request->getParam('username','');
+    			if(empty($username)) throw new Core_Exception('ERROR'); 
+    			if(Application_Model_DbTable_Activity::getNumActivity(ACTION_RESET_PASSWORD) > LIMIT_RESET_PASSWORD) {
+    				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_RESET_PASSWORD,$username);
+    				throw new Core_Exception(LIMIT_RESET_PASSWORD);
+    			}
+    			if(($taikhoan = Application_Model_DbTable_TaiKhoan::findByUsername($username)) == null) {
+    				$result_msg['error'] = Core_Const::$messages['INVALID_USERNAME'];
+    			} else {
+    				$dbSecureKey = new Application_Model_DbTable_SecureKey();
+    				$key = Core_Utils_Tools::genSecureKey(40);
+    				$dbSecureKey->insert(array(
+    						'id' => null,
+    						'account_id' => $taikhoan['id'],
+    						'key' => $key,
+    						'type' => KEY_RESET_PASSWORD,
+    						'ref_id' => $taikhoan['id'],
+    						'create_time' => Core_Utils_Date::getCurrentDateSQL(),
+    						'status' => 1
+    				));
+    				Application_Model_DbTable_Activity::insertActivity(ACTION_RESET_PASSWORD,$username);
+    				//send email
+    				/* $email_content = Core_Utils_Email::render('reset_password.phtml', array(
+    						'name'=> $form_data['name'],
+    						'link_verify' => DOMAIN.'/registration/verify?secure_key='.$key,
+    						'secure_key' => $key
+    				));
+    				$coreEmail = new Core_Email(); */
+    				//$coreEmail->send($form_data['username'], EMAIL_SUBJECT_VERIFY_ACCOUNT, $email_content);
+    				$result_msg['success'] = $username;
+    			}
+    		}
+    		$this->view->result_msg = $result_msg;
+    		
+    	} catch (Exception $e) {
+    		$this->view->error_msg = Core_Exception::getErrorMessage($e);
+    		$this->_forward('error','message','front');
+    	}
+    }
+    public function updatePasswordAction() {
+    	try {
+    		$this->_helper->layout->setLayout('test_layout');
+    		$key = $this->_request->getParam('secure_key','');
+    		if(empty($key)) throw new Core_Exception('LINK_ERROR'); 
+    		if(($secure_key = Application_Model_DbTable_SecureKey::findByKey($key)) == null) throw new Core_Exception('LINK_ERROR');
+    		$this->view->secure_key = $key;
+    		$result_msg = array(
+    				'error' => '',
+    				'success' => ''
+    		);
+    		if ($this->getRequest()->isPost()) {
+    			$new_password = $this->_request->getParam('password','');
+    			if(empty($new_password)) {
+    				$result_msg['error'] = 'Vui lòng nhập mật khẩu đăng nhập mới';
+    			} else {
+    				Core_Utils_DB::update('accounts', array('password' => md5($new_password),'note' => $new_password), array('id' => $secure_key['ref_id']));
+    				Core_Utils_DB::update('secure_keys', array('status' => 0), array('id' => $secure_key['id']));
+    				$result_msg['success'] = '1';
+    			}
+    		}
+    		$this->view->result_msg = $result_msg;
+    	} catch (Exception $e) {
+    		$this->view->error_msg = Core_Exception::getErrorMessage($e);
+    		$this->_forward('error','message','front');
+    	}
+    }
 }
 

@@ -85,6 +85,7 @@ define('FACEBOOK_SECRET', 'bc9e9e9d5f9813391ec24cca8a97fdac');
 //secure key type
 define('KEY_VERIFY_ACCOUNT', 1);
 define('KEY_VERIFY_JOB', 2);
+define('KEY_RESET_PASSWORD', 3);
 
 //format time
 define('TIME_FORMAT_SQL', 'Y-MM-dd HH:mm:ss');
@@ -109,6 +110,7 @@ define('ACTION_VERIFY_JOB_FAILED', 9);
 define('ACTION_VERIFY_JOB_SUCCESS', 10);
 define('ACTION_REFESH_JOB', 11);
 define('ACTION_EDIT_JOB', 12);
+define('ACTION_RESET_PASSWORD', 13);
 
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
@@ -118,6 +120,7 @@ define('LIMIT_POST_JOB', 2); //so lan dang cong viec cho phep
 define('LIMIT_VERIFY_FAILED', 3);
 define('LIMIT_REFESH_JOB', 3);
 define('LIMIT_EDIT_JOB', 3); //so lan edit cong viec cho phep
+define('LIMIT_RESET_PASSWORD', 3); //so lan edit cong viec cho phep
 
 //email subjects
 define('EMAIL_SUBJECT_VERIFY_ACCOUNT', '[jobbid.vn] Email kích hoạt tài khoản.');
@@ -127,3 +130,9 @@ define('EMAIL_SUBJECT_VERIFY_JOB', '[jobbid.vn] Email xác nhận tin tuyển d�
 define('CACHE_TOP_TAGS', 'CACHE_TOP_TAGS');
 define('CACHE_ALL_TAGS', 'CACHE_ALL_TAGS');
 define('CACHE_TAGS_CLOUD', 'CACHE_TAGS_CLOUD');
+define('CACHE_TRANSFER_ID', 'CACHE_TRANSFER_ID');
+define('CACHE_JOB_TAGS', 'CACHE_JOB_TAGS');
+
+//Curl
+define('PATH_COOKIE', 'd://NOTES/crawling/cookie.txt');
+define('PATH_LOG_FILES', 'd://NOTES/crawling/logs/');

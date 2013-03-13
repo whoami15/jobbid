@@ -17,10 +17,11 @@ class Front_JobController extends Zend_Controller_Action
     	try {
     		$jobId = $this->_request->getParam('id','');
     		if(empty($jobId)) throw new Core_Exception('LINK_ERROR');
-    		Core_Utils_DB::update('jobs',array('view' => '`view` + 1'),array('id' => 1));
     		$job = Application_Model_DbTable_Job::findById($jobId);
     		if($job==null) throw new Core_Exception('LINK_ERROR');
+    		Core_Utils_DB::query('UPDATE `jobs` SET `view` = `view` + 1 WHERE `id` = ?',3,array($jobId));
     		$similarJobs = Application_Model_DbTable_Job::getSimilarJob($job);
+    		$this->view->tags = Application_Model_DbTable_Tag::findTagByJob($jobId);
     		$this->view->job = $job;
     		$this->view->similarJobs = $similarJobs;
     		$this->view->facebook_comment = DOMAIN.'/job/view-job?id='.$jobId;
@@ -121,7 +122,23 @@ class Front_JobController extends Zend_Controller_Action
     }
 	public function redirectAction() {
 		//$this->_redirect('/view')
-		$this->_forward('view-job','job','front',array('id' => 8));
+		try {
+			$cache = Core_Utils_Tools::loadCache();
+			if(($array = $cache->load(CACHE_TRANSFER_ID)) == null) {
+				$rows = Core_Utils_DB::query('SELECT * FROM `mapping` where type = 1');
+				$array = array();
+				foreach($rows as $row) {
+					$array[$row['id1']] = $row['id2'];
+				}
+				$cache->save($array,CACHE_TRANSFER_ID);
+			}
+			$id = $this->_request->getParam('id',-1);
+			if(!isset($array[$id])) throw new Core_Exception('LINK_ERROR');
+			$this->_forward('view-job','job','front',array('id' => $array[$id]));
+		} catch (Exception $e) {
+			$this->view->error_msg = Core_Exception::getErrorMessage($e);
+			$this->_forward('error','message','front');
+		}
 	}
  	public function verifyAction()
     {

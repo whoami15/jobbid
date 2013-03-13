@@ -20,4 +20,38 @@ class Core_Utils_DB
     	$stmt->closeCursor();
     	$db->closeConnection();
     } 
+    public static function insert($tableName,$data) {
+    	if(empty($data)) return;
+    	$params = array();
+    	$fieldNames = array();
+    	$fieldValues = array();
+    	foreach ($data as $key => $value) {
+    		$params[$key] = $value;
+    		$fieldNames[] = "`$key`";
+    		$fieldValues[] = ":$key";
+    	}
+    	$query = 'INSERT INTO `'.$tableName.'`('.join(',', $fieldNames).') VALUES('.join(',', $fieldValues).') ';
+    	$db = Zend_Registry::get('connectDb');
+    	$stmt = $db->prepare($query);
+    	$stmt->execute($params);
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    }
+    public static function query($sql,$flag = 1,$params = array()) {
+    	$db = Zend_Registry::get('connectDb');
+    	$stmt = $db->prepare($sql);
+    	$stmt->execute($params);
+    	$result = null;
+    	if($flag == 1) {//return rows
+    		$result = $stmt->fetchAll();
+    	} elseif ($flag == 2) { // return one
+    		$result = $stmt->fetch();
+    		$result = $result==false?null:$result;
+    	} else if ($flag == 3) { //execute not return
+    		
+    	}
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    	return $result;
+    }
 }

@@ -18,11 +18,10 @@ class Application_Model_Worker_Time24h
 		 
 	}
 	public function start() {
-		$jobs = Application_Model_DbTable_Job::findChanges();
-		foreach($jobs as $job) {
-			$text = $job['title'].' '.$job['job_description'];
-			Application_Model_DbTable_DataFulltext::saveData($text, $job['id']);
-		}
+		Core_Utils_Job::removeExpriedSecureKeys();
+		die;
+		Core_Utils_Job::updateFulltextData();
+		Core_Utils_Job::updateTags();
 	}
 }
 

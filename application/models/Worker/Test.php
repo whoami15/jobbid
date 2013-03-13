@@ -14,16 +14,80 @@ class Application_Model_Worker_Test
 		return self::$_instance;
 	}
 	public function __construct(){
-		 
+		$this->_cUrl = new Core_Dom_Curl(array(
+				'method' => 'GET',
+				'header' => array(
+						'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+						'Accept-Encoding: gzip, deflate',
+						'Accept-Language: en-US,en;q=0.5',
+						'Connection: keep-alive',
+						'DNT: 1',
+						'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
+						'X-Requested-With: 	XMLHttpRequest'
+				)
+		));
 		 
 	}
 	public function start() {
+		/* $email = '123456';
+		echo ord($email); */
+		echo chr('49');
+		die;
 		/*$ta
 		$from = strtotime('2013-03-01');
 		$end = strtotime('2013-03-02');
 		echo $end - $from;
 		die;*/
-	
+		/* $rows = Core_Utils_DB::query('SELECT * FROM `_accounts`');
+		foreach($rows as $row) {
+			Core_Utils_DB::insert('accounts', $row);
+		}
+		die;  */
+		$url ='http://localhost/jobbid/transfer/list';
+		$content = $this->_cUrl->getContent($url);
+		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
+		$modelJobTitle = new Application_Model_DbTable_JobTitle();
+		$modelJob = new Application_Model_DbTable_Job();
+		$now = Core_Utils_Date::getCurrentDateSQL();
+		foreach ($doc['ul > li > a'] as $a) {
+			$url = 'http://localhost'.$a->getAttribute('href');
+			//Core_Utils_Tools::log($url);die;
+			$content = $this->_cUrl->getContent($url);
+			Core_Dom_Query::cleanup();
+			$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
+			$data = array();
+			foreach($doc['ul > li'] as $li2) {
+				$data[$li2->getAttribute('id')] = trim($li2->textContent);
+			}
+			//$jobTitleId = $modelJobTitle->save($data['tenduan']);
+			$jobId = $modelJob->insert(array(
+					'id' => null,
+					'title' => $data['tenduan'],
+					'account_id' => $data['account_id'],
+					'company_id' => null,
+					'job_title_id' => null,
+					'job_description' => $data['thongtinchitiet'],
+					'city_id' => $data['tinh_id'],
+					'email_to' => $data['duan_email'],
+					'job_type' => 1,
+					'view' => $data['views'],
+					'time_create' => $data['ngaypost'],
+					'time_update' => $data['timeupdate'],
+					'sec_id' => '',
+					'status' => 1,
+					'active' => 1
+			));
+			Core_Utils_DB::insert('mapping', array(
+				'id1' => $data['id'],
+				'id2' => $jobId,
+				'type' => 1
+			));
+			//print_r($data);die;
+			//Core_Utils_Tools::log($li->textContent);
+		}
+		die;
+		
+		die;
 		$tags = Application_Model_DbTable_Tag::findAllTag();
 		foreach($tags as $tag) {
 			$key = Core_Utils_String::getSlug($tag['tag']);
