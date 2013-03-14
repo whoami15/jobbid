@@ -1,10 +1,7 @@
 <?php
 $baseUrl = $this->baseUrl();
 ?>
-<div id="left_col">
-	<a class="logo" style="text-decoration: none; text-align: center;" href="<?php echo $baseUrl ?>"/><img style="border: medium none; " src="<?php echo $baseUrl ?>/images/logo.png" alt="logo"/>
-				<span class="slogan">Mạng xã hội việc làm Việt Nam</span></a>
-</div>
+<?php echo $this->render('/templates/left.phtml')?>
 <div id="right_col">
 	<div class="ui-state-highlight ui-corner-all" style=" padding: 0px 0.7em; margin-top: 10px;">
 		<p style="padding: 3px; text-align: left; margin: 0px;"><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>

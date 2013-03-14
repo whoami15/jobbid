@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--[if IE 6]>
+<html class="ie" id="ie6">
+<![endif]-->
+<!--[if IE 7]>
+<html class="ie" id="ie7">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie" id="ie8">
+<![endif]-->
+<!--[if IE 9]>
+<html class="ie" id="ie9">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html>
+<!--<![endif]-->
+<head>
+<?php
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$baseUrl = $this->baseUrl();
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="<?php echo $baseUrl?>/favico.ico">
+<title>Admin Tools</title>
+<meta http-equiv="content-language" content="vi"/>
+<meta content="Vietnamese, Vietnam" name="language">
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/front_style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/jquery-ui.css" type="text/css" media="screen" />
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.core.min.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.widget.min.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.button.min.js'></script>
+<script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.position.min.js'></script>
+<script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.placeholder.min.js"></script>
+<script>
+var baseUrl = '<?php echo $baseUrl?>';
+function byId(id) { //Viet tat cua ham document.getElementById
+	return document.getElementById(id);
+}
+function ajdebug(val) {
+	alert(val);
+}
+</script>
+</head>
+<body class="gradients">
+	<div id="page">
+		<center>
+		<div id="main">
+		<?php echo $this->layout()->content;?>
+		</div>
+		</center>
+	</div>
+</body>
+</html>
+<script>
+var ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại.';
+var PROCESSING_MESSAGE = 'Đang xử lý...';
+var LIMIT_VERIFY_FAILED = 'Bạn đã xác thực sai quá <?php echo LIMIT_VERIFY_FAILED?> lần.\nVui lòng xác thực lại sau 15 phút.';
+$(document).ready(function(){	 
+	
+	/*if($("#page #content").height()+218 < $(window).height()) {
+		$("#bottom").attr('style','position:fixed;bottom:0');
+	}*/
+});
+</script>

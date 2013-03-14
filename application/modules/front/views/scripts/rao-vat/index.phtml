@@ -15,7 +15,7 @@ $baseUrl = $this->baseUrl();
 		echo $this->partial('/templates/list-raovat.phtml',array('data'=>$item,'baseUrl' => $baseUrl));
 	}
 	echo $this->partial('/templates/paging.phtml',array(
-		'link' => $baseUrl.'/raovat?',
+		'link' => $baseUrl.'/rao-vat?',
 		'baseUrl' => $baseUrl,
 		'pagesindex' => $this->page,
 		'pageend' => $this->totalPage

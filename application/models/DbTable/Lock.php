@@ -20,7 +20,7 @@ class Application_Model_DbTable_Lock extends Zend_Db_Table_Abstract
     	$session = new Zend_Session_Namespace('session');
     	if(!isset($session->logged)) return;
     	$db = Zend_Registry::get('connectDb');
-    	$query = 'SELECT count(*) as num FROM `locks` WHERE lock_action=? and account_id =? and `status` = 1';
+    	$query = 'SELECT count(*) as num FROM `locks` WHERE (lock_action = 999 or lock_action=?) and account_id =? and `status` = 1';
     	$stmt = $db->prepare($query);
     	$stmt->execute(array($action,$session->logged['id']));
     	$row = $stmt->fetch();

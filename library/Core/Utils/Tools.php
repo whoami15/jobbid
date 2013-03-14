@@ -74,7 +74,7 @@ class Core_Utils_Tools
 		return '/tintuc/view/'.Core_Utils_String::getSlug($article['title']).'?id='.$article['id'];
 	}
 	public static function genRaovatUrl($raovat) {
-		return '/raovat/view/'.Core_Utils_String::getSlug($raovat['tieude']).'?id='.$raovat['id'];
+		return '/rao-vat/view/'.Core_Utils_String::getSlug($raovat['tieude']).'?id='.$raovat['id'];
 	}	
 	public static function genSecureKey($len = 10) {
 		$key = '';
@@ -106,6 +106,10 @@ class Core_Utils_Tools
 		$frontendOptions = array('lifetime' => $lifetime, 'automatic_serialization' => true);
 		$backendOptions = array('cache_dir' => PUBLIC_DIR .'/cache/'); // getting a Zend_Cache_Core object
 		return Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+	}
+	public static function uid2username($uid) {
+		$row = Core_Utils_DB::query('SELECT `username` FROM `accounts` WHERE `id` = ?',2,array($uid));
+		return $row==false?'':$row['username'];
 	}
 	
 }

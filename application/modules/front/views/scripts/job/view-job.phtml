@@ -84,6 +84,11 @@ $actual_link = Core_Utils_Tools::getFullURL();
 				<input type="hidden" name="job_id" value="<?php echo $this->job['id']?>"/>
 				<button id="btUp" class="button" title="Chức năng đẩy tin đăng của bạn lên top những tin đăng mới nhất ( tối đa 3 lần 1 ngày)">Làm mới (up tin)</button>
 				</form>
+				<?php
+				if(Core_Utils_Tools::isAdmin()) {
+					echo '<a href="'.$baseUrl.'/admin/lock-account?uid='.$this->job['account_id'].'">Lock user '.Core_Utils_Tools::uid2username($this->job['account_id']).'</a>';
+				}
+				?>
 			</td>
 		</tr>
 		<?php

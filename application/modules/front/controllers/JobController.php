@@ -148,7 +148,7 @@ class Front_JobController extends Zend_Controller_Action
         	if(empty($email) && isset($this->session->logged)) {
     			$email = $this->session->logged['username'];
     		}
-        	if(empty($email)) throw new Core_Exception('LINK_ERROR');
+        	//if(empty($email)) throw new Core_Exception('LINK_ERROR');
         	$this->view->email = $email;
         	$this->view->secure_key = $this->_request->getParam('secure_key','');
         } catch (Exception $e) {
@@ -209,7 +209,7 @@ class Front_JobController extends Zend_Controller_Action
         			$now = Core_Utils_Date::getCurrentDateSQL();
         			$modelJob->update(array(
         					'title' => $form_data['title'],
-        					'account_id' => $this->account['id'],
+        					//'account_id' => $this->account['id'],
         					'company_id' => $companyId,
         					'job_title_id' => null,
         					'job_description' => $form_data['job_description'],

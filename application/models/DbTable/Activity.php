@@ -18,6 +18,9 @@ class Application_Model_DbTable_Activity extends Zend_Db_Table_Abstract
     	$db->closeConnection();
     }
     public static function getNumActivity($action,$dataRef=null) {
+    	if(Application_Model_DbTable_Lock::isLocked($action) == true) {
+        	throw new Core_Exception('LOCK_ACTION');
+        }
     	$session = new Zend_Session_Namespace('session');
     	$params = array(
     		'visitor_id' => $session->visitor['id'],

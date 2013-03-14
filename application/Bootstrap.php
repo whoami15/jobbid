@@ -53,11 +53,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	$route = new Zend_Controller_Router_Route(
     			'/raovat/view/:id/*',
     			array(
-    					'controller' => 'raovat',
+    					'controller' => 'rao-vat',
     					'action'     => 'view'
     			)
     	);
-    	$router->addRoute('route3', $route);
+    	$router->addRoute('route4', $route);
     }
 	
 	/*protected function _initRoutes() {

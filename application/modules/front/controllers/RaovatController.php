@@ -1,6 +1,6 @@
 <?php
 
-class Front_RaovatController extends Zend_Controller_Action
+class Front_RaoVatController extends Zend_Controller_Action
 {
 	private $session;
 	private $account;
@@ -35,7 +35,7 @@ class Front_RaovatController extends Zend_Controller_Action
     		if($raovat==null) throw new Core_Exception('LINK_ERROR');
     		Core_Utils_DB::query('UPDATE `raovats` SET `views` = `views` + 1 WHERE `id` = ?',3,array($id));
     		$this->view->data = $raovat;
-    		$this->view->facebook_comment = DOMAIN.'/raovat/view?id='.$id;
+    		$this->view->facebook_comment = DOMAIN.'/rao-vat/view?id='.$id;
     		$this->view->title = $raovat['tieude'];
     		$this->view->description = Core_Utils_String::trim($raovat['noidung'],250);
     	} catch (Exception $e) {
