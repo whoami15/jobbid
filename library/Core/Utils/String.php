@@ -47,7 +47,9 @@ class Core_Utils_String
 		}
 		if(empty($words_list)) return true;
 		foreach ($words_list as &$word) $word = preg_quote($word, '/');
-		return preg_match_all('/('.join('|', $words_list).')/i', $content, $matches) > 0 ?false:true;
+		$words_list = mb_strtolower($words_list,'UTF-8');
+		$content = mb_strtolower($content,'UTF-8');
+		return preg_match_all('/('.join('|', $words_list).')/', $content, $matches) > 0 ?false:true;
 	}
 	public static function trim($str,$length = 50) {
 		if(mb_strlen($str,'utf-8') <= $length)
