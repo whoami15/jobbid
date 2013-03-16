@@ -102,7 +102,7 @@ class Front_JobController extends Zend_Controller_Action
 						'name'=> $this->account['username'],
 						'link_verify' => DOMAIN.'/job/verify?secure_key='.$key,
 						'secure_key' => $key,
-        				'job_title' => $form_data['job_title']
+        				'job_title' => $form_data['title']
 					));
 					$coreEmail = new Core_Email();
 					$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
