@@ -21,10 +21,11 @@ $baseUrl = $this->baseUrl();
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" href="<?php echo $baseUrl?>/favico.ico">
-<title>Admin Tools</title>
+<title><?php echo isset($this->title)?$this->title:'Admin Tools' ?></title>
 <meta http-equiv="content-language" content="vi"/>
 <meta content="Vietnamese, Vietnam" name="language">
 <link rel="stylesheet" href="<?php echo $baseUrl?>/css/front_style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $baseUrl?>/css/admin_style.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="<?php echo $baseUrl?>/css/jquery-ui.css" type="text/css" media="screen" />
 <script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery.js'></script>
 <script type='text/javascript' src='<?php echo $baseUrl?>/js/jquery-ui/jquery.ui.core.min.js'></script>

@@ -84,28 +84,30 @@ class Front_JobController extends Zend_Controller_Action
         					'time_update' => $now,
         					'sec_id' => '',
         					'status' => 1,
-        					'active' => 0
+        					'active' => Core_Utils_Tools::isAdmin()?'1':'0'
         			));
-        			Application_Model_DbTable_Activity::insertActivity(ACTION_POST_JOB,$jobId);
-        			$dbSecureKey = new Application_Model_DbTable_SecureKey();
-					$key = strtoupper(Core_Utils_Tools::genSecureKey());
-					$dbSecureKey->insert(array(
-							'id' => null,
-							'account_id' => $this->account['id'],
-							'key' => $key,
-							'type' => KEY_VERIFY_JOB,
-							'ref_id' => $jobId,
-							'create_time' => $now,
-							'status' => 1
-					));
-        			$email_content = Core_Utils_Email::render('verify_job.phtml', array(
-						'name'=> $this->account['username'],
-						'link_verify' => DOMAIN.'/job/verify?secure_key='.$key,
-						'secure_key' => $key,
-        				'job_title' => $form_data['title']
-					));
-					$coreEmail = new Core_Email();
-					$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
+        			if(Core_Utils_Tools::isAdmin() == false) {
+        				Application_Model_DbTable_Activity::insertActivity(ACTION_POST_JOB,$jobId);
+        				$dbSecureKey = new Application_Model_DbTable_SecureKey();
+						$key = strtoupper(Core_Utils_Tools::genSecureKey());
+						$dbSecureKey->insert(array(
+								'id' => null,
+								'account_id' => $this->account['id'],
+								'key' => $key,
+								'type' => KEY_VERIFY_JOB,
+								'ref_id' => $jobId,
+								'create_time' => $now,
+								'status' => 1
+						));
+	        			$email_content = Core_Utils_Email::render('verify_job.phtml', array(
+							'name'=> $this->account['username'],
+							'link_verify' => DOMAIN.'/job/verify?secure_key='.$key,
+							'secure_key' => $key,
+	        				'job_title' => $form_data['title']
+						));
+						$coreEmail = new Core_Email();
+						$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
+        			}
         			$this->_redirect('/job/verify?email='.$form_data['email_to']);
         		} else {
         			$form->populate($form_data);

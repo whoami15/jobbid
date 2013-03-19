@@ -21,6 +21,20 @@ class Application_Model_DbTable_Article extends Zend_Db_Table_Abstract
         $db->closeConnection();
         return $rows;
     } 
+	public static function findTopNews() {
+    	$cache = Core_Utils_Tools::loadCache(3600);
+    	if(($rows = $cache->load(CACHE_TOP_NEWS)) == null) {
+    		$db = Zend_Registry::get('connectDb');
+    		$query = 'SELECT `id`,`title` FROM `articles` ORDER BY `datemodified` DESC LIMIT 1,10';
+    		$stmt = $db->prepare($query);
+    		$stmt->execute();
+    		$rows = $stmt->fetchAll();
+    		$stmt->closeCursor();
+    		$db->closeConnection();
+    		$cache->save($rows,CACHE_TOP_NEWS);
+    	} 
+    	return $rows;
+    }
     
 }
 

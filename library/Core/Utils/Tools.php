@@ -111,5 +111,20 @@ class Core_Utils_Tools
 		$row = Core_Utils_DB::query('SELECT `username` FROM `accounts` WHERE `id` = ?',2,array($uid));
 		return $row==false?'':$row['username'];
 	}
+	public static function form2HTML($form) {
+		$html = '';
+    	foreach ($form as $element => $item) {
+    		$str = '';
+    		if($item['tag'] == 'input') {
+    			$str = "<input name='$element' id='$element' ";
+    			foreach ($item['attrs'] as $name => $value) {
+    				$str.=$name.' = "'.$value.'" ';
+    			}
+    			$str.='/>';
+    		}
+    		$html.=$str;
+    	}
+    	return $html;
+	}
 	
 }

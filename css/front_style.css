@@ -230,7 +230,7 @@ padding: 2px 5px;
 display: block;
 float: left;
 }
-input, textarea {
+input[type="text"], textarea {
   background: none repeat scroll 0 0 #FFFFFF;
   border: 1px solid #CCCCCC;
   color: #000000;
@@ -239,11 +239,11 @@ input, textarea {
   margin: 0;
   padding: 2px;
 }
-input {
+input[type="text"]{
   border: 1px solid #CCCCCC;
   padding: 6px;
 }
-input, textarea {
+input[type="text"] , textarea {
   box-shadow: 1px 1px 3px #EEEEEE inset;
 }
 input[type="text"] {

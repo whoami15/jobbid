@@ -54,4 +54,30 @@ class Core_Utils_DB
     	$db->closeConnection();
     	return $result;
     }
+    public static function delete($tableName,$id,$key='id') {
+    	$db = Zend_Registry::get('connectDb');
+    	$stmt = $db->prepare('DELETE FROM `'.$tableName.'` WHERE `'.$key.'` = ?');
+    	$stmt->execute(array($id));
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    }
+    public static function search($tableName,$where,$orderBy = '',$select='*') {
+    	$sWhere = ' 1 = 1 ';
+    	foreach ($where as $key => $value) {
+    		if(empty($value)) continue;
+    		if(Core_Utils_String::contains($value, '%')) {
+    			$sWhere.=" AND `$key` LIKE '$value'";
+    		} else {
+    			$sWhere.=" AND `$key` = '$value'";
+    		}
+    	}
+    	$query = 'SELECT '.$select.' FROM `'.$tableName.'` WHERE '.$sWhere.$orderBy;
+    	$db = Zend_Registry::get('connectDb');
+    	$stmt = $db->prepare($query);
+    	$stmt->execute();
+    	$result = $stmt->fetchAll();
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    	return $result;
+    } 
 }

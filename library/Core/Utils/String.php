@@ -38,6 +38,7 @@ class Core_Utils_String
 		return preg_match_all('/('.join('|', $words_list).')/i', $string, $matches);
 	}
 	public static function checkContent($content) {
+		return true;
 		$len = mb_strlen($content,'UTF-8');
 		if($len < MIN_CONTENT_LENGTH || $len > MAX_CONTENT_LENGTH) return false;
 		$rows = Application_Model_DbTable_Prohibition::getProhibitionWords();
@@ -56,5 +57,11 @@ class Core_Utils_String
 			return $str;
 		$str = mb_substr($str, 0, $length,'utf-8').'...';
 		return $str;
+	}
+	public static function contains($string,$char) {
+		if (strpos($string,$char) !== false) {
+	    	return true;
+		}
+		return false;
 	}
 }
