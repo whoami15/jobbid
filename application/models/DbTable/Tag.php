@@ -45,7 +45,7 @@ class Application_Model_DbTable_Tag extends Zend_Db_Table_Abstract
     	return $row==false?null:$row;
     }
     public static function findTopTag() {
-    	$cache = Core_Utils_Tools::loadCache(86400);
+    	$cache = Core_Utils_Tools::loadCache(3600);
     	if(($rows = $cache->load(CACHE_TOP_TAGS)) == null) {
     		$db = Zend_Registry::get('connectDb');
     		$query = 'SELECT * FROM `tags` ORDER BY `num_job` DESC LIMIT 1,10';
@@ -59,7 +59,7 @@ class Application_Model_DbTable_Tag extends Zend_Db_Table_Abstract
     	return $rows;
     }
     public static function findAllTag() {
-    	$cache = Core_Utils_Tools::loadCache(86400);
+    	$cache = Core_Utils_Tools::loadCache(3600);
     	if(($rows = $cache->load(CACHE_ALL_TAGS)) == null) {
     		$db = Zend_Registry::get('connectDb');
     		$query = 'SELECT * FROM `tags` WHERE status = 1';
@@ -73,7 +73,7 @@ class Application_Model_DbTable_Tag extends Zend_Db_Table_Abstract
     	return $rows;
     }
 	public static function getTagsCloud() {
-    	$cache = Core_Utils_Tools::loadCache(86400);
+    	$cache = Core_Utils_Tools::loadCache(3600);
     	if(($cloud = $cache->load(CACHE_TAGS_CLOUD)) == null) {
     		$db = Zend_Registry::get('connectDb');
     		$query = 'SELECT * FROM `tags` WHERE status = 1 ORDER BY `num_job` DESC';
