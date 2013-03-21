@@ -48,7 +48,7 @@ class Application_Model_DbTable_Job extends Zend_Db_Table_Abstract
 LEFT JOIN `company` t1 ON t0.`company_id` = t1.`id`
 LEFT JOIN `job_title` t2 ON t0.`job_title_id` = t2.`id`
 LEFT JOIN `cities` t3 ON t0.`city_id` = t3.`id`
-WHERE t0.active = 1 and  t0.`status` = 1 AND t0.`id` = ? AND `num_report` < ?';
+WHERE t0.`id` = ? AND `num_report` < ?';
     	$stmt = $db->prepare($query);
         $stmt->execute(array($jobId,LIMIT_REPORT));
         $row = $stmt->fetch();

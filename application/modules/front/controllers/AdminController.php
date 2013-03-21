@@ -28,45 +28,51 @@ class Front_AdminController extends Zend_Controller_Action
     }
     public function indexAction() {
     	
+    	
     }
 	public function prohibitionAction() {
-		$form = array(
-			'id' => array(
-				'tag' => 'input',
-				'attrs' => array(
-					'type' => 'hidden'
+		try {
+			$form = array(
+				'id' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'hidden'
+					)
+				),
+				'words' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'placeholder' => 'Prohibition words...'
+					)
+					
 				)
-			),
-			'words' => array(
-				'tag' => 'input',
-				'attrs' => array(
-					'type' => 'text',
-					'placeholder' => 'Prohibition words...'
-				)
-				
-			)
-		);
-		$this->view->title = 'Prohibition management';
-		$array = array();
-    	if($this->_request->isPost()) {
-    		$form_data = $_POST;
-    		if($form_data['button'] == 'Save') {
-	    		if(!empty($form_data['words'])) {
-	    			if(!empty($form_data['id'])) { //update
-	    				Core_Utils_DB::update('prohibitions', array('words' => $form_data['words']), array('id' => $form_data['id']));
-	    			} else {
-		    			if(Core_Utils_DB::query('SELECT * FROM `prohibitions` WHERE `words` = ?',2,array($form_data['words'])) == null) {
-		    				Application_Model_DbTable_Prohibition::addWords($form_data['words']);
+			);
+			$this->view->title = 'Prohibition management';
+			$array = array();
+	    	if($this->_request->isPost()) {
+	    		$form_data = $_POST;
+	    		if($form_data['button'] == 'Save') {
+		    		if(!empty($form_data['words'])) {
+		    			if(!empty($form_data['id'])) { //update
+		    				Core_Utils_DB::update('prohibitions', array('words' => $form_data['words']), array('id' => $form_data['id']));
+		    			} else {
+			    			if(Core_Utils_DB::query('SELECT * FROM `prohibitions` WHERE `words` = ?',2,array($form_data['words'])) == null) {
+			    				Application_Model_DbTable_Prohibition::addWords($form_data['words']);    				
+			    			}
 		    			}
-	    			}
+		    		}
+		    		$this->_redirect('/admin/prohibition');die;
+	    		} else if($form_data['button'] == 'Search') {
+	    			$array['words'] = $form_data['words'];
+	    			$form['words']['attrs']['value'] = $form_data['words'];
 	    		}
-    		} else if($form_data['button'] == 'Search') {
-    			$array['words'] = $form_data['words'];
-    			$form['words']['attrs']['value'] = $form_data['words'];
-    		}
-    	}
-    	$this->view->html = Core_Utils_Tools::form2HTML($form);
-    	$this->view->list = Core_Utils_DB::search('prohibitions', $array,' order by id desc');
+	    	}
+	    	$this->view->html = Core_Utils_Tools::form2HTML($form);
+	    	$this->view->list = Core_Utils_DB::search('prohibitions', $array,' order by id desc');
+		} catch (Exception $e) {
+			$this->_forward('error','admin','front',array('msg' => $e->getMessage(),'trace' => $e->getTraceAsString()));
+		}
     }
     public function removeAction() {
     	$tableName = $this->_request->getParam('t','');
@@ -87,88 +93,116 @@ class Front_AdminController extends Zend_Controller_Action
     	die;
     }
 	public function tagAction() {
-		$form = array(
-			'id' => array(
-				'tag' => 'input',
-				'attrs' => array(
-					'type' => 'text',
-					'style' => 'display:none'
+		try {
+			$form = array(
+				'id' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'style' => 'display:none'
+					)
+				),
+				'tag' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'placeholder' => 'Tag...'
+					)
+					
 				)
-			),
-			'tag' => array(
-				'tag' => 'input',
-				'attrs' => array(
-					'type' => 'text',
-					'placeholder' => 'Tag...'
-				)
-				
-			)
-		);
-		$tableName = 'tags';
-		$this->view->title = 'Tag management';
-		$array = array();
-    	if($this->_request->isPost()) {
-    		$form_data = $_POST;
-    		if($form_data['button'] == 'Save') {
-	    		if(!empty($form_data['tag'])) {
-	    			if(!empty($form_data['id'])) { //update
-	    				Core_Utils_DB::update($tableName, array('tag' => $form_data['tag']), array('id' => $form_data['id']));
-	    			} else {
-		    			if(Core_Utils_DB::query('SELECT * FROM `'.$tableName.'` WHERE `tag` = ?',2,array($form_data['tag'])) == null) {
-		    				Application_Model_DbTable_Tag::insertTag($form_data['tag']);
+			);
+			$tableName = 'tags';
+			$this->view->title = 'Tag management';
+			$array = array();
+	    	if($this->_request->isPost()) {
+	    		$form_data = $this->_request->getParams();
+	    		//print_r($form_data);die;
+	    		if($form_data['button'] == 'Save') {
+		    		if(!empty($form_data['tag'])) {
+		    			if(!empty($form_data['id'])) { //update
+		    				Core_Utils_DB::update($tableName, array('tag' => $form_data['tag']), array('id' => $form_data['id']));
+		    			} else {
+			    			if(Core_Utils_DB::query('SELECT * FROM `'.$tableName.'` WHERE `tag` = ?',2,array($form_data['tag'])) == null) {
+			    				Application_Model_DbTable_Tag::insertTag($form_data['tag']);
+			    			}
 		    			}
-	    			}
+		    		}
+		    		$this->_redirect('/admin/tag');die;
+	    		} else if($form_data['button'] == 'Search') {
+	    			$array['tag'] = "%{$form_data['tag']}%";
+	    			$form['tag']['attrs']['value'] = $form_data['tag'];
 	    		}
-    		} else if($form_data['button'] == 'Search') {
-    			$array['tag'] = "%{$form_data['tag']}%";
-    			$form['tag']['attrs']['value'] = $form_data['tag'];
-    		}
-    	}
-    	
-    	$this->view->html = Core_Utils_Tools::form2HTML($form);
-    	$this->view->list = Core_Utils_DB::search($tableName, $array,' order by id desc');
+	    	}
+	    	
+	    	$this->view->html = Core_Utils_Tools::form2HTML($form);
+	    	$this->view->list = Core_Utils_DB::search($tableName, $array,' order by id desc');
+		} catch (Exception $e) {
+			$this->_forward('error','admin','front',array('msg' => $e->getMessage(),'trace' => $e->getTraceAsString()));
+		}
+		
     }
 	public function articleAction() {
-		$form = array(
-			'id' => array(
-				'tag' => 'input',
-				'attrs' => array(
-					'type' => 'text',
-					'style' => 'display:none'
+		try {
+			$form = array(
+				'id' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'style' => 'display:none'
+					)
+				),
+				'title' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'placeholder' => 'Title...'
+					)
+					
 				)
-			),
-			'title' => array(
-				'tag' => 'input',
-				'attrs' => array(
-					'type' => 'text',
-					'placeholder' => 'Title...'
-				)
-				
-			)
-		);
-		$tableName = 'articles';
-		$this->view->title = 'Article management';
-		$array = array();
-    	if($this->_request->isPost()) {
-    		$form_data = $_POST;
-    		if($form_data['button'] == 'Save') {
-    			$data = array(
-    				'title' => $form_data['title'],
-    				'content' => $form_data['content']
-    			);
-    			if(!empty($form_data['id'])) { //update
-    				Core_Utils_DB::update($tableName,$data , array('id' => $form_data['id']));
-    			} else {
-	    			Core_Utils_DB::insert($tableName, $data);
-    			}
-    		} else if($form_data['button'] == 'Search') {
-    			$array['title'] = "%{$form_data['title']}%";
-    			$form['title']['attrs']['value'] = $form_data['title'];
-    		}
-    	}
-    	
-    	$this->view->html = Core_Utils_Tools::form2HTML($form);
-    	$this->view->list = Core_Utils_DB::search($tableName, $array,' order by id desc','`id`,`title`');
+			);
+			$tableName = 'articles';
+			$this->view->title = 'Article management';
+			$array = array();
+	    	if($this->_request->isPost()) {
+	    		$form_data = $_POST;
+	    		if($form_data['button'] == 'Save') {
+	    			$data = array(
+	    				'title' => $form_data['title'],
+	    				'content' => $form_data['content'],
+	    				'datemodified' => Core_Utils_Date::getCurrentDateSQL()
+	    			);
+	    			if(!empty($form_data['id'])) { //update
+	    				Core_Utils_DB::update($tableName,$data , array('id' => $form_data['id']));
+	    			} else {
+		    			Core_Utils_DB::insert($tableName, $data);
+	    			}
+	    			$this->_redirect('/admin/article');die;
+	    		} else if($form_data['button'] == 'Search') {
+	    			$array['title'] = "%{$form_data['title']}%";
+	    			$form['title']['attrs']['value'] = $form_data['title'];
+	    		}
+	    	}
+	    	
+	    	$this->view->html = Core_Utils_Tools::form2HTML($form);
+	    	$this->view->list = Core_Utils_DB::search($tableName, $array,' order by id desc','`id`,`title`');
+		} catch (Exception $e) {
+			$this->_forward('error','admin','front',array('msg' => $e->getMessage(),'trace' => $e->getTraceAsString()));
+		}
+    }
+    public function testAction() {
+    	$str = 'Việc làm thêm 7';
+    	$db = Zend_Registry::get('connectDb');
+    	$query = 'INSERT INTO `tags`(`key`,`tag`) VALUES (NULL,?)';
+    	$stmt = $db->prepare($query);
+    	$stmt->execute(array($str));
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    	die;
+    }
+    public function errorAction() {
+    	$msg = $this->_request->getParam('msg','');
+    	$trace = $this->_request->getParam('trace','');
+    	die('ERROR : '.$msg.'<pre>'.$trace.'</pre>');
     }
 }
 

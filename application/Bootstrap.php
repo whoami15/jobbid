@@ -104,6 +104,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	   $db->query("SET CHARACTER SET 'UTF8'");
 	   Zend_Registry::set("connectDb",$db);
 	   Zend_Db_Table::setDefaultAdapter($db);
+	   $db->closeConnection();
    	}
 }
 

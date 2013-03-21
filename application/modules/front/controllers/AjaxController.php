@@ -120,6 +120,14 @@ class Front_AjaxController extends Zend_Controller_Action
     	die('OK');
     }
 	public function testAction() {
+		$str = 'Việc làm thêm 5';
+    	$db = Zend_Registry::get('connectDb');
+    	$query = 'INSERT INTO `tags`(`key`,`tag`) VALUES (NULL,?)';
+    	$stmt = $db->prepare($query);
+    	$stmt->execute(array($str));
+    	$stmt->closeCursor();
+    	$db->closeConnection();
+    	die;
 		$first = 'Vina Design - Tuyển Nhân Viên Thiết Kế Đồ Họa Photoshop, Flash Mô tả công việc:
 - Công việc đòi hỏi tính sáng tạo cao, có nhiều ý tưởng mới,hay và đặc biệt.
 - Có kỹ năng và thẩm mỹ trong thiết kế website, brochures, posters, etc.

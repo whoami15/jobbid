@@ -29,6 +29,7 @@ class Application_Model_DbTable_Tag extends Zend_Db_Table_Abstract
     	$db = new Application_Model_DbTable_Tag();
     	$db->insert(array(
     		'id' => null,
+    		'key' => Core_Utils_String::getSlug($tag),
     		'tag' => $tag,
     		'num_job' => $priority,
     		'status' => 1		
