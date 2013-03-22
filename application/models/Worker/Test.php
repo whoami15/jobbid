@@ -29,6 +29,10 @@ class Application_Model_Worker_Test
 		 
 	}
 	public function start() {
+		$client = new Zend_Http_Client('https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=cong%20viec%20ban%20thoi%20gian&start=1');
+		$response = $client->request();
+		$response = json_decode($response->getBody());
+		print_r($response);die;
 		/*$ta
 		$from = strtotime('2013-03-01');
 		$end = strtotime('2013-03-02');
