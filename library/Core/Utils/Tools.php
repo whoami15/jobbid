@@ -126,5 +126,8 @@ class Core_Utils_Tools
     	}
     	return $html;
 	}
+	public static function debug($e) {
+		echo '<pre>'.$e->getTraceAsString().'</pre>';die;
+	}
 	
 }

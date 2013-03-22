@@ -32,5 +32,26 @@ class Front_ActionController extends Zend_Controller_Action
         	$this->_forward('error','message','front');
         }
     }
+	public function cancelJobAction()
+    {
+        try {
+        	$key = $this->_request->getParam('secure_key','');
+	    	if(empty($key)) throw new Core_Exception('LINK_ERROR');
+	    	if(($secure_key = Application_Model_DbTable_SecureKey::findByKey($key)) == null) {
+	    		Application_Model_DbTable_Activity::insertActivity(ACTION_VERIFY_FAILED,KEY_CANCEL_JOB);
+	    		throw new Core_Exception('LINK_ERROR');
+	    	} 
+	    	$job_id = $secure_key['ref_id'];
+	    	Core_Utils_DB::update('jobs', array('status' => -1), array('id' => $job_id));
+	    	Application_Model_DbTable_Activity::insertActivity(ACTION_CANCEL_JOB,$job_id);
+	    	Application_Model_DbTable_SecureKey::removeSecureKey($secure_key['id']);
+	    	$this->_forward('success','message','front',array('type' => 'cancel-job'));
+	    	
+        } catch (Exception $e) {
+        	//Core_Utils_Tools::debug($e);
+        	$this->view->error_msg = Core_Exception::getErrorMessage($e);
+        	$this->_forward('error','message','front');
+        }
+    }
 }
 

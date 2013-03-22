@@ -21,7 +21,9 @@ class Front_MessageController extends Zend_Controller_Action
 	        		$this->view->email = $email;
 	        		$this->renderScript('/message/success-post-job.phtml');
 	        	break;
-	        	
+	        	case 'cancel-job':
+	        		$this->renderScript('/message/success-cancel-job.phtml');
+	        	break;
 	        	default:
 	        		;
 	        	break;

@@ -37,7 +37,7 @@ define('LIMIT_SLIDE', 5);
 define('BUFFER_ELEMENT_IN_SESSION', 100);
 define('DEFAULT_IMAGE_RESIZE_QUALITY', 90);
 define('MIN_CONTENT_LENGTH', 30);
-define('MAX_CONTENT_LENGTH', 3000);
+define('MAX_CONTENT_LENGTH', 6000);
 
 //Session variables
 define('SESSION_TIME_VARIABLE_SHORT', 60*2); // 2 minutes
@@ -86,6 +86,7 @@ define('FACEBOOK_SECRET', 'bc9e9e9d5f9813391ec24cca8a97fdac');
 define('KEY_VERIFY_ACCOUNT', 1);
 define('KEY_VERIFY_JOB', 2);
 define('KEY_RESET_PASSWORD', 3);
+define('KEY_CANCEL_JOB', 4);
 
 //format time
 define('TIME_FORMAT_SQL', 'Y-MM-dd HH:mm:ss');
@@ -111,6 +112,8 @@ define('ACTION_VERIFY_JOB_SUCCESS', 10);
 define('ACTION_REFESH_JOB', 11);
 define('ACTION_EDIT_JOB', 12);
 define('ACTION_RESET_PASSWORD', 13);
+define('ACTION_VERIFY_FAILED', 14);
+define('ACTION_CANCEL_JOB', 15);
 
 //limit in session 
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep

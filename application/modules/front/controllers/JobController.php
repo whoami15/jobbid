@@ -86,10 +86,10 @@ class Front_JobController extends Zend_Controller_Action
         					'status' => 1,
         					'active' => Core_Utils_Tools::isAdmin()?'1':'0'
         			));
+        			$dbSecureKey = new Application_Model_DbTable_SecureKey();
         			if(Core_Utils_Tools::isAdmin() == false) {
         				Application_Model_DbTable_Activity::insertActivity(ACTION_POST_JOB,$jobId);
-        				$dbSecureKey = new Application_Model_DbTable_SecureKey();
-						$key = strtoupper(Core_Utils_Tools::genSecureKey());
+        				$key = strtoupper(Core_Utils_Tools::genSecureKey());
 						$dbSecureKey->insert(array(
 								'id' => null,
 								'account_id' => $this->account['id'],
@@ -100,14 +100,32 @@ class Front_JobController extends Zend_Controller_Action
 								'status' => 1
 						));
 	        			$email_content = Core_Utils_Email::render('verify_job.phtml', array(
-							'name'=> $this->account['username'],
+							'job_description' => Core_Utils_String::trim($form_data['job_description'],500),
 							'link_verify' => DOMAIN.'/job/verify?secure_key='.$key,
 							'secure_key' => $key,
-	        				'job_title' => $form_data['title']
+	        				'job_title' => $form_data['title'],
+	        				'link_view' => DOMAIN.Core_Utils_Tools::genJobUrl(array('title' => $form_data['title'],'id' => $jobId))
 						));
-						$coreEmail = new Core_Email();
-						$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
+        			} else {
+        				$key = Core_Utils_Tools::genSecureKey(20);
+						$dbSecureKey->insert(array(
+								'id' => null,
+								'account_id' => $this->account['id'],
+								'key' => $key,
+								'type' => KEY_CANCEL_JOB,
+								'ref_id' => $jobId,
+								'create_time' => $now,
+								'status' => 1
+						));
+	        			$email_content = Core_Utils_Email::render('verify_job2.phtml', array(
+	        				'job_title' => $form_data['title'],
+	        				'job_description' => Core_Utils_String::trim($form_data['job_description'],500),
+	        				'link_view' => DOMAIN.Core_Utils_Tools::genJobUrl(array('title' => $form_data['title'],'id' => $jobId)),
+	        				'link_cancel' => DOMAIN.'/action/cancel-job?secure_key='.$key
+						));
         			}
+        			$coreEmail = new Core_Email();
+					$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
         			$this->_redirect('/job/verify?email='.$form_data['email_to']);
         		} else {
         			$form->populate($form_data);
