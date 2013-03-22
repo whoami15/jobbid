@@ -4,7 +4,7 @@ class Application_Model_DbTable_Tag extends Zend_Db_Table_Abstract
 {
     protected $_name = 'tags';
     public static function findTagByJob($jobId) {
-    	$cache = Core_Utils_Tools::loadCache(86400);
+    	$cache = Core_Utils_Tools::loadCache(10800);
     	if(($array = $cache->load(CACHE_JOB_TAGS)) == null) {
     		$db = Zend_Registry::get('connectDb');
     		$query = 'SELECT `key`,`tag`,`job_id` FROM `tags` t0 LEFT JOIN `job_tags` t1 ON t0.id = t1.`tag_id` WHERE t0.status = 1 ORDER BY `relevancy` DESC';
