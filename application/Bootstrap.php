@@ -58,6 +58,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     			)
     	);
     	$router->addRoute('route4', $route);
+    	$route = new Zend_Controller_Router_Route(
+    			'/company/:slug/',
+    			array(
+    					'controller' => 'company',
+    					'action'     => 'view'
+    			)
+    	);
+    	$router->addRoute('route5', $route);
     }
 	
 	/*protected function _initRoutes() {

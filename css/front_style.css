@@ -68,13 +68,13 @@ float: left;
 min-height: 500px;
 padding-left: 2px;
 position: relative;
-width: 180px;
+width: 200px;
 }
 #right_col {
 float: left;
 margin-left: 20px;
 position: relative;
-width: 770px;
+width: 750px;
 }
 ol, ul {
   list-style: none outside none;
@@ -258,6 +258,7 @@ border:1px solid red;
 .row {
 display: block;
 float: left;
+min-height: 70px;
 padding-top: 10px;
 text-align: left;
 width: 100%;

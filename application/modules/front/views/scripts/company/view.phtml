@@ -1,0 +1,38 @@
+<?php
+$baseUrl = $this->baseUrl();
+?>
+<!--[if lt IE 8]><style>
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+}
+</style><![endif]-->
+<?php echo $this->render('/templates/left.phtml')?>
+<div id="right_col">
+	<h1 style="text-align: left; padding-bottom: 10px; margin-bottom: 0px;"><?php echo $this->title?></h1>
+	<span style="text-align: left; display: block; color: gray; border-bottom: 1px dashed; margin-bottom: 5px; padding-bottom: 5px;">Thông tin công ty : <?php echo $this->description?></span>
+	<?php
+	foreach($this->jobs as $job) {
+		echo $this->partial('/templates/list.phtml',array('job'=>$job,'baseUrl' => $baseUrl));
+	}
+	echo $this->partial('/templates/paging.phtml',array(
+		'link' => $baseUrl.$this->url,
+		'baseUrl' => $baseUrl,
+		'pagesindex' => $this->page,
+		'pageend' => $this->totalPage
+	));
+	?>
+</div>
+</div>
+<script>
+$(document).ready(function(){
+	$("abbr.timeago").timeago();
+	$("div.row").live("hover",function(event){
+		if( event.type === 'mouseenter' ) {
+			$(this).css("background-color","lightyellow");
+		} else {
+			$(this).css("background-color","");
+		}
+	});
+});
+</script>

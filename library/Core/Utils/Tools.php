@@ -59,7 +59,7 @@ class Core_Utils_Tools
 		return '/job/view-job/'.Core_Utils_String::getSlug($job['title']).'?id='.$job['id'];
 	}
 	public static function genCompanyUrl($id,$name) {
-		return '/tag/company/'.Core_Utils_String::getSlug($name).'?id='.$id;
+		return '/company/'.Core_Utils_String::getSlug($name).'?id='.$id;
 	}
 	public static function genCityUrl($id,$name) {
 		return '/tag/city/'.Core_Utils_String::getSlug($name).'?id='.$id;
@@ -128,6 +128,10 @@ class Core_Utils_Tools
 	}
 	public static function debug($e) {
 		echo '<pre>'.$e->getTraceAsString().'</pre>';die;
+	}
+	public static function isProduct() {
+		if(APPLICATION_ENV == 'production') return true;
+		return false;
 	}
 	
 }

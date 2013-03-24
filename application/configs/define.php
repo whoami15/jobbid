@@ -138,6 +138,7 @@ define('CACHE_TRANSFER_ID', 'CACHE_TRANSFER_ID');
 define('CACHE_JOB_TAGS', 'CACHE_JOB_TAGS');
 define('CACHE_SIMILAR_JOBS', 'CACHE_SIMILAR_JOBS');
 define('CACHE_TOP_NEWS', 'CACHE_TOP_NEWS');
+define('CACHE_NEW_COMPANY', 'CACHE_NEW_COMPANY');
 
 //Curl
 define('PATH_COOKIE', 'd://NOTES/crawling/cookie.txt');

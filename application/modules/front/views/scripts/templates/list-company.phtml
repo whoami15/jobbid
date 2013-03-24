@@ -1,0 +1,5 @@
+<div class="row">
+	<a href="<?php echo $this->baseUrl.Core_Utils_Tools::genCompanyUrl($this->item['id'],$this->item['company'])?>" title="<?php echo $this->item['company']?>"><?php echo Core_Utils_Tools::substr($this->item['company'],150)?></a>
+	<span class="line3"><?php echo Core_Utils_Tools::substr($this->item['description'])?></span>
+	<span class="line4"><abbr class="timeago" title="<?php echo $this->item['time_update']?>"></abbr></span>
+</div>

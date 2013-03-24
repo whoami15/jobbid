@@ -1,0 +1,9 @@
+<ul style="text-align: left;">
+<?php
+$list = Application_Model_DbTable_Company::findNewCompanies();
+foreach($list as $item) {
+	echo '<li> - <a href="'.$this->baseUrl().Core_Utils_Tools::genCompanyUrl($item['id'],$item['company']).'" title="'.$item['company'].'">'.Core_Utils_String::trim($item['company'],25).'</a></li>';
+}
+?>
+<li style="text-align: left; margin-top: 5px;"><a href="<?php echo $this->baseUrl()?>/company">Xem thêm...</a></li>
+</ul>

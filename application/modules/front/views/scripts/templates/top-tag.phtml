@@ -5,5 +5,5 @@ foreach($top_tags as $tag) {
 	echo '<li> - <a href="'.$this->baseUrl().'/tag/'.$tag['key'].'" title="'.$tag['tag'].'">'.Core_Utils_String::trim($tag['tag'],25).'</a></li>';
 }
 ?>
-<li style="text-align:right"><a href="<?php echo $this->baseUrl()?>/tag/tag-cloud">Xem thêm...</a></li>
+<li style="text-align: left; margin-top: 5px;"><a href="<?php echo $this->baseUrl()?>/tag/tag-cloud">Xem thêm...</a></li>
 </ul>
