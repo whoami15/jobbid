@@ -19,10 +19,25 @@ class Front_JobController extends Zend_Controller_Action
     		if(empty($jobId)) throw new Core_Exception('LINK_ERROR');
     		$job = Application_Model_DbTable_Job::findById($jobId);
     		if($job==null) throw new Core_Exception('LINK_ERROR');
-    		Core_Utils_DB::query('UPDATE `jobs` SET `view` = `view` + 1 WHERE `id` = ?',3,array($jobId));
+    		$ref = $this->_request->getParam('ref','');
+    		if(!empty($ref)) {
+    			switch ($ref) {
+    				case '1':
+    					$ref = REF_EMAIL_WEEKLY;
+    					break;
+    				case '2':
+    					$ref = REF_RECRUIT_VIEW;
+    					break;
+    				default:
+    					$ref = 'ORTHER';
+    					break;
+    			}
+    			Core_Utils_DB::query('INSERT DELAYED INTO `refs`(`ref_id`,`ref_type`,`create_time`) VALUES (?,?,NOW())',3,array($jobId,$ref));
+    		}
     		$similarJobs = Application_Model_DbTable_Job::getSimilarJob($job);
     		$this->view->tags = Application_Model_DbTable_Tag::findTagByJob($jobId);
     		$this->view->job = $job;
+    		$this->view->token = Core_Utils_Tools::genToken();
     		$this->view->similarJobs = $similarJobs;
     		$this->view->facebook_comment = DOMAIN.'/job/view-job?id='.$jobId;
     		$this->view->title = $job['title'];
@@ -120,7 +135,7 @@ class Front_JobController extends Zend_Controller_Action
 	        			$email_content = Core_Utils_Email::render('verify_job2.phtml', array(
 	        				'job_title' => $form_data['title'],
 	        				'job_description' => Core_Utils_String::trim($form_data['job_description'],500),
-	        				'link_view' => DOMAIN.Core_Utils_Tools::genJobUrl(array('title' => $form_data['title'],'id' => $jobId)),
+	        				'link_view' => DOMAIN.Core_Utils_Tools::genJobUrl(array('title' => $form_data['title'],'id' => $jobId)).'&ref=2',
 	        				'link_cancel' => DOMAIN.'/action/cancel-job?secure_key='.$key
 						));
         			}

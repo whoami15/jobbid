@@ -18,7 +18,7 @@ class Front_ActionController extends Zend_Controller_Action
         	$jobId = $this->_request->getParam('job_id','');
         	if(empty($jobId)) throw new Core_Exception('ERROR');
         	if($this->account == null) throw new Core_Exception('LOGIN_REQUIRED');
-       	 	if(Application_Model_DbTable_Activity::getNumActivity(ACTION_REFESH_JOB) > LIMIT_REFESH_JOB) {
+       	 	if(Core_Utils_Tools::isAdmin() == false && Application_Model_DbTable_Activity::getNumActivity(ACTION_REFESH_JOB) > LIMIT_REFESH_JOB) {
         		Application_Model_DbTable_Activity::insertLockedActivity(ACTION_REFESH_JOB,$jobId);
         		throw new Core_Exception('LIMIT_REFESH_JOB');
         	}

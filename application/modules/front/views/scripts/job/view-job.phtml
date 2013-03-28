@@ -112,6 +112,7 @@ $actual_link = Core_Utils_Tools::getFullURL();
 	
 </div>
 <script type='text/javascript'>
+var token = '<?php echo $this->token?>';
 $(document).ready(function(){	
 	$("span.jb_button.share").live("click",function(){
 		window.open("http://www.facebook.com/share.php?u=<?php echo $actual_link?>", "window_name","location=1,status=1,scrollbars=1,resizable=no,width=500,height=400");
@@ -125,5 +126,8 @@ $(document).ready(function(){
 			}
 		});
 	});
+	if(token != '') {
+		$.get(baseUrl + "/ajax/view-job?id=<?php echo $this->job['id']?>&token="+token);
+	}
 });
 </script>

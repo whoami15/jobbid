@@ -92,6 +92,16 @@ class Front_AjaxController extends Zend_Controller_Action
     	$this->session->__set('logged', $account);
     	die(isset($this->session->url)?$this->session->url:'/index');
     }
+    public function viewJobAction() {
+    	$token = $this->_request->getParam('token','');
+    	if(!isset($this->session->token) || empty($token) || $this->session->token != $token) die;
+    	$jobId = $this->_request->getParam('id','');
+    	if(!empty($jobId)) {
+    		Core_Utils_DB::query('UPDATE `jobs` SET `view` = `view` + 1 WHERE `id` = ?',3,array($jobId));
+    		$this->session->token = null;
+    	}
+    	die;
+    }
 	public function verifyJobAction()
     {
     	$key = $this->_request->getParam('key','');

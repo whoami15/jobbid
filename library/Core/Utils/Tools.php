@@ -133,5 +133,11 @@ class Core_Utils_Tools
 		if(APPLICATION_ENV == 'production') return true;
 		return false;
 	}
+	public static function genToken() {
+		$session = new Zend_Session_Namespace('session');
+		$token = Core_Utils_Tools::genSecureKey(32);
+		$session->token = $token;
+		return $token;
+	}
 	
 }

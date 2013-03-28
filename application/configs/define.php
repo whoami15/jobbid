@@ -139,7 +139,15 @@ define('CACHE_JOB_TAGS', 'CACHE_JOB_TAGS');
 define('CACHE_SIMILAR_JOBS', 'CACHE_SIMILAR_JOBS');
 define('CACHE_TOP_NEWS', 'CACHE_TOP_NEWS');
 define('CACHE_NEW_COMPANY', 'CACHE_NEW_COMPANY');
+define('CACHE_EMAIL_CONTENTS', 'CACHE_EMAIL_CONTENTS');
 
 //Curl
 define('PATH_COOKIE', 'd://NOTES/crawling/cookie.txt');
 define('PATH_LOG_FILES', 'd://NOTES/crawling/logs/');
+
+//Email
+define('EMAIL_WEEKLY', 'EMAIL_WEEKLY');
+
+//Reference
+define('REF_EMAIL_WEEKLY', 'REF_EMAIL_WEEKLY');
+define('REF_RECRUIT_VIEW', 'REF_RECRUIT_VIEW');

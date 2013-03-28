@@ -66,4 +66,25 @@ class Core_Utils_Job
 		$date->subDay(3);
 		Core_Utils_DB::query('UPDATE `secure_keys` SET `status` = 0  WHERE `create_time` <= ? AND `type` = 3',3,array($date->toString('Y-MM-dd HH:mm:ss')));
 	}
+	public static function sendEmails() {
+		$cache = Core_Utils_Tools::loadCache();
+		$email_contents = $cache->load(CACHE_EMAIL_CONTENTS);
+		if($email_contents != null && !empty($email_contents)) {
+			foreach ($email_contents as $type => $contents) {
+				$emails = $cache->load($type.'_emails');
+				if($emails == null || empty($emails)) {
+					unset($email_contents[$type]);
+					continue;
+				}
+				$rand_key = array_rand($contents);
+				$content = $contents[$rand_key];
+				$receivers = array_splice($emails, 0,100);
+				$cache->save($emails,$type.'_emails');
+				$coreEmail = new Core_Email();
+				$coreEmail->send($receivers, $content['subject'], $content['content']);
+				
+			}
+			$cache->save($email_contents,CACHE_EMAIL_CONTENTS);
+		}
+	}
 }

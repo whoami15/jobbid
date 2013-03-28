@@ -14,21 +14,44 @@ class Application_Model_Worker_Test
 		return self::$_instance;
 	}
 	public function __construct(){
-		$this->_cUrl = new Core_Dom_Curl(array(
-				'method' => 'GET',
-				'header' => array(
-						'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-						'Accept-Encoding: gzip, deflate',
-						'Accept-Language: en-US,en;q=0.5',
-						'Connection: keep-alive',
-						'DNT: 1',
-						'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
-						'X-Requested-With: 	XMLHttpRequest'
-				)
-		));
+
 		 
 	}
 	public function start() {
+		$array = array('1','4','3','5');
+		$array1 = array_splice($array, 0,8);
+		print_r($array1);
+		print_r($array);
+		die;
+		/*$rows = Core_Utils_DB::query('SELECT * FROM `emails_`');
+		$ids = array();
+		$array = array();
+		foreach ($rows as $row) {
+			$array[] = trim($row['email']);
+		}
+		$query = 'INSERT DELAYED INTO `emails`(`email`) VALUES (?)';
+		$db = Zend_Registry::get('connectDb');
+    	$stmt = $db->prepare($query);
+    	$i = 0;
+		foreach ($array as $email) {
+			$i++;
+			if($i % 100 == 0) echo $i.PHP_EOL;
+			$stmt->execute(array($email)); 
+		}
+		$stmt->closeCursor();
+    	$db->closeConnection();*/
+		$rows = Core_Utils_DB::query('SELECT *  FROM `emails`
+GROUP BY email
+HAVING COUNT(*) > 1');
+		$ids = array();
+		foreach ($rows as $row) {
+			echo 'Delete email '.$row['email'].PHP_EOL;
+			$ids[] = $row['id'];
+		}
+		if(!empty($ids)) {
+			Core_Utils_DB::query('DELETE FROM `emails` WHERE `id` IN ('.join(',',$ids).')',3);
+		}
+		die;
 		$client = new Zend_Http_Client('https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=cong%20viec%20ban%20thoi%20gian&start=1');
 		$response = $client->request();
 		$response = json_decode($response->getBody());
