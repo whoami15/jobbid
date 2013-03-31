@@ -86,11 +86,11 @@ class Core_Utils_Job
 	public static function newJobsDaily() {
 		$date = new Zend_Date();
 		$date->subDay(1);
-		$query = "SELECT t0.*,t1.`company` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id`=t1.`id` WHERE t0.`active` = 1 AND t0.`status` = 1 AND t0.account_id=1 AND t0.`time_create` >= '{$date->toString('Y-MM-dd HH:mm:ss')}'";
+		$query = "SELECT t0.*,t1.`company` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id`=t1.`id` WHERE t0.`active` = 1 AND t0.`status` = 1 AND t0.account_id=1 AND t0.`time_create` >= '{$date->toString('Y-MM-dd HH:mm:ss')}' ORDER BY `view` DESC LIMIT 0,10";
 		$rows = Core_Utils_DB::query($query);
 		if(empty($rows)) {
 			$query = 'SELECT t0.*,t1.`company` FROM `jobs` t0 LEFT JOIN `company` t1 ON t0.`company_id`=t1.`id` WHERE t0.`active` = 1 AND t0.`status` = 1
-ORDER BY `time_create` DESC,`view` LIMIT 0,10';
+ORDER BY `time_create` DESC,`view` DESC LIMIT 0,10';
 			$rows = Core_Utils_DB::query($query);
 		}
 		$orther = array();
