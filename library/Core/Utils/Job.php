@@ -135,6 +135,8 @@ ORDER BY `time_create` DESC,`view` LIMIT 0,10';
 		Core_Utils_Log::log('END grabContent');
 	}
 	public static function autoUpdateJob($num) {
+		$hour = date('H');
+		if($hour > 1 && $hour < 9) return;
 		$date = new Zend_Date();
 		$date->subWeek(1);
 		$rows = Core_Utils_DB::query("SELECT id FROM `jobs` WHERE `active` =1 AND `status` = 1 AND `account_id` = 1 AND `time_create` >= '{$date->toString('Y-MM-dd HH:mm:ss')}' ORDER BY RAND() LIMIT 0,".$num);

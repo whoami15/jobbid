@@ -130,15 +130,9 @@ class Front_AjaxController extends Zend_Controller_Action
     	die('OK');
     }
 	public function testAction() {
-		try {
-			$coreEmail = new Core_Email();
-			$coreEmail->send(DEV_EMAIL, '[jobbid.vn] EMERG!', 'HELLLLLO');
-		} catch (Exception $e) {
-			echo $e->getTraceAsString();
-			//Core_Utils_Log::error($e);
-			
-		}
-		die;
+		$date = date('H');
+		if($date < 23) echo 'sada';
+		die('123');
 		$str = 'Việc làm thêm 5';
     	$db = Zend_Registry::get('connectDb');
     	$query = 'INSERT INTO `tags`(`key`,`tag`) VALUES (NULL,?)';
