@@ -107,7 +107,7 @@ WHERE t0.`id` = ? AND `num_report` < ?';
     	$db = Zend_Registry::get('connectDb');
     	$date = new Zend_Date();
     	$date->subDay(1);
-    	$query = 'SELECT * FROM `jobs` WHERE active = 1  and `status` = 1 and `time_update` >= ?';
+    	$query = 'SELECT * FROM `jobs` WHERE active = 1  and `status` = 1 and `time_create` >= ?';
     	$stmt = $db->prepare($query);
     	$stmt->execute(array($date->toString('Y-M-d H:m:s')));
     	$rows = $stmt->fetchAll();

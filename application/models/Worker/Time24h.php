@@ -18,9 +18,14 @@ class Application_Model_Worker_Time24h
 		 
 	}
 	public function start() {
-		Core_Utils_Job::removeExpriedSecureKeys();
-		Core_Utils_Job::updateFulltextData();
-		Core_Utils_Job::updateTags();
+		try {
+			Core_Utils_Job::newJobsDaily();
+			Core_Utils_Job::removeExpriedSecureKeys();
+			Core_Utils_Job::updateFulltextData();
+			Core_Utils_Job::updateTags();
+		} catch (Exception $e) {
+			Core_Utils_Log::error($e,Zend_Log::EMERG);
+		}
 	}
 }
 

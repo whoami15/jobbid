@@ -86,7 +86,9 @@ $actual_link = Core_Utils_Tools::getFullURL();
 				</form>
 				<?php
 				if(Core_Utils_Tools::isAdmin()) {
-					echo '<a href="'.$baseUrl.'/admin/lock-account?uid='.$this->job['account_id'].'">Lock user '.Core_Utils_Tools::uid2username($this->job['account_id']).'</a>';
+					echo '<b>'.Core_Utils_Tools::uid2username($this->job['account_id']).'</b><br/>';
+					echo '- <a target="_blank" href="'.$baseUrl.'/admin/lock-account?uid='.$this->job['account_id'].'&a='.ACTION_POST_JOB.'">Lock post</a><br/>';
+					echo '- <a target="_blank" href="'.$baseUrl.'/admin/lock-account?uid='.$this->job['account_id'].'&a='.ACTION_EDIT_JOB.'">Lock edit</a>';
 				}
 				?>
 			</td>

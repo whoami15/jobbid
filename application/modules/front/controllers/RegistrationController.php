@@ -70,14 +70,15 @@ class Front_RegistrationController extends Zend_Controller_Action
 	public function jobbidAction() {
 		try {
 			$form = new Front_Form_Registration();
-			$this->view->form = $form;
 			$errors = array();
 			$is_popup = $this->_request->getParam('is_popup','0');
 			$this->_helper->layout->setLayout('popup_layout');
 			$this->view->isPopup = $is_popup;
 			if ($this->getRequest()->isPost()) {
 				$form_data = $this->getRequest()->getParams();
+				$form_data = Core_Utils_Tools::strip_tags($form_data);
 				if ($form->isValid($form_data)) {
+					Core_Utils_Tools::addEmail($form_data['username']);
 					if(Application_Model_DbTable_Activity::getNumActivity(ACTION_REGISTRATION) > LIMIT_REGISTRATION) {
 						Application_Model_DbTable_Activity::insertLockedActivity(ACTION_REGISTRATION);
 						throw new Core_Exception('LIMIT_REGISTRATION');
@@ -125,6 +126,7 @@ class Front_RegistrationController extends Zend_Controller_Action
 				}
 			}
 			$this->view->errors = $errors;
+			$this->view->form = $form;
 		} catch (Exception $e) {
 			$this->view->error_msg = Core_Exception::getErrorMessage($e);
 			$this->_forward('error','message','front');

@@ -50,9 +50,10 @@ define('SENDER_EMAIL', 'no-reply@jobbid.vn');
 define('SENDER_EMAIL_PASSWORD', '74198788');
 define('SENDER_EMAIL_SMTP', 'mail.jobbid.vn');
 define('SENDER_EMAIL_PORT', '465');
-define('SENDER_EMAIL_FROM', 'Jobbid.vn Support');
-define('REPLY_TO_EMAIL', 'admin@jobbid.vn');
+define('SENDER_EMAIL_FROM', 'JobBid.vn');
+define('REPLY_TO_EMAIL', 'no-reply@jobbid.vn');
 define('DEV_EMAIL', 'nclong87@gmail.com');
+define('EMAIL_LOG', 'log@jobbid.vn');
 
 //Config file manager
 define('PAGING_IMAGE_PER_PAGE', 10);
@@ -119,10 +120,10 @@ define('ACTION_CANCEL_JOB', 15);
 define('LIMIT_REPORT', 3); //so lan report toi thieu cho phep
 define('LIMIT_REGISTRATION', 3);
 define('LIMIT_LOGIN_FAILED', 5);
-define('LIMIT_POST_JOB', 2); //so lan dang cong viec cho phep
+define('LIMIT_POST_JOB', 1); //so lan dang cong viec cho phep
 define('LIMIT_VERIFY_FAILED', 3);
-define('LIMIT_REFESH_JOB', 3);
-define('LIMIT_EDIT_JOB', 3); //so lan edit cong viec cho phep
+define('LIMIT_REFESH_JOB', 1);
+define('LIMIT_EDIT_JOB', 1); //so lan edit cong viec cho phep
 define('LIMIT_RESET_PASSWORD', 3); //so lan edit cong viec cho phep
 
 //email subjects
@@ -140,6 +141,7 @@ define('CACHE_SIMILAR_JOBS', 'CACHE_SIMILAR_JOBS');
 define('CACHE_TOP_NEWS', 'CACHE_TOP_NEWS');
 define('CACHE_NEW_COMPANY', 'CACHE_NEW_COMPANY');
 define('CACHE_EMAIL_CONTENTS', 'CACHE_EMAIL_CONTENTS');
+define('CACHE_MAILIST', 'CACHE_MAILIST');
 
 //Curl
 define('PATH_COOKIE', 'd://NOTES/crawling/cookie.txt');
@@ -151,3 +153,5 @@ define('EMAIL_WEEKLY', 'EMAIL_WEEKLY');
 //Reference
 define('REF_EMAIL_WEEKLY', 'REF_EMAIL_WEEKLY');
 define('REF_RECRUIT_VIEW', 'REF_RECRUIT_VIEW');
+
+define ('EOL', "\r\n");

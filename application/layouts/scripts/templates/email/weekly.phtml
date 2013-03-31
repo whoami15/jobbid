@@ -9,6 +9,17 @@
 <p>
 	<span style="font-family: Tahoma,Geneva,sans-serif;">Xem chi tiết : <strong><a href="<?php echo $this->data['link_view']?>"><?php echo $this->data['link_view']?></a></strong></span></p>
 <p>
+	<span style="font-family: Tahoma,Geneva,sans-serif;">Xem những công việc bán thời gian khác : <br/>
+		<ul>
+		<?php
+		foreach($this->data['orther'] as $item) {
+			echo '<li><a href="'.$item['link'].'">'.$item['title'].'</a></li>';
+		}
+		?>
+		</ul>
+	</span>
+</p>
+<p>
 	<span style="color: rgb(128, 128, 128);">-----------------------------------------------------------------------------<br />
 </span><span style="font-size: 12px;"><a href="http://www.jobbid.vn/"><span style="color: rgb(128, 128, 128);">Jobbid.vn</span></a><span style="color: rgb(128, 128, 128);"> - Mạng x&atilde; hội việc l&agrave;m uy t&iacute;n tại Việt Nam.</span></span></span><br />
 <span style="font-size: 12px;"> <span style="color: rgb(128, 128, 128);"><span style="font-family: Tahoma,Geneva,sans-serif;">Jobbid.vn l&agrave; s&agrave;n việc l&agrave;m để bạn c&oacute; thể đăng th&ocirc;ng tin tuyển dụng việc l&agrave;m th&ecirc;m, qua đ&oacute; t&igrave;m được ứng vi&ecirc;n th&iacute;ch hợp để thực hiện c&ocirc;ng việc của bạn. C&aacute;c bạn c&oacute; thể t&igrave;m kiếm được những c&ocirc;ng việc l&agrave;m th&ecirc;m hoặc c&aacute;c dự &aacute;n nhỏ ph&ugrave; hợp với khả năng của bạn.</span></span></span></p>

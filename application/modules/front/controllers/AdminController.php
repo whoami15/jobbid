@@ -14,15 +14,10 @@ class Front_AdminController extends Zend_Controller_Action
 	public function lockAccountAction()
     {
         $uid = $this->_request->getParam('uid','');
+        $action = $this->_request->getParam('a',999);
         if(!empty($uid)) {
-        	Core_Utils_DB::insert('locks', array(
-        		'id' => null,
-        		'account_id' => $uid,
-        		'lock_action' => 999,
-        		'create_time' => Core_Utils_Date::getCurrentDateSQL(),
-        		'status' => 1
-        	));
-        	echo 'Locked user id : '.$uid;
+        	Core_Utils_DB::query('INSERT DELAYED INTO `locks` (`account_id`,`lock_action`,`create_time`,`status`) VALUES (?,?,NOW(),1)',3,array($uid,$action));
+        	echo 'Locked user id : '.$uid.' with action '.$action.'<br/>';
         }
         die('OK');
     }
@@ -78,8 +73,24 @@ class Front_AdminController extends Zend_Controller_Action
     	$tableName = $this->_request->getParam('t','');
     	$id = $this->_request->getParam('id','');
     	$key = $this->_request->getParam('key','id');
+    	$flag = $this->_request->getParam('f','1');
     	if(empty($tableName) || empty($id)) die('ERROR');
-    	Core_Utils_DB::delete($tableName, $id,$key);
+    	if($flag == 1) { //delete
+    		Core_Utils_DB::delete($tableName, $id,$key);
+    	} else { //update status
+    		Core_Utils_DB::update($tableName, array('status' => 0),array($key => $id));
+    	}
+    	die('OK');
+    }
+	public function doGrabAction() {
+    	$grab = $this->_request->getParams();
+		try {
+			Core_Utils_Log::log('Grab link '.$grab['url'].'...');
+    		$grabber = new $grab['class_name']($grab);
+    		$grabber->doGrab();
+    	} catch (Exception $e) {
+    		Core_Utils_Log::error($e->getMessage(),Zend_Log::EMERG);
+    	}
     	die('OK');
     }
 	public function contentAction() {
@@ -190,19 +201,109 @@ class Front_AdminController extends Zend_Controller_Action
 		}
     }
     public function testAction() {
-    	$str = 'Việc làm thêm 7';
-    	$db = Zend_Registry::get('connectDb');
-    	$query = 'INSERT INTO `tags`(`key`,`tag`) VALUES (NULL,?)';
-    	$stmt = $db->prepare($query);
-    	$stmt->execute(array($str));
-    	$stmt->closeCursor();
-    	$db->closeConnection();
     	die;
     }
     public function errorAction() {
     	$msg = $this->_request->getParam('msg','');
     	$trace = $this->_request->getParam('trace','');
     	die('ERROR : '.$msg.'<pre>'.$trace.'</pre>');
+    }
+	public function mailistAction() {
+		try {
+			$form = array(
+				'id' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'style' => 'display:none'
+					)
+				),
+				/* 'email' => array(
+					'tag' => 'textarea',
+					'attrs' => array(
+						'type' => 'textarea',
+						'placeholder' => 'Email...'
+					)
+					
+				) */
+			);
+			$tableName = 'emails';
+			$this->view->title = 'Mailist management';
+			$array = array('status' => 1);
+	    	if($this->_request->isPost()) {
+	    		$form_data = $this->_request->getParams();
+	    		//print_r($form_data);die;
+	    		if($form_data['button'] == 'Save') {
+		    		if(!empty($form_data['email'])) {
+		    			if(!empty($form_data['id'])) { //update
+		    				Core_Utils_DB::update($tableName, array('email' => $form_data['email']), array('id' => $form_data['id']));
+		    			} else {
+		    				$emails = explode(',', $form_data['email']);
+		    				foreach ($emails as $item) {
+		    					Core_Utils_Tools::addEmail($item);
+		    				}
+		    			}
+		    		}
+		    		$this->_redirect('/admin/mailist');die;
+	    		} else if($form_data['button'] == 'Search') {
+	    			$array['email'] = "%{$form_data['email']}%";
+	    			$form['email']['attrs']['value'] = $form_data['email'];
+	    		}
+	    	}
+	    	
+	    	$this->view->html = Core_Utils_Tools::form2HTML($form);
+	    	$this->view->list = Core_Utils_DB::search($tableName, $array,' order by id desc limit 0,30');
+		} catch (Exception $e) {
+			$this->_forward('error','admin','front',array('msg' => $e->getMessage(),'trace' => $e->getTraceAsString()));
+		}
+    }
+    
+	public function grabberAction() {
+		try {
+			$form = array(
+				'id' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'style' => 'display:none'
+					)
+				),
+				'url' => array(
+					'tag' => 'input',
+					'attrs' => array(
+						'type' => 'text',
+						'placeholder' => 'Url...'
+					)
+					
+				)
+			);
+			$tableName = 'links';
+			$this->view->title = 'Grabber management';
+			$array = array('status' => 1);
+	    	if($this->_request->isPost()) {
+	    		$form_data = $this->_request->getParams();
+	    		//print_r($form_data);die;
+	    		if($form_data['button'] == 'Save') {
+		    		if(!empty($form_data['url'])) {
+		    			if(($class_name = Core_Utils_Tools::getGrabber($form_data['url'])) == null) throw new Core_Exception('HOST INVALID');
+		    			if(!empty($form_data['id'])) { //update
+		    				Core_Utils_DB::update($tableName, array('url' => $form_data['url'],'class_name' => $class_name), array('id' => $form_data['id']));
+		    			} else {
+		    				Core_Utils_DB::query('INSERT DELAYED INTO `links`(`url`,`class_name`,`create_time`) VALUES (?,?,NOW())',3,array($form_data['url'],$class_name));
+		    			}
+		    		}
+		    		$this->_redirect('/admin/grabber');die;
+	    		} else if($form_data['button'] == 'Search') {
+	    			$array['url'] = "%{$form_data['url']}%";
+	    			$form['url']['attrs']['value'] = $form_data['url'];
+	    		}
+	    	}
+	    	
+	    	$this->view->html = Core_Utils_Tools::form2HTML($form);
+	    	$this->view->list = Core_Utils_DB::search($tableName, $array,' order by id desc');
+		} catch (Exception $e) {
+			$this->_forward('error','admin','front',array('msg' => $e->getMessage(),'trace' => $e->getTraceAsString()));
+		}
     }
 }
 

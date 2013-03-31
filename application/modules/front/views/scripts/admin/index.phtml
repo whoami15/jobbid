@@ -3,8 +3,10 @@ $baseUrl = $this->baseUrl();
 $actual_link = Core_Utils_Tools::getFullURL();
 ?>
 <ul style="text-align: left; list-style: circle outside none;">
-	<li><a href="admin/prohibition">Prohibition management</a></li>
-	<li><a href="admin/tag">Tag management</a></li>
-	<li><a href="admin/article">Article management</a></li>
-	<li><a href="user/logout">Logout</a></li>
+	<li><a href="<?php echo $baseUrl?>/admin/grabber">Grabber management</a></li>
+	<li><a href="<?php echo $baseUrl?>/admin/mailist">Mailist management</a></li>
+	<li><a href="<?php echo $baseUrl?>/admin/prohibition">Prohibition management</a></li>
+	<li><a href="<?php echo $baseUrl?>/admin/tag">Tag management</a></li>
+	<li><a href="<?php echo $baseUrl?>/admin/article">Article management</a></li>
+	<li><a href="<?php echo $baseUrl?>/user/logout">Logout</a></li>
 </ul>

@@ -69,6 +69,7 @@ class Front_JobController extends Zend_Controller_Action
         			throw new Core_Exception('LOCK_ACTION');
         		}
         		$form_data = $this->getRequest()->getParams();
+        		$form_data = Core_Utils_Tools::strip_tags($form_data);
         		if ($form->isValid($form_data)) {
         			if(Application_Model_DbTable_Activity::getNumActivity(ACTION_POST_JOB) > LIMIT_POST_JOB) {
         				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_POST_JOB,'LIMIT_POST_JOB');
@@ -141,7 +142,7 @@ class Front_JobController extends Zend_Controller_Action
         			}
         			if(Core_Utils_Tools::isProduct()) {
         				$coreEmail = new Core_Email();
-						$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content);
+						$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content,EMAIL_LOG);
         			}
         			$this->_redirect('/job/verify?email='.$form_data['email_to']);
         		} else {
@@ -225,10 +226,11 @@ class Front_JobController extends Zend_Controller_Action
 	        	if($this->account['active'] == 0) {
 	        		throw new Core_Exception('ACTIVE_REQUIRED'); 
 	        	}
-        		if(Application_Model_DbTable_Lock::isLocked(ACTION_POST_JOB) == true) {
+        		if(Application_Model_DbTable_Lock::isLocked(ACTION_EDIT_JOB) == true) {
         			throw new Core_Exception('LOCK_ACTION');
         		}
         		$form_data = $this->getRequest()->getParams();
+        		$form_data = Core_Utils_Tools::strip_tags($form_data);
         		if ($form->isValid($form_data)) {
         			if(Application_Model_DbTable_Activity::getNumActivity(ACTION_EDIT_JOB) > LIMIT_EDIT_JOB) {
         				Application_Model_DbTable_Activity::insertLockedActivity(ACTION_EDIT_JOB,$jobId);

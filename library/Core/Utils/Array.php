@@ -115,6 +115,10 @@ class Core_Utils_Array
 		foreach($array as $data) $result[] = $data;
 		return $result;
 	}
+	public static function getValue($array,$key) {
+		if(isset($array[$key])) return $array[$key];
+		return '';
+	}
 	
 }
 ?>

@@ -14,10 +14,125 @@ class Application_Model_Worker_Test
 		return self::$_instance;
 	}
 	public function __construct(){
-
+		$this->_cUrl = new Core_Dom_Curl(array(
+				'method' => 'GET',
+				'header' => array(
+						'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+						'Accept-Encoding: gzip, deflate',
+						'Accept-Language: en-US,en;q=0.5',
+						'Connection: keep-alive',
+						'DNT: 1',
+						'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
+						'X-Requested-With: 	XMLHttpRequest'
+				)
+		));
 		 
 	}
 	public function start() {
+		$grabber = new Core_Grabber_ViecLam24h(array());
+		$grabber->getLink();
+		die;
+		//echo Core_Utils_String::getSlug('Hà Nội');die;
+		$url = 'http://hcm.vieclam.24h.com.vn/sinh-vien-lam-them/nhan-vien-ke-toan-ke-toan-thuc-tap-c46p1id1229381.html';
+		$url = 'http://hcm.vieclam.24h.com.vn/sinh-vien-lam-them/ctv-nguoi-mau-chup-hinh-quan-ao-thoi-trang-c46p1id713525.html';
+		$url = 'http://hcm.vieclam.24h.com.vn/sinh-vien-lam-them/nhan-vien-phat-tai-lieu-c46p1id1231592.html';
+		$url = 'http://hcm.vieclam.24h.com.vn/sinh-vien-lam-them/nhan-vien-cham-soc-khach-hang-lam-ca-dem-c46p1id1193679.html';
+		$parts = parse_url($url);
+		print_r($parts);die;
+		$content = $this->_cUrl->getContent($url);
+		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
+		$title = trim($doc->find('.TTTD-ten')->text());
+		$array = array();
+		foreach ($doc['.colLeft > table tr'] as $tr) {
+			$tds = pq($tr)->find('> td');
+			try {
+				$key = Core_Utils_String::getSlug(trim($tds->get(0)->textContent));
+				if($key == 'mo-ta-cong-viec') {
+					$td = $tds->get(1);
+					$value = trim(pq($td)->html());
+					//$value = $tds->get(1)->textContent;
+					$value = str_ireplace(array("<br>", "<br />"), "\r\n",$value);
+				} else {
+					$value = trim($tds->get(1)->textContent);
+				}
+				
+				$array[$key] = $value;
+			} catch (Exception $e) {
+			}
+		}
+		//print_r($array['mo-ta-cong-viec']);die;
+		$email = Core_Utils_Array::getValue($array,'email-lien-he');
+		if(empty($email)) die('EMPTY_EMAIL');
+		
+		$description = $array['mo-ta-cong-viec'].EOL;
+		$description.= ' - Mức lương: '.Core_Utils_Array::getValue($array,'muc-luong').EOL;
+		$description.= ' - Quyền lợi được hưởng: '.Core_Utils_Array::getValue($array,'quyen-loi-duoc-huong').EOL;
+		$description.= ' - Hồ sơ bao gồm: '.Core_Utils_Array::getValue($array,'ho-so-bao-gom').EOL;
+		$description.= ' - Hạn nộp hồ sơ: '.Core_Utils_Array::getValue($array,'han-nop-ho-so').EOL;
+		$description.= ' - Hình thức nộp hồ sơ: '.Core_Utils_Array::getValue($array,'hinh-thuc-nop-ho-so').EOL;
+		$description.=EOL.'THÔNG TIN LIÊN HỆ :'.EOL;
+		$description.= ' - Người liên hệ: '.Core_Utils_Array::getValue($array,'nguoi-lien-he').EOL;
+		$description.= ' - Địa chỉ liên hệ: '.Core_Utils_Array::getValue($array,'dia-chi-lien-he').EOL;
+		$description.= ' - Email liên hệ: '.Core_Utils_Array::getValue($array,'email-lien-he').EOL;
+		$description.= ' - Điện thoại liên hệ: '.Core_Utils_Array::getValue($array,'dien-thoai-lien-he').EOL;
+		$company = Core_Utils_Array::getValue($array,'ten-cong-ty');
+		$places = Core_Utils_Array::getValue($array,'dia-diem-lam-viec');
+		$city_id = 0;
+		$places = explode(',', $places);
+		if(count($places) == 1) {
+			$place = Core_Utils_String::getSlug($places[0]);
+			$place = "%$place;%";
+			$row = Core_Utils_DB::query('SELECT * FROM `cities` WHERE maps LIKE ?',2,array($place));
+			if($row != null) $city_id = $row['id'];
+		}
+		if($city_id == 0) {
+			$description .= ' - Địa điểm làm việc: '.Core_Utils_Array::getValue($array,'dia-diem-lam-viec').EOL;
+		}
+		$companyId = null;
+		if(!empty($company)) {
+			$modelCompany = new Application_Model_DbTable_Company();
+        	$companyId = $modelCompany->save($company);
+		}
+        $modelJob = new Application_Model_DbTable_Job();
+        $now = Core_Utils_Date::getCurrentDateSQL();
+        $jobId = $modelJob->insert(array(
+        		'id' => null,
+        		'title' => $title,
+        		'account_id' => 1,
+        		'company_id' => $companyId,
+        		'job_title_id' => null,
+        		'job_description' => $description,
+        		'city_id' => $city_id,
+        		'email_to' => $email,
+        		'job_type' => 1,
+        		'view' => 0,
+        		'time_create' => $now,
+        		'time_update' => $now,
+        		'sec_id' => '',
+        		'status' => 1,
+        		'active' => 1
+        ));
+        die('OK');
+		unset($array['Mô tả công việc:']);
+		foreach ($array as $key => $value) {
+			$description.= $key.' '.$value.PHP_EOL;
+		}
+		print_r($array);die;
+		$info =  trim($doc->find('tbInfo-row br-L')->text());
+		print_r($doc->find('.TTTD-ten')->text());
+		die;
+		
+		$parts = parse_url($url);
+		print_r($parts);die;
+		$validate = new Zend_Validate_EmailAddress();
+		if($validate->isValid($str)) {
+			echo 'valid';
+		} else {
+			echo 'invalid';
+		}
+		die;
+		$str = strip_tags($str);
+		echo $str;die;
 		$array = array('1','4','3','5');
 		$array1 = array_splice($array, 0,8);
 		print_r($array1);

@@ -13,3 +13,9 @@ margin-left:10px;
 input[type="text"]{
   width:300px
 }
+.grab {
+color: green;
+cursor: pointer;
+font-size: 11px;
+margin-left: 10px;
+}

@@ -29,6 +29,7 @@ class Front_UserController extends Zend_Controller_Action
     		$errors = array();
     		if ($this->getRequest()->isPost()) {
     			$form_data = $this->getRequest()->getParams();
+    			$form_data = Core_Utils_Tools::strip_tags($form_data);
     			if ($form->isValid($form_data)) {
     				if(Application_Model_DbTable_Activity::getNumActivity(ACTION_LOGIN_FAILED) > LIMIT_LOGIN_FAILED) {
     					Application_Model_DbTable_Activity::insertLockedActivity(ACTION_LOGIN_FAILED,$form_data['username']);
@@ -89,6 +90,7 @@ class Front_UserController extends Zend_Controller_Action
 			));
 			if ($this->getRequest()->isPost()) {
 				$form_data = $this->getRequest()->getParams();
+				$form_data = Core_Utils_Tools::strip_tags($form_data,array('password'));
 				if ($form->isValid($form_data)) {
 					$data_update = array(
 						'sodienthoai' => $form_data['sodienthoai'],

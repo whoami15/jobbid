@@ -139,5 +139,26 @@ class Core_Utils_Tools
 		$session->token = $token;
 		return $token;
 	}
+	public static function strip_tags($data,$except = array()) {
+		foreach ($data as $key => $value) {
+			if(in_array($key, $except)) continue;
+			$data[$key] = strip_tags($value);
+		}
+		return $data;
+	}
+	public static function addEmail($email) {
+		if(empty($email)) return;
+		$validate = new Zend_Validate_EmailAddress();
+		if($validate->isValid($email) == false) return;
+		Core_Utils_DB::query('INSERT DELAYED INTO `emails`(`email`) VALUES (?)',3,array($email));
+	}
+	public static function getGrabber($url) {
+		$parts = @parse_url($url);
+		if(!isset($parts['host'])) return null;
+		$host = $parts['host'];
+		if($host == null || empty($host)) return null;
+		if(Core_Utils_String::contains($host, 'vieclam.24h.com.vn')) return 'Core_Grabber_ViecLam24h';
+		return null;
+	}
 	
 }
