@@ -31,6 +31,8 @@ try {
 				array(
 						'env|e-s' => 'Env',
 						'job|j-s' => 'Job',
+						'zid|z-s' => 'zingid',
+						'uin|u-s' => 'uin'
 				)
 		);
 	
@@ -45,7 +47,11 @@ try {
 			throw new InvalidArgumentException('The worker class: ' . $workerName . ' does not exist in file: ');
 		}
 		$worker = new $workerName();
-		$worker->start();
+		if(isset($opts->zid)) {
+			$worker->start($opts->zid,$opts->uin);
+		} else {
+			$worker->start();
+		}
 	}
 	//Application_Model_DbTable_Tag::insertTag('hello');
 	//Application_Model_Worker_Test::getInstance()->start();

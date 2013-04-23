@@ -19,7 +19,7 @@ class Application_Model_Worker_Hack
 		));
 		 
 	}
-	public function start() {
+	public function start($zingid,$uin) {
 		$content = '<form id="frm_submit_login" method="post" action="https://sso2.zing.vn/index.php?method=xdomain_login">
       <p>Tài khoản<br>
         <label>
@@ -41,7 +41,7 @@ class Application_Model_Worker_Hack
 		$post_data = $doc->find('#frm_submit_login')->serializeArray();
 		$post_items = array();
 		foreach ($post_data as $item) {
-			if($item['name'] == 'u') $item['value'] = 'thaovy_bbd';
+			if($item['name'] == 'u') $item['value'] = $zingid;
 			if($item['name'] == 'p') $item['value'] = '74198788';
 			$post_items[] = $item['name'] . '=' . $item['value'];
 		}
@@ -61,17 +61,17 @@ class Application_Model_Worker_Hack
 		$cUrl = new Core_Dom_Curl(array(
 			'method' => 'POST',
 			'post_fields' => '',
-			'cookie' => 'Cookie: uin=213995539; vngauth='.$vngauth.'; acn=thaovy_bbd',
+			'cookie' => 'Cookie: uin='.$uin.'; vngauth='.$vngauth.'; acn='.$zingid,
 			'url' => 'http://123.vn/luckybox/checkgift/id/1'
 		));
 		$i = 0;
-		while ($i<10) {
+		while ($i<1) {
 			$cUrl->exec();
 			$i++;
 			sleep(1);
 		}
-		$coreEmail = new Core_Email();
-		$coreEmail->send('nclong87@gmail.com', 'Hack complete', 'Hack complete');
+		//$coreEmail = new Core_Email();
+		//$coreEmail->send('nclong87@gmail.com', 'Hack complete', 'Hack complete');
 		die('OK');
 	}
 }
