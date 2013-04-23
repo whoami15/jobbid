@@ -79,4 +79,7 @@ function parse_signed_request($signed_request, $secret) {
 function base64_url_decode($input) {
 	return base64_decode(strtr($input, '-_', '+/'));
 }
+function success1($browser) {
+  	Core_Utils_Log::write('TESSSSST');
+}
 ?>

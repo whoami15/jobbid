@@ -24,6 +24,11 @@ class Front_TestController extends Zend_Controller_Action
 		$content = $cUrl->getContent($url);
 		echo $content;
 	}
-
+	public function testAction() {
+		$this->_helper->layout->disableLayout();
+		if($this->_request->isPost()) {
+			Core_Utils_Log::log($this->_request->getParam('test','NULL'));
+		}
+	}
 }
 

@@ -155,3 +155,8 @@ define('REF_EMAIL_WEEKLY', 'REF_EMAIL_WEEKLY');
 define('REF_RECRUIT_VIEW', 'REF_RECRUIT_VIEW');
 
 define ('EOL', "\r\n");
+
+//Log type
+define('LOG_JOBBID', 'LOG');
+define('LOG_ERROR', 'ERROR');
+define('LOG_EMAIL', 'EMAIL');

@@ -32,22 +32,28 @@ class Core_Dom_Curl
     }          
     public function __construct($params)
     {
-        $this->ch = curl_init();
+    	if(isset($params['url'])) {
+    		$this->ch = curl_init($params['url']);
+    	}else {
+    		$this->ch = curl_init();
+    	}
+        
         @curl_setopt ( $this -> ch , CURLOPT_RETURNTRANSFER , 1 );
         $user_agent = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+        
         if(!isset($params['header']) || empty($params['header'])) {
         	$header = array(
-    			'Content-Type : text/html; charset=utf-8',
-    			'Accept: text/html, */*; q=0.01',
-    			'Accept-Encoding: gzip, deflate',
-    			'Accept-Language: en-US,en;q=0.5',
-    			'Connection: keep-alive',
-    			'Content-Type: application/x-www-form-urlencoded',
-    			'From: googlebot(at)googlebot.com',
-    			'DNT: 1',
-    			'User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-    			'X-Requested-With: 	XMLHttpRequest'
+    			'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+				'Accept-Encoding: gzip, deflate',
+				'Accept-Language: en-US,en;q=0.5',
+				'Connection: keep-alive',
+				'DNT: 1',
+				'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
+				'X-Requested-With: 	XMLHttpRequest'
     		);
+        	if(isset($params['cookie'])) {
+        		$header[] = $params['cookie'];
+        	}
         } else {
         	$header = $params['header'];
         }
@@ -69,6 +75,7 @@ class Core_Dom_Curl
         	$ourFileHandle = fopen(PATH_COOKIE, 'w') or die("can't open file");
         	fclose($ourFileHandle);
         }
+        
         @curl_setopt($this -> ch, CURLOPT_COOKIEFILE, PATH_COOKIE);
         @curl_setopt($this -> ch, CURLOPT_COOKIEJAR, PATH_COOKIE);
 
@@ -93,6 +100,9 @@ class Core_Dom_Curl
     public function exec()
     {
         $response = curl_exec($this->ch);
+        $cookie = '';
+        preg_match('/^Set-Cookie:\s*([^;]*)/mi', $response, $m);
+        parse_str($m[1], $cookie);
         $error = curl_error($this->ch);
         $result = array( 'header' => '', 
                          'body' => '', 
@@ -110,6 +120,7 @@ class Core_Dom_Curl
         $result['body'] = substr( $response, $header_size );
         $result['http_code'] = curl_getinfo($this -> ch,CURLINFO_HTTP_CODE);
         $result['last_url'] = curl_getinfo($this -> ch,CURLINFO_EFFECTIVE_URL);
+        $result['cookie'] = $cookie;
         //curl_close($this->ch);
         return $result;
     }

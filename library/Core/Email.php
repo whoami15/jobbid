@@ -44,16 +44,30 @@ class Core_Email
     {
     	if(empty($to) || empty($content))
     		return;
-    	$this->_mail->setHeaderEncoding(Zend_Mime::ENCODING_BASE64);
-    	$this->_mail->setBodyHtml($content);
+    	$validate = new Zend_Validate_EmailAddress();
     	if(is_array($to)) {
-    		foreach ($to as $email)
+    		foreach ($to as $email) {
+    			if($validate->isValid($email) == false) {
+    				Core_Utils_Log::write($email,LOG_EMAIL);
+    				continue;
+    			}
     			$this->_mail->addBcc($email);
-    	} else
-        	$this->_mail->addTo($to);
+    		}
+    	} else {
+    		if($validate->isValid($to) == false) {
+    			Core_Utils_Log::write($to,LOG_EMAIL);
+    			return;
+    		}
+			$this->_mail->addTo($to);    		
+    	}
         if(!empty($cc)) {
+        	if($validate->isValid($cc) == false) {
+    			Core_Utils_Log::write($cc,LOG_EMAIL);
+    		}
         	$this->_mail->addCc($cc);
         }
+        $this->_mail->setHeaderEncoding(Zend_Mime::ENCODING_BASE64);
+    	$this->_mail->setBodyHtml($content);
         $this->_mail->setSubject($subject);
         $this->_mail->send();
     }
