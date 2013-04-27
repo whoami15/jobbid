@@ -31,9 +31,9 @@ class Core_Utils_Log
 		$writer->shutdown();
 		//$logger->error($msg);
 	}
-	public static function write($msg,$flag = 'LOG') {
-		$logFileName = $flag.'_'.date('Y-m-d').'.txt';
-		$writer = new Zend_Log_Writer_Stream(PATH_LOG_FILES.$logFileName);
+	public static function write($msg,$reset=true) {
+		$logFileName = 'DEBUG_'.date('Y-m-d').'.txt';
+		$writer = new Zend_Log_Writer_Stream(PATH_LOG_FILES.$logFileName,'w');
 		$logger = new Zend_Log($writer);
 		$logger->setTimestampFormat('Y-m-d H:i:s');
 		$logger->log($msg, Zend_Log::ERR);

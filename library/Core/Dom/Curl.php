@@ -102,7 +102,8 @@ class Core_Dom_Curl
         $response = curl_exec($this->ch);
         $cookie = '';
         preg_match('/^Set-Cookie:\s*([^;]*)/mi', $response, $m);
-        parse_str($m[1], $cookie);
+        if(isset($m[1]))
+        	parse_str($m[1], $cookie);
         $error = curl_error($this->ch);
         $result = array( 'header' => '', 
                          'body' => '', 

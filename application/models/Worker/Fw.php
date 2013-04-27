@@ -5,25 +5,7 @@ class Application_Model_Worker_Fw
 	protected static $_instance = null;
 	var $_header;
 	var $_cUrl;
-	public static function getInstance($className=__CLASS__){
-		//Check instance
-		if(empty(self::$_instance)){
-			self::$_instance = new $className;
-		}
-		//Return instance
-		return self::$_instance;
-	}
-	public function __construct(){
-		$this->_cUrl = new Core_Dom_Curl(array(
-			'method' => 'GET',
-			'cookie' => 'Cookie: cprelogin=no; cpsession=bamboode%3avXE5mTVeFQdlsl2WG6o6XlR8owCLtnpgWIfr13XvEiew5l91VMWwAmFewgci38B_; langedit=; lang=; webmailsession=center%40bamboodev.us%3aHiTH9yjSvMJSWlUDxGXiErCdKKPraHyQKKzXIaPFF6iuVgOf3sK1TuI__mNEODPF; webmailrelogin=no; roundcube_sessauth=S612075c9da1c428b8c0bb0610fdbc4cc9ef69189'
-		));
-		 
-	}
-	public function start() {
-		//$content = $this->_cUrl->getContent('http://bamboodev.us:2082');
-		//Core_Utils_Log::write($content);die;
-		$content = '<form action="doaddfwd.html" id="fwdf" name="fwdf" method="post">
+	var $_formFw = '<form action="doaddfwd.html" id="fwdf" name="fwdf" method="post">
 
     <h2>Address</h2>
     <table cellspacing="4">
@@ -31,7 +13,7 @@ class Application_Model_Worker_Fw
 	    
 			<tbody><tr>
 				<td>Address to Forward: <input type="text" size="25" name="email" id="email">@<select name="domain"><option value="bamboodev.us">bamboodev.us</option></select></td>
-				<td><span id="email_error" style="width: 16px; height: 16px;" class="cjt_validation_error" title=""><img width="16" height="16" align="absmiddle" alt="success" src="/cPanel_magic_revision_0/cjt/images/icons/success.png"></span></td>
+				<td><span id="email_error" style="width: 16px; height: 16px;" class="cjt_validation_error"></span></td>
 			</tr>
 	    
     </tbody></table>
@@ -43,7 +25,7 @@ class Application_Model_Worker_Fw
 	
     
 	
-		<input type="radio" checked="checked" value="fwd" id="fwd_radio" name="fwdopt"> <label for="fwd_radio">Forward to email address</label>: <input type="text" size="40" id="fwdemail" name="fwdemail"> <span id="fwdemail_error" style="width: 16px; height: 16px;" class="cjt_validation_error" title=""><img width="16" height="16" align="absmiddle" alt="success" src="/cPanel_magic_revision_0/cjt/images/icons/success.png"></span>
+		<input type="radio" checked="checked" value="fwd" id="fwd_radio" name="fwdopt"> <label for="fwd_radio">Forward to email address</label>: <input type="text" size="40" id="fwdemail" name="fwdemail"> <span id="fwdemail_error" style="width: 16px; height: 16px;" class="cjt_validation_error"></span>
 		<br><br>
 
 		
@@ -127,42 +109,75 @@ YAHOO.util.Event.onDOMReady(dirCompleter.init);
 	<br>
     <input type="submit" value="Add Forwarder" id="submit" class="input-button">
 </form>';
+	public static function getInstance($className=__CLASS__){
+		//Check instance
+		if(empty(self::$_instance)){
+			self::$_instance = new $className;
+		}
+		//Return instance
+		return self::$_instance;
+	}
+	public function __construct(){
+		/*$this->_cUrl = new Core_Dom_Curl(array(
+			'method' => 'GET',
+			'cookie' => 'Cookie: cprelogin=no; cpsession=bamboode%3avXE5mTVeFQdlsl2WG6o6XlR8owCLtnpgWIfr13XvEiew5l91VMWwAmFewgci38B_; langedit=; lang=; webmailsession=center%40bamboodev.us%3aHiTH9yjSvMJSWlUDxGXiErCdKKPraHyQKKzXIaPFF6iuVgOf3sK1TuI__mNEODPF; webmailrelogin=no; roundcube_sessauth=S612075c9da1c428b8c0bb0610fdbc4cc9ef69189'
+		));*/
+		 
+	}
+	public function start() {
+		//$content = $this->_cUrl->getContent('http://bamboodev.us:2082');
+		//Core_Utils_Log::write($content);die;
+		$cookie = 'Cookie: cprelogin=no; cpsession=somuahan%3a5vGAiJu5oOh6HWTr5h_HKy_NyX7vdxJv1lQNPpstxyKzCHZwGfaEpC5tNF_t_NY0; langedit=; lang=';
+		$cpsess = 'http://somuahang.com:2082/cpsess2132859929';
+		$cUrl = new Core_Dom_Curl(array(
+			'method' => 'GET',
+			'cookie' => $cookie
+		));
+		//Create email
+		$array = array('oyanav','leminhluan90','tanvanchuyen','suoinguonenvironmental','ngocmy95','vphuc36','thongnguyen730','tubepankhanggiare','yukanjin1990','abcef','rongthan40','rongthan39','rongthan38','rongthan37','duhi295','tubep2014','nhha2013','nguyenthanhlong8287','congviec.online76','chayviec.vn','doquocket','vnpaybt','tuyendungdaotaons','tienphuong23','nguyenluyenhoakx','emily12345tran','anhnoi.oto','thoconrungxanh','chienspb','thaobk74','mrthanhhbu','thinhvuonglienket','ngocbich221093','suijin9x');
+		foreach ($array as $email) {
+			//echo $cUrl->getContent("http://bamboodev.us:2082/cpsess2132859929/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=0&domain=bamboodev.us&cache_fix=1367051405695");
+			echo $cUrl->getContent($cpsess."/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=250&domain=somuahang.com&cache_fix=1367059732643");
+		}
+		//die;
+		
+		/* xOA EMAIL*/
+		
+		//$array = array('hongson','hungkhanh','mytrang01','thanhphuong','thaovi');
+		//$array = array('kimphung0105','myngoc1601','thanhcong28081978','tuonglai7','huongnguyen','datnguyen789413','bepxinhtb','thao72ctxhk4','toiladoanhnhantd','iwilltakeit2012');
+		//$array = array('phuoc103','goodjob','thunga198872','dautomclub','nguyenhienxt07','smile279','giathu279','tieuminh2003');
+		/*$array = array('phuoc103','goodjob','thunga198872','dautomclub','nguyenhienxt07','smile279','giathu279','tieuminh2003','lanchiln','khoidoan488848','kimphung0105','myngoc1601','thanhcong28081978','tuonglai7','huongnguyen','datnguyen789413','bepxinhtb','thao72ctxhk4','toiladoanhnhantd','iwilltakeit2012','inmaugtvt','dethuong1015','becachua','phuongthuystyle1194','gosoitb','kimngoc142','nhanlucanphat','falljng','hailuu654321','tt77v1','nguyendat2023c','kiemtiendelamgiau','chubevotu','quocdao011','ngoctien','tuyendungnhansu2','trangnha','kbdepxinh','finance2005','datnguyen789414','datnguyen789411','phambon102','davidmohk1','longlinh8287','haibui123','nguyendangvinh411','heathbell22','quocdao09','phuongqt2309','dongphucnew','ketnoiviet24h','thuyhang7291','phantronggiap','nhokkute','saobangkhoc02111993','loveforever','baongan17','pktbcl','nguyenvanhai','hoangnguyen1266','danghoangdong79','anhkientruc04','phungtranson','oriflame','badboyhd1993','hailuu123456','minhvan');
+		foreach ($array as $email) {
+			if($email =='saobangkhoc02111993' || $email =='heathbell22') continue;
+			echo $cUrl->getContent('http://bamboodev.us:2082/cpsess8956338163/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=delpop&email='.$email.'&domain=bamboodev.us&cache_fix=1367032938803');
+		}
+		die;*/
+		
+		//forward email
+		$content = $this->_formFw;
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
 		$post_data = $doc->find('form')->serializeArray();
-		$post_items = array();
-		foreach ($post_data as $item) {
-			if($item['name'] == 'email') $item['value'] = 'nguyennguyen2023';
-			if($item['name'] == 'fwdemail') $item['value'] = 'center@bamboodev.us';
-			$post_items[] = $item['name'] . '=' . $item['value'];
+		//$array = array('minhngoc36.dealer','tuonglai0');
+		foreach ($array as $email) {
+			$post_items = array();
+			foreach ($post_data as $item) {
+				if($item['name'] == 'email') $item['value'] = $email;
+				if($item['name'] == 'fwdemail') $item['value'] = 'center@bamboodev.us';
+				$post_items[] = $item['name'] . '=' . $item['value'];
+			}
+			$post_string = implode ('&', $post_items);
+			
+			//Core_Utils_Log::write($content);die;
+			$cUrl = new Core_Dom_Curl(array(
+				'method' => 'POST',
+				'post_fields' => $post_string,
+				'url' => $cpsess.'/frontend/x3/mail/doaddfwd.html',
+				'cookie' => $cookie
+			));
+			$result = $cUrl->exec();
+			echo 'Fw email '.$email.', result ='.$result['http_code'].PHP_EOL;
 		}
-		$post_string = implode ('&', $post_items);
 		
-		//Core_Utils_Log::write($content);die;
-		$cUrl = new Core_Dom_Curl(array(
-			'method' => 'POST',
-			'post_fields' => $post_string,
-			'url' => 'bamboodev.us:2082/cpsess8951015559/frontend/x3/mail/doaddfwd.html',
-			'cookie' => 'Cookie: cprelogin=no; cpsession=bamboode%3aWgaWW8mvrMRRL62AxGlYk1WNEPW3sQL88QBHU5enCGcPRat7jya3XhlgTACqGoPk; langedit=; lang=; webmailsession=center%40bamboodev.us%3aHiTH9yjSvMJSWlUDxGXiErCdKKPraHyQKKzXIaPFF6iuVgOf3sK1TuI__mNEODPF; webmailrelogin=no; roundcube_sessid=efba901129572bb781095743b1167bb8; roundcube_sessauth=S7a6d1877d55a65993b95f52f477c41f543dad646'
-		));
-		$result = $cUrl->exec();
-		print_r($result);die;
-		//$content = $this->_cUrl->getContent('https://plus.123pay.vn/product/tv-lcd-42-sony_63099.html');
-		//Core_Utils_Log::write($content);die;
-		$vngauth = $result['cookie']['vngauth'];
-		$cUrl = new Core_Dom_Curl(array(
-			'method' => 'POST',
-			'post_fields' => '',
-			'cookie' => 'Cookie: uin='.$uin.'; vngauth='.$vngauth.'; acn='.$zingid,
-			'url' => 'http://123.vn/luckybox/checkgift/id/1'
-		));
-		$i = 0;
-		while ($i<1) {
-			$cUrl->exec();
-			$i++;
-			sleep(1);
-		}
-		//$coreEmail = new Core_Email();
-		//$coreEmail->send('nclong87@gmail.com', 'Hack complete', 'Hack complete');
 		die('OK');
 	}
 }
