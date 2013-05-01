@@ -1,1 +1,0 @@
-<center><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like-box href="http://www.facebook.com/viec.ban.thoi.gian" width="295" show_faces="true" stream="false" header="false"></fb:like-box></center>
