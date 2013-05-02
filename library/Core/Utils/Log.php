@@ -32,12 +32,16 @@ class Core_Utils_Log
 		//$logger->error($msg);
 	}
 	public static function write($msg,$reset=true) {
-		$logFileName = 'DEBUG_'.date('Y-m-d').'.txt';
-		$writer = new Zend_Log_Writer_Stream(PATH_LOG_FILES.$logFileName,'w');
+		$logFileName = PATH_LOG_FILES.'DEBUG_'.date('Y-m-d').'.txt';
+		$file = fopen($logFileName, 'w');
+		fwrite($file, $msg);
+		fclose($file);
+		//file_put_contents($logFileName, $msg);
+		/*$writer = new Zend_Log_Writer_Stream(PATH_LOG_FILES.$logFileName,'w');
 		$logger = new Zend_Log($writer);
 		$logger->setTimestampFormat('Y-m-d H:i:s');
 		$logger->log($msg, Zend_Log::ERR);
-		$writer->shutdown();
+		$writer->shutdown();*/
 	}
 	
 }

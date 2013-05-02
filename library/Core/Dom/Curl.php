@@ -37,9 +37,13 @@ class Core_Dom_Curl
     	}else {
     		$this->ch = curl_init();
     	}
+        if(isset($params['return']) && $params['return'] == 0) {
+        	@curl_setopt( $this -> ch, CURLOPT_WRITEFUNCTION, 'do_nothing');
+        } else {
+        	@curl_setopt ( $this -> ch , CURLOPT_RETURNTRANSFER , 1 );
+        }
         
-        @curl_setopt ( $this -> ch , CURLOPT_RETURNTRANSFER , 1 );
-        $user_agent = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+        //$user_agent = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
         
         if(!isset($params['header']) || empty($params['header'])) {
         	$header = array(
@@ -68,17 +72,17 @@ class Core_Dom_Curl
         @curl_setopt ( $this -> ch, CURLOPT_FOLLOWLOCATION, 1);
         @curl_setopt ( $this -> ch , CURLOPT_HTTPHEADER, $header );
         if (isset($params['referer']))    @curl_setopt ($this -> ch , CURLOPT_REFERER, $params['referer'] );
-        @curl_setopt ( $this -> ch , CURLOPT_USERAGENT, $user_agent);
+        //@curl_setopt ( $this -> ch , CURLOPT_USERAGENT, $user_agent);
         if (! file_exists(PATH_COOKIE) || ! is_writable(PATH_COOKIE))
         {
         	echo 'Create cookie file...';
         	$ourFileHandle = fopen(PATH_COOKIE, 'w') or die("can't open file");
         	fclose($ourFileHandle);
         }
-        
-        @curl_setopt($this -> ch, CURLOPT_COOKIEFILE, PATH_COOKIE);
-        @curl_setopt($this -> ch, CURLOPT_COOKIEJAR, PATH_COOKIE);
-
+        if(!isset($params['cookie'])) {
+        	@curl_setopt($this -> ch, CURLOPT_COOKIEFILE, PATH_COOKIE);
+        	@curl_setopt($this -> ch, CURLOPT_COOKIEJAR, PATH_COOKIE);
+        }
         if ( $params['method'] == "POST" )
         {
             curl_setopt( $this -> ch, CURLOPT_POST, true );
@@ -97,33 +101,35 @@ class Core_Dom_Curl
      *
      * @return array  'header','body','curl_error','http_code','last_url'
      */
-    public function exec()
+    public function exec($return = true)
     {
         $response = curl_exec($this->ch);
-        $cookie = '';
-        preg_match('/^Set-Cookie:\s*([^;]*)/mi', $response, $m);
-        if(isset($m[1]))
-        	parse_str($m[1], $cookie);
-        $error = curl_error($this->ch);
-        $result = array( 'header' => '', 
-                         'body' => '', 
-                         'curl_error' => '', 
-                         'http_code' => '',
-                         'last_url' => '');
-        if ( $error != "" )
-        {
-            $result['curl_error'] = $error;
-            return $result;
+        if($return) {
+	        $cookie = '';
+	        preg_match('/^Set-Cookie:\s*([^;]*)/mi', $response, $m);
+	        if(isset($m[1]))
+	        	parse_str($m[1], $cookie);
+	        $error = curl_error($this->ch);
+	        $result = array( 'header' => '', 
+	                         'body' => '', 
+	                         'curl_error' => '', 
+	                         'http_code' => '',
+	                         'last_url' => '');
+	        if ( $error != "" )
+	        {
+	            $result['curl_error'] = $error;
+	            return $result;
+	        }
+	        
+	        $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
+	        $result['header'] = substr($response, 0, $header_size);
+	        $result['body'] = substr( $response, $header_size );
+	        $result['http_code'] = curl_getinfo($this -> ch,CURLINFO_HTTP_CODE);
+	        $result['last_url'] = curl_getinfo($this -> ch,CURLINFO_EFFECTIVE_URL);
+	        $result['cookie'] = $cookie;
+	        //curl_close($this->ch);
+	        return $result;
         }
-        
-        $header_size = curl_getinfo($this->ch,CURLINFO_HEADER_SIZE);
-        $result['header'] = substr($response, 0, $header_size);
-        $result['body'] = substr( $response, $header_size );
-        $result['http_code'] = curl_getinfo($this -> ch,CURLINFO_HTTP_CODE);
-        $result['last_url'] = curl_getinfo($this -> ch,CURLINFO_EFFECTIVE_URL);
-        $result['cookie'] = $cookie;
-        //curl_close($this->ch);
-        return $result;
     }
     
     public function getContent($url) {

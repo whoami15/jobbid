@@ -82,4 +82,8 @@ function base64_url_decode($input) {
 function success1($browser) {
   	Core_Utils_Log::write('TESSSSST');
 }
+function do_nothing($curl, $input) {
+	echo 'Do nothing'.PHP_EOL;
+    return 0; // aborts transfer with an error
+}
 ?>
