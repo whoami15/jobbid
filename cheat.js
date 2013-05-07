@@ -56,8 +56,8 @@ $.ajax({
 		'EVENTTARGET' : '',
 		'__EVENTARGUMENT' : '',
 		'__VIEWSTATE' : viewstate,
-		'ctl00$ContentPlaceHolder2$imageField1.x' : 56,
-		'ctl00$ContentPlaceHolder2$imageField1.y' : 52,
+		'ctl00$ContentPlaceHolder2$imageField1.x' : 47,
+		'ctl00$ContentPlaceHolder2$imageField1.y' : 47,
 		'ctl00$hdfSearchType' : '',
 		'ctl00$txtSearch' : '',
 		'searchType' : 0
@@ -70,7 +70,7 @@ $.ajax({
 		console.log('ERROR');
 	}
 }); 
-setTimeout("hack()",350);
+setTimeout("hack()",1000);
 i++;
 }
 hack();
