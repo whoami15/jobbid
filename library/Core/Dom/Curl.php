@@ -154,4 +154,12 @@ class Core_Dom_Curl
     	}
     	return $content;
     }
+    public function getImage() {
+    	//@curl_setopt( $this -> ch, CURLOPT_URL, $url);
+    	@curl_setopt($this -> ch, CURLOPT_RETURNTRANSFER, 1);
+		@curl_setopt($this -> ch, CURLOPT_BINARYTRANSFER, 1);
+		$result = $this->exec();
+		curl_close($this -> ch);
+		return $result['body'];;
+    }
 }

@@ -160,5 +160,73 @@ class Core_Utils_Tools
 		if(Core_Utils_String::contains($host, 'vieclam.24h.com.vn')) return 'Core_Grabber_ViecLam24h';
 		return null;
 	}
+	public static function getImageFromUrl($contents,$dst_folder,$filename)
+	{
+	    $tmp_filepath = PUBLIC_DIR.'/tmp/'.$filename.'_tmp';
+	    $handle = fopen($tmp_filepath, 'w');
+	    fwrite($handle, $contents);
+	    fclose ($handle);
+	    $info = @getimagesize($tmp_filepath);
+	    if(empty($info)) die('ERROR1');
+		$origWidth = $info[0];
+		$origHeight = $info[1];
+    	$type = $info[2];
+    	$sType = '';
+		switch ($type) {
+            case IMAGETYPE_BMP:
+                $img = imagecreatefromwbmp($tmp_filepath);
+                 $sType = '.bmp';
+                break;
+            case IMAGETYPE_GIF:
+                $img = imagecreatefromgif($tmp_filepath);
+                $sType = '.gif';
+                break;
+            case IMAGETYPE_JPEG:
+                $img = imagecreatefromjpeg($tmp_filepath);
+                 $sType = '.jpg';
+                break;
+            case IMAGETYPE_PNG:
+                $img = imagecreatefrompng($tmp_filepath);
+                $sType = '.png';
+                break;
+            default:
+                die('ERROR2');
+        }
+        
+		$new = imagecreatetruecolor($origWidth, $origHeight);
+        // preserve transparency
+        if ($type == IMAGETYPE_GIF or $type == IMAGETYPE_PNG) {
+            imagecolortransparent($new, 
+            imagecolorallocatealpha($new, 0, 0, 0, 127));
+            imagealphablending($new, false);
+            imagesavealpha($new, true);
+        }
+        imagecopyresampled($new, $img, 0, 0, 0, 0, $origWidth, $origHeight, $origWidth, $origHeight);
+        $dst = $dst_folder . '/' . $filename . $sType;
+        switch ($type) {
+            case IMAGETYPE_BMP:
+                imagewbmp($new, $dst,DEFAULT_IMAGE_RESIZE_QUALITY);
+                break;
+            case IMAGETYPE_GIF:
+                imagegif($new, $dst,DEFAULT_IMAGE_RESIZE_QUALITY);
+                break;
+            case IMAGETYPE_JPEG:
+                imagejpeg($new, $dst,DEFAULT_IMAGE_RESIZE_QUALITY);
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($new, $dst,9);
+                break;
+        }
+        unlink($tmp_filepath);
+    	return $dst_folder.$filename . $sType;
+    	
+		//print_r($result->getHeaders());
+	}
+	
+	public static function openHtml($content,$filename) {
+		file_put_contents($filename, $content);
+		exec($filename);
+		
+	}
 	
 }

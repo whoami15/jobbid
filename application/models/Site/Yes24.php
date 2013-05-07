@@ -3,7 +3,7 @@
 class Application_Model_Site_Yes24
 {
 	protected static $_instance = null;
-	var $cookie = 'Cookie: __utma=49630894.1644758357.1367258846.1367384911.1367852803.5; __utmz=49630894.1367258846.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); LoginIdChk=1; LoginId=nclong87; skyUrl=976558%2C972579%2C1000745%2C983962%2C851579%2C850752; skyImage=/Upload/ProductImage/istyle24_FashionAcc/976558_XS.jpg%2C/Upload/ProductImage/YES24DTDD/972579_XS.jpg%2C/Upload/ProductImage/YES24DTDD/1000745_XS.jpg%2C/Upload/ProductImage/YES24DTDD/983962_XS.jpg%2C/Upload/ProductImage/YES24DTDD/851579_XS.jpg%2C/Upload/ProductImage/YES24DTDD/850752_XS.jpg; __atuvc=3%7C18%2C1%7C19; EventBannerHis=503080; ASP.NET_SessionId=1dj3okvi01gvyx45bgr3qa45; __utmc=49630894; .YES24Front_AUTH=BB78BE50F731F6536CB53E1AC1A6E5E256996B77ADE3E8D23C0156E0217B7B38AE9128B7D692AB9694CBD412DEC7A75F2BC00C13000BBCD1828F093CCF5CA3B73B8CA28F79E2087FDB3E45607BCDA63402BAF700D7E4822A8DA72AA80770A68EC6D33719443E2A2D6A0037C0A9CDAD99E7E693E53C7A8C03E0883634E6EB00F21BD83EFB24D083372322DB1997FDCB34C0AA525B63E37D6EC4764BD88F7A98077E92308A65D1D0161077E5923ABA9FD62CF40114E78E4821937A2CD9078EDB9B7A0602881D3E2ADD3959112F9F2B755EEE5BD05113473E0E65E8A3AF821CA082B40977E8956903F8A443FD8BAECB22BEBA1F00E7EB997F2D47C6BAE10713DAD67E4991A64BC4A73A2EBF3184A734BA0E4471EA62AFC3E4AE39B5463A0EDAD4871A32DA4BA290FBC49F7A74F39CA95058C39B26EDFB33772EF8B88A9932757FF66FE3CA8610470E896EFE60494ADA69D5FC5C2FD0E72A3EDA4338FDAA98C027AC38F6A38708DD9A1BD1FE180C600D4617270FAF753504B5F3E8011C37CE84077BF31E386F3F0D1F979380A69209A410F8325CCEC4C2484325095AAB0D83C37A0A8F3179410FC8CC48250CADC359B1722A006E8C9248A2EFF805E7B9C1CB67CB5E2F98AEA05A2F91E920B4D27E299697FF40A46A15EB4A9DCB02FA528FF1D12CE2B95BD7ECF2CAA5EB5EE8EA08395961BD6C40211D0354C540DC19DBC320AC0F66287FFAF98E47B614BFDF34EAA45EE3DF4748A0209B37BF7DB35087A32E1F8C6162A978DCE21E330CD39CF77E629037F1EB205F41AE16048F3D57F843F0B3BF4B61690F2675CBC55FAD7E53520D5A9C9E4A033D9A7356022AF4A5728572D3B628C5775A1E630452777C1E5ECEC2180F70E4DA0F105D98845A8A55CEE09665AB1B0F2080D4DDF6C1E7E25B1019D7EF3001ACAD615D4C2354C635ECBC6BCD75EAA59449CB125446A09200B6E96F73FF12D00F7C1584F3E82C8F812A29DFC219F7319DE02578476A9E60C141CC7CE785B7FF90F41164DB2E13594412964F56534119BAD4513499BF9A9B6834E95C1C489C27307B2584CADF7542361BBAB0120F6824A16F8A55660DD736890CBD59BAEBF05C1DC70E023AAC66FEFA7C2BC0D584F3916090C58348BEB1BFA43A56B58061E3B4390B9A083EE4D0540FF604FE2805BDD1C905E2A8';
+	var $cookie = 'Cookie: __utma=49630894.1644758357.1367258846.1367942495.1367945825.8; __utmz=49630894.1367258846.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); LoginIdChk=1; LoginId=nclong87; skyUrl=925710%2C976558%2C972579%2C1000745%2C983962%2C851579%2C850752; skyImage=/Upload/ProductImage/YES24DTDD/925710_XS.jpg%2C/Upload/ProductImage/istyle24_FashionAcc/976558_XS.jpg%2C/Upload/ProductImage/YES24DTDD/972579_XS.jpg%2C/Upload/ProductImage/YES24DTDD/1000745_XS.jpg%2C/Upload/ProductImage/YES24DTDD/983962_XS.jpg%2C/Upload/ProductImage/YES24DTDD/851579_XS.jpg%2C/Upload/ProductImage/YES24DTDD/850752_XS.jpg; __atuvc=3%7C18%2C2%7C19; ASP.NET_SessionId=pil2lv55zudpuvv3dgbty4ah; __utmc=49630894; __utmb=49630894.10.10.1367945825; .YES24Front_AUTH=2A301C960E51ED97B64F6C61C37B541991FE6700CF5252425159C79CDC4BB4337D7A3FE7263FBAB91F939DC29B8C0CEE9BF8B7A162CE1BF74543F209EBED177D2D4D7E00AF1E9E5672E2DD558CF3D60C4CB786A00375DD12ED9A500ECD37DEC32C6A98E68F12CBEE3934C0AC790DE59CBB995E1B81DDF0ACE4D0A65ED278ADC79A66902F264669FD970179C0C47201864625CC4BE8BD57D3709F31129A01E79D9B5EDD7E97669D3C8573BEEE48D056144C511B6D8A9B58BB1B57509AE9958F971C76D437C2D9042BB5C6204AD34B95FEAAB04129C07AAC4860CFDACD6A1985205FD62A6DF24485511FEA1FECEA454C294825321A010DD98FEFA02B72D3E748CCB8FEAF79B945B8BED35388C319DD75CBCC4F0F70F3A2F2C23D39B3B7069A8721E885380E4BC6EBEC99967B39033CB572F4428E73DFB6B7C7B6EE35312B71692DD4F9CA3D00B20D14EFEB4EE9291797D24E4B59F0BEC0D47014AB0EEEA75E4BDA3B3D0AE79CA4170CB8C747B3CACC02B6377E4C3EB747247BBE196C4186CBFC3E0C6D5A4793D56065F9B92C8AFCCB97AE2BC78DCF703FB63129B8839CE4F5005F4965CD0EF01B8B70A18C55606650258E3CFE7A0962F52A6E8022FF35185DD0AFF5C338269EF99D75621B305E875BD5D171FA12BC0A305F55D7C8A443E1B17CA7CEC3E19856F671A41FD0E9C42F86059DC08E4A56B2B265C941EC07F57647B146D21870B6EAF7B1E302C8CCA80EB856ADDEC953753E27F2214854A1C430EE01967A886AEF84C2E4564B5507D5A0BC8A07D2F4BC31F6D236F8A6D14155D86A610B17E5D55A5D7F572A8A2F7B4842951B6A29B8F260D94E0E25E1F49866DF6A048C69D29A48BDFB4A944E0F23EB4967786F276E2B045BB695F39DB44E4CBC16F20E8061FC2FAF5CE3564594FBA1087828DF7544CF8F18BC47B5F4BCEB63C493572197EC638279CC3E19E7E92C357E211FEC5470C6B08193BD766D46E61FE785A3CC64AB50D428DC75A72BA27111FB85546B5F264226ABF850672331A405B392D9E0899A3A63A9E25241CACCA91F4B34CB200E5E98F751B61FA7A5639184C559DD8FD6C282E728EC3D34EEE443B056B142AEED8DF39B70010CA5AE9F35415E24155ED66FF9387273F77773BB65BD7358CC778D361D90D5036B641BB62D897B5FC41BED0672C0';
 	public static function getInstance($className=__CLASS__){
 		//Check instance
 		if(empty(self::$_instance)){
@@ -22,33 +22,123 @@ class Application_Model_Site_Yes24
 			'cookie' => $this->cookie
 		));
 		$content = $cUrl->getContent('http://www.yes24.vn/Event/2013/san-hang-gio-vang-san-pham.aspx');
-		//Core_Utils_Log::write($content);die;
+		$content = file_get_contents(PATH_LOG_FILES.'test.html');
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
-		$post_data = $doc->find('#form1')->serializeArray();
-		//print_r($post_data);
-		$array = array(
-			
+		$links = array(
+			'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=851780',
+			'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=965746',
+			'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=944874',
 		);
+		$array = array();
+		foreach ($doc['input[type=text]'] as $textbox) {
+			$textbox = pq($textbox);
+			$name = trim($textbox->attr("name"));
+			$array[] = $name;
+		}
+		if(empty($array)) {
+			die('Please wait');
+		}
+		//$action = trim($doc->find('form')->attr('action'));
+		$post_data = $doc->find('form')->serializeArray();
 		$post_items = array();
+		$index = 0;
 		foreach ($post_data as $item) {
-			if(isset($array[$item['name']])) {
-				$post_items[] = $item['name'] . '=' . $array[$item['name']];
-			} else {
-				$post_items[] = $item['name'] . '=' . $item['value'];
+			$value = $item['name'] . '='.$item['value'];
+			if(in_array($item['name'], $array)) {
+				if($index >= 3) {
+					$imageCapcha = $doc->find('form img')->get(0)->getAttribute('src');
+					//$imageCapcha = 'http://www.yes24.vn/Upload/ProductImage/KnKFashion/1012402_M.jpg';
+					$params = parse_url($imageCapcha);
+					if(empty($params['scheme'])) {
+						$imageCapcha = 'http://www.yes24.vn'.$imageCapcha;
+					}
+					$cUrl = new Core_Dom_Curl(array(
+						'method' => 'GET',
+						'url' => $imageCapcha,
+						'cookie' => $this->cookie,
+					));
+					//$capchaFile = PATH_LOG_FILES.'capcha.jpg';
+					$image = $cUrl->getImage();
+					$capchaFile = Core_Utils_Tools::getImageFromUrl($image, PATH_LOG_FILES, 'capcha');
+					exec($capchaFile);
+					echo "{$item['name']}="; // Output - prompt user
+					$captcha = fgets(STDIN);
+					$value = $item['name'] . '=' .$captcha;
+				} else {
+					$value = $item['name'] . '=' . $links[$index];
+					echo $value.PHP_EOL;
+					$index++;
+				}
 			}
+			$post_items[] = $value;			
 			
 		}
 		$post_string = implode ('&', $post_items);
+		//die($post_string);
 		$cUrl = new Core_Dom_Curl(array(
 			'method' => 'POST',
 			'post_fields' => $post_string,
 			'url' => 'http://www.yes24.vn/Event/2013/san-hang-gio-vang-san-pham.aspx',
 			'cookie' => $this->cookie
 		));
-		//$result = $cUrl->exec();
+		$result = $cUrl->exec();
+		Core_Utils_Tools::openHtml($result['body'], PATH_LOG_FILES.'result.html');
 	}
 	
 	public function start() {
+		/*$content = file_get_contents(PATH_LOG_FILES.'test.html');
+		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
+		$links = array(
+			'link1',
+			'link2',
+			'link3'
+		);
+		$array = array();
+		foreach ($doc['input[type=text]'] as $textbox) {
+			$textbox = pq($textbox);
+			$name = trim($textbox->attr("name"));
+			$array[] = $name;
+		}
+		if(empty($array)) {
+			die('Please wait');
+		}
+		$post_data = $doc->find('#form1')->serializeArray();
+		$post_items = array();
+		$index = 0;
+		foreach ($post_data as $item) {
+			$value = $item['name'] . '='.$item['value'];
+			if(in_array($item['name'], $array)) {
+				if($index >= 3) {
+					$imageCapcha = $doc->find('#form1 img')->get(0)->getAttribute('src');
+					//$imageCapcha = 'http://www.yes24.vn/Upload/ProductImage/KnKFashion/1012402_M.jpg';
+					$params = parse_url($imageCapcha);
+					if(empty($params['scheme'])) {
+						$imageCapcha = 'http://www.yes24.vn'.$imageCapcha;
+					}
+					$cUrl = new Core_Dom_Curl(array(
+						'method' => 'GET',
+						'url' => $imageCapcha,
+						'cookie' => $this->cookie,
+					));
+					//$capchaFile = PATH_LOG_FILES.'capcha.jpg';
+					$image = $cUrl->getImage();
+					$capchaFile = Core_Utils_Tools::getImageFromUrl($image, PATH_LOG_FILES, 'capcha');
+					exec($capchaFile);
+					echo "{$item['name']}="; // Output - prompt user
+					$captcha = fgets(STDIN);
+					$value = $item['name'] . '=' .$captcha;
+					$index = 0;
+				} else {
+					$value = $item['name'] . '=' . $links[$index];
+					echo $value.PHP_EOL;
+					$index++;
+				}
+			}
+			$post_items[] = $value;			
+			
+		}
+		print_r($post_items);
+		die;*/
 		$this->checkOut();
 	}
 }
