@@ -20,7 +20,7 @@ class Application_Model_Worker_Promotion
 		 
 	}
 	public function start() {
-		$model = Application_Model_Site_Yes24::getInstance();
+		$model = Application_Model_Site_123Vn::getInstance();
 		$model->start();
 		die('OK');
 	}

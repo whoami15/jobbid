@@ -32,6 +32,17 @@ class Front_IndexController extends Zend_Controller_Action
         	$form->populate($this->_request->getParams());
        // }
     }
+	public function promotionAction()
+    {
+        // action body
+        $this->_helper->layout->setLayout('admin_layout');
+        $t1 = time();
+        $t2 = $this->_request->getParam('t2','');
+        if(empty($t2)) die('t2 empty');
+        $date = new Zend_Date($t2,'Y-MM-dd-HH-mm-ss');
+        $t2 =  strtotime($date->toString('Y-MM-dd HH:mm:ss'));
+        $this->view->count = $t2 - $t1; 
+    }
 
 
 }

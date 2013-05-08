@@ -305,5 +305,6 @@ class Front_AdminController extends Zend_Controller_Action
 			$this->_forward('error','admin','front',array('msg' => $e->getMessage(),'trace' => $e->getTraceAsString()));
 		}
     }
+    
 }
 

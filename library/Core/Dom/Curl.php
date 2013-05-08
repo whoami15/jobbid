@@ -30,70 +30,10 @@ class Core_Dom_Curl
     public function  __destruct() {
     	//echo 'Core_Dom_Curl::__destruct'.PHP_EOL;
     }          
+    
     public function __construct($params)
     {
-    	if(isset($params['url'])) {
-    		$this->ch = curl_init($params['url']);
-    	}else {
-    		$this->ch = curl_init();
-    	}
-        if(isset($params['return']) && $params['return'] == 0) {
-        	@curl_setopt( $this -> ch, CURLOPT_WRITEFUNCTION, 'do_nothing');
-        } else {
-        	@curl_setopt ( $this -> ch , CURLOPT_RETURNTRANSFER , 1 );
-        }
-        
-        //$user_agent = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
-        
-        if(!isset($params['header']) || empty($params['header'])) {
-        	$header = array(
-    			'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-				'Accept-Encoding: gzip, deflate',
-				'Accept-Language: en-US,en;q=0.5',
-				'Connection: keep-alive',
-				'DNT: 1',
-				'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
-				'X-Requested-With: 	XMLHttpRequest'
-    		);
-        	if(isset($params['cookie'])) {
-        		$header[] = $params['cookie'];
-        	}
-        } else {
-        	$header = $params['header'];
-        }
-        if (isset($params['host']) && $params['host'])      $header[]="Host: ".$params['host'];
-        
-        //@curl_setopt ( $this -> ch , CURLOPT_VERBOSE , 1 );
-        @curl_setopt ( $this -> ch , CURLOPT_HEADER , 1 );
-        if(isset($params['proxy'])) {
-        	curl_setopt($this -> ch, CURLOPT_PROXY, $params['proxy']);
-        }
-        if ($params['method'] == "HEAD") @curl_setopt($this -> ch,CURLOPT_NOBODY,1);
-        @curl_setopt ( $this -> ch, CURLOPT_FOLLOWLOCATION, 1);
-        @curl_setopt ( $this -> ch , CURLOPT_HTTPHEADER, $header );
-        if (isset($params['referer']))    @curl_setopt ($this -> ch , CURLOPT_REFERER, $params['referer'] );
-        //@curl_setopt ( $this -> ch , CURLOPT_USERAGENT, $user_agent);
-        if (! file_exists(PATH_COOKIE) || ! is_writable(PATH_COOKIE))
-        {
-        	echo 'Create cookie file...';
-        	$ourFileHandle = fopen(PATH_COOKIE, 'w') or die("can't open file");
-        	fclose($ourFileHandle);
-        }
-        if(!isset($params['cookie'])) {
-        	@curl_setopt($this -> ch, CURLOPT_COOKIEFILE, PATH_COOKIE);
-        	@curl_setopt($this -> ch, CURLOPT_COOKIEJAR, PATH_COOKIE);
-        }
-        if ( $params['method'] == "POST" )
-        {
-            curl_setopt( $this -> ch, CURLOPT_POST, true );
-            curl_setopt( $this -> ch, CURLOPT_POSTFIELDS, $params['post_fields'] );
-        }
-        @curl_setopt ( $this -> ch , CURLOPT_SSL_VERIFYPEER, 0 );
-        @curl_setopt ( $this -> ch , CURLOPT_SSL_VERIFYHOST, 0 );
-        @curl_setopt($this -> ch,CURLOPT_ENCODING , "gzip");
-        if (isset($params['login']) & isset($params['password']))
-            @curl_setopt($this -> ch , CURLOPT_USERPWD,$params['login'].':'.$params['password']);
-        @curl_setopt ( $this -> ch , CURLOPT_TIMEOUT, TIME_OUT);
+    	$this->ch = Core_Utils_Tools::initCurl($params);
     }
     
     /**
@@ -162,4 +102,32 @@ class Core_Dom_Curl
 		curl_close($this -> ch);
 		return $result['body'];;
     }
+    public function setOpt($name,$value) {
+    	@curl_setopt($this -> ch, $name, $value);
+    }
+	public function multiRequests($params,$times,$delay=1) {
+	   	$curlMultiHandle = curl_multi_init();
+	    $curlHandles = array();
+	    $responses = array();
+		$i = 0;
+		while($i < $times) {
+			$curlHandles[$i] = Core_Utils_Tools::initCurl($params);
+	        curl_multi_add_handle($curlMultiHandle, $curlHandles[$i]);
+			$i++;
+		}
+	
+	    $running = null;
+	    do {
+	    	$ready=curl_multi_select($curlMultiHandle);
+	        $rv=curl_multi_exec($curlMultiHandle, $running);
+	        echo 'rv= '.$rv.'; ready = '.$ready.PHP_EOL;
+	    } while($running > 0);
+		print_r(curl_multi_info_read($curlMultiHandle));
+	    foreach($curlHandles as $id => $handle) {
+	        $responses[$id] = curl_multi_getcontent($handle);
+	        curl_multi_remove_handle($curlMultiHandle, $handle);
+	    }
+	    curl_multi_close($curlMultiHandle);
+	    return $responses;
+	}
 }

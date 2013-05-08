@@ -24,11 +24,19 @@ class Front_TestController extends Zend_Controller_Action
 		$content = $cUrl->getContent($url);
 		echo $content;
 	}
+	public function promotionAction() {
+		$this->_helper->layout->disableLayout();
+		$cookie = $this->_request->getParam('cookie','');
+		$site = new Application_Model_Site_123Vn($cookie);
+		$result = $site->start();
+		echo $result['body'];
+		die;
+	}
 	public function testAction() {
 		$this->_helper->layout->disableLayout();
-		if($this->_request->isPost()) {
-			Core_Utils_Log::log($this->_request->getParam('test','NULL'));
-		}
+		Core_Utils_Log::log(Core_Utils_Date::getCurrentDateSQL());
+		sleep(5);
+		echo 'OK';die;
 	}
 }
 

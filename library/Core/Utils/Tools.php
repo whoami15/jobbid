@@ -226,7 +226,70 @@ class Core_Utils_Tools
 	public static function openHtml($content,$filename) {
 		file_put_contents($filename, $content);
 		exec($filename);
-		
 	}
-	
+	public static function initCurl($params) {
+    	if(isset($params['url'])) {
+    		$ch = curl_init($params['url']);
+    	}else {
+    		$ch = curl_init();
+    	}
+        if(isset($params['return']) && $params['return'] == 0) {
+        	@curl_setopt( $ch, CURLOPT_WRITEFUNCTION, 'do_nothing');
+        } else {
+        	@curl_setopt ( $ch , CURLOPT_RETURNTRANSFER , 1 );
+        }
+        
+        //$user_agent = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+        
+        if(!isset($params['header']) || empty($params['header'])) {
+        	$header = array(
+    			'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+				'Accept-Encoding: gzip, deflate',
+				'Accept-Language: en-US,en;q=0.5',
+				'Connection: keep-alive',
+				'DNT: 1',
+				'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
+				'X-Requested-With: 	XMLHttpRequest'
+    		);
+        	if(isset($params['cookie'])) {
+        		$header[] = $params['cookie'];
+        	}
+        } else {
+        	$header = $params['header'];
+        }
+        if (isset($params['host']) && $params['host'])      $header[]="Host: ".$params['host'];
+        
+        //@curl_setopt ( $this -> ch , CURLOPT_VERBOSE , 1 );
+        @curl_setopt ( $ch , CURLOPT_HEADER , 1 );
+        if(isset($params['proxy'])) {
+        	curl_setopt($ch, CURLOPT_PROXY, $params['proxy']);
+        }
+        if ($params['method'] == "HEAD") @curl_setopt($ch,CURLOPT_NOBODY,1);
+        @curl_setopt ( $ch, CURLOPT_FOLLOWLOCATION, 1);
+        @curl_setopt ( $ch , CURLOPT_HTTPHEADER, $header );
+        if (isset($params['referer']))    @curl_setopt ($ch , CURLOPT_REFERER, $params['referer'] );
+        //@curl_setopt ( $this -> ch , CURLOPT_USERAGENT, $user_agent);
+        if (! file_exists(PATH_COOKIE) || ! is_writable(PATH_COOKIE))
+        {
+        	echo 'Create cookie file...';
+        	$ourFileHandle = fopen(PATH_COOKIE, 'w') or die("can't open file");
+        	fclose($ourFileHandle);
+        }
+        if(!isset($params['cookie'])) {
+        	@curl_setopt($ch, CURLOPT_COOKIEFILE, PATH_COOKIE);
+        	@curl_setopt($ch, CURLOPT_COOKIEJAR, PATH_COOKIE);
+        }
+        if ( $params['method'] == "POST" )
+        {
+            curl_setopt( $ch, CURLOPT_POST, true );
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, $params['post_fields'] );
+        }
+        @curl_setopt ( $ch , CURLOPT_SSL_VERIFYPEER, 0 );
+        @curl_setopt ( $ch , CURLOPT_SSL_VERIFYHOST, 0 );
+        @curl_setopt($ch,CURLOPT_ENCODING , "gzip");
+        if (isset($params['login']) & isset($params['password']))
+            @curl_setopt($ch , CURLOPT_USERPWD,$params['login'].':'.$params['password']);
+        @curl_setopt ( $ch , CURLOPT_TIMEOUT, TIME_OUT);
+        return $ch;
+    }
 }
