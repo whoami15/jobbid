@@ -70,7 +70,12 @@ $.ajax({
 		console.log('ERROR');
 	}
 }); 
-setTimeout("hack()",1000);
+setTimeout("hack()",200);
 i++;
 }
 hack();
+
+http://www.jobbid.vn/index/promotion?t2=2013-05-09 02:31:30
+var delay = 200;
+var maxloop = 5;
+var cookie ='PHPSESSID=o1cbvt8nmopq4peacak22jt3n5; uin=102452276; acn=mytrang6789; vngauth=cAGew7unilE0TBsGAAAAAHamGCk%3D; __utma=259897482.1526563926.1368041405.1368041405.1368041405.1; __utmb=259897482.1.10.1368041405; __utmc=259897482; __utmz=259897482.1368041405.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmv=259897482.|1=User%20ID=mytrang6789=1; banner_footer_count=2; zingid=1368041408_160; s1=1368041408; s2=012b7dc2dfb3404881643dfc5b6d71b1; s3=1368041408'
