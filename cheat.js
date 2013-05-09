@@ -75,7 +75,22 @@ i++;
 }
 hack();
 
-http://www.jobbid.vn/index/promotion?t2=2013-05-09 02:31:30
-var delay = 200;
-var maxloop = 5;
-var cookie ='PHPSESSID=o1cbvt8nmopq4peacak22jt3n5; uin=102452276; acn=mytrang6789; vngauth=cAGew7unilE0TBsGAAAAAHamGCk%3D; __utma=259897482.1526563926.1368041405.1368041405.1368041405.1; __utmb=259897482.1.10.1368041405; __utmc=259897482; __utmz=259897482.1368041405.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmv=259897482.|1=User%20ID=mytrang6789=1; banner_footer_count=2; zingid=1368041408_160; s1=1368041408; s2=012b7dc2dfb3404881643dfc5b6d71b1; s3=1368041408'
+//http://www.jobbid.vn/index/promotion?t2=2013-05-09 02:31:30
+
+http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=965746
+http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=973770
+http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=1004786
+$.ajax({  
+	type: 'POST',
+	cache: false,
+	data: {
+		'Contentdata' : '<table border="0" cellpadding="0" cellspacing="0">        <tbody><tr>        <td>            <ul style="width:628px;">            <li class="draggable1"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/YES24DTDD/965746_M.jpg" class="drag-image ui-draggable" id="draggable1"></li>            <li class="draggable2"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/Vienne/1004786_M.jpg" class="drag-image ui-draggable" id="draggable2"></li>            <li class="draggable3"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/neomax/973770_M.jpg" class="drag-image ui-draggable" id="draggable3"></li>        </ul>        </td>                </tr>        </tbody></table>'
+	},
+	url: 'http://www.yes24.vn/Event/2013/san-hang-gio-vang-data.aspx?act=submit&hdPro1=851780&hdPro2=965746&hdPro3=944874',
+	success: function(data){
+		console.log('OK');
+	},
+	error: function(){
+		console.log('ERROR');
+	}
+}); 
