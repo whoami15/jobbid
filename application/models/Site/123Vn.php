@@ -16,15 +16,45 @@ class Application_Model_Site_123Vn
 		if(empty($cookie)) die('cookie empty');
 		$this->cookie = 'Cookie: '.$cookie; 
 	}
-	
-	public function start() {
+	public function getContent($url) {
+		if(empty($url)) $url='http://123.vn';
+		$url = trim($url);
 		$cUrl = new Core_Dom_Curl(array(
-			'method' => 'POST',
-			'post_fields' => '',
-			'url' => 'http://123.vn/guesswin/coupon300',
+			'method' => 'GET',
 			'cookie' => $this->cookie
 		));
-		return $cUrl->exec();
+		return $cUrl->getContent($url);
+	}
+	public function start() {
+		$cUrl = new Core_Dom_Curl(array(
+			'method' => 'GET',
+			'cookie' => $this->cookie
+		));
+		$content = $cUrl->getContent('http://123.vn/trung-lien-tay.html');
+		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
+		$forms = $doc->find('form');
+		if($forms->length > 3) {
+			foreach ($forms as $form) {
+				$form = pq($form);
+				$name = trim($form->attr('name'));
+				if($name == 'frm_coupon300') {
+					$post_data = $form->serializeArray();
+					$post_items = array();
+					foreach ($post_data as $item) {
+						$post_items[] = $item['name'] . '=' . $item['value'];
+					}
+					$cUrl = new Core_Dom_Curl(array(
+						'method' => 'POST',
+						'post_fields' => implode ('&', $post_items),
+						'url' => 'http://123.vn'.trim($form->attr('action')),
+						'cookie' => $this->cookie
+					));
+					$cUrl->exec();
+					return true;
+				}
+			}
+		}
+		return false;
 		
 		//$content = $cUrl->getContent('http://www.yes24.vn/Event/2013/san-hang-gio-vang-san-pham.aspx');
 		//Core_Utils_Log::write($content);

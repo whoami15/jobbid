@@ -1,5 +1,4 @@
 <?php
-define('DOMAIN', 'http://localhost/jobbid' );
 define('DEFAULT_LANG', 'vi');
 define('SITE_TITLE', 'Sàn Giao Dịch Việc Làm Thêm');
 define('SITE_DESCRIPTION', 'Jobbid.vn là sàn việc làm để bạn có thể đăng thông tin tuyển dụng việc làm thêm, qua đó tìm được ứng viên thích hợp để thực hiện công việc của bạn. Các bạn có thể tìm kiếm được những công việc làm thêm hoặc các dự án nhỏ phù hợp với khả năng của bạn.');
@@ -79,10 +78,6 @@ define('TEMPLATE_VERIFY_REGIST', 2);
 define('TEMPLATE_RESET_PASSWORD', 1);
 define('TEMPLATE_ORDER', 3);
 
-//facebook API
-define('FACEBOOK_APP_ID', '487514351285572');
-define('FACEBOOK_SECRET', 'bc9e9e9d5f9813391ec24cca8a97fdac');
-
 //secure key type
 define('KEY_VERIFY_ACCOUNT', 1);
 define('KEY_VERIFY_JOB', 2);
@@ -142,10 +137,6 @@ define('CACHE_TOP_NEWS', 'CACHE_TOP_NEWS');
 define('CACHE_NEW_COMPANY', 'CACHE_NEW_COMPANY');
 define('CACHE_EMAIL_CONTENTS', 'CACHE_EMAIL_CONTENTS');
 define('CACHE_MAILIST', 'CACHE_MAILIST');
-
-//Curl
-define('PATH_COOKIE', 'd://NOTES/crawling/cookie.txt');
-define('PATH_LOG_FILES', 'd://NOTES/crawling/logs/');
 
 //Email
 define('EMAIL_WEEKLY', 'EMAIL_WEEKLY');

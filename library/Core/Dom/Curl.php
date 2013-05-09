@@ -44,6 +44,7 @@ class Core_Dom_Curl
     public function exec($return = true)
     {
         $response = curl_exec($this->ch);
+        //Core_Utils_Log::write($response);die;
         if($return) {
 	        $cookie = '';
 	        preg_match('/^Set-Cookie:\s*([^;]*)/mi', $response, $m);

@@ -27,9 +27,24 @@ class Front_TestController extends Zend_Controller_Action
 	public function promotionAction() {
 		$this->_helper->layout->disableLayout();
 		$cookie = $this->_request->getParam('cookie','');
-		$site = new Application_Model_Site_123Vn($cookie);
+		$site = new Application_Model_Site_123Vn(trim($cookie));
 		$result = $site->start();
-		echo $result['body'];
+		$this->_helper->json(array(
+			'result' => 'OK',
+			'data' => $result
+		));
+		die;
+	}
+	public function getContentAction() {
+		$this->_helper->layout->disableLayout();
+		$cookie = $this->_request->getParam('cookie','');
+		if(!empty($cookie)) {
+			$cache = Core_Utils_Tools::loadCache(86400);
+			$cache->save($cookie,'CACHE_COOKIE');
+		}
+		$site = new Application_Model_Site_123Vn(trim($cookie));
+		$content = $site->getContent($this->_request->getParam('url',''));
+		echo $content;
 		die;
 	}
 	public function testAction() {

@@ -1,19 +1,62 @@
 <?php
 $baseUrl = $this->baseUrl();
 ?>
+<div style="text-align:left">
 <span id="count_down"></span>
+<textarea id="cookie" style="display: block; width: 500px; height: 50px;"><?php echo $this->cookie?></textarea>
+<input type="text" id="delay" value="200" style="display: block; margin-top: 5px; width: 50px;"/>
+<input type="text" id="maxloop" value="50" style="display: block; margin-top: 5px; width: 50px;"/>
+<input type="text" id="url" value="" style="display: block; margin-top: 5px; width: 300px;"/>
+<div style="margin-top:5px">
+<input type="button" value="Start" onclick="start()"/>
+<input type="button" value="Stop" onclick="stop()"/>
+<input type="button" value="Test" onclick="run()"/>
+<input type="button" value="Get Content" onclick="getContent()"/>
+</div>
+</div>
 <script>
 var delay = 200;
-var maxloop = 5;
+var maxloop = 50;
 var baseUrl = '<?php echo $baseUrl?>';
 var count = <?php echo $this->count?>;
 var cookie = '';
 var i = 1;
+var isRun = false;
 function Countdown(options){var timer,instance=this,seconds=options.seconds||10,updateStatus=options.onUpdateStatus||function(){},counterEnd=options.onCounterEnd||function(){};function decrementCounter(){updateStatus(seconds);if(seconds===0){counterEnd();instance.stop();}
 seconds--;}
 this.start=function(){clearInterval(timer);timer=0;seconds=options.seconds;timer=setInterval(decrementCounter,1000);};this.stop=function(){clearInterval(timer);};}
-function hack() {
-	if(i>maxloop) return;
+function stop() {
+	isRun = false;
+}
+function start() {
+	isRun = true;
+	cookie = $("#cookie").val();
+	delay = $("#delay").val();
+	maxloop = $("#maxloop").val();
+	hack();
+}
+function getContent() {
+	cookie = $("#cookie").val();
+	var url = $("#url").val();
+	$.ajax({  
+		type: 'POST',
+		cache: false,
+		data: {
+			'cookie' : cookie,
+			'url' : url
+		},
+		url: baseUrl + '/test/get-content',
+		success: function(data){
+			console.log('OK');
+		},
+		error: function(){
+			console.log('ERROR');
+		}
+	}); 
+}
+function run() {
+	if(cookie == '')
+		cookie = $("#cookie").val();
 	$.ajax({  
 		type: 'POST',
 		cache: false,
@@ -22,35 +65,59 @@ function hack() {
 		},
 		url: baseUrl + '/test/promotion',
 		success: function(data){
-			console.log('OK');
+			console.log(data.result);
 		},
 		error: function(){
 			console.log('ERROR');
 		}
 	}); 
-	setTimeout("hack()",delay);
-	i++;
 }
-$(document).ready(function(){
-	var c = new Countdown({
-		'seconds' : count,
-		'onUpdateStatus' : function(seconds) {
-			var hour = 0;
-			var minute = 0;
-
-			if(seconds >= 3600) {
-				hour = Math.floor(seconds / 3600);
-			}
-			if(seconds >= 60) {
-				minute = Math.floor((seconds - hour * 3600) / 60);
-			}
-			var second = seconds - hour * 3600 - minute * 60;
-			$("#count_down").text(hour + ":" + minute + ":" + second);
+function hack() {
+	if(isRun == false) return;
+	if(maxloop <= 0) return;
+	run();
+	setTimeout("hack()",delay);
+	maxloop--;
+	$("#maxloop").val(maxloop);
+}
+function refesh() {
+	$.ajax({  
+		type: 'GET',
+		cache: false,
+		url: document.location,
+		success: function(data){
+			c.seconds = data.count;
 		},
-		'onCounterEnd' : function() {
-			hack();
+		error: function(){
+			console.log('ERROR');
 		}
-	});
-	c.start();
+	}); 
+	setTimeout("refesh()",60000);
+}
+var c;
+$(document).ready(function(){
+	if(count > 0) {
+		c = new Countdown({
+			'seconds' : count,
+			'onUpdateStatus' : function(seconds) {
+				var hour = 0;
+				var minute = 0;
+
+				if(seconds >= 3600) {
+					hour = Math.floor(seconds / 3600);
+				}
+				if(seconds >= 60) {
+					minute = Math.floor((seconds - hour * 3600) / 60);
+				}
+				var second = seconds - hour * 3600 - minute * 60;
+				$("#count_down").text(hour + ":" + minute + ":" + second);
+			},
+			'onCounterEnd' : function() {
+				start();
+			}
+		});
+		c.start();
+	}
+	setTimeout("refesh()",60000);
 });
 </script>
