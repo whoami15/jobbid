@@ -1,0 +1,49 @@
+http://www.yes24.vn/Event/2013/san-hang-gio-vang-san-pham.aspx
+
+http://www.yes24.vn/Event/2013/san-hang-gio-vang-data.aspx?Product=http://www.yes24.vn/Display/MobileProductDetail.aspx-ProductNo=965746&ProductType=M&_=1368418575924
+
+<table border="0" cellpadding="0" cellspacing="0">        <tbody><tr>        <td>            <ul style="width:628px;">            <li class="draggable1"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/YES24DTDD/965746_M.jpg" class="drag-image ui-draggable" id="draggable1"></li>            <li class="draggable2"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/neomax/973770_M.jpg" class="drag-image ui-draggable" id="draggable2"></li>            <li class="draggable3"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/YES24DTDD/991890_M.jpg" class="drag-image ui-draggable" id="draggable3"></li>        </ul>        </td>                </tr>        </tbody></table>        
+
+
+
+11:18:03.490[3277ms][total 3277ms] Status: 200[OK]
+POST http://www.yes24.vn/Event/2013/san-hang-gio-vang-data.aspx?act=submit&hdPro1=965746&hdPro2=973770&hdPro3=991890&hdPro4=10643184 Load Flags[LOAD_BYPASS_CACHE  LOAD_BACKGROUND  ] Content Size[2] Mime Type[text/plain]
+   Request Headers:
+      Host[www.yes24.vn]
+      User-Agent[Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0]
+      Accept[text/plain, */*; q=0.01]
+      Accept-Language[en-US,en;q=0.5]
+      Accept-Encoding[gzip, deflate]
+      DNT[1]
+      Content-Type[application/x-www-form-urlencoded; charset=UTF-8]
+      X-Requested-With[XMLHttpRequest]
+      Referer[http://www.yes24.vn/Event/2013/san-hang-gio-vang-san-pham.aspx]
+      Content-Length[839]
+      Cookie[__utma=49630894.93694764.1358998575.1368165826.1368414168.24; __utmz=49630894.1358998575.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __atuvc=3%7C4%2C7%7C5; LoginIdChk=1; LoginId=nclong87; PCID=13679893760188909049353; ASP.NET_SessionId=hcuzm445unqgrezjrthsmgmr; __utmc=49630894; .YES24Front_AUTH=05A8C116714E9BFE09A113273FCCBEE371292640F1538EC78B55C2A1820325CC8539A211F167734E1FBD1D026804FE35CD2929B574B2DE8DF67297A0FDCEF7EFD51D6F03E19B0A0BC63A9FB22FF7E376CFA48A2526281125952671DA1C6DA24F210534308AD9A110BEAD2BD21A4C3904D5601814C027EA2F4220CD7472633E06616DA318171705477E328C29F778B49BC363C5E9DCA9074C2F542593B7C1E1688159A4118FFCE9D95F445938C2CAA82A89EABEA01A5CEFEC1C052FDCAF04CCD809C6C713E1E773DCC227717E7DA89C751CE90A2489F5F9327210E2CBF7F3BF7F0EA4A4B14B4492DA5CD3CD14E8168239B6736449072F7CD5950F0C53AD0AECF1A35F77DA9F9D4CBD77BB59DC4EE876F44ADE389F13064B65F7D1FF90259B79B4645893A9211A27320E3EC3C583F96E785EF805C8AC8B42743C58D80792A5C73B0218FC01272163C8CF043A19575A1B946786B9D594685369B4D04BD4D8B409742D093F7E1723A923D0A0454313C16B1D949ECA1C5961DC2A7D708BE1DED00508F71DE581BA9FAC87CA129B8C8825534BB970BB88C074A80CDB4710A5A24C088C442C4449A3CE86E20A2AE194AA01E48183ECFCD64B9125ABA579D523CBB49C725C1F23AC62A629CD0B3F03B20C0A751D1DE14A956BC4115A920CA1C9F2B81DE405A1F7497B20BDD027E0F47BCBC58D3AE3B6B9270DE463EDAFD0E079B965C9EB505A3B3CB502C48FCFE1334A2224AE0080D961BEC3BCFC26114CA85D8A9B2236251FCF02EFE9FB398FE97697465F23338ADA1C61AB800221D8EB69B4655AA5F88A96B3E287F77B15658230FD6F49C2D065CCA29AEB6BB686A010CC51B65BFE9F4579824F4D4DC69A7ECF79CE20020B9E6496D5D6FC382D5B725A7143A74B4A643192A84FC8446E1AEB2B013DE1B911131BC2E310494478E21B501BB2BF2AA8917DA74B4B060D4ADF8F4FDC5317201D7D69CBD785E8537C9E2BDEC7AA7931773981DBA1F71A03D62ADB729FC2B972BB8AADCD177D3701CBE49876BDEFF43AD01DACEAA653A9428B7D62E8C20905E69D3932EFC2B78D47C44F98281CDECCE1F1ED3C89F9F3ADC34FFD3464F77246A47648FC6D32AF354A5BC6CDCD19754C84595CD56E4F73FC61722B89A95765A080F69470517860B89A037A811534C941090B3E9892FFD1; skyUrl=973770; skyImage=/Upload/ProductImage/neomax/973770_XS.jpg]
+      Connection[keep-alive]
+      Pragma[no-cache]
+      Cache-Control[no-cache]
+   Post Data:
+      Contentdata[
+        <table border="0" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+        <td>
+            <ul style="width:628px;">
+            <li class="draggable1"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/YES24DTDD/965746_M.jpg" class="drag-image ui-draggable" id="draggable1"></li>
+            <li class="draggable2"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/neomax/973770_M.jpg" class="drag-image ui-draggable" id="draggable2"></li>
+            <li class="draggable3"><img style="cursor: move; position: relative;" src="http://www.yes24.vn/Upload/ProductImage/YES24DTDD/991890_M.jpg" class="drag-image ui-draggable" id="draggable3"></li>
+        </ul>
+        </td>
+        
+        </tr>
+        </tbody></table>
+        ]
+   Response Headers:
+      Cache-Control[private]
+      Content-Length[2]
+      Content-Type[text/plain; charset=utf-8]
+      Server[Microsoft-IIS/7.0]
+      X-AspNet-Version[2.0.50727]
+      X-Powered-By[ASP.NET]
+      Date[Mon, 13 May 2013 04:18:07 GMT]
+
