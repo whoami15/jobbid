@@ -33,25 +33,23 @@ class Application_Model_Site_123Vn
 		$content = $cUrl->getContent('http://123.vn/trung-lien-tay.html');
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
 		$forms = $doc->find('form');
-		if($forms->length > 3) {
-			foreach ($forms as $form) {
-				$form = pq($form);
-				$name = trim($form->attr('name'));
-				if($name == 'frm_coupon300') {
-					$post_data = $form->serializeArray();
-					$post_items = array();
-					foreach ($post_data as $item) {
-						$post_items[] = $item['name'] . '=' . $item['value'];
-					}
-					$cUrl = new Core_Dom_Curl(array(
-						'method' => 'POST',
-						'post_fields' => implode ('&', $post_items),
-						'url' => 'http://123.vn'.trim($form->attr('action')),
-						'cookie' => $this->cookie
-					));
-					$cUrl->exec();
-					return true;
+		foreach ($forms as $form) {
+			$form = pq($form);
+			$name = trim($form->attr('name'));
+			if($name == 'frm_coupon300') {
+				$post_data = $form->serializeArray();
+				$post_items = array();
+				foreach ($post_data as $item) {
+					$post_items[] = $item['name'] . '=' . $item['value'];
 				}
+				$cUrl = new Core_Dom_Curl(array(
+					'method' => 'POST',
+					'post_fields' => implode ('&', $post_items),
+					'url' => 'http://123.vn'.trim($form->attr('action')),
+					'cookie' => $this->cookie
+				));
+				$cUrl->exec();
+				return true;
 			}
 		}
 		return false;

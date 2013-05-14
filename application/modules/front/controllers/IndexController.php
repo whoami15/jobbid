@@ -35,11 +35,10 @@ class Front_IndexController extends Zend_Controller_Action
 	public function promotionAction()
     {
         // action body
-        $t1 = time();
         $t2 = $this->_request->getParam('t2','');
         if(empty($t2)) die('t2 empty');
-        $date = new Zend_Date($t2,'Y-MM-dd-HH-mm-ss');
-        $t2 =  strtotime($date->toString('Y-MM-dd HH:mm:ss'));
+        $t1 = Core_Utils_Tools::getServerTime('http://www.yes24.vn');
+        $t2 =  strtotime(str_replace('_', ' ', $t2));
         $t = $t2 - $t1;
     	if($this->_request->isXmlHttpRequest()){
     		$this->_helper->json(array('count' => $t));

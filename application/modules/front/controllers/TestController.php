@@ -45,6 +45,8 @@ class Front_TestController extends Zend_Controller_Action
 		}
 		$site = new Application_Model_Site_Lazada(trim($cookie));
 		$content = $site->getContent($this->_request->getParam('url',''));
+		//$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
+		//$viewState = $doc->find("#__VIEWSTATE")->val();
 		echo $content;
 		die;
 	}

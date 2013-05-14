@@ -30,6 +30,7 @@ class Application_Model_Worker_Test
 		 
 	}
 	public function start() {
+		Application_Model_Site_Yes24::getInstance()->start();
 		$date = new Zend_Date(1366390800);
 		echo $date->toString('dd/MM/Y HH:mm:ss');die;
 		//echo Core_Utils_String::getSlug('Hà Nội');die;

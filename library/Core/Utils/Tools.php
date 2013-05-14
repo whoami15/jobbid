@@ -292,4 +292,15 @@ class Core_Utils_Tools
         @curl_setopt ( $ch , CURLOPT_TIMEOUT, TIME_OUT);
         return $ch;
     }
+    public static function getServerTime($url) {
+    	$info = get_headers('http://www.yes24.vn');
+    	$t1 = microtime(true);
+    	foreach ($info as $item) {
+    		preg_match('/^Date: \s*([^;]*)/mi', $item, $m);
+    		if(isset($m[1])) {
+    			return strtotime($m[1]);
+    		}
+    	}
+    	return 0;
+    }
 }
