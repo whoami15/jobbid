@@ -1,1 +1,8 @@
 https://plus.123pay.vn/ngay-vang-thu-sau.html
+
+SELECT `product_id`,`product_name`,`product_quantity_plus` ,`product_point` FROM `products` WHERE `product_id` IN (1839)
+
+CALL sp_job_order_invoice(20130402)
+
+
+SELECT `product_id`,`product_name`,product_quantity,`product_quantity_plus`,`product_point`,`status` FROM `products` WHERE `product_id` = 55823
