@@ -13,3 +13,7 @@ SELECT t0.*,t1.`product_code`,t1.`product_name`,t1.`product_point` FROM
 WHERE t0.`order_id` = 11743
 
 http://vip-dev.123pay.vn/checkout/confirm?transactionID=1242013051500213
+
+
+em chọn 123VTB
+Nguyen van a/1212121212121212/12/12/otp
