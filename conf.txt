@@ -17,3 +17,5 @@ http://vip-dev.123pay.vn/checkout/confirm?transactionID=1242013051500213
 
 em chọn 123VTB
 Nguyen van a/1212121212121212/12/12/otp
+
+VNG2013051600107
