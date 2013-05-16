@@ -33,3 +33,10 @@ ntgNcml4Y!
 
 
 https://sandbox.123pay.vn/payport.php?vpc_AcqResponseCode=1&vpc_AdditionalData=121212&vpc_Amount=5000000&vpc_CardType=74&vpc_Command=pay&vpc_CurrencyCode=VND&vpc_Locale=VN&vpc_MerchTxnRef=123P1305160006725&vpc_Merchant=VINAGAMEDEV&vpc_OrderInfo=Thanh+toan+cho+don+hang+VNG2013051600985&vpc_ResponseCode=0&vpc_TransactionNo=514900060&vpc_Version=1.1&vpc_SecureHash=6A7A4A804124DB3FBB64AF0C349820D4
+
+
+
+cat /data/scribe_log/log123pay-plus/log123pay-plus_current
+cat /data/scribe_log/log123pay-plus/log123pay-plus_current | grep "keyword"
+realtime : tail -f /data/scribe_log/log123pay-plus/log123pay-plus_current
+realtime + filter : tail -f /data/scribe_log/log123pay-plus/log123pay-plus_current | grep "keyword"
