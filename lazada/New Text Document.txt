@@ -1,0 +1,4 @@
+00:01:09.504	0.061	626	250	GET	200	text/html	http://local02.lazadavn.com/omslocal/games/save-games?callback=jQuery17022174464504658642_1369301577392&answer_1=qqqqw&answer_2=errawawr&answer_3=awda&answer_4=dwadwad&answer_5=w&answer_6=ewaewaea&answer_7=weaweadddadadaw&answer_8=w&answer_9=dwadad&answer_10=awdwa&answer_11=a&_=1369301644375
+
+
+00:01:38.177	0.063	612	250	GET	200	text/html	http://local02.lazadavn.com/omslocal/games/save-info?callback=jQuery17022174464504658642_1369301577393&ochu_fullname=Nguyen+Long&ochu_email=nclong87%40gmail.com&ochu_phone=0932337487&ochu_address=70+Van+cao&ochu_key=9f3e477726447149c04a276cb3045744&ochu_user=533&_=1369301673045
