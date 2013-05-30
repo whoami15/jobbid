@@ -32,7 +32,7 @@ class Application_Model_Site_Lazada
 			'cookie' => $this->cookie
 		));
 		$content = $cUrl->getContent('https://www.lazada.vn/checkout/finish');
-		//Core_Utils_Log::write($content);die;
+		//Core_Utils_Log::write($content);die('OOK');
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
 		if($doc->find('#removevoucher')->length == 0) {
 			$post_data = $doc->find('form')->serializeArray();
@@ -42,7 +42,7 @@ class Application_Model_Site_Lazada
 			);
 			//print_r($post_data);die;
 			$array = array(
-				'couponcode' => '1SUBS71TC3It',
+				'couponcode' => '1SALES01ijlt1srO',
 			);
 			$post_items = array();
 			foreach ($post_data as $item) {
@@ -124,9 +124,9 @@ class Application_Model_Site_Lazada
 				'cookie' => $this->cookie
 			));
 			$result = $cUrl->exec();
-			return $result['http_code'];
+			return 'OK';
 		}
-		return false;
+		return 'FAILED';
 		//print_r($result);die;
 		//echo $result['body'];
 		//print_r($post_data);die;

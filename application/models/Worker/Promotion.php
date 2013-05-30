@@ -20,7 +20,8 @@ class Application_Model_Worker_Promotion
 		 
 	}
 	public function start() {
-		$model = Application_Model_Site_123Vn::getInstance();
+		//$model = Application_Model_Site_123Vn::getInstance();
+		$model = Application_Model_Site_Lazada::getInstance();
 		$model->start();
 		die('OK');
 	}

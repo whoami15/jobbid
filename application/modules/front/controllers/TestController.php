@@ -27,8 +27,8 @@ class Front_TestController extends Zend_Controller_Action
 	public function promotionAction() {
 		$this->_helper->layout->disableLayout();
 		$cookie = $this->_request->getParam('cookie','');
-		//$site = new Application_Model_Site_123Vn(trim($cookie));
-		$site = new Application_Model_Site_Lazada(trim($cookie));
+		$site = new Application_Model_Site_123Vn(trim($cookie));
+		//$site = new Application_Model_Site_Lazada(trim($cookie));
 		$result = $site->start();
 		$this->_helper->json(array(
 			'result' => 'OK',
@@ -43,7 +43,7 @@ class Front_TestController extends Zend_Controller_Action
 			$cache = Core_Utils_Tools::loadCache(86400);
 			$cache->save($cookie,'CACHE_COOKIE');
 		}
-		$site = new Application_Model_Site_Lazada(trim($cookie));
+		$site = new Application_Model_Site_123Vn(trim($cookie));
 		$content = $site->getContent($this->_request->getParam('url',''));
 		//$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
 		//$viewState = $doc->find("#__VIEWSTATE")->val();

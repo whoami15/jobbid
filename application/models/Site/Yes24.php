@@ -29,9 +29,9 @@ class Application_Model_Site_Yes24
 	}
 	public function checkOut() {
 		$array = array(
-				'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=851780',
-				'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=965746',
-				'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=944874',
+				'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=806093',
+				'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=926237',
+				'http://www.yes24.vn/Display/MobileProductDetail.aspx?ProductNo=1013569',
 		);
 		$cUrl = new Core_Dom_Curl(array(
 				'method' => 'GET',
@@ -108,7 +108,10 @@ class Application_Model_Site_Yes24
 				'Connection: keep-alive',
 				'Host: www.yes24.vn',
 				'Referer: http://www.yes24.vn/Event/2013/nhan-qua-ung-y.aspx',
-				'User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:20.0) Gecko/20100101 Firefox/20.0'
+				'User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:20.0) Gecko/20100101 Firefox/20.0',
+				//'Content-Length: 2681',
+				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+				'X-Requested-With: XMLHttpRequest'
 			),
 			'post_fields' => $post_string,
 			'url' => 'http://www.yes24.vn/Event/2013/nhan-qua-ung-y.aspx',
@@ -118,8 +121,8 @@ class Application_Model_Site_Yes24
 		return $result['body'];
 	}
 	public function start() {
-		$this->getCoupon();
-		//$this->checkOut();
+		//return $this->getCoupon();
+		return $this->checkOut();
 	}
 }
 
