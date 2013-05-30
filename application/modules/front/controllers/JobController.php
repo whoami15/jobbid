@@ -141,7 +141,7 @@ class Front_JobController extends Zend_Controller_Action
 						));
         			}
         			if(Core_Utils_Tools::isProduct()) {
-        				$coreEmail = new Core_Email();
+        				$coreEmail = new Core_Email(true);
 						$coreEmail->send($form_data['email_to'], EMAIL_SUBJECT_VERIFY_JOB, $email_content,EMAIL_LOG);
         			}
         			$this->_redirect('/job/verify?email='.$form_data['email_to']);

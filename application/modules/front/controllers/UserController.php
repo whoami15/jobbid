@@ -152,7 +152,7 @@ class Front_UserController extends Zend_Controller_Action
     						'name'=> $username,
     						'link_verify' => DOMAIN.'/user/update-password?secure_key='.$key
     				));
-    				$coreEmail = new Core_Email(); 
+    				$coreEmail = new Core_Email(true); 
     				$coreEmail->send($username, EMAIL_SUBJECT_RESET_PASSWORD, $email_content);
     				$result_msg['success'] = $username;
     			}
