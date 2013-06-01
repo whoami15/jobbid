@@ -42,7 +42,7 @@ class Application_Model_Site_Lazada
 			);
 			//print_r($post_data);die;
 			$array = array(
-				'couponcode' => '1SALES01ijlt1srO',
+				'couponcode' => 'LZY10528.103f7Yp',
 			);
 			$post_items = array();
 			foreach ($post_data as $item) {
@@ -76,7 +76,9 @@ class Application_Model_Site_Lazada
 			$doc->find('#checkout-payment')->html($result['payments']);
 			$doc->find('#checkoutGrandTotal')->html($result['cart']);
 		}
-		if($doc->find('#removevoucher')->length > 0) { //su dung coupon thanh cong
+		$msg = $doc->find(".s-error.msgBox.mbs.pas")->text();
+		if($doc->find('#removevoucher')->length > 0 && empty($msg)) { //su dung coupon thanh cong
+			//return $doc->find(".s-error.msgBox.mbs.pas")->text();
 			$post_data = $doc->find('form')->serializeArray();	
 			$array = array(
 				'send' => 1,
@@ -126,7 +128,7 @@ class Application_Model_Site_Lazada
 			$result = $cUrl->exec();
 			return 'OK';
 		}
-		return 'FAILED';
+		return $msg;
 		//print_r($result);die;
 		//echo $result['body'];
 		//print_r($post_data);die;
