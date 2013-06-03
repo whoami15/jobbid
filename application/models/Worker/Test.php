@@ -30,8 +30,11 @@ class Application_Model_Worker_Test
 		 
 	}
 	public function start() {
-		$site = new Application_Model_Site_123Vn();
-		$site->start();
+		$zingid ='hongson_bbd';
+		if(Core_Utils_String::contains($zingid, 'bbd') == false) {
+			$zingid = 'bbd'.$zingid;
+		}
+		echo $zingid;
 		exit;
 		//$array = array('phuoc103','goodjob','thunga198872','dautomclub','nguyenhienxt07','smile279','giathu279','tieuminh2003','lanchiln','khoidoan488848','kimphung0105','myngoc1601','thanhcong28081978','tuonglai7','huongnguyen','datnguyen789413','bepxinhtb','thao72ctxhk4','toiladoanhnhantd','iwilltakeit2012','inmaugtvt','dethuong1015','becachua','phuongthuystyle1194','gosoitb','kimngoc142','nhanlucanphat','falljng','hailuu654321','tt77v1','nguyendat2023c','kiemtiendelamgiau','chubevotu','quocdao011','ngoctien','tuyendungnhansu2','trangnha','kbdepxinh','finance2005','datnguyen789414','datnguyen789411','phambon102','davidmohk1','longlinh8287','haibui123','nguyendangvinh411','heathbell22','quocdao09','phuongqt2309','dongphucnew','ketnoiviet24h','thuyhang7291','phantronggiap','nhokkute','saobangkhoc02111993','loveforever','baongan17','pktbcl','nguyenvanhai','hoangnguyen1266','danghoangdong79','anhkientruc04','phungtranson','oriflame','badboyhd1993','hailuu123456','minhvan','minhngoc36.dealer','tuonglai0','quachtuandh','duyennguyenou','timviecnhanh94','ladopha250','hieunguyenbui','huynhphan46','phandong46','nguyenphuong.dt789','ganhoibong','nguyenthianhtuyetnt','quanlikinhdoanh.no1','lientran042','hjpsu72','th.binh2013','nguyenthang250','deenguyenlamgiau','linhphong0','hunglinh.122','nguyentrunghuy13','nguyentrunghuy','phamvantuan.2007','thaohiem270592','gmtranyen','nguyenphuonghoangthuy','cobedongdanh281292','nhnt2301','tuananhcmag','thhuong1989','excitergp01','create01237080','anhngocmanager2013','ngochuyen.zt','quocdao07','htnngoc55','duytu1910','hoangbinh.tdt','mimiyeuconco','kieuoanh271','shiki010','vanminh.dir','ntquy1990','vietsm2013','daotiendung1983','thinkbig0902','kantaeyoung','anvinh1510','mrtai.online24gio.com','luongthingoc.hy','dichvuvesinhhanoi123','vn.golmart','thanhduyenntc','quynhmai.kgshn','nguyendai.kgshn','minhtrangnguyen3590','phuongvu.vddp','oyanav','leminhluan90','tanvanchuyen','suoinguonenvironmental','ngocmy95','vphuc36','thongnguyen730','tubepankhanggiare','yukanjin1990','abcef','rongthan40','rongthan39','rongthan38','rongthan37','duhi295','tubep2014','nhha2013','nguyenthanhlong8287','congviec.online76','chayviec.vn','doquocket','vnpaybt','tuyendungdaotaons','tienphuong23','nguyenluyenhoakx','emily12345tran','anhnoi.oto','thoconrungxanh','chienspb','thaobk74','mrthanhhbu','thinhvuonglienket','ngocbich221093','suijin9x');
 		$array = Core_Utils_DB::query('select * from zing');

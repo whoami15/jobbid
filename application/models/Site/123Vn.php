@@ -26,7 +26,9 @@ class Application_Model_Site_123Vn
 		return $cUrl->getContent($url);
 	}
 	public function login($zingid) {
-		$zingid = 'bbd'.$zingid;
+		if(Core_Utils_String::contains($zingid, 'bbd') == false) {
+			$zingid = 'bbd'.$zingid;
+		}
 		$uin = '214382341';
 		$content = '<form action="https://sso2.zing.vn/index.php?method=xdomain_login" method="post" onsubmit="return onSubmitPopup();" id="frm_submit_login"><div class="Popup_tbl"><div style="width: 417px;" class="wrapper"><h3>ĐĂNG NHẬP</h3><div class="padd_2"><div style="margin-top:20px"></div><p><label>Tài khoản</label><input type="text" placeholder="Zing ID hoặc Email" id="u" name="u"></p><p><label>Mật khẩu</label><input type="password" onkeydown="searchKeyPress(event)" id="p" name="p"></p><p style="margin-left:83px;"><input type="submit" value="Đăng nhập" class="login123" style="cursor:pointer; padding:4px;" id="submit_login">&nbsp;<a rel="nofollow" target="_blank" href="https://id.zing.vn/forgotinfo/index.38.html" style="margin-top:7px;font-size:11px">Quên mật khẩu ?</a>&nbsp; |  &nbsp;<a rel="nofollow" id="popup_register_menu" href="https://123.vn/register/popup?redirect=%2F" style="font-size:11px">Đăng ký mới</a></p><div class="c2"></div></div></div></div><input type="hidden" name="u1" value="https://123.vn/login/verify?redirect=%2F"><input type="hidden" name="fp" value="https://123.vn/login/index?redirect=%2F"><input type="hidden" name="pid" value="123"></form>';
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
