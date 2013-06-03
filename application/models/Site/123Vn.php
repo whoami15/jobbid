@@ -83,20 +83,32 @@ class Application_Model_Site_123Vn
 		return $result;
 	}
 	public function start() {
+		$h = date('H');
+		if($h > 7) return ;
+		//die($h);
 		$row = Core_Utils_DB::query('SELECT * FROM `zing` WHERE `status` = 1 ORDER BY id LIMIT 0,1',2);
 		if($row==null) exit;
 		$msg = $row['zingid'].PHP_EOL;
 		$this->login($row['zingid']);
-		$rows = Core_Utils_DB::query('SELECT * FROM `bbd_guest` WHERE `zingid` IS NULL ORDER BY `number` LIMIT 0,5');
+		$num = Core_Utils_DB::query('SELECT MAX(number) as num FROM `bbd_guest` WHERE zingid IS NOT NULL',2);
+		$rows = Core_Utils_DB::query('SELECT * FROM `bbd_guest` WHERE `zingid` IS NULL and number >= '.$num['num'].' ORDER BY `number` LIMIT 0,20');
+		$i = 0;
 		foreach ($rows as $item) {
+			if($i % 3 != 0) {
+				$i++;
+				continue;
+			}
 			$num = $item['number'].'000';
 			$msg.='Guest num '.$num.PHP_EOL;
 			$result = $this->guest($num);
+			if($result['valid'] == true) {
+				Core_Utils_DB::update('bbd_guest', array('zingid' => $row['zingid'],'time_create' => Core_Utils_Date::getCurrentDateSQL()), array('number' => $item['number']));
+			}
 			if($result['user_bid_max'] <= 0) {
 				break;
 			}
-			Core_Utils_DB::update('bbd_guest', array('zingid' => $row['zingid'],'time_create' => Core_Utils_Date::getCurrentDateSQL()), array('number' => $item['number']));
 			sleep(5);
+			$i++;
 		}
 		Core_Utils_DB::update('zing', array('status' => '0'), array('id' => $row['id']));
 		Core_Utils_Log::log123($msg);
@@ -105,6 +117,16 @@ class Application_Model_Site_123Vn
 	}
 	public function test($num) {
 		return $this->guest($num);
+	}
+	public function getGuest($zingid) {
+		//return $zingid.' dasda';
+		if(empty($this->cookie))
+			$this->login($zingid);
+		$cUrl = new Core_Dom_Curl(array(
+			'method' => 'GET',
+			'cookie' => $this->cookie
+		));
+		return $cUrl->getContent('http://123.vn/auction/historybid?product_id=71620');
 	}
 }
 

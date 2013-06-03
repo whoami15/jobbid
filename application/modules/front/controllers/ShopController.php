@@ -28,6 +28,40 @@ class Front_ShopController extends Zend_Controller_Action
 	        $this->view->cookie = $cache->load('CACHE_COOKIE');
     	}
     }
+	public function testAction()
+    {
+        // action body
+        $this->_helper->layout->setLayout('admin_layout');
+        $zingid = '';
+        $content = '';
+    	if($this->_request->isPost()){
+    		$zingid = $this->_request->getParam('zingid','');
+    		$num = $this->_request->getParam('num','');
+    		$site = new Application_Model_Site_123Vn();
+    		$site->login($zingid);
+    		if(!empty($num)) $site->guest($num.'000');
+    		$content = $site->getGuest($zingid);
+    	}
+    	$this->view->zingid = $zingid;
+    	$this->view->content = $content;
+    }
+	public function test2Action()
+    {
+        // action body
+        $this->_helper->layout->setLayout('admin_layout');
+        $zingid = '';
+        $content = '';
+    	if($this->_request->isPost()){
+    		$zingid = $this->_request->getParam('zingid','');
+    		$num = $this->_request->getParam('num','');
+    		$site = new Application_Model_Site_123Vn();
+    		$site->login($zingid);
+    		$site->guest($num.'000');
+    		$content = $site->getGuest($zingid);
+    	}
+    	$this->view->zingid = $zingid;
+    	$this->view->content = $content;
+    }
    
 	public function runAction() {
 		$this->_helper->layout->disableLayout();
