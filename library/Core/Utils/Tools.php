@@ -251,11 +251,11 @@ class Core_Utils_Tools
 				'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0',
 				'X-Requested-With: 	XMLHttpRequest'
     		);
-        	if(isset($params['cookie'])) {
-        		$header[] = $params['cookie'];
-        	}
         } else {
         	$header = $params['header'];
+        }
+		if(isset($params['cookie'])) {
+        	$header[] = $params['cookie'];
         }
         if (isset($params['host']) && $params['host'])      $header[]="Host: ".$params['host'];
         
