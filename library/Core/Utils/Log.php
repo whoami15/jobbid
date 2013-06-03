@@ -43,5 +43,19 @@ class Core_Utils_Log
 		$logger->log($msg, Zend_Log::ERR);
 		$writer->shutdown();*/
 	}
+	public static function log123($msg) {
+		$logFileName = PATH_LOG_FILES.'LOG123_'.date('Y-m-d').'.txt';
+		$writer = new Zend_Log_Writer_Stream($logFileName);
+		$logger = new Zend_Log($writer);
+		$logger->setTimestampFormat('Y-m-d H:i:s');
+		$logger->log($msg, Zend_Log::INFO);
+		$writer->shutdown();
+		//file_put_contents($logFileName, $msg);
+		/*$writer = new Zend_Log_Writer_Stream(PATH_LOG_FILES.$logFileName,'w');
+		$logger = new Zend_Log($writer);
+		$logger->setTimestampFormat('Y-m-d H:i:s');
+		$logger->log($msg, Zend_Log::ERR);
+		$writer->shutdown();*/
+	}
 	
 }

@@ -85,12 +85,12 @@ class Application_Model_Site_123Vn
 	public function start() {
 		$row = Core_Utils_DB::query('SELECT * FROM `zing` WHERE `status` = 1 ORDER BY id LIMIT 0,1',2);
 		if($row==null) exit;
-		echo $row['zingid'].PHP_EOL;
+		$msg = $row['zingid'].PHP_EOL;
 		$this->login($row['zingid']);
 		$rows = Core_Utils_DB::query('SELECT * FROM `bbd_guest` WHERE `zingid` IS NULL ORDER BY `number` LIMIT 0,5');
 		foreach ($rows as $item) {
 			$num = $item['number'].'000';
-			echo 'Guest num '.$num.PHP_EOL;
+			$msg.='Guest num '.$num.PHP_EOL;
 			$result = $this->guest($num);
 			if($result['user_bid_max'] <= 0) {
 				break;
@@ -99,7 +99,8 @@ class Application_Model_Site_123Vn
 			sleep(5);
 		}
 		Core_Utils_DB::update('zing', array('status' => '0'), array('id' => $row['id']));
-		echo 'DONE'.PHP_EOL;
+		Core_Utils_Log::log123($msg);
+		//echo 'DONE'.PHP_EOL;
 		//return $this->login($num);
 	}
 	public function test($num) {
