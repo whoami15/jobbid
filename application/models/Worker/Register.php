@@ -6,6 +6,8 @@ class Application_Model_Worker_Register
 	var $_header;
 	var $_cUrl;
 	var $_formFw = '';
+	var $_proxy = array('124.195.52.21:3128','24.91.214.254:10379','113.53.232.46:3128','199.167.228.36:80','120.203.215.4:9090','113.28.244.195:3128','159.226.71.138:1170','110.77.233.164:3128','212.220.105.122:3128','66.35.68.145:8089','91.193.128.124:8080','88.204.187.90:3128','221.10.102.203:81','173.213.96.229:3128','173.213.96.229:8089','2.133.93.82:9090','59.49.79.121:9527','223.4.179.152:3128','202.146.237.79:808','112.5.183.235:80','89.28.117.176:54321');
+	var $cookie = 'Cookie: PHPSESSID=qo7joq9grvi0nvgppfifofmei6; __utma=259897482.1952231106.1370364470.1370364470.1370364470.1; __utmb=259897482.1.10.1370364470; __utmc=259897482; __utmz=259897482.1370364470.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)';
 	public static function getInstance($className=__CLASS__){
 		//Check instance
 		if(empty(self::$_instance)){
@@ -19,7 +21,6 @@ class Application_Model_Worker_Register
 			'method' => 'GET',
 			'cookie' => 'Cookie: cprelogin=no; cpsession=bamboode%3avXE5mTVeFQdlsl2WG6o6XlR8owCLtnpgWIfr13XvEiew5l91VMWwAmFewgci38B_; langedit=; lang=; webmailsession=center%40bamboodev.us%3aHiTH9yjSvMJSWlUDxGXiErCdKKPraHyQKKzXIaPFF6iuVgOf3sK1TuI__mNEODPF; webmailrelogin=no; roundcube_sessauth=S612075c9da1c428b8c0bb0610fdbc4cc9ef69189'
 		));*/
-		 
 	}
 	public function start() {
 		/*echo "Enter your name\n"; // Output - prompt user
@@ -27,17 +28,37 @@ class Application_Model_Worker_Register
 		echo "Hello $name";       // Output - Some text   
 		exit(0);*/ 
 		//$domain = 'bamboodev.us';
-		$domain = 'somuahang.com';
-		$arrayUsername = array('oyanav','leminhluan90','tanvanchuyen','suoinguonenvironmental','ngocmy95','vphuc36','thongnguyen730','tubepankhanggiare','yukanjin1990','abcef','rongthan40','rongthan39','rongthan38','rongthan37','duhi295','tubep2014','nhha2013','nguyenthanhlong8287','congviec.online76','chayviec.vn','doquocket','vnpaybt','tuyendungdaotaons','tienphuong23','nguyenluyenhoakx','emily12345tran','anhnoi.oto','thoconrungxanh','chienspb','thaobk74','mrthanhhbu','thinhvuonglienket','ngocbich221093','suijin9x');
-		$arrayPhone = array('0908951346','0908443146','0937709491','0908707253','0908127955','0937091714','0908099047','0908285548','0908097951','0908696441','0908096605','0937809247','0908542553','0908723060','0908940595','0908656260','0934768535','0908704467','0908092915','0908580937','0908058774','0937440930','0933533167','0908276343','0934756131','0908490438','0908560937','0908081907','0916359139','0916384099','0916359239','0915782877','0916359078','0916359177');
+		$domain = 'noithatchauhong.com';
+		$arrayUsername = array('anhlthb');
+		$arrayPhone = array('0908917630');
 		foreach ($arrayUsername as $index => $username) {
+			$proxy = '';
+			while (!empty($this->_proxy)) {
+				if(!empty($proxy)) break;
+				try {
+					$rand = array_rand($this->_proxy);
+					$proxy = $this->_proxy[$rand];
+					$cUrl = new Core_Dom_Curl(array(
+						'method' => 'GET',
+						'cookie' => $this->cookie,
+						'proxy' => $proxy
+					));
+				} catch (Exception $e) {
+					echo 'Remove proxy '.$proxy.PHP_EOL;
+					$proxy = '';
+					unset($this->_proxy[$rand]);
+				}
+			}
+			
+			if(empty($proxy)) die('No Prxy');
+			echo 'Use proxy '.$proxy.PHP_EOL;
 			$phone = $arrayPhone[$index];          
 			//echo $phone;
 			$cUrl = new Core_Dom_Curl(array(
 				'method' => 'GET',
-				'cookie' => 'Cookie: __utma=259897482.1689604994.1351605073.1367038609.1367052043.72; __utmz=259897482.1366824283.66.8.utmcsr=newsletter|utmccn=kich-hoat-mo-qua-trung-lon_23.04|utmcmd=email; __utmv=259897482.|1=User%20ID=toannb=1; __atuvc=0%7C13%2C0%7C14%2C0%7C15%2C36%7C16%2C104%7C17; __utmx=259897482.YNCbXckDSTOh7MhnaRUGCQ$54197633-8:1; __utmxx=259897482.YNCbXckDSTOh7MhnaRUGCQ$54197633-8:1358337355:15552000; s3=1360132972; banner_footer_count=62; __atssc=facebook%3B1; zingid=1366731815_773; PHPSESSID=gdgccqtrn1dgo80hq4nhta1hj6; __utmc=259897482; lastlogin=toannb; __utmb=259897482.8.10.1367052043'
+				'cookie' => $this->cookie
 			));
-			$content = $cUrl->getContent('http://123.vn/promotion-gateway/register?source=2&ref=mytrang6789');
+			$content = $cUrl->getContent('http://123.vn/promotion-gateway/register?source=1');
 			//Core_Utils_Log::write($content);die;
 			$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
 			$seckey = $doc->find('#seckey')->val();
@@ -48,9 +69,9 @@ class Application_Model_Worker_Register
 			//print_r($post_data);die;
 			$array = array(
 				'gender' => 'male',
-				'lastname' => 'Bamboo',
-				'firstname' => 'Dev',
-				'username' => 'bbd'.$username,
+				'lastname' => 'duong',
+				'firstname' => 'khanh',
+				'username' => $username.'88',
 				'email' => $username.'@'.$domain,
 				'confirmEmail' => $username.'@'.$domain,
 				'password' => '74198788',
@@ -60,7 +81,7 @@ class Application_Model_Worker_Register
 				'seckey' => $seckey,
 				'shippingCity' => '1',
 				'shippingDist' => '48',
-				'yearOfBirth' => '1981'
+				'yearOfBirth' => '1989'
 			);
 			$post_items = array();
 			foreach ($post_data as $item) {
@@ -77,8 +98,9 @@ class Application_Model_Worker_Register
 			$cUrl = new Core_Dom_Curl(array(
 				'method' => 'POST',
 				'post_fields' => $post_string,
-				'url' => 'http://123.vn/promotion-gateway/register?source=2',
-				'cookie' => 'Cookie: __utma=259897482.1689604994.1351605073.1367038609.1367052043.72; __utmz=259897482.1366824283.66.8.utmcsr=newsletter|utmccn=kich-hoat-mo-qua-trung-lon_23.04|utmcmd=email; __utmv=259897482.|1=User%20ID=toannb=1; __atuvc=0%7C13%2C0%7C14%2C0%7C15%2C36%7C16%2C104%7C17; __utmx=259897482.YNCbXckDSTOh7MhnaRUGCQ$54197633-8:1; __utmxx=259897482.YNCbXckDSTOh7MhnaRUGCQ$54197633-8:1358337355:15552000; s3=1360132972; banner_footer_count=62; __atssc=facebook%3B1; zingid=1366731815_773; PHPSESSID=gdgccqtrn1dgo80hq4nhta1hj6; __utmc=259897482; lastlogin=toannb; __utmb=259897482.8.10.1367052043'
+				'url' => 'http://123.vn/promotion-gateway/register?source=1',
+				'cookie' => $this->cookie,
+				'proxy' => $proxy
 			));
 			$result = $cUrl->exec();
 			$content = $result['body'];
@@ -86,7 +108,16 @@ class Application_Model_Worker_Register
 			$error = trim($doc->find('ul.error')->get(0)->textContent);
 			echo 'Create user '.$username.':'.PHP_EOL;
 			if(empty($error)) {
-				echo 'SUCCESS';
+				echo 'SUCCESS'.PHP_EOL;
+				echo "Enter verify url : "; // Output - prompt user
+				$url = fgets(STDIN);
+				$cUrl = new Core_Dom_Curl(array(
+					'method' => 'GET',
+					'cookie' => $this->cookie,
+					'proxy' => $proxy
+				));
+				$cUrl->request($url);
+				echo 'DONE'.PHP_EOL;
 			} else {
 				echo 'FAILED : '.$error;
 			}

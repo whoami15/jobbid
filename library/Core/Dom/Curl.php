@@ -94,6 +94,10 @@ class Core_Dom_Curl
     	}
     	return $content;
     }
+    public function request($url) {
+    	@curl_setopt( $this -> ch, CURLOPT_URL, $url);
+    	$this->exec();
+    }
     public function getImage() {
     	//@curl_setopt( $this -> ch, CURLOPT_URL, $url);
     	@curl_setopt($this -> ch, CURLOPT_RETURNTRANSFER, 1);

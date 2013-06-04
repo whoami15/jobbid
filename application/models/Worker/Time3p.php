@@ -16,7 +16,10 @@ class Application_Model_Worker_Time3p
 	public function start() {
 		try {
 			$site = new Application_Model_Site_123Vn();
-			$site->start();
+			while (true) {
+				$site->start();
+				sleep(6);
+			}
 		} catch (Exception $e) {
 			Core_Utils_Log::error($e,Zend_Log::EMERG);
 			

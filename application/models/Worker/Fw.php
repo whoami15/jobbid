@@ -124,35 +124,23 @@ YAHOO.util.Event.onDOMReady(dirCompleter.init);
 		));*/
 		 
 	}
+	var $cookie = 'Cookie: wp-settings-1=imgsize%3Dfull%26align%3Dnone%26hidetb%3D1%26editor%3Dtinymce%26libraryContent%3Dbrowse%26wplink%3D1; wp-settings-time-1=1369677120; cprelogin=no; cpsession=noithat%3aNjrx0secuCnMbJwDy4IG63Pnxie0BNCudiq2V0jQZZbw20UXrdbmkldJIcbryCmK; langedit=; lang=; webmailsession=center%40noithatchauhong.com%3ayk7yhSWooQjJJ9tT7xW3xCOQwGLZJpPOAEUQFzmHIhneBD70vTnpxIZHLWoMq39X; webmailrelogin=no; roundcube_sessid=3964832e52dbf12530b75fb613f583d7; roundcube_sessauth=S2037fdc17c21ffa3796901faec8e59444c39fdc1';
+	var $cpsess = 'http://noithatchauhong.com:2082/cpsess1898109269';
+	var $domain = 'noithatchauhong.com';
 	public function start() {
-		//$content = $this->_cUrl->getContent('http://bamboodev.us:2082');
-		//Core_Utils_Log::write($content);die;
-		$cookie = 'Cookie: cprelogin=no; cpsession=somuahan%3a5vGAiJu5oOh6HWTr5h_HKy_NyX7vdxJv1lQNPpstxyKzCHZwGfaEpC5tNF_t_NY0; langedit=; lang=';
-		$cpsess = 'http://somuahang.com:2082/cpsess2132859929';
+		//$this->remove();
+		//$this->removeFw();
+		//exit;
 		$cUrl = new Core_Dom_Curl(array(
 			'method' => 'GET',
-			'cookie' => $cookie
+			'cookie' => $this->cookie
 		));
 		//Create email
-		$array = array('oyanav','leminhluan90','tanvanchuyen','suoinguonenvironmental','ngocmy95','vphuc36','thongnguyen730','tubepankhanggiare','yukanjin1990','abcef','rongthan40','rongthan39','rongthan38','rongthan37','duhi295','tubep2014','nhha2013','nguyenthanhlong8287','congviec.online76','chayviec.vn','doquocket','vnpaybt','tuyendungdaotaons','tienphuong23','nguyenluyenhoakx','emily12345tran','anhnoi.oto','thoconrungxanh','chienspb','thaobk74','mrthanhhbu','thinhvuonglienket','ngocbich221093','suijin9x');
+		$array = array('camthi_mc','bangvy2008','vutruongmedia','ngocvo177','trannam_sieucoi','hdao19','tamkem1506','hongthanh081189','trancongphuoc2007','loilam_lauxanh','minhlongan28','congsang202','nscnminhhung.vn','trannghia8389','nguyenquoccuong1910','dao_hoang1992','hang_tw.vn','anhlthb','lovely_moon165');
 		foreach ($array as $email) {
 			//echo $cUrl->getContent("http://bamboodev.us:2082/cpsess2132859929/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=0&domain=bamboodev.us&cache_fix=1367051405695");
-			echo $cUrl->getContent($cpsess."/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=250&domain=somuahang.com&cache_fix=1367059732643");
+			echo $cUrl->getContent($this->cpsess."/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=250&domain=noithatchauhong.com&cache_fix=1367059732643");
 		}
-		//die;
-		
-		/* xOA EMAIL*/
-		
-		//$array = array('hongson','hungkhanh','mytrang01','thanhphuong','thaovi');
-		//$array = array('kimphung0105','myngoc1601','thanhcong28081978','tuonglai7','huongnguyen','datnguyen789413','bepxinhtb','thao72ctxhk4','toiladoanhnhantd','iwilltakeit2012');
-		//$array = array('phuoc103','goodjob','thunga198872','dautomclub','nguyenhienxt07','smile279','giathu279','tieuminh2003');
-		/*$array = array('phuoc103','goodjob','thunga198872','dautomclub','nguyenhienxt07','smile279','giathu279','tieuminh2003','lanchiln','khoidoan488848','kimphung0105','myngoc1601','thanhcong28081978','tuonglai7','huongnguyen','datnguyen789413','bepxinhtb','thao72ctxhk4','toiladoanhnhantd','iwilltakeit2012','inmaugtvt','dethuong1015','becachua','phuongthuystyle1194','gosoitb','kimngoc142','nhanlucanphat','falljng','hailuu654321','tt77v1','nguyendat2023c','kiemtiendelamgiau','chubevotu','quocdao011','ngoctien','tuyendungnhansu2','trangnha','kbdepxinh','finance2005','datnguyen789414','datnguyen789411','phambon102','davidmohk1','longlinh8287','haibui123','nguyendangvinh411','heathbell22','quocdao09','phuongqt2309','dongphucnew','ketnoiviet24h','thuyhang7291','phantronggiap','nhokkute','saobangkhoc02111993','loveforever','baongan17','pktbcl','nguyenvanhai','hoangnguyen1266','danghoangdong79','anhkientruc04','phungtranson','oriflame','badboyhd1993','hailuu123456','minhvan');
-		foreach ($array as $email) {
-			if($email =='saobangkhoc02111993' || $email =='heathbell22') continue;
-			echo $cUrl->getContent('http://bamboodev.us:2082/cpsess8956338163/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=delpop&email='.$email.'&domain=bamboodev.us&cache_fix=1367032938803');
-		}
-		die;*/
-		
 		//forward email
 		$content = $this->_formFw;
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
@@ -162,7 +150,7 @@ YAHOO.util.Event.onDOMReady(dirCompleter.init);
 			$post_items = array();
 			foreach ($post_data as $item) {
 				if($item['name'] == 'email') $item['value'] = $email;
-				if($item['name'] == 'fwdemail') $item['value'] = 'center@bamboodev.us';
+				if($item['name'] == 'fwdemail') $item['value'] = 'center@noithatchauhong.com';
 				$post_items[] = $item['name'] . '=' . $item['value'];
 			}
 			$post_string = implode ('&', $post_items);
@@ -171,14 +159,42 @@ YAHOO.util.Event.onDOMReady(dirCompleter.init);
 			$cUrl = new Core_Dom_Curl(array(
 				'method' => 'POST',
 				'post_fields' => $post_string,
-				'url' => $cpsess.'/frontend/x3/mail/doaddfwd.html',
-				'cookie' => $cookie
+				'url' => $this->cpsess.'/frontend/x3/mail/doaddfwd.html',
+				'cookie' => $this->cookie
 			));
 			$result = $cUrl->exec();
 			echo 'Fw email '.$email.', result ='.$result['http_code'].PHP_EOL;
 		}
 		
 		die('OK');
+	}
+	public function remove() {
+		$cUrl = new Core_Dom_Curl(array(
+			'method' => 'GET',
+			'cookie' => $this->cookie
+		));
+		//Create email
+		$array = array('hoangrappe','quangminh280889','ngocanh_7488','huuluan007','math0211','Khoadn812','thinhtran198','cobe_dongdanh398','chau.phung-thi-hong','ancutrinh.vn','sangonhaban','vanloi1','myhanhgc1801','lavender671991.vn','angell0ve_0nlyl0ve0nepers0n.vn','hoisinh9000','anhsangphale1208','daohoang','hyo303h');
+		foreach ($array as $email) {
+			echo $cUrl->getContent($this->cpsess.'/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=delpop&email='.$email.'&domain='.$this->domain.'&cache_fix=1367032938803');
+		}
+		echo 'OK';
+		exit;
+	}
+	//http://noithatchauhong.com:2082/cpsess1898109269/frontend/x3/mail/dodelfwd.html?email=ancutrinh.vn%40noithatchauhong.com&emaildest=center%40noithatchauhong.com
+	public function removeFw() {
+		$cUrl = new Core_Dom_Curl(array(
+			'method' => 'GET',
+			'cookie' => $this->cookie
+		));
+		//Create email
+		$array = array('hoangrappe','quangminh280889','ngocanh_7488','huuluan007','math0211','Khoadn812','thinhtran198','cobe_dongdanh398','chau.phung-thi-hong','ancutrinh.vn','sangonhaban','vanloi1','myhanhgc1801','lavender671991.vn','angell0ve_0nlyl0ve0nepers0n.vn','hoisinh9000','anhsangphale1208','daohoang','hyo303h');
+		$array = array('camthi_mc','bangvy2008','vutruongmedia','ngocvo177','trannam_sieucoi','hdao19','tamkem1506','hongthanh081189','trancongphuoc2007','loilam_lauxanh','minhlongan28','congsang202','nscnminhhung.vn','trannghia8389','nguyenquoccuong1910','dao_hoang1992','hang_tw.vn','hieu.nguyen@istormvn.com','anhlthb');
+		foreach ($array as $email) {
+			echo $cUrl->getContent($this->cpsess."/frontend/x3/mail/dodelfwd.html?email=$email%40{$this->domain}&emaildest=center%40noithatchauhong.com");
+		}
+		echo 'OK';
+		exit;
 	}
 }
 

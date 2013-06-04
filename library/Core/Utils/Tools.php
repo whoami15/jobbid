@@ -261,7 +261,7 @@ class Core_Utils_Tools
         
         //@curl_setopt ( $this -> ch , CURLOPT_VERBOSE , 1 );
         @curl_setopt ( $ch , CURLOPT_HEADER , 1 );
-        if(isset($params['proxy'])) {
+        if(isset($params['proxy']) && !empty($params['proxy'])) {
         	curl_setopt($ch, CURLOPT_PROXY, $params['proxy']);
         }
         if ($params['method'] == "HEAD") @curl_setopt($ch,CURLOPT_NOBODY,1);
@@ -303,4 +303,23 @@ class Core_Utils_Tools
     	}
     	return 0;
     }
+   	public static function getProxy() {
+   		$rows = Core_Utils_DB::query('SELECT * FROM `proxy` WHERE `time` < 10 ORDER BY RAND()');
+   		$proxy = '';
+   		foreach ($rows as $item) {
+   		if(!empty($proxy)) break;
+			try {
+				$proxy = $item['ip_addr'];
+				$cUrl = new Core_Dom_Curl(array(
+					'method' => 'GET',
+					'proxy' => $proxy
+				));
+				$cUrl->getContent('http://123.vn');
+			} catch (Exception $e) {
+				$proxy = '';
+				Core_Utils_DB::delete('proxy', $item['id']);
+			}
+   		}
+		return $proxy;
+   	}
 }
