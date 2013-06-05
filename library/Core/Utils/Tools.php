@@ -310,11 +310,8 @@ class Core_Utils_Tools
    		if(!empty($proxy)) break;
 			try {
 				$proxy = $item['ip_addr'];
-				$cUrl = new Core_Dom_Curl(array(
-					'method' => 'GET',
-					'proxy' => $proxy
-				));
-				$cUrl->getContent('http://123.vn');
+				$array = explode(':', $proxy);
+				$fp = fsockopen($array[0],$array[1],$errno, $errstr, 10);
 			} catch (Exception $e) {
 				$proxy = '';
 				Core_Utils_DB::delete('proxy', $item['id']);

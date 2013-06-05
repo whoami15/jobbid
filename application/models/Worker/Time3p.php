@@ -18,6 +18,7 @@ class Application_Model_Worker_Time3p
 			$site = new Application_Model_Site_123Vn();
 			while (true) {
 				$site->start();
+				echo 'end'.PHP_EOL;
 				sleep(6);
 			}
 		} catch (Exception $e) {

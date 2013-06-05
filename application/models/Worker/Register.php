@@ -29,11 +29,11 @@ class Application_Model_Worker_Register
 		exit(0);*/ 
 		//$domain = 'bamboodev.us';
 		$domain = 'noithatchauhong.com';
-		$arrayUsername = array('anhlthb');
-		$arrayPhone = array('0908917630');
+		$arrayUsername = array('ngoc_giau664','congchua_ngaytho272');
+		$arrayPhone = array('0908914473','0906672857');
 		foreach ($arrayUsername as $index => $username) {
 			$proxy = '';
-			while (!empty($this->_proxy)) {
+			/*while (!empty($this->_proxy)) {
 				if(!empty($proxy)) break;
 				try {
 					$rand = array_rand($this->_proxy);
@@ -51,7 +51,7 @@ class Application_Model_Worker_Register
 			}
 			
 			if(empty($proxy)) die('No Prxy');
-			echo 'Use proxy '.$proxy.PHP_EOL;
+			echo 'Use proxy '.$proxy.PHP_EOL;*/
 			$phone = $arrayPhone[$index];          
 			//echo $phone;
 			$cUrl = new Core_Dom_Curl(array(

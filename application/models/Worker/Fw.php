@@ -136,7 +136,7 @@ YAHOO.util.Event.onDOMReady(dirCompleter.init);
 			'cookie' => $this->cookie
 		));
 		//Create email
-		$array = array('camthi_mc','bangvy2008','vutruongmedia','ngocvo177','trannam_sieucoi','hdao19','tamkem1506','hongthanh081189','trancongphuoc2007','loilam_lauxanh','minhlongan28','congsang202','nscnminhhung.vn','trannghia8389','nguyenquoccuong1910','dao_hoang1992','hang_tw.vn','anhlthb','lovely_moon165');
+		$array = array('giangntm.it','muadongbuon2012.vn','ngoc_giau664','vanthi_tv','ngoclong0805','kimquyen281284','congchua_ngaytho272','nghe_o_19032003','thuyanh.design','loibk09','yolly.pig','msnhi88');
 		foreach ($array as $email) {
 			//echo $cUrl->getContent("http://bamboodev.us:2082/cpsess2132859929/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=0&domain=bamboodev.us&cache_fix=1367051405695");
 			echo $cUrl->getContent($this->cpsess."/json-api/cpanel?cpanel_jsonapi_version=2&cpanel_jsonapi_module=Email&cpanel_jsonapi_func=addpop&email=$email&password=$email&quota=250&domain=noithatchauhong.com&cache_fix=1367059732643");

@@ -30,7 +30,17 @@ class Application_Model_Worker_Test
 		 
 	}
 	public function start() {
-		$str = 'nclong8';
+		$site = new Application_Model_Site_123Vn();
+		$array = array(306);
+		$site->test($array);
+		//print_r($rs);
+		exit;
+		$array = array('khanhduong745','camthi_mc','bangvy2008','vutruongmedia','ngocvo177','trannam_sieucoi','hdao19','tamkem1506','hongthanh081189','trancongphuoc2007','loilam_lauxanh','minhlongan28','congsang202','nscnminhhung.vn','trannghia8389','nguyenquoccuong1910','dao_hoang1992','hang_tw.vn','anhlthb','lovely_moon165','giangntm.it','muadongbuon2012.vn','ngoc_giau664','vanthi_tv','ngoclong0805','kimquyen281284','congchua_ngaytho272','nghe_o_19032003','thuyanh.design','loibk09','yolly.pig','msnhi88');
+		foreach ($array as $zingid) {
+			$data = array('zingid' => $zingid);
+			Core_Utils_DB::insert('zing', $data);
+		}
+		exit;
 		$length = count($str);
 		$str = substr($str, $length-3);
 		echo $str;exit;

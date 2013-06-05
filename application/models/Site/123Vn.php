@@ -16,7 +16,8 @@ class Application_Model_Site_123Vn
 	public function __construct($cookie=''){
 		if(!empty($cookie)) 
 			$this->cookie = 'Cookie: '.$cookie; 
-		$this->proxy = Core_Utils_Tools::getProxy();
+		$this->proxy = '113.53.232.46:3128';
+		//$this->proxy = Core_Utils_Tools::getProxy();
 	}
 	public function getContent($url) {
 		if(empty($url)) $url='http://123.vn';
@@ -28,12 +29,17 @@ class Application_Model_Site_123Vn
 		));
 		return $cUrl->getContent($url);
 	}
-	public function login($zingid) {
-		$length = count($zingid);
-		$str = substr($zingid, $length-3);
-		if($str != '88') {
-			$zingid = $zingid.'88';
+	public function login($zingid,$flag = 1) {
+		if($flag == 1) {
+			$length = count($zingid);
+			$str = substr($zingid, $length-3);
+			if($str != '88') {
+				$zingid = $zingid.'88';
+			}
+		} else {
+			$zingid = 'bbd'.$zingid;
 		}
+		
 		$uin = '214382341';
 		$content = '<form action="https://sso2.zing.vn/index.php?method=xdomain_login" method="post" onsubmit="return onSubmitPopup();" id="frm_submit_login"><div class="Popup_tbl"><div style="width: 417px;" class="wrapper"><h3>ĐĂNG NHẬP</h3><div class="padd_2"><div style="margin-top:20px"></div><p><label>Tài khoản</label><input type="text" placeholder="Zing ID hoặc Email" id="u" name="u"></p><p><label>Mật khẩu</label><input type="password" onkeydown="searchKeyPress(event)" id="p" name="p"></p><p style="margin-left:83px;"><input type="submit" value="Đăng nhập" class="login123" style="cursor:pointer; padding:4px;" id="submit_login">&nbsp;<a rel="nofollow" target="_blank" href="https://id.zing.vn/forgotinfo/index.38.html" style="margin-top:7px;font-size:11px">Quên mật khẩu ?</a>&nbsp; |  &nbsp;<a rel="nofollow" id="popup_register_menu" href="https://123.vn/register/popup?redirect=%2F" style="font-size:11px">Đăng ký mới</a></p><div class="c2"></div></div></div></div><input type="hidden" name="u1" value="https://123.vn/login/verify?redirect=%2F"><input type="hidden" name="fp" value="https://123.vn/login/index?redirect=%2F"><input type="hidden" name="pid" value="123"></form>';
 		$doc = Core_Dom_Query::newDocumentHTML($content,'UTF-8');
@@ -60,7 +66,7 @@ class Application_Model_Site_123Vn
 	public function guest($price) {
 		$price = Core_Utils_NumberUtil::parseInt($price);
 		$array = array(
-			'product_id' => '71619',
+			'product_id' => '71618',
 			'price' => $price,
 		);
 		$post_items = array();
@@ -102,10 +108,10 @@ class Application_Model_Site_123Vn
 		$this->login($row['zingid']);
 		$num = Core_Utils_DB::query('SELECT MAX(number) as num FROM `bbd_guest` WHERE zingid IS NOT NULL',2);
 		$rows = Core_Utils_DB::query('SELECT * FROM `bbd_guest` WHERE `zingid` IS NULL and number >= '.$num['num'].' ORDER BY `number` LIMIT 0,30');
-		$i = rand(0, 5);
+		$i = rand(0, 3);
 		echo $i.PHP_EOL;
 		foreach ($rows as $item) {
-			if($i % 5 != 0) {
+			if($i % 3 != 0) {
 				$i++;
 				continue;
 			}
@@ -114,7 +120,7 @@ class Application_Model_Site_123Vn
 			$logMsg .= $msg;
 			echo $msg;
 			$result = $this->guest($num);
-			if($result['valid'] == true) {
+			if($result['bid'] == true) {
 				Core_Utils_DB::update('bbd_guest', array('zingid' => $row['zingid'],'time_create' => Core_Utils_Date::getCurrentDateSQL()), array('number' => $item['number']));
 			}
 			if($result['user_bid_max'] <= 0) {
@@ -129,7 +135,38 @@ class Application_Model_Site_123Vn
 		//return $this->login($num);
 	}
 	public function test($num) {
-		return $this->guest($num);
+		$zingid = '';
+		if(empty($this->cookie)) {
+			$row = Core_Utils_DB::query('SELECT * FROM `zing` WHERE `status` = 1 ORDER BY id LIMIT 0,1',2);
+			if($row==null) exit;
+			$zingid = $row['zingid'];
+			$this->login($zingid,2);
+			echo 'Guest zingid '.$zingid.PHP_EOL;
+		}
+		if(is_array($num)) {
+			foreach ($num as $item) {
+				echo PHP_EOL;
+				echo 'Guest num '.$item.' => ';
+				$result = $this->guest($item.'000');
+				if($result['bid'] == true) {
+					Core_Utils_DB::update('bbd_guest', array('zingid' => $zingid,'time_create' => Core_Utils_Date::getCurrentDateSQL()), array('number' => $item));
+					echo 'OK';
+				} else {
+					echo 'FAILED';
+				}
+			}
+		} else {
+			echo 'Guest num '.$num.PHP_EOL;
+			$result = $this->guest($num.'000');
+			if($result['bid'] == true) {
+				Core_Utils_DB::update('bbd_guest', array('zingid' => $zingid,'time_create' => Core_Utils_Date::getCurrentDateSQL()), array('number' => $num));
+				echo 'OK';
+			} else {
+				echo 'FAILED';
+			}
+		}
+		Core_Utils_DB::update('zing', array('status' => '0'), array('id' => $row['id']));
+		
 	}
 	public function getGuest($zingid) {
 		//return $zingid.' dasda';
@@ -140,7 +177,7 @@ class Application_Model_Site_123Vn
 			'cookie' => $this->cookie,
 			//'proxy' => $this->proxy
 		));
-		return $cUrl->getContent('http://123.vn/auction/historybid?product_id=71619');
+		return $cUrl->getContent('http://123.vn/auction/historybid?product_id=71618');
 	}
 }
 
