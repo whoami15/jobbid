@@ -1,0 +1,86 @@
+body{font:13px/20px Tahoma,Arial,Verdana,sans-serif;margin:0;padding:0}h1,h2,h3,h4,h5,h6,p,form,ul,ul li,ol,ol li,dl,dl dt,dl dd,blockquote{margin:0;padding:0}ul,ul li,ol,ol li{list-style:none}img{border:0}a{outline:0}a:link,a:visited{text-decoration:none}a:hover{text-decoration:underline}fieldset{border:0;background:0;margin:0;padding:0}fieldset legend{display:none}input,select,textarea{font:13px/19px Tahoma,Arial,Verdana,sans-serif}input[type="image"],input[type="submit"]{outline:0}input{vertical-align:baseline;margin:-1px -2px}html>/**/body input{vertical-align:text-bottom;margin:0}object,embed{outline:0}.Hidden{display:none}.Wrapper{overflow:visible;height:1%}html>body .Wrapper{overflow:hidden;height:auto} 
+#main {
+display: block;
+padding: 10px;
+position: relative;
+width: 510px;
+}
+ul.ListVP {
+display: block;
+float: left;
+margin: 10px 0 0;
+width: 100%;
+}
+ul.ListVP li a:link, ul.ListVP li a:visited {
+  background: url("images/bg-listitem.jpg") no-repeat scroll 0 0 transparent;
+  display: block;
+  height: 42px;
+  padding: 3px;
+  width: 42px;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+}
+ul.ListVP li a:hover, ul.ListVP li a.Active:link, ul.ListVP li a.Active:visited, ul.ListVP li a.Active:hover {
+  background: url("images/bg-listitem-hover.jpg") no-repeat scroll 0 0 transparent;
+  opacity:1;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+}
+ul.ListVP li {
+float: left;
+height: 48px;
+margin: 0 15px 5px 0;
+width: 48px;
+}
+.spDetail {
+background-color: #222222;
+border: 1px solid #F86F05;
+color: #FFFFFF;
+float: left;
+min-height: 50px;
+padding: 5px;
+width: 95%;
+}
+.spDetail .left {
+display: block;
+float: left;
+height: 200px;
+padding-top: 5px;
+text-align: center;
+width: 75px;
+}
+.spDetail .right {
+display: block;
+float: left;
+height: 200px;
+padding-left: 10px;
+width: 390px;
+}
+.orange_bold {
+color: #F86F05;
+font-weight: bold;
+}
+.spDetail .description {
+
+}
+.transparent_class {
+  /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+  /* IE 5-7 */
+  filter: alpha(opacity=50);
+
+  /* Netscape */
+  -moz-opacity: 0.5;
+
+  /* Safari 1.x */
+  -khtml-opacity: 0.5;
+
+  /* Good browsers */
+  opacity: 0.5;
+}

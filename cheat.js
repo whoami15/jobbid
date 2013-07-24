@@ -35,15 +35,27 @@ i++;
 $.ajax({  
 	type: 'GET',
 	cache: false,
-	async: false,
-	url: 'http://me.zing.vn/jfr/widget/boxfriendlist?uid=9216071&page=2&cb=zmCore.js424780',
+	url: 'http://local02.lazadavn.com/omslocal/games/save-games?callback=jQuery17022174464504658642_1369301577392&answer_1=MOI&answer_2=U&answer_3=COPAC&answer_4=S&answer_5=SACOMBANK&answer_6=MAYMAN&answer_7=QUOCTETHIEUNHI&answer_8=R&answer_9=NICKVUJICIC&answer_10=ANACONDA&answer_11=T&answer_12=U&answer_13=DAILYDEAL&answer_14=LED&answer_15=N',
 	success: function(data){
-		console.log('OK');
+		console.log(data);
 	},
 	error: function(){
 		console.log('ERROR');
 	}
 }); 
+
+$.ajax({  
+	type: 'GET',
+	cache: false,
+	url: 'http://local02.lazadavn.com/omslocal/games/save-info?callback=jQuery17022174464504658642_1369301577393&ochu_fullname=Nguyen+Long&ochu_email=nclong87%40gmail.com&ochu_phone=0932337487&ochu_address=70+Van+Cao+Phu+Tho+Hoa+Tan+Phu&ochu_key=9f3e477726447149c04a276cb3045744&ochu_user=533',
+	success: function(data){
+		console.log(data);
+	},
+	error: function(){
+		console.log('ERROR');
+	}
+}); 
+
 
 var viewstate = $("#__VIEWSTATE").val();
 var i = 0;
