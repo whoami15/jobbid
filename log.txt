@@ -19,13 +19,16 @@ http://10.40.52.11:9091/esb/api/vng.gpi.esb.ecommerce.actionhandler.IActionHandl
 
 
 
-Acc : PlusKT01         
+Acc : pluskt01         
 
 Pass : q1w2e3
 
 Role : ZzoNhanDao
 
 Server : Tuong Duong
+
+
+PASS VPN : 2645...
 
 
  
